@@ -59,7 +59,8 @@
       info[b.getAttribute('aria-controls')] = {
         s: s, e: e,
         startText: monthLabel(s),
-        endText: endRaw === 'present' ? 'Now' : monthLabel(e - 1)
+        endText: endRaw === 'present' ? 'Now' : monthLabel(e - 1),
+        type: b.getAttribute('data-type') || ''
       };
       minY = Math.min(minY, Math.floor(s / 12));
       maxY = Math.max(maxY, Math.floor((e - 1) / 12));
@@ -153,6 +154,7 @@
       });
       line.style.top = top + 'px';
       line.style.height = height + 'px';
+      line.setAttribute('data-type', it.type);
       dateTop.textContent = it.endText;
       dateBottom.textContent = it.startText;
       dateTop.style.top = (top + 3) + 'px';
@@ -246,8 +248,7 @@
   });
 
   /* ---------- Flowchart widget (automation project) ----------
-     Uses event delegation, because the widget is copied into the detail pane
-     when the project is opened. */
+     Uses event delegation, so it works wherever the widget sits on the page. */
   function flowClear(widget) {
     (widget._fcTimers || []).forEach(clearTimeout);
     widget._fcTimers = [];
@@ -328,7 +329,7 @@
   function openDetail(group, id, trigger) {
     var pane = group.querySelector('.pane');
     var detail = document.getElementById(id);
-    if (!pane || !detail) return;
+    if (!detail) return;
 
     group.querySelectorAll('.item').forEach(function (b) {
       b.setAttribute('aria-expanded', 'false');
@@ -338,6 +339,7 @@
     trigger.setAttribute('aria-expanded', 'true');
     var li = trigger.closest('li');
     if (li) li.classList.add('open');
+    if (!pane) return; /* details open under the title */
 
     pane.innerHTML = detail.innerHTML;
 
@@ -391,7 +393,8 @@
     group.querySelectorAll('.item').forEach(function (btn) {
       btn.addEventListener('click', function () {
         var id = btn.getAttribute('aria-controls');
-        var closing = btn.getAttribute('aria-expanded') === 'true' && !desktop.matches;
+        var inline = !group.querySelector('.pane');
+        var closing = btn.getAttribute('aria-expanded') === 'true' && (inline || !desktop.matches);
         if (closing) {
           btn.setAttribute('aria-expanded', 'false');
           btn.closest('li').classList.remove('open');
@@ -411,8 +414,8 @@
       });
     });
 
-    if (!stepper) return;
     var pane = group.querySelector('.pane');
+    if (!stepper || !pane) return;
     pane.addEventListener('click', function (e) {
       var step = e.target.closest('.pane-nav button');
       if (step) { goTo(document.querySelector('.item[aria-controls="' + step.getAttribute('data-target') + '"]')); return; }

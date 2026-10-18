@@ -8,7 +8,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 
@@ -18,7 +18,7 @@
 
 <header>
   <div class="wrap">
-    <a href="#top">Benjamin Linderoth</a>
+    <a href="#top" class="name nd-name" aria-label="Benjamin Linderoth, back to top" data-split><span class="line">Benjamin Linderoth</span></a>
     <nav aria-label="Main">
       <a href="#overview">Overview</a>
       <a href="#projects">Projects</a>
@@ -28,272 +28,258 @@
   </div>
 </header>
 
-<main id="top">
-  <section class="hero">
-    <div class="wrap">
-      <h1 class="name" aria-label="Benjamin Linderoth" data-split>
-        <span class="line">Benjamin</span>
-        <span class="line">Linderoth</span>
-      </h1>
-      <p class="lede">I like fixing what slows a process down.</p>
-      <p class="print-only"><span>benjamin.linderoth@gmail.com</span><span>linkedin.com/in/benjamin-linderoth</span></p>
+<main id="top" class="nd-wrap">
+
+  <!-- Masthead -->
+  <div class="nd-masthead">
+    <p class="nd-print-name">Benjamin Linderoth</p>
+    <div class="nd-masthead-top">
+      <span>Portfolio and case notes</span>
+      <span>Lund, Sweden</span>
+    </div>
+    <h1 class="nd-quote">“I like fixing what slows a process down.”</h1>
+    <div class="nd-masthead-foot">
+      <div class="nd-contact">
+        <a href="mailto:benjamin.linderoth@gmail.com">benjamin.linderoth@gmail.com</a>
+        <a href="https://www.linkedin.com/in/benjamin-linderoth/" rel="noopener">LinkedIn</a>
+      </div>
+      <span class="nd-degree">BSc Business Administration, Lund University</span>
+    </div>
+  </div>
+
+  <!-- I. Overview -->
+  <section class="nd-sec" id="overview">
+    <div class="nd-side">
+      <span class="nd-label">I. Overview</span>
+      <h2>How I work</h2>
+    </div>
+    <div class="nd-body nd-prose">
+      <p class="nd-dropcap">I value structure, and I stay with a problem until it is solved. I prefer work that ends in a tangible improvement over work that only describes one.</p>
+      <p>I want to understand how something works in practice before I change it. Years in a warehouse taught me how quickly a small bottleneck becomes a costly one.</p>
+      <p>I care about incentives. A good measure should change behavior, not just record it.</p>
+      <p>I hold a BSc in Business Administration from Lund University and spent an exchange semester in Singapore. I started in Tetra Pak's warehouse and moved into analytical roles in the supply network.</p>
     </div>
   </section>
 
-  <!-- 1. OVERVIEW -->
-  <section class="sec" id="overview">
-    <div class="wrap">
-      <h2>Overview</h2>
-      <div class="prose">
-        <p>I value structure, and I stay with a problem until it is solved. I prefer work that ends in a tangible improvement over work that only describes one.</p>
-        <p>I want to understand how something works in practice before I change it. Years in a warehouse taught me how quickly a small bottleneck becomes a costly one.</p>
-        <p>I care about incentives. A good measure should change behavior, not just record it.</p>
-        <p>I hold a BSc in Business Administration from Lund University and spent an exchange semester in Singapore. I started in Tetra Pak's warehouse and moved into analytical roles in the supply network.</p>
+  <!-- II. Projects: read top to bottom, no clicking needed -->
+  <section class="nd-sec" id="projects">
+    <div class="nd-side">
+      <div class="nd-sticky">
+        <span class="nd-label">II. Selected work</span>
+        <h2>Projects</h2>
+        <p class="nd-side-note">Professional, student and personal.</p>
       </div>
     </div>
-  </section>
+    <div class="nd-body">
 
-  <!-- 2. PROJECTS
-       Titles sit under the year they ended. Each title needs data-start="YYYY-MM"
-       and data-end="YYYY-MM" (or "present"). Years in between are added automatically. -->
-  <section class="sec" id="projects">
-    <div class="wrap">
-      <h2>Projects</h2>
-      <div class="panes" data-pane-group>
-        <div>
-          <p class="group-label">Professional</p>
-          <div class="tl-wrap">
-          <ol class="tl scaled">
-            <li class="tl-year" data-year="2026">
-              <p class="tl-label">2026</p>
-              <ul class="items">
-                <li>
-                  <button class="item" aria-expanded="false" aria-controls="d-automation" data-start="2026-06" data-end="2026-09">Automating a quality workflow</button>
-                  <div class="detail" id="d-automation">
-                    <h3>Automating a quality workflow</h3>
-                    <p class="where">Tetra Pak, Supply Network Quality, Jun to Sep 2026</p>
-                    <p>Managing a quality inspection required jumping through five SAP transactions and repeatedly re-entering part and supplier numbers for each part number. On my own initiative, I built a script in Python and SAP GUI that unified the procedure into a single prompt.</p>
+      <h3 class="nd-group">Professional</h3>
 
-                    <!-- Interactive flowchart. Kept generic on purpose: no transaction codes or internal system names. -->
-                    <div class="fc-widget" data-flowchart>
-                      <div class="fc-bar">
-                        <div class="fc-tabs" role="tablist" aria-label="Process mode">
-                          <button type="button" class="fc-tab active" role="tab" aria-selected="true" data-fc-mode="manual">Manual (5 screens)</button>
-                          <button type="button" class="fc-tab" role="tab" aria-selected="false" data-fc-mode="auto">Automated (script)</button>
-                        </div>
-                        <button type="button" class="fc-run" data-fc-run title="Step through the flow">
-                          <span class="fc-run-dot"></span> <span class="fc-run-label">Run trace</span>
-                        </button>
-                      </div>
+      <article class="nd-case" id="automating-a-quality-workflow">
+        <div class="nd-meta"><span>Tetra Pak, Supply Network Quality</span><span>Jun to Sep 2026</span></div>
+        <h4>Automating a quality workflow</h4>
+        <p>Managing a quality inspection required jumping through five SAP transactions and repeatedly re-entering part and supplier numbers for each part number. On my own initiative, I built a script in Python and SAP GUI that unified the procedure into a single prompt.</p>
+        <p>I tested it through several iterations before my colleagues started using it daily. It saves them on average 40 minutes of administrative work per day.</p>
 
-                      <div class="fc-legend" aria-hidden="true">
-                        <span><i class="lg-term"></i> Start / end</span>
-                        <span><i class="lg-io"></i> Manual input</span>
-                        <span><i class="lg-proc"></i> SAP step</span>
-                        <span><i class="lg-sub"></i> Script</span>
-                      </div>
-
-                      <div class="fc-stage">
-                        <div class="fc-track active" data-fc-panel="manual">
-                        <div class="fc-node fc-term" style="--step:0">
-                          <span class="fc-title">Quality issue identified</span>
-                        </div>
-                        <div class="fc-arrow"></div>
-
-                        <div class="fc-node fc-io" style="--step:1">
-                          <div class="fc-skew">
-                            <span class="fc-code">Input 1</span>
-                            <span class="fc-title">Open SAP screen 1 and enter the part number</span>
-                          </div>
-                        </div>
-                        <div class="fc-arrow"></div>
-
-                        <div class="fc-node fc-proc" style="--step:2">
-                          <span class="fc-code">SAP screen 1</span>
-                          <span class="fc-title">Update the part's quality setting</span>
-                        </div>
-                        <div class="fc-arrow"></div>
-
-                        <div class="fc-node fc-io" style="--step:3">
-                          <div class="fc-skew">
-                            <span class="fc-code">Input 2</span>
-                            <span class="fc-title">Open SAP screen 2 and re-enter the part number</span>
-                          </div>
-                        </div>
-                        <div class="fc-arrow"></div>
-
-                        <div class="fc-node fc-proc" style="--step:4">
-                          <span class="fc-code">SAP screen 2</span>
-                          <span class="fc-title">Set up the inspection</span>
-                        </div>
-                        <div class="fc-arrow"></div>
-
-                        <div class="fc-node fc-io" style="--step:5">
-                          <div class="fc-skew">
-                            <span class="fc-code">Input 3, lookup</span>
-                            <span class="fc-title">Open SAP screen 3, enter the part number and note the supplier number</span>
-                          </div>
-                        </div>
-                        <div class="fc-arrow"></div>
-
-                        <div class="fc-node fc-io" style="--step:6">
-                          <div class="fc-skew">
-                            <span class="fc-code">Input 4</span>
-                            <span class="fc-title">Open SAP screen 4 and type in the supplier number</span>
-                          </div>
-                        </div>
-                        <div class="fc-arrow"></div>
-
-                        <div class="fc-node fc-proc" style="--step:7">
-                          <span class="fc-code">SAP screen 4</span>
-                          <span class="fc-title">Log an inspection for incoming stock</span>
-                        </div>
-                        <div class="fc-arrow"></div>
-
-                        <div class="fc-node fc-io" style="--step:8">
-                          <div class="fc-skew">
-                            <span class="fc-code">Input 5</span>
-                            <span class="fc-title">Open SAP screen 5, re-enter the part number and type the reason</span>
-                          </div>
-                        </div>
-                        <div class="fc-arrow"></div>
-
-                        <div class="fc-node fc-proc" style="--step:9">
-                          <span class="fc-code">SAP screen 5</span>
-                          <span class="fc-title">Record the reason for the change</span>
-                        </div>
-                        <div class="fc-arrow"></div>
-
-                        <div class="fc-node fc-term" style="--step:10">
-                          <span class="fc-title">Procedure completed</span>
-                        </div>
-
-                        <p class="fc-summary">5 manual inputs, 5 SAP screens, many chances to mistype</p>
-                        </div>
-
-                        <div class="fc-track" data-fc-panel="auto">
-                        <div class="fc-node fc-term" style="--step:0">
-                          <span class="fc-title">Quality issue identified</span>
-                        </div>
-                        <div class="fc-arrow"></div>
-
-                        <div class="fc-node fc-io fc-accent" style="--step:1">
-                          <div class="fc-skew">
-                            <span class="fc-code">Single prompt, Python</span>
-                            <span class="fc-title">Enter the part number and the reason once</span>
-                          </div>
-                        </div>
-                        <div class="fc-arrow"></div>
-
-                        <div class="fc-node fc-sub" style="--step:2">
-                          <span class="fc-code">Predefined process, SAP GUI script</span>
-                          <span class="fc-title">Runs in the background</span>
-                          <div class="fc-sub-pipeline">
-                            <span>1. Update the quality setting</span>
-                            <span>2. Set up the inspection</span>
-                            <span>3. Fetch the supplier number</span>
-                            <span>4. Log the incoming inspection</span>
-                            <span>5. Record the reason for the change</span>
-                          </div>
-                        </div>
-                        <div class="fc-arrow"></div>
-
-                        <div class="fc-node fc-term fc-accent" style="--step:3">
-                          <span class="fc-title">Procedure completed</span>
-                        </div>
-
-                        <p class="fc-summary fc-summary-accent">1 manual input per part number, removes the risk of typing errors, 40 minutes saved per day</p>
-                        </div>
-                      </div>
-                    </div>
-                    <p>I tested it through several iterations before my colleagues started using it daily. It saves them on average 40 minutes of administrative work per day.</p>
-                  </div>
-                </li>
-                <li>
-                  <button class="item" aria-expanded="false" aria-controls="d-kpi" data-start="2026-06" data-end="2026-09">A KPI meant to change behavior</button>
-                  <div class="detail" id="d-kpi">
-                    <h3>A KPI meant to change behavior</h3>
-                    <p class="where">Tetra Pak, Supply Network Quality, Jun to Sep 2026</p>
-                    <p>I mapped the process flow and proposed a new KPI for operators, grounded in behavioral economics. The goal was to raise quality awareness rather than just track a metric.</p>
-                    <p>The thinking owes a lot to <em>Nudge</em> by Thaler and Sunstein.</p>
-                  </div>
-                </li>
-              </ul>
-            </li>
-          </ol>
+        <!-- Process flow: hidden until asked for. Generic labels on purpose (NDA). -->
+        <details class="fc-toggle">
+          <summary><span class="fc-show">Show the process flow</span><span class="fc-hide">Hide the process flow</span></summary>
+          <div class="fc-widget" data-flowchart>
+          <div class="fc-bar">
+          <div class="fc-tabs" role="tablist" aria-label="Process mode">
+          <button type="button" class="fc-tab active" role="tab" aria-selected="true" data-fc-mode="manual">Manual (5 screens)</button>
+          <button type="button" class="fc-tab" role="tab" aria-selected="false" data-fc-mode="auto">Automated (script)</button>
+          </div>
+          <button type="button" class="fc-run" data-fc-run title="Step through the flow">
+          <span class="fc-run-dot"></span> <span class="fc-run-label">Run trace</span>
+          </button>
           </div>
 
-          <p class="group-label later">Student</p>
-          <div class="tl-wrap">
-          <ol class="tl scaled">
-            <li class="tl-year" data-year="2025">
-              <p class="tl-label">2025</p>
-              <ul class="items">
-                <li>
-                  <button class="item" aria-expanded="false" aria-controls="d-formula" data-start="2024-12" data-end="2025-07">Costing a Formula Student car</button>
-                  <div class="detail" id="d-formula">
-                    <h3>Costing a Formula Student car</h3>
-                    <p class="where">Lund Formula Student, Cost &amp; Manufacturing Lead, Dec 2024 to Jul 2025</p>
-                    <p>In a team of three, I was mainly responsible for the financial cost models of the 2025 car: 10 sub-assemblies, 460 process steps and 27 manufacturing types.</p>
-                    <p>The team's Cost &amp; Manufacturing score rose 20% from the year before. We ranked 10 of 44 at Formula Student Netherlands and 11 of 53 at Formula Student Czech.</p>
-                  </div>
-                </li>
-                <li>
-                  <button class="item" aria-expanded="false" aria-controls="d-treasury" data-start="2024-06" data-end="2025-06">Running a student union's treasury</button>
-                  <div class="detail" id="d-treasury">
-                    <h3>Running a student union's treasury</h3>
-                    <p class="where">LundaEkonomerna, the Treasury, Jun 2024 to Jun 2025</p>
-                    <p>I started as Vice Project Leader in June 2024 and took over as Project Leader in January 2025.</p>
-                    <p>I led a team of five handling daily finances, budget tracking and internal controls in Fortnox, for a student union with SEK 10 million in annual revenue.</p>
-                    <p>I also started moving the internal documents from Swedish to English, to open the committee to international students.</p>
-                  </div>
-                </li>
-              </ul>
-            </li>
-          </ol>
+          <div class="fc-legend" aria-hidden="true">
+          <span><i class="lg-term"></i> Start / end</span>
+          <span><i class="lg-io"></i> Manual input</span>
+          <span><i class="lg-proc"></i> SAP step</span>
+          <span><i class="lg-sub"></i> Script</span>
           </div>
 
-          <p class="group-label later">Personal</p>
-          <div class="tl-wrap">
-          <ol class="tl scaled">
-            <li class="tl-year" data-year="2026">
-              <p class="tl-label">2026</p>
-              <ul class="items">
-                <li>
-                  <button class="item" aria-expanded="false" aria-controls="d-oc" data-start="2026-10" data-end="present">Opportunity costs made simple</button>
-                  <div class="detail" id="d-oc">
-                    <h3>Opportunity costs made simple</h3>
-                    <p class="where">Personal project, Oct 2026 to present</p>
-                    <p>An interactive calculator that shows what money spent today could grow into if it were invested instead.</p>
-                    <p>I built it because I think the idea of opportunity cost gets lost on people. Pick a purchase or a habit, and it compares what the money could become with what the item is still worth.</p>
-                    <p><a class="app-link" href="opportunity-costs.html">Open the calculator</a></p>
-                  </div>
-                </li>
-              </ul>
-            </li>
-          </ol>
+          <div class="fc-stage">
+          <div class="fc-track active" data-fc-panel="manual">
+          <div class="fc-node fc-term" style="--step:0">
+          <span class="fc-title">Quality issue identified</span>
           </div>
+          <div class="fc-arrow"></div>
+
+          <div class="fc-node fc-io" style="--step:1">
+          <div class="fc-skew">
+          <span class="fc-code">Input 1</span>
+          <span class="fc-title">Open SAP screen 1 and enter the part number</span>
+          </div>
+          </div>
+          <div class="fc-arrow"></div>
+
+          <div class="fc-node fc-proc" style="--step:2">
+          <span class="fc-code">SAP screen 1</span>
+          <span class="fc-title">Update the part's quality setting</span>
+          </div>
+          <div class="fc-arrow"></div>
+
+          <div class="fc-node fc-io" style="--step:3">
+          <div class="fc-skew">
+          <span class="fc-code">Input 2</span>
+          <span class="fc-title">Open SAP screen 2 and re-enter the part number</span>
+          </div>
+          </div>
+          <div class="fc-arrow"></div>
+
+          <div class="fc-node fc-proc" style="--step:4">
+          <span class="fc-code">SAP screen 2</span>
+          <span class="fc-title">Set up the inspection</span>
+          </div>
+          <div class="fc-arrow"></div>
+
+          <div class="fc-node fc-io" style="--step:5">
+          <div class="fc-skew">
+          <span class="fc-code">Input 3, lookup</span>
+          <span class="fc-title">Open SAP screen 3, enter the part number and note the supplier number</span>
+          </div>
+          </div>
+          <div class="fc-arrow"></div>
+
+          <div class="fc-node fc-io" style="--step:6">
+          <div class="fc-skew">
+          <span class="fc-code">Input 4</span>
+          <span class="fc-title">Open SAP screen 4 and type in the supplier number</span>
+          </div>
+          </div>
+          <div class="fc-arrow"></div>
+
+          <div class="fc-node fc-proc" style="--step:7">
+          <span class="fc-code">SAP screen 4</span>
+          <span class="fc-title">Log an inspection for incoming stock</span>
+          </div>
+          <div class="fc-arrow"></div>
+
+          <div class="fc-node fc-io" style="--step:8">
+          <div class="fc-skew">
+          <span class="fc-code">Input 5</span>
+          <span class="fc-title">Open SAP screen 5, re-enter the part number and type the reason</span>
+          </div>
+          </div>
+          <div class="fc-arrow"></div>
+
+          <div class="fc-node fc-proc" style="--step:9">
+          <span class="fc-code">SAP screen 5</span>
+          <span class="fc-title">Record the reason for the change</span>
+          </div>
+          <div class="fc-arrow"></div>
+
+          <div class="fc-node fc-term" style="--step:10">
+          <span class="fc-title">Procedure completed</span>
+          </div>
+
+          <p class="fc-summary">5 manual inputs, 5 SAP screens, many chances to mistype</p>
+          </div>
+
+          <div class="fc-track" data-fc-panel="auto">
+          <div class="fc-node fc-term" style="--step:0">
+          <span class="fc-title">Quality issue identified</span>
+          </div>
+          <div class="fc-arrow"></div>
+
+          <div class="fc-node fc-io fc-accent" style="--step:1">
+          <div class="fc-skew">
+          <span class="fc-code">Single prompt, Python</span>
+          <span class="fc-title">Enter the part number and the reason once</span>
+          </div>
+          </div>
+          <div class="fc-arrow"></div>
+
+          <div class="fc-node fc-sub" style="--step:2">
+          <span class="fc-code">Predefined process, SAP GUI script</span>
+          <span class="fc-title">Runs in the background</span>
+          <div class="fc-sub-pipeline">
+          <span>1. Update the quality setting</span>
+          <span>2. Set up the inspection</span>
+          <span>3. Fetch the supplier number</span>
+          <span>4. Log the incoming inspection</span>
+          <span>5. Record the reason for the change</span>
+          </div>
+          </div>
+          <div class="fc-arrow"></div>
+
+          <div class="fc-node fc-term fc-accent" style="--step:3">
+          <span class="fc-title">Procedure completed</span>
+          </div>
+
+          <p class="fc-summary fc-summary-accent">1 manual input per part number, removes the risk of typing errors, 40 minutes saved per day</p>
+          </div>
+          </div>
+          </div>
+        </details>
+      </article>
+
+      <article class="nd-case" id="a-kpi-meant-to-change-behavior">
+        <div class="nd-meta"><span>Tetra Pak, Supply Network Quality</span><span>Jun to Sep 2026</span></div>
+        <h4>A KPI meant to change behavior</h4>
+        <p>I mapped the process flow and proposed a new KPI for operators, grounded in behavioral economics. The goal was to raise quality awareness rather than just track a metric.</p>
+        <p>The thinking owes a lot to <em>Nudge</em> by Thaler and Sunstein.</p>
+      </article>
+
+      <h3 class="nd-group">Student</h3>
+
+      <article class="nd-case" id="costing-a-formula-student-car">
+        <div class="nd-meta"><span>Lund Formula Student, Cost &amp; Manufacturing Lead</span><span>Dec 2024 to Jul 2025</span></div>
+        <h4>Costing a Formula Student car</h4>
+        <p>In a team of three, I was mainly responsible for the financial cost models of the 2025 car: 10 sub-assemblies, 460 process steps and 27 manufacturing types.</p>
+        <p>The team's Cost &amp; Manufacturing score rose 20% from the year before. We ranked 10 of 44 at Formula Student Netherlands and 11 of 53 at Formula Student Czech.</p>
+        <div class="nd-figures">
+          <div><strong>460</strong><span>Process steps costed</span></div>
+          <div><strong>+20%</strong><span>Cost &amp; Manufacturing score</span></div>
+          <div><strong>10 of 44</strong><span>Formula Student Netherlands</span></div>
         </div>
-        <div class="pane" aria-live="polite">
-          <p class="pane-empty">Select a title to read more. The arrow keys step through the list.</p>
-        </div>
-      </div>
+      </article>
+
+      <article class="nd-case" id="running-a-student-unions-treasury">
+        <div class="nd-meta"><span>LundaEkonomerna, the Treasury</span><span>Jun 2024 to Jun 2025</span></div>
+        <h4>Running a student union's treasury</h4>
+        <p>I started as Vice Project Leader in June 2024 and took over as Project Leader in January 2025.</p>
+        <p>I led a team of five handling daily finances, budget tracking and internal controls in Fortnox, for a student union with SEK 10 million in annual revenue. I also started moving the internal documents from Swedish to English, to open the committee to international students.</p>
+      </article>
+
+      <h3 class="nd-group">Personal</h3>
+
+      <article class="nd-case" id="opportunity-costs-made-simple">
+        <div class="nd-meta"><span>Personal project</span><span>Oct 2026 to present</span></div>
+        <h4>Opportunity costs made simple</h4>
+        <p>An interactive calculator that shows what money spent today could grow into if it were invested instead.</p>
+        <p>I built it because I think the idea of opportunity cost gets lost on people. Pick a purchase or a habit, and it compares what the money could become with what the item is still worth.</p>
+        <p><a class="nd-link" href="opportunity-costs.html">Open the calculator</a></p>
+      </article>
     </div>
   </section>
 
-  <!-- 3. EXPERIENCE
-       Same format as Projects: each title sits under the year it ended. -->
-  <section class="sec" id="experience">
-    <div class="wrap">
-      <h2>Experience</h2>
-      <div class="panes" data-pane-group>
-        <div class="tl-wrap">
-        <ol class="tl scaled">
-            <li class="tl-year" data-year="2026">
-              <p class="tl-label">2026</p>
-              <ul class="items">
+  <!-- III. Experience: one timeline, titles under the year they ended, details open under the title -->
+  <section class="nd-sec" id="experience">
+    <div class="nd-side">
+      <div class="nd-sticky">
+        <span class="nd-label">III. Chronology</span>
+        <h2>Experience</h2>
+        <p class="nd-side-note">Select a title to read more and see how long it lasted. The arrow keys step through the list.</p>
+        <ul class="nd-legend" aria-label="Types">
+          <li><i class="t-work"></i>Work</li>
+          <li><i class="t-engagement"></i>Engagement</li>
+          <li><i class="t-education"></i>Education</li>
+        </ul>
+      </div>
+    </div>
+    <div class="nd-body nd-timeline" data-pane-group>
+      <div class="tl-wrap">
+      <ol class="tl scaled">
+        <li class="tl-year" data-year="2026">
+          <p class="tl-label">2026</p>
+          <ul class="items">
                 <li>
-                  <button class="item" aria-expanded="false" aria-controls="e-qutip" data-start="2026-10" data-end="present">QuTI-P &amp; Process Coordinator</button>
+                  <button class="item" aria-expanded="false" aria-controls="e-qutip" data-start="2026-10" data-end="present" data-type="work">QuTI-P &amp; Process Coordinator</button>
+                  <span class="nd-type t-work">Work</span>
                   <div class="detail" id="e-qutip">
                     <h3>QuTI-P &amp; Process Coordinator</h3>
                     <p class="where">Tetra Pak, Lund, Oct 2026 to present, consultant</p>
@@ -302,7 +288,8 @@
                   </div>
                 </li>
                 <li>
-                  <button class="item" aria-expanded="false" aria-controls="e-linnaeus" data-start="2026-10" data-end="2026-11">Statistical machine learning</button>
+                  <button class="item" aria-expanded="false" aria-controls="e-linnaeus" data-start="2026-10" data-end="2026-11" data-type="education">Statistical machine learning</button>
+                  <span class="nd-type t-education">Education</span>
                   <div class="detail" id="e-linnaeus">
                     <h3>Statistical machine learning</h3>
                     <p class="where">Linnaeus University, Oct to Nov 2026</p>
@@ -310,7 +297,8 @@
                   </div>
                 </li>
                 <li>
-                  <button class="item" aria-expanded="false" aria-controls="e-snqs26" data-start="2026-06" data-end="2026-09">Supply Network Quality Specialist / Analyst</button>
+                  <button class="item" aria-expanded="false" aria-controls="e-snqs26" data-start="2026-06" data-end="2026-09" data-type="work">Supply Network Quality Specialist / Analyst</button>
+                  <span class="nd-type t-work">Work</span>
                   <div class="detail" id="e-snqs26">
                     <h3>Supply Network Quality Specialist / Analyst</h3>
                     <p class="where">Tetra Pak, Lund, Jun to Sep 2026</p>
@@ -319,7 +307,8 @@
                   </div>
                 </li>
                 <li>
-                  <button class="item" aria-expanded="false" aria-controls="e-bsc" data-start="2023-08" data-end="2026-06">BSc Business Administration</button>
+                  <button class="item" aria-expanded="false" aria-controls="e-bsc" data-start="2023-08" data-end="2026-06" data-type="education">BSc Business Administration</button>
+                  <span class="nd-type t-education">Education</span>
                   <div class="detail" id="e-bsc">
                     <h3>BSc Business Administration</h3>
                     <p class="where">Lund University School of Economics and Management, Aug 2023 to Jun 2026</p>
@@ -327,14 +316,14 @@
                     <p>Top grades in accounting, corporate finance, statistics, international economics and Management Control Systems.</p>
                   </div>
                 </li>
-              </ul>
-            </li>
-
-            <li class="tl-year" data-year="2025">
-              <p class="tl-label">2025</p>
-              <ul class="items">
+          </ul>
+        </li>
+        <li class="tl-year" data-year="2025">
+          <p class="tl-label">2025</p>
+          <ul class="items">
                 <li>
-                  <button class="item" aria-expanded="false" aria-controls="e-nus" data-start="2025-08" data-end="2025-12">Exchange semester</button>
+                  <button class="item" aria-expanded="false" aria-controls="e-nus" data-start="2025-08" data-end="2025-12" data-type="education">Exchange semester</button>
+                  <span class="nd-type t-education">Education</span>
                   <div class="detail" id="e-nus">
                     <h3>Exchange semester</h3>
                     <p class="where">National University of Singapore, Business School, Aug to Dec 2025</p>
@@ -342,7 +331,8 @@
                   </div>
                 </li>
                 <li>
-                  <button class="item" aria-expanded="false" aria-controls="e-snqs25" data-start="2025-06" data-end="2025-07">Supply Network Quality Specialist</button>
+                  <button class="item" aria-expanded="false" aria-controls="e-snqs25" data-start="2025-06" data-end="2025-07" data-type="work">Supply Network Quality Specialist</button>
+                  <span class="nd-type t-work">Work</span>
                   <div class="detail" id="e-snqs25">
                     <h3>Supply Network Quality Specialist</h3>
                     <p class="where">Tetra Pak, Lund, Jun to Jul 2025</p>
@@ -351,7 +341,8 @@
                   </div>
                 </li>
                 <li>
-                  <button class="item" aria-expanded="false" aria-controls="e-cm" data-start="2024-12" data-end="2025-07">Cost &amp; Manufacturing Lead</button>
+                  <button class="item" aria-expanded="false" aria-controls="e-cm" data-start="2024-12" data-end="2025-07" data-type="engagement">Cost &amp; Manufacturing Lead</button>
+                  <span class="nd-type t-engagement">Engagement</span>
                   <div class="detail" id="e-cm">
                     <h3>Cost &amp; Manufacturing Lead</h3>
                     <p class="where">Lund Formula Student, Dec 2024 to Jul 2025</p>
@@ -360,7 +351,8 @@
                   </div>
                 </li>
                 <li>
-                  <button class="item" aria-expanded="false" aria-controls="e-treasury" data-start="2025-01" data-end="2025-06">Project Leader of the Treasury</button>
+                  <button class="item" aria-expanded="false" aria-controls="e-treasury" data-start="2025-01" data-end="2025-06" data-type="engagement">Project Leader of the Treasury</button>
+                  <span class="nd-type t-engagement">Engagement</span>
                   <div class="detail" id="e-treasury">
                     <h3>Project Leader of the Treasury</h3>
                     <p class="where">LundaEkonomerna, Jan to Jun 2025</p>
@@ -369,35 +361,36 @@
                   </div>
                 </li>
                 <li>
-                  <button class="item" aria-expanded="false" aria-controls="e-adecco" data-start="2023-09" data-end="2025-05">Warehouse Operator, part-time</button>
+                  <button class="item" aria-expanded="false" aria-controls="e-adecco" data-start="2023-09" data-end="2025-05" data-type="work">Warehouse Operator, part-time</button>
+                  <span class="nd-type t-work">Work</span>
                   <div class="detail" id="e-adecco">
                     <h3>Warehouse Operator, part-time</h3>
                     <p class="where">Tetra Pak via Adecco, Sep 2023 to May 2025</p>
                     <p>Part-time warehouse work alongside my studies.</p>
                   </div>
                 </li>
-              </ul>
-            </li>
-
-            <li class="tl-year" data-year="2024">
-              <p class="tl-label">2024</p>
-              <ul class="items">
+          </ul>
+        </li>
+        <li class="tl-year" data-year="2024">
+          <p class="tl-label">2024</p>
+          <ul class="items">
                 <li>
-                  <button class="item" aria-expanded="false" aria-controls="e-vice" data-start="2024-06" data-end="2024-12">Vice Project Leader of the Treasury</button>
+                  <button class="item" aria-expanded="false" aria-controls="e-vice" data-start="2024-06" data-end="2024-12" data-type="engagement">Vice Project Leader of the Treasury</button>
+                  <span class="nd-type t-engagement">Engagement</span>
                   <div class="detail" id="e-vice">
                     <h3>Vice Project Leader of the Treasury</h3>
                     <p class="where">LundaEkonomerna, Jun to Dec 2024</p>
                     <p>Vice Project Leader of the Treasury, before taking over as Project Leader in January 2025.</p>
                   </div>
                 </li>
-              </ul>
-            </li>
-
-            <li class="tl-year" data-year="2023">
-              <p class="tl-label">2023</p>
-              <ul class="items">
+          </ul>
+        </li>
+        <li class="tl-year" data-year="2023">
+          <p class="tl-label">2023</p>
+          <ul class="items">
                 <li>
-                  <button class="item" aria-expanded="false" aria-controls="e-warehouse" data-start="2021-07" data-end="2023-08">Warehouse Operator</button>
+                  <button class="item" aria-expanded="false" aria-controls="e-warehouse" data-start="2021-07" data-end="2023-08" data-type="work">Warehouse Operator</button>
+                  <span class="nd-type t-work">Work</span>
                   <div class="detail" id="e-warehouse">
                     <h3>Warehouse Operator</h3>
                     <p class="where">Tetra Pak, Lund, Jul 2021 to Aug 2023, full-time</p>
@@ -406,14 +399,14 @@
                     <p>I educated colleagues about Tetra Pak's upcoming strategy: seven sessions for 30 colleagues.</p>
                   </div>
                 </li>
-              </ul>
-            </li>
-
-            <li class="tl-year" data-year="2020">
-              <p class="tl-label">2020</p>
-              <ul class="items">
+          </ul>
+        </li>
+        <li class="tl-year" data-year="2020">
+          <p class="tl-label">2020</p>
+          <ul class="items">
                 <li>
-                  <button class="item" aria-expanded="false" aria-controls="e-summer" data-start="2020-07" data-end="2020-08">Summer Job</button>
+                  <button class="item" aria-expanded="false" aria-controls="e-summer" data-start="2020-07" data-end="2020-08" data-type="work">Summer Job</button>
+                  <span class="nd-type t-work">Work</span>
                   <div class="detail" id="e-summer">
                     <h3>Summer Job</h3>
                     <p class="where">Tetra Pak, Lund, Jul to Aug 2020</p>
@@ -421,14 +414,14 @@
                     <p>Summer job at Tetra Pak in Lund.</p>
                   </div>
                 </li>
-              </ul>
-            </li>
-
-            <li class="tl-year" data-year="2018">
-              <p class="tl-label">2018</p>
-              <ul class="items">
+          </ul>
+        </li>
+        <li class="tl-year" data-year="2018">
+          <p class="tl-label">2018</p>
+          <ul class="items">
                 <li>
-                  <button class="item" aria-expanded="false" aria-controls="e-reklam" data-start="2017-06" data-end="2018-06">Reklamutdelare</button>
+                  <button class="item" aria-expanded="false" aria-controls="e-reklam" data-start="2017-06" data-end="2018-06" data-type="work">Reklamutdelare</button>
+                  <span class="nd-type t-work">Work</span>
                   <div class="detail" id="e-reklam">
                     <h3>Reklamutdelare</h3>
                     <p class="where">Svensk Direktreklam AB, Jun 2017 to Jun 2018</p>
@@ -436,32 +429,22 @@
                     <p>Distributing advertising material.</p>
                   </div>
                 </li>
-              </ul>
-            </li>
-        </ol>
-        </div>
-        <div class="pane" aria-live="polite">
-          <p class="pane-empty">Select a title to read more. The arrow keys step through the list.</p>
-        </div>
+          </ul>
+        </li>
+      </ol>
       </div>
     </div>
   </section>
 
-  <!-- 4. INTERESTS -->
-  <section class="sec" id="interests">
-    <div class="wrap">
-      <h2>Interests</h2>
-      <div>
-        <ul class="interests">
-          <li>Behavioral economics</li>
-          <li>Process improvement</li>
-          <li>Automation</li>
-          <li>Costing and cost models</li>
-          <li>KPI design</li>
-          <li>Data analysis</li>
-        </ul>
-        <p class="nudge"><a href="personal.html">nudge</a></p>
-      </div>
+  <!-- IV. Interests -->
+  <section class="nd-sec nd-last" id="interests">
+    <div class="nd-side">
+      <span class="nd-label">IV. Interests</span>
+      <h2>Areas of focus</h2>
+    </div>
+    <div class="nd-body">
+      <p class="nd-interests">Behavioral economics, process improvement, automation, costing and cost models, KPI design and data analysis.</p>
+      <p class="nd-nudge">Or, if you need a <a href="personal.html">nudge</a> toward the less serious side.</p>
     </div>
   </section>
 </main>
@@ -469,6 +452,7 @@
 <footer>
   <div class="wrap">
     <div class="links">
+      <span class="nd-foot-name">Benjamin Linderoth</span>
       <a href="mailto:benjamin.linderoth@gmail.com">benjamin.linderoth@gmail.com</a>
       <a href="https://www.linkedin.com/in/benjamin-linderoth/" rel="noopener">LinkedIn</a>
       <!-- TODO: When cv.pdf is uploaded next to index.html, remove the comment markers around the next line.

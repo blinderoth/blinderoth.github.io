@@ -323,6 +323,42 @@
     }
   });
 
+  /* ---------- Cost breakdown pages (Formula Student project) ---------- */
+  function cbShow(cb, n) {
+    var tabs = cb.querySelectorAll('[data-cb-tab]');
+    var pages = cb.querySelectorAll('.cb-page');
+    n = Math.max(0, Math.min(pages.length - 1, n));
+    tabs.forEach(function (t, i) {
+      t.setAttribute('aria-selected', i === n ? 'true' : 'false');
+      t.tabIndex = i === n ? 0 : -1;
+    });
+    pages.forEach(function (p, i) { p.hidden = i !== n; });
+    cb.setAttribute('data-cb-at', n);
+    var prev = cb.querySelector('[data-cb-step="-1"]'), next = cb.querySelector('[data-cb-step="1"]');
+    if (prev) prev.disabled = n === 0;
+    if (next) next.disabled = n === pages.length - 1;
+    var count = cb.querySelector('.cb-count');
+    if (count) count.textContent = (n + 1) + ' of ' + pages.length;
+  }
+  document.addEventListener('click', function (e) {
+    var tab = e.target.closest('[data-cb-tab]');
+    var step = e.target.closest('[data-cb-step]');
+    var cb = (tab || step) && (tab || step).closest('[data-cb]');
+    if (!cb) return;
+    var at = +(cb.getAttribute('data-cb-at') || 0);
+    cbShow(cb, tab ? +tab.getAttribute('data-cb-tab') : at + +step.getAttribute('data-cb-step'));
+  });
+  document.addEventListener('keydown', function (e) {
+    var tab = e.target.closest && e.target.closest('[data-cb-tab]');
+    if (!tab || (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft')) return;
+    var cb = tab.closest('[data-cb]');
+    var n = +(cb.getAttribute('data-cb-at') || 0) + (e.key === 'ArrowRight' ? 1 : -1);
+    cbShow(cb, n);
+    e.preventDefault();
+    var t = cb.querySelectorAll('[data-cb-tab]')[+cb.getAttribute('data-cb-at')];
+    if (t) t.focus();
+  });
+
   /* ---------- Detail pane ---------- */
   function isStepper(group) { return !!group.querySelector('.tl-wrap'); }
 

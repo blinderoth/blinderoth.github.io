@@ -152,6 +152,95 @@
           <div><strong>+20%</strong><span>Cost &amp; Manufacturing score</span></div>
           <div><strong>10 of 44</strong><span>Formula Student Netherlands</span></div>
         </div>
+
+          <!-- Cost breakdown: three figures that tell one story -->
+          <details class="fc-toggle cb-toggle">
+            <summary><span class="fc-show">Show the cost breakdown</span><span class="fc-hide">Hide the cost breakdown</span></summary>
+            <div class="cb" data-cb>
+            <div class="cb-tabs" role="tablist" aria-label="Cost breakdown">
+              <button type="button" role="tab" id="cb-t1" aria-controls="cb-1" aria-selected="true" data-cb-tab="0">1. What cost the most</button>
+              <button type="button" role="tab" id="cb-t2" aria-controls="cb-2" aria-selected="false" tabindex="-1" data-cb-tab="1">2. What drove it</button>
+              <button type="button" role="tab" id="cb-t3" aria-controls="cb-3" aria-selected="false" tabindex="-1" data-cb-tab="2">3. How time was costed</button>
+            </div>
+            <section class="cb-page" id="cb-1" role="tabpanel" aria-labelledby="cb-t1">
+              <h5>The metal was cheap. Machine time was not.</h5>
+              <p class="cb-lede">Of every euro in the cost model for the machined steering parts, about 12 cents was material. The rest was time on the saw, mill and lathe.</p>
+              <ul class="cb-legend" aria-hidden="true"><li><i class="k-mat"></i>Material</li><li><i class="k-mach"></i>Machining</li></ul>
+              <ol class="cb-bars">
+                <li><div class="cb-row-head"><span>Bevel gearbox housing</span><span>€550 <small>material 4%</small></span></div><div class="cb-bar" style="width: 100.00%"><span class="k-mat" style="width: 3.57%"></span><span class="k-mach"></span></div></li>
+                <li><div class="cb-row-head"><span>Rack rail</span><span>€263 <small>material 36%</small></span></div><div class="cb-bar" style="width: 47.90%"><span class="k-mat" style="width: 35.64%"></span><span class="k-mach"></span></div></li>
+                <li><div class="cb-row-head"><span>Pinion mount</span><span>€257 <small>material 1%</small></span></div><div class="cb-bar" style="width: 46.68%"><span class="k-mat" style="width: 1.47%"></span><span class="k-mach"></span></div></li>
+                <li><div class="cb-row-head"><span>Front hoop mount</span><span>€162 <small>material 9%</small></span></div><div class="cb-bar" style="width: 29.50%"><span class="k-mat" style="width: 9.17%"></span><span class="k-mach"></span></div></li>
+                <li><div class="cb-row-head"><span>Pinion axle</span><span>€125 <small>material 22%</small></span></div><div class="cb-bar" style="width: 22.68%"><span class="k-mat" style="width: 21.57%"></span><span class="k-mach"></span></div></li>
+              </ol>
+              <div class="cb-stats">
+                <div><strong>12%</strong><span>of the modeled cost was material, across 26 parts</span></div>
+                <div><strong>€2&#8201;489</strong><span>for the 26 machined parts</span></div>
+                <div><strong>17 h</strong><span>of machine time for the gearbox housing alone</span></div>
+              </div>
+              <p class="cb-caption">The five most expensive of 26 machined parts in the steering system. A bought-in quick-release hub is left out, since its purchase price dominates. Machining is costed per minute and includes labor, electricity and machine wear.</p>
+            </section>
+            <section class="cb-page" id="cb-2" role="tabpanel" aria-labelledby="cb-t2" hidden>
+              <h5>About a fifth of machine time went to setting up, not cutting.</h5>
+              <p class="cb-lede">Clamping, centering and changing tools made up a large share of every part. Smaller parts tend to lose more time this way, since each setup is spread over less cutting.</p>
+              <ul class="cb-legend" aria-hidden="true"><li><i class="k-setup"></i>Setup</li><li><i class="k-cut"></i>Cutting</li><li><i class="k-median"></i>Median, 22%</li></ul>
+              <ol class="cb-share" style="--median: 22.33%">
+                <li><span class="cb-name">Front hoop mount</span><span class="cb-track"><span class="k-setup" style="width: 43.56%"></span><span class="k-cut"></span></span><span class="cb-pct">44%</span></li>
+                <li><span class="cb-name">Rack rail bushing</span><span class="cb-track"><span class="k-setup" style="width: 33.75%"></span><span class="k-cut"></span></span><span class="cb-pct">34%</span></li>
+                <li><span class="cb-name">Secondary input bearing holder</span><span class="cb-track"><span class="k-setup" style="width: 33.05%"></span><span class="k-cut"></span></span><span class="cb-pct">33%</span></li>
+                <li><span class="cb-name">Tie rod insert</span><span class="cb-track"><span class="k-setup" style="width: 32.98%"></span><span class="k-cut"></span></span><span class="cb-pct">33%</span></li>
+                <li><span class="cb-name">Pinion bearing holder</span><span class="cb-track"><span class="k-setup" style="width: 32.20%"></span><span class="k-cut"></span></span><span class="cb-pct">32%</span></li>
+                <li><span class="cb-name">Bevel gear, 15 teeth</span><span class="cb-track"><span class="k-setup" style="width: 30.43%"></span><span class="k-cut"></span></span><span class="cb-pct">30%</span></li>
+                <li><span class="cb-name">Pinion gear, 14 teeth</span><span class="cb-track"><span class="k-setup" style="width: 30.43%"></span><span class="k-cut"></span></span><span class="cb-pct">30%</span></li>
+                <li><span class="cb-name">Rack rail mount, top</span><span class="cb-track"><span class="k-setup" style="width: 29.25%"></span><span class="k-cut"></span></span><span class="cb-pct">29%</span></li>
+                <li><span class="cb-name">Rack rail bolt spacer</span><span class="cb-track"><span class="k-setup" style="width: 29.03%"></span><span class="k-cut"></span></span><span class="cb-pct">29%</span></li>
+                <li><span class="cb-name">Output bearing holder</span><span class="cb-track"><span class="k-setup" style="width: 28.54%"></span><span class="k-cut"></span></span><span class="cb-pct">29%</span></li>
+                <li><span class="cb-name">Input bearing holder</span><span class="cb-track"><span class="k-setup" style="width: 28.23%"></span><span class="k-cut"></span></span><span class="cb-pct">28%</span></li>
+                <li><span class="cb-name">Bevel gear, 30 teeth</span><span class="cb-track"><span class="k-setup" style="width: 27.78%"></span><span class="k-cut"></span></span><span class="cb-pct">28%</span></li>
+                <li><span class="cb-name">Rack rail mount</span><span class="cb-track"><span class="k-setup" style="width: 25.38%"></span><span class="k-cut"></span></span><span class="cb-pct">25%</span></li>
+                <li><span class="cb-name">Central rack rail bushing</span><span class="cb-track"><span class="k-setup" style="width: 19.28%"></span><span class="k-cut"></span></span><span class="cb-pct">19%</span></li>
+                <li><span class="cb-name">Tie rod bracket</span><span class="cb-track"><span class="k-setup" style="width: 18.38%"></span><span class="k-cut"></span></span><span class="cb-pct">18%</span></li>
+                <li><span class="cb-name">Input axle</span><span class="cb-track"><span class="k-setup" style="width: 18.33%"></span><span class="k-cut"></span></span><span class="cb-pct">18%</span></li>
+                <li><span class="cb-name">Triangle joint V4</span><span class="cb-track"><span class="k-setup" style="width: 17.90%"></span><span class="k-cut"></span></span><span class="cb-pct">18%</span></li>
+                <li><span class="cb-name">Rod end spacer</span><span class="cb-track"><span class="k-setup" style="width: 17.50%"></span><span class="k-cut"></span></span><span class="cb-pct">18%</span></li>
+                <li><span class="cb-name">Triangle joint V2</span><span class="cb-track"><span class="k-setup" style="width: 16.38%"></span><span class="k-cut"></span></span><span class="cb-pct">16%</span></li>
+                <li><span class="cb-name">Triangle joint V1</span><span class="cb-track"><span class="k-setup" style="width: 15.08%"></span><span class="k-cut"></span></span><span class="cb-pct">15%</span></li>
+                <li><span class="cb-name">Input shaft</span><span class="cb-track"><span class="k-setup" style="width: 12.24%"></span><span class="k-cut"></span></span><span class="cb-pct">12%</span></li>
+                <li><span class="cb-name">Pinion axle</span><span class="cb-track"><span class="k-setup" style="width: 12.22%"></span><span class="k-cut"></span></span><span class="cb-pct">12%</span></li>
+                <li><span class="cb-name">Pinion mount</span><span class="cb-track"><span class="k-setup" style="width: 10.97%"></span><span class="k-cut"></span></span><span class="cb-pct">11%</span></li>
+                <li><span class="cb-name">Gear rack</span><span class="cb-track"><span class="k-setup" style="width: 10.08%"></span><span class="k-cut"></span></span><span class="cb-pct">10%</span></li>
+                <li><span class="cb-name">Rack rail</span><span class="cb-track"><span class="k-setup" style="width: 8.08%"></span><span class="k-cut"></span></span><span class="cb-pct">8%</span></li>
+                <li><span class="cb-name">Bevel gearbox housing</span><span class="cb-track"><span class="k-setup" style="width: 7.96%"></span><span class="k-cut"></span></span><span class="cb-pct">8%</span></li>
+              </ol>
+              <div class="cb-stats">
+                <div><strong>22%</strong><span>median setup share per part</span></div>
+                <div><strong>8 to 44%</strong><span>range across the 26 parts</span></div>
+                <div><strong>12 h</strong><span>of setup out of 67 hours in total</span></div>
+              </div>
+              <p class="cb-caption">Setup as a share of machine minutes, per part, for 26 machined steering parts. Times as logged by the team’s student machinists. Two parts with unit errors in the source data are left out.</p>
+            </section>
+            <section class="cb-page" id="cb-3" role="tabpanel" aria-labelledby="cb-t3" hidden>
+              <h5>A salary is not an hourly cost.</h5>
+              <p class="cb-lede">To price labor honestly, I built the rate up from a machinist’s salary and every cost an employer pays on top. The total is 54% higher than the salary.</p>
+              <ol class="cb-fall">
+                <li class="cb-base"><div class="cb-row-head"><span>Monthly salary, metal machinist <small>(Swedish salary statistics)</small></span><span>SEK&#160;34&#8201;000</span></div><div class="cb-fall-track"><span style="left: 0.00%; width: 65.00%"></span></div></li>
+                <li><div class="cb-row-head"><span>Employer contributions, 31.42% of salary and vacation pay <small>(Skatteverket)</small></span><span>+ SEK&#160;11&#8201;965</span></div><div class="cb-fall-track"><span style="left: 65.00%; width: 22.87%"></span></div></li>
+                <li><div class="cb-row-head"><span>Vacation pay, 12% of salary <small>(Semesterlagen)</small></span><span>+ SEK&#160;4&#8201;080</span></div><div class="cb-fall-track"><span style="left: 87.87%; width: 7.80%"></span></div></li>
+                <li><div class="cb-row-head"><span>Occupational pension, 4.5% <small>(Avtalspension SAF-LO)</small></span><span>+ SEK&#160;1&#8201;530</span></div><div class="cb-fall-track"><span style="left: 95.67%; width: 2.92%"></span></div></li>
+                <li><div class="cb-row-head"><span>Special payroll tax on the pension, 24.26% <small>(Skatteverket)</small></span><span>+ SEK&#160;371</span></div><div class="cb-fall-track"><span style="left: 98.60%; width: 0.71%"></span></div></li>
+                <li><div class="cb-row-head"><span>Insurances, about 1% <small>(Fora price list 2025)</small></span><span>+ SEK&#160;363</span></div><div class="cb-fall-track"><span style="left: 99.31%; width: 0.69%"></span></div></li>
+                <li class="cb-total"><div class="cb-row-head"><span>Total cost to the employer, per month</span><span>SEK&#160;52&#8201;309</span></div><div class="cb-fall-track"><span style="left: 0; width: 100%"></span></div></li>
+              </ol>
+              <p class="cb-result"><span>Divided by 160 working hours a month</span><strong>SEK 327 an hour</strong><span>about €29.42, the labor rate behind every minute of machining</span></p>
+              <p class="cb-caption">Each step comes from a public source, named in brackets. The 12% vacation pay stands in for the paid vacation hours that are not worked. The same method gives SEK 324 an hour for a workshop employee.</p>
+            </section>
+            <div class="cb-nav">
+              <button type="button" data-cb-step="-1" disabled>Previous</button>
+              <span class="cb-count" aria-live="polite">1 of 3</span>
+              <button type="button" data-cb-step="1">Next</button>
+            </div>
+            </div>
+          </details>
       </article>
 
       <article class="nd-case" id="running-a-student-unions-treasury">

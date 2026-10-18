@@ -500,41 +500,21 @@
     });
   }
 
-  /* ---------- Cursor effects: only with a real pointer, and not for reduced motion ---------- */
-  (function cursor() {
+  /* ---------- Letters of the name lean toward the cursor (real pointer only, not with reduced motion) ---------- */
+  (function letters() {
     var ok = window.matchMedia('(hover: hover) and (pointer: fine)').matches && !reduceMotion;
-    if (!ok) return;
-
-    var ring = document.querySelector('.ring');
-    var letters = Array.from(document.querySelectorAll('.name .ch'));
-    var x = -100, y = -100, rx = -100, ry = -100, started = false;
-
+    var chars = Array.from(document.querySelectorAll('.name .ch'));
+    if (!ok || !chars.length) return;
     window.addEventListener('pointermove', function (e) {
-      x = e.clientX; y = e.clientY;
-      if (!started) { rx = x; ry = y; started = true; ring.classList.add('on'); }
-      letters.forEach(function (el) {
+      chars.forEach(function (el) {
         var r = el.getBoundingClientRect();
-        var d = Math.hypot(x - (r.left + r.width / 2), y - (r.top + r.height / 2));
+        var d = Math.hypot(e.clientX - (r.left + r.width / 2), e.clientY - (r.top + r.height / 2));
         el.style.setProperty('--t', Math.max(0, 1 - d / 170).toFixed(3));
       });
     });
     document.addEventListener('pointerleave', function () {
-      ring.classList.remove('on');
-      started = false;
-      letters.forEach(function (el) { el.style.setProperty('--t', 0); });
+      chars.forEach(function (el) { el.style.setProperty('--t', 0); });
     });
-    document.addEventListener('pointerover', function (e) {
-      ring.classList.toggle('link', !!e.target.closest('a, button'));
-    });
-    document.addEventListener('pointerdown', function () { ring.classList.add('down'); });
-    document.addEventListener('pointerup', function () { ring.classList.remove('down'); });
-
-    (function loop() {
-      rx += (x - rx) * 0.18;
-      ry += (y - ry) * 0.18;
-      ring.style.transform = 'translate3d(' + rx + 'px,' + ry + 'px,0)';
-      requestAnimationFrame(loop);
-    })();
   })();
 
   /* ---------- Easter eggs: only on the main page ---------- */

@@ -524,46 +524,12 @@ footer a.personal {
   text-underline-offset: 0.25em;
 }
 
-/* Personal page: inverted colors and a monospaced font */
-.personal-page {
-  --paper: #161B26;
-  --ink: #E8EBF0;
-  --muted: #98A2B3;
-  --accent: #8E9CFF;
-  --rule: #343C4C;
-  --serif: "Liberation Mono", "Courier New", monospace;
-  --sans: "Liberation Mono", "Courier New", monospace;
-  color-scheme: dark;
-  font-size: 1rem;
-}
-.personal-page .ring.link i { background: rgba(142, 156, 255, 0.15); }
-.personal-page .item { font-size: 1.1rem; }
-.personal-page .pane h3 { font-size: 1.4rem; letter-spacing: 0; }
-.personal-page .hero { padding-bottom: 2rem; }
-.personal-page .name { font-size: clamp(2.6rem, 9vw, 6rem); letter-spacing: -0.02em; }
 .entries { list-style: none; margin: 2rem 0 0; padding: 0; max-width: 38rem; }
 .entries li { margin: 0 0 1.6rem; }
 .entries .kind { display: block; font-family: var(--sans); font-size: 0.85rem; color: var(--muted); }
 .entries .entry-title { font-size: 1.35rem; }
 .entries .entry-note { display: block; margin-top: 0.15rem; color: var(--muted); }
 .empty { color: var(--muted); margin: 2rem 0 0; }
-
-/* Cursor ring */
-.ring {
-  position: fixed; left: 0; top: 0;
-  width: 30px; height: 30px; margin: -15px 0 0 -15px;
-  pointer-events: none; z-index: 20;
-  opacity: 0; transition: opacity 0.3s;
-}
-.ring.on { opacity: 1; }
-.ring i {
-  display: block; width: 100%; height: 100%;
-  border: 1.5px solid var(--accent);
-  border-radius: 50%;
-  transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1), background-color 0.25s;
-}
-.ring.link i { transform: scale(1.7); background: rgba(47, 69, 224, 0.1); }
-.ring.down i { transform: scale(0.8); }
 
 /* Narrow screens: details open under the title instead of on the right */
 @media (max-width: 800px) {
@@ -584,11 +550,7 @@ footer a.personal {
   .name .ch { animation: none; transition: none; }
   .pane.swap > * { animation: none; }
   .item { transition: color 0.2s; }
-  .ring { display: none; }
   .fc-node { animation: none; }
-}
-@media (hover: none), (pointer: coarse) {
-  .ring { display: none; }
 }
 
 /* Pictures inside entry text (Personal timeline) */
@@ -604,7 +566,6 @@ footer a.personal {
   border: 1px dashed var(--muted);
   font-family: var(--sans); font-size: 0.9rem; color: var(--muted);
 }
-.personal-page .intro { max-width: 38rem; margin: 0 0 2.5rem; }
 
 /* Projects and Experience timelines (inside .tl-wrap; the Personal page is not affected) */
 .tl-wrap { position: relative; padding-left: 22px; }
@@ -736,7 +697,7 @@ footer button.print-link:hover { color: var(--accent); }
 /* =========================================================
    Opportunity costs made simple (opportunity-costs.html)
    ========================================================= */
-[data-page="oc"] { --invest: var(--accent); --cash: var(--ink); --resale: #B4884B; }
+[data-page="oc"] { --invest: var(--accent); --cash: var(--ink); --resale: var(--t-engagement); }
 .oc-hero { padding: clamp(3rem, 8vw, 6rem) 0 clamp(2rem, 4vw, 3rem); }
 .oc-hero h1 {
   margin: 0; max-width: 16ch;
@@ -908,7 +869,7 @@ footer button.print-link:hover { color: var(--accent); }
    Everything below is scoped to the main page, so the Personal
    page and the calculator keep their own look.
    ========================================================= */
-[data-page="home"] {
+[data-page="home"], [data-page="oc"] {
   --paper: #FAF8F5;
   --ink: #1A1D1A;
   --text: #2A2E2A;
@@ -924,7 +885,6 @@ footer button.print-link:hover { color: var(--accent); }
   font-size: 1.05rem;
   line-height: 1.7;
 }
-[data-page="home"] .ring.link i { background: rgba(15, 61, 46, 0.1); }
 
 /* Header: the name, small, and the section links */
 [data-page="home"] header .name {
@@ -1040,19 +1000,35 @@ footer button.print-link:hover { color: var(--accent); }
 }
 [data-page="home"] .fc-summary { font-size: 0.72rem; }
 
-/* Wide screens: the flow reads left to right and wraps like text, which keeps it short */
-@media (min-width: 900px) {
-  [data-page="home"] .fc-track.active { flex-direction: row; flex-wrap: wrap; align-items: center; row-gap: 0.6rem; }
-  [data-page="home"] .fc-node { width: auto; max-width: 11rem; flex: 0 1 auto; }
-  [data-page="home"] .fc-node.fc-sub { max-width: 15rem; }
-  [data-page="home"] .fc-arrow { width: 16px; height: 1.5px; flex: 0 0 16px; }
-  [data-page="home"] .fc-arrow::after {
-    bottom: auto; left: auto; top: 50%; right: -2px; transform: translateY(-50%);
-    border-top: 4px solid transparent; border-bottom: 4px solid transparent;
-    border-left: 5px solid var(--rule); border-right: 0;
-  }
-  [data-page="home"] .fc-arrow.trace-done::after { border-left-color: var(--accent); border-top-color: transparent; }
-  [data-page="home"] .fc-summary { flex-basis: 100%; text-align: left; }
+/* Process flow in two columns: manual input on the left, SAP on the right, one step per row */
+[data-page="home"] .fc-track.fc-steps.active { display: flex; flex-direction: column; align-items: stretch; }
+.fc-row { display: grid; grid-template-columns: minmax(0, 1fr) 26px minmax(0, 1fr); align-items: center; }
+.fc-row > .fc-node { width: 100%; max-width: none; box-sizing: border-box; }
+.fc-row > .fc-node:first-child { grid-column: 1; }
+.fc-row > .fc-node:last-child:not(:first-child) { grid-column: 3; }
+.fc-row > .fc-node.fc-term { justify-self: center; width: auto; }
+.fc-heads { margin-bottom: 0.45rem; font-size: 0.68rem; font-weight: 600; color: var(--muted); text-align: center; }
+.fc-connector { height: 12px; }
+.fc-connector > .fc-arrow { grid-column: 1; justify-self: center; height: 12px; }
+[data-page="home"] .fc-arrow.fc-right { width: 100%; height: 1.5px; justify-self: stretch; }
+[data-page="home"] .fc-arrow.fc-right::after {
+  bottom: auto; left: auto; top: 50%; right: -1px; transform: translateY(-50%);
+  border-top: 4px solid transparent; border-bottom: 4px solid transparent;
+  border-left: 5px solid var(--rule); border-right: 0;
+}
+[data-page="home"] .fc-arrow.fc-right.trace-done::after { border-left-color: var(--accent); border-top-color: transparent; }
+[data-page="home"] .fc-steps .fc-summary { text-align: left; }
+/* A row with a tall script box: the prompt sits at the top and a line carries the flow down */
+.fc-row.fc-top { align-items: stretch; }
+.fc-stack { grid-column: 1; display: flex; flex-direction: column; align-items: center; }
+.fc-stack > .fc-node { width: 100%; box-sizing: border-box; }
+.fc-fill-line { flex: 1; width: 1.5px; min-height: 8px; background: var(--rule); transition: background-color 0.25s; }
+.fc-row.fc-top > .fc-right { align-self: start; margin-top: 2.1rem; }
+.fc-row.fc-top > .fc-sub { align-self: start; }
+.fc-row:has(.fc-sub.trace-done) .fc-fill-line { background: var(--accent); }
+@media (max-width: 520px) {
+  .fc-row { grid-template-columns: minmax(0, 1fr) 16px minmax(0, 1fr); }
+  [data-page="home"] .fc-title { font-size: 0.7rem; }
 }
 
 /* Experience timeline with type labels, details under the title */
@@ -1104,7 +1080,6 @@ footer button.print-link:hover { color: var(--accent); }
 @media print {
   @page { margin: 14mm 16mm; }
   [data-page="home"] { background: #fff; color: #000; font-size: 9.5pt; line-height: 1.4; }
-  [data-page="home"] .ring,
   [data-page="home"] header,
   [data-page="home"] .skip,
   [data-page="home"] footer,
@@ -1166,3 +1141,114 @@ footer button.print-link:hover { color: var(--accent); }
 }
 [data-page="home"] header .wrap { max-width: 64rem; }
 [data-page="home"] .nd-timeline .item[aria-expanded="true"] { translate: 0 0; }
+
+/* =========================================================
+   Calculator page in the Nordic editorial style (opportunity-costs.html)
+   ========================================================= */
+[data-page="oc"] header .wrap, [data-page="oc"] footer .wrap { max-width: 72rem; }
+[data-page="oc"] header .wrap > a:first-child { font-family: var(--serif); font-size: 1.15rem; text-decoration: none; }
+[data-page="oc"] .oc-hero .wrap::after { content: ""; display: block; margin-top: 2.5rem; border-bottom: 2px solid var(--ink); }
+[data-page="oc"] .oc-hero { padding-bottom: 0; margin-bottom: 2.75rem; }
+[data-page="oc"] .oc-hero h1 { font-family: var(--serif); font-weight: 400; letter-spacing: -0.015em; line-height: 1.04; margin-top: 0.4rem; }
+[data-page="oc"] .oc-lede { font-family: var(--serif); font-style: italic; color: var(--muted); }
+[data-page="oc"] .oc-small { color: var(--accent); font-weight: 600; font-size: 0.85rem; }
+[data-page="oc"] .oc-h2,
+[data-page="oc"] .oc-big,
+[data-page="oc"] .oc-preset-name,
+[data-page="oc"] .oc-bar-head strong { font-family: var(--serif); font-weight: 400; }
+[data-page="oc"] .oc-label { font-weight: 500; }
+[data-page="oc"] .oc-card,
+[data-page="oc"] .oc-preset { background: #fff; border-radius: 2px; }
+[data-page="oc"] .oc-preset[aria-pressed="true"] { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+[data-page="oc"] .oc-num { border-radius: 2px; }
+[data-page="oc"] .oc-seg button, [data-page="oc"] .oc-chips button { border-radius: 2px; }
+[data-page="oc"] .oc-tip { border-radius: 2px; box-shadow: 0 8px 24px -14px rgba(26, 29, 26, 0.3); }
+[data-page="oc"] .oc-table tr.oc-cross { background: color-mix(in srgb, var(--accent) 7%, transparent); }
+[data-page="oc"] .oc-about p { color: var(--text); }
+[data-page="oc"] footer { border-top: 1px solid var(--rule); }
+
+/* =========================================================
+   Personal page: Nordic editorial, a little more playful (personal.html)
+   ========================================================= */
+.personal-page {
+  --paper: #F7F2EA;
+  --ink: #1A1D1A;
+  --text: #2A2E2A;
+  --muted: #62675F;
+  --accent: #0F3D2E;
+  --warm: #B27A2B;
+  --rule: #DDD4C6;
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+.personal-page header .wrap, .personal-page .wrap { max-width: 64rem; }
+.personal-page header .wrap > a:first-child { font-family: var(--serif); font-size: 1.15rem; text-decoration: none; }
+.personal-page header nav { font-family: var(--sans); }
+
+/* Hero: italic headline, a tilted stamp and a hand-drawn line */
+.pe-hero { padding: clamp(3rem, 8vw, 5.5rem) 0 1.5rem; }
+.pe-title { position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 2rem; margin-top: 0.6rem; }
+.personal-page .name {
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  font-size: clamp(3.2rem, 10vw, 7rem); line-height: 0.95; letter-spacing: -0.02em;
+}
+.pe-stamp {
+  display: inline-block; padding: 0.45rem 0.9rem;
+  border: 1.5px solid var(--warm); border-radius: 999px;
+  font-family: var(--sans); font-size: 0.82rem; font-weight: 600; color: var(--warm);
+  transform: rotate(-8deg);
+  background: color-mix(in srgb, var(--warm) 6%, transparent);
+}
+.pe-squiggle {
+  height: 8px; margin-top: 2.25rem;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='8' viewBox='0 0 24 8'%3E%3Cpath d='M0 4 Q 6 0 12 4 T 24 4' fill='none' stroke='%231A1D1A' stroke-width='1.5'/%3E%3C/svg%3E") repeat-x left center / 24px 8px;
+  opacity: 0.85;
+}
+
+/* Section and intro */
+.personal-page .sec { padding-top: 2.5rem; }
+.personal-page .sec h2 { font-family: var(--serif); font-style: italic; font-weight: 400; font-size: 1.5rem; line-height: 1.2; color: var(--ink); margin-top: 0; }
+.personal-page .intro { max-width: 38rem; margin: 0 0 2.5rem; font-size: 1.15rem; color: var(--text); }
+
+/* Timeline: warm years, wavy underline on the open entry */
+.personal-page .tl-label { font-family: var(--serif); font-style: italic; font-size: 1rem; color: var(--warm); }
+.personal-page .tl-year::before { background: var(--warm); border-color: var(--warm); }
+.personal-page .item { font-family: var(--serif); font-size: 1.15rem; }
+.personal-page .item:hover { color: var(--accent); }
+.personal-page .item[aria-expanded="true"] {
+  color: var(--accent); translate: 0 0;
+  text-decoration: underline wavy var(--warm); text-decoration-thickness: 1.5px; text-underline-offset: 0.3em;
+}
+
+/* Detail text */
+.personal-page .pane h3 { font-family: var(--serif); font-style: italic; font-weight: 400; font-size: 1.7rem; letter-spacing: 0; }
+.personal-page .where { font-family: var(--sans); }
+.personal-page .pane p, .personal-page .detail p { color: var(--text); }
+.personal-page .pane-empty { font-family: var(--serif); font-style: italic; font-size: 1.05rem; }
+
+/* Pictures as taped-in prints */
+.personal-page .pane figure, .personal-page .detail figure {
+  position: relative; margin: 1.6rem 0.4rem;
+  padding: 0.6rem 0.6rem 0.4rem; background: #fff;
+  box-shadow: 0 1px 2px rgba(26, 29, 26, 0.08), 0 10px 24px -14px rgba(26, 29, 26, 0.35);
+  transform: rotate(-1.2deg);
+}
+.personal-page .pane figure:nth-of-type(even), .personal-page .detail figure:nth-of-type(even) { transform: rotate(1deg); }
+.personal-page .pane figure::before, .personal-page .detail figure::before {
+  content: ""; position: absolute; top: -10px; left: 50%; width: 76px; height: 20px;
+  transform: translateX(-50%) rotate(-3deg);
+  background: color-mix(in srgb, var(--warm) 22%, #F7F2EA); opacity: 0.85;
+}
+.personal-page .pane figcaption, .personal-page .detail figcaption {
+  margin-top: 0.45rem; text-align: center;
+  font-family: var(--serif); font-style: italic; font-size: 0.95rem; color: var(--muted);
+}
+.personal-page .ph-box { border: 1px dashed var(--rule); background: var(--paper); font-family: var(--sans); color: var(--muted); }
+
+.personal-page footer { border-top: 1px solid var(--rule); font-family: var(--sans); }
+
+@media (prefers-reduced-motion: reduce) {
+  .personal-page .pane figure, .personal-page .detail figure { transform: none; }
+}
+.personal-page .nd-label { font-family: var(--sans); }

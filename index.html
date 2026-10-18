@@ -14,7 +14,6 @@
 
 <body data-page="home">
 <a class="skip" href="#overview">Skip to content</a>
-<div class="ring" aria-hidden="true"><i></i></div>
 
 <header>
   <div class="wrap">
@@ -102,115 +101,32 @@
           </div>
 
           <div class="fc-stage">
-          <div class="fc-track active" data-fc-panel="manual">
-          <div class="fc-node fc-term" style="--step:0">
-          <span class="fc-title">Quality issue identified</span>
-          </div>
-          <div class="fc-arrow"></div>
-
-          <div class="fc-node fc-io" style="--step:1">
-          <div class="fc-skew">
-          <span class="fc-code">Input 1</span>
-          <span class="fc-title">Open SAP screen 1 and enter the part number</span>
-          </div>
-          </div>
-          <div class="fc-arrow"></div>
-
-          <div class="fc-node fc-proc" style="--step:2">
-          <span class="fc-code">SAP screen 1</span>
-          <span class="fc-title">Update the part's quality setting</span>
-          </div>
-          <div class="fc-arrow"></div>
-
-          <div class="fc-node fc-io" style="--step:3">
-          <div class="fc-skew">
-          <span class="fc-code">Input 2</span>
-          <span class="fc-title">Open SAP screen 2 and re-enter the part number</span>
-          </div>
-          </div>
-          <div class="fc-arrow"></div>
-
-          <div class="fc-node fc-proc" style="--step:4">
-          <span class="fc-code">SAP screen 2</span>
-          <span class="fc-title">Set up the inspection</span>
-          </div>
-          <div class="fc-arrow"></div>
-
-          <div class="fc-node fc-io" style="--step:5">
-          <div class="fc-skew">
-          <span class="fc-code">Input 3, lookup</span>
-          <span class="fc-title">Open SAP screen 3, enter the part number and note the supplier number</span>
-          </div>
-          </div>
-          <div class="fc-arrow"></div>
-
-          <div class="fc-node fc-io" style="--step:6">
-          <div class="fc-skew">
-          <span class="fc-code">Input 4</span>
-          <span class="fc-title">Open SAP screen 4 and type in the supplier number</span>
-          </div>
-          </div>
-          <div class="fc-arrow"></div>
-
-          <div class="fc-node fc-proc" style="--step:7">
-          <span class="fc-code">SAP screen 4</span>
-          <span class="fc-title">Log an inspection for incoming stock</span>
-          </div>
-          <div class="fc-arrow"></div>
-
-          <div class="fc-node fc-io" style="--step:8">
-          <div class="fc-skew">
-          <span class="fc-code">Input 5</span>
-          <span class="fc-title">Open SAP screen 5, re-enter the part number and type the reason</span>
-          </div>
-          </div>
-          <div class="fc-arrow"></div>
-
-          <div class="fc-node fc-proc" style="--step:9">
-          <span class="fc-code">SAP screen 5</span>
-          <span class="fc-title">Record the reason for the change</span>
-          </div>
-          <div class="fc-arrow"></div>
-
-          <div class="fc-node fc-term" style="--step:10">
-          <span class="fc-title">Procedure completed</span>
+          <div class="fc-track fc-steps active" data-fc-panel="manual">
+            <div class="fc-row fc-heads" aria-hidden="true"><span>Manual input</span><span></span><span>In SAP</span></div>
+            <div class="fc-row"><div class="fc-node fc-term"><span class="fc-title">Quality issue identified</span></div></div>
+            <div class="fc-row fc-connector"><div class="fc-arrow"></div></div>
+            <div class="fc-row"><div class="fc-node fc-io"><div class="fc-skew"><span class="fc-code">Input 1</span><span class="fc-title">Open SAP screen 1 and enter the part number</span></div></div><div class="fc-arrow fc-right"></div><div class="fc-node fc-proc"><span class="fc-code">SAP screen 1</span><span class="fc-title">Update the part's quality setting</span></div></div>
+            <div class="fc-row fc-connector"><div class="fc-arrow"></div></div>
+            <div class="fc-row"><div class="fc-node fc-io"><div class="fc-skew"><span class="fc-code">Input 2</span><span class="fc-title">Open SAP screen 2 and re-enter the part number</span></div></div><div class="fc-arrow fc-right"></div><div class="fc-node fc-proc"><span class="fc-code">SAP screen 2</span><span class="fc-title">Set up the inspection</span></div></div>
+            <div class="fc-row fc-connector"><div class="fc-arrow"></div></div>
+            <div class="fc-row"><div class="fc-node fc-io"><div class="fc-skew"><span class="fc-code">Input 3, lookup</span><span class="fc-title">Open SAP screen 3, enter the part number and note the supplier number</span></div></div></div>
+            <div class="fc-row fc-connector"><div class="fc-arrow"></div></div>
+            <div class="fc-row"><div class="fc-node fc-io"><div class="fc-skew"><span class="fc-code">Input 4</span><span class="fc-title">Open SAP screen 4 and type in the supplier number</span></div></div><div class="fc-arrow fc-right"></div><div class="fc-node fc-proc"><span class="fc-code">SAP screen 4</span><span class="fc-title">Log an inspection for incoming stock</span></div></div>
+            <div class="fc-row fc-connector"><div class="fc-arrow"></div></div>
+            <div class="fc-row"><div class="fc-node fc-io"><div class="fc-skew"><span class="fc-code">Input 5</span><span class="fc-title">Open SAP screen 5, re-enter the part number and type the reason</span></div></div><div class="fc-arrow fc-right"></div><div class="fc-node fc-proc"><span class="fc-code">SAP screen 5</span><span class="fc-title">Record the reason for the change</span></div></div>
+            <div class="fc-row fc-connector"><div class="fc-arrow"></div></div>
+            <div class="fc-row"><div class="fc-node fc-term"><span class="fc-title">Procedure completed</span></div></div>
+            <p class="fc-summary">5 manual inputs, 5 SAP screens, many chances to mistype</p>
           </div>
 
-          <p class="fc-summary">5 manual inputs, 5 SAP screens, many chances to mistype</p>
-          </div>
-
-          <div class="fc-track" data-fc-panel="auto">
-          <div class="fc-node fc-term" style="--step:0">
-          <span class="fc-title">Quality issue identified</span>
-          </div>
-          <div class="fc-arrow"></div>
-
-          <div class="fc-node fc-io fc-accent" style="--step:1">
-          <div class="fc-skew">
-          <span class="fc-code">Single prompt, Python</span>
-          <span class="fc-title">Enter the part number and the reason once</span>
-          </div>
-          </div>
-          <div class="fc-arrow"></div>
-
-          <div class="fc-node fc-sub" style="--step:2">
-          <span class="fc-code">Predefined process, SAP GUI script</span>
-          <span class="fc-title">Runs in the background</span>
-          <div class="fc-sub-pipeline">
-          <span>1. Update the quality setting</span>
-          <span>2. Set up the inspection</span>
-          <span>3. Fetch the supplier number</span>
-          <span>4. Log the incoming inspection</span>
-          <span>5. Record the reason for the change</span>
-          </div>
-          </div>
-          <div class="fc-arrow"></div>
-
-          <div class="fc-node fc-term fc-accent" style="--step:3">
-          <span class="fc-title">Procedure completed</span>
-          </div>
-
-          <p class="fc-summary fc-summary-accent">1 manual input per part number, removes the risk of typing errors, 40 minutes saved per day</p>
+          <div class="fc-track fc-steps" data-fc-panel="auto">
+            <div class="fc-row fc-heads" aria-hidden="true"><span>Manual input</span><span></span><span>Script in SAP</span></div>
+            <div class="fc-row"><div class="fc-node fc-term"><span class="fc-title">Quality issue identified</span></div></div>
+            <div class="fc-row fc-connector"><div class="fc-arrow"></div></div>
+            <div class="fc-row fc-top"><div class="fc-stack"><div class="fc-node fc-io fc-accent"><div class="fc-skew"><span class="fc-code">Single prompt, Python</span><span class="fc-title">Enter the part number and the reason once</span></div></div><div class="fc-fill-line"></div></div><div class="fc-arrow fc-right"></div><div class="fc-node fc-sub"><span class="fc-code">Predefined process, SAP GUI script</span><span class="fc-title">Runs in the background</span><div class="fc-sub-pipeline"><span>1. Update the quality setting</span><span>2. Set up the inspection</span><span>3. Fetch the supplier number</span><span>4. Log the incoming inspection</span><span>5. Record the reason</span></div></div></div>
+            <div class="fc-row fc-connector"><div class="fc-arrow"></div></div>
+            <div class="fc-row"><div class="fc-node fc-term fc-accent"><span class="fc-title">Procedure completed</span></div></div>
+            <p class="fc-summary fc-summary-accent">1 manual input per part number, removes the risk of typing errors, 40 minutes saved per day</p>
           </div>
           </div>
           </div>

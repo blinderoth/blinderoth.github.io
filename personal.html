@@ -29,9 +29,9 @@
       <span class="nd-label">Personal</span>
       <div class="pe-title">
         <h1 class="name" aria-label="You found it." data-split>
-          <span class="line">Personal Projects & Files.</span>
+          <span class="line">You found it.</span>
         </h1>
-        <span class="pe-stamp" aria-hidden="true">Not on the curriculum vitae.</span>
+        <span class="pe-stamp" aria-hidden="true">Not on the CV</span>
       </div>
       <div class="pe-squiggle" aria-hidden="true"></div>
     </div>
@@ -91,6 +91,19 @@
   var NEWEST_FIRST = true;
 
   function placeholder(year) {
+    return {
+      year: year,
+      title: "Title placeholder",
+      when: "Date placeholder",
+      body: [
+        "Text placeholder. Write the first paragraph here.",
+        { img: "", alt: "", caption: "Picture placeholder" },
+        "Text placeholder. Continue after the picture here."
+      ]
+    };
+  }
+  
+  function placeholder(2026) {
     return {
       year: 2026,
       title: "[Book Review] All Systems Red",

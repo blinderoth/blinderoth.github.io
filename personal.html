@@ -80,6 +80,8 @@
          ]
        },
 
+     - Each paragraph is its own piece of text in quotes, followed by a comma.
+       A line break inside the quotes stops the whole page from working.
      - Several entries can share a year.
      - body mixes paragraphs (text in quotes) and pictures (the { img: ... } part)
        in the order you want them to appear.
@@ -102,27 +104,6 @@
       ]
     };
   }
-  
-  function placeholder(2026) {
-    return {
-      year: 2026,
-      title: "[Book Review] All Systems Red",
-      when: "September 28",
-      body: [
-        "Review of All Systems Red by Martha Wells.",
-        { img: "", alt: "", caption: "Picture placeholder" },
-        "For context, I've now finished book #4 in the series.
-
-This rating reflects my first read-through, and honestly, the book felt flat. It has almost no environmental description, which made it hard to immerse myself in the story or the world. I couldn't see what the hype was about, and it did very little for me. Still, it was a clear improvement on the #0.5 entry (Compulsory, which I've also reviewed), hence the 3.5 stars.
-
-However, and I can't stress this enough: after finishing, I went looking online for what I was missing, and I realized I'd been reading it all wrong. The book is flat because it's Murderbot's diary, and Murderbot's view of the world is flat. Duh!
-
-Once I changed my perspective, book #2 was a completely different experience, and I couldn't stop reading. The intricate interactions between characters, Murderbot's strangely relatable feelings, the meta layer of Murderbot escaping reality while I escape reality too, and the punchy writing are all addictive.
-
-If you experienced the first book the way I did, stick with it. Change your perspective, and I'm confident you'll fall in love with the series and its main character."
-      ]
-    };
-  }
 
   var ENTRIES = [
     placeholder(2016),
@@ -135,7 +116,21 @@ If you experienced the first book the way I did, stick with it. Change your pers
     placeholder(2023),
     placeholder(2024),
     placeholder(2025),
-    placeholder(2026)
+
+    {
+      year: 2026,
+      title: "Book review: All Systems Red",
+      when: "September 28, 2026",
+      body: [
+        "Review of All Systems Red by Martha Wells.",
+        { img: "", alt: "", caption: "Picture placeholder" },
+        "For context, I've now finished book #4 in the series.",
+        "This rating reflects my first read-through, and honestly, the book felt flat. It has almost no environmental description, which made it hard to immerse myself in the story or the world. I couldn't see what the hype was about, and it did very little for me. Still, it was a clear improvement on the #0.5 entry (Compulsory, which I've also reviewed), hence the 3.5 stars.",
+        "However, and I can't stress this enough: after finishing, I went looking online for what I was missing, and I realized I'd been reading it all wrong. The book is flat because it's Murderbot's diary, and Murderbot's view of the world is flat. Duh!",
+        "Once I changed my perspective, book #2 was a completely different experience, and I couldn't stop reading. The intricate interactions between characters, Murderbot's strangely relatable feelings, the meta layer of Murderbot escaping reality while I escape reality too, and the punchy writing are all addictive.",
+        "If you experienced the first book the way I did, stick with it. Change your perspective, and I'm confident you'll fall in love with the series and its main character."
+      ]
+    }
   ];
 
   /* ---------- Rendering: no need to edit below this line ---------- */

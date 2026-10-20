@@ -1,0 +1,1769 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Insert fit planner | Benjamin Linderoth</title>
+<meta name="robots" content="noindex">
+<link rel="preload" href="fonts/LiberationMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face {
+  font-family: "Liberation Mono";
+  src: url("fonts/LiberationMono-Regular.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+
+/* Colors from the Personal page */
+:root {
+  --bg: #161B26;
+  --panel: #1B2130;
+  --raised: #212839;
+  --line: #343C4C;
+  --fg: #E8EBF0;
+  --muted: #98A2B3;
+  --accent: #8E9CFF;
+  --accent-fg: #11151F;
+  --bad: #FF8A7A;
+  --warn: #E8B85C;
+  --good: #7FD6A0;
+  --stage: #10141C;
+  --mono: "Liberation Mono", "Courier New", ui-monospace, monospace;
+  --display: var(--mono);
+  color-scheme: dark;
+}
+*, *::before, *::after { box-sizing: border-box; }
+[hidden]:not([hidden=until-found i]) { display: none !important; }
+html, body { height: 100%; margin: 0; }
+body {
+  background: var(--bg); color: var(--fg);
+  font: 13px/1.5 var(--mono);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-underline-offset: 0.2em; }
+a:hover { color: var(--accent); }
+
+/* ---------- Layout: tool rail | 3D stage | inspector ---------- */
+.app {
+  display: grid;
+  grid-template-columns: 340px minmax(0, 1fr) auto;
+  height: 100vh; height: 100dvh;
+}
+.rail, .inspector {
+  background: var(--panel);
+  overflow-y: auto;
+  display: flex; flex-direction: column;
+}
+.rail { border-right: 1px solid var(--line); padding-left: env(safe-area-inset-left, 0px); }
+.inspector { width: 320px; border-left: 1px solid var(--line); padding: 18px 18px 24px; gap: 26px; padding-right: max(18px, env(safe-area-inset-right, 0px)); }
+.inspector:not(:has(> section:not([hidden]))) { display: none; }
+
+.rail-head { padding: 18px 18px 14px; }
+.back { display: inline-block; margin-bottom: 14px; font-size: 12px; color: var(--muted); text-decoration: none; }
+.back:hover { color: var(--accent); }
+h1 { margin: 0; font-size: 20px; font-weight: 400; letter-spacing: -0.01em; }
+.sub { margin: 6px 0 0; color: var(--muted); }
+
+/* Tabs follow the order you work in */
+.tabs {
+  display: flex;
+  margin: 0 18px; border-bottom: 1px solid var(--line);
+  position: sticky; top: 0; background: var(--panel); z-index: 2;
+}
+.tabs button {
+  flex: 1 1 auto; white-space: nowrap;
+  border: 0; border-bottom: 2px solid transparent; border-radius: 0;
+  background: none; padding: 10px 2px 9px; margin-bottom: -1px;
+  font: inherit; font-size: 12px; color: var(--muted); cursor: pointer;
+}
+.tabs button:hover { color: var(--fg); border-color: transparent; }
+.tabs button[aria-selected="true"] { color: var(--fg); border-bottom-color: var(--accent); }
+.tabs .n { color: var(--muted); }
+.tabs button[aria-selected="true"] .n { color: var(--accent); }
+.panel { padding: 18px 18px 28px; display: flex; flex-direction: column; gap: 26px; }
+
+h2 { margin: 0 0 4px; font-size: 14px; font-weight: 400; color: var(--fg); }
+.lead { margin: 0 0 12px; color: var(--muted); font-size: 12px; }
+.note { margin: 0; font-size: 12px; color: var(--muted); line-height: 1.55; }
+.muted { color: var(--muted); }
+
+/* ---------- Form controls ---------- */
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.row { display: flex; gap: 8px; flex-wrap: wrap; }
+label { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--muted); }
+input[type=number], input[type=text], select {
+  font: inherit; color: var(--fg); background: var(--bg);
+  border: 1px solid var(--line); border-radius: 5px;
+  padding: 7px 8px; width: 100%; min-width: 0;
+  font-variant-numeric: tabular-nums;
+}
+input:focus-visible, select:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+input:hover, select:hover { border-color: #46506A; }
+button {
+  font: inherit; font-size: 12px; cursor: pointer;
+  border: 1px solid var(--line); background: var(--raised); color: var(--fg);
+  border-radius: 5px; padding: 7px 10px;
+  transition: border-color 0.15s, background-color 0.15s, color 0.15s;
+}
+button:hover { border-color: var(--accent); }
+button.primary { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
+button.primary:hover { background: #A5B1FF; }
+button.danger { color: var(--bad); border-color: #5A3A3A; background: transparent; }
+button.danger:hover { border-color: var(--bad); }
+button:disabled { opacity: 0.45; cursor: default; }
+.chk { flex-direction: row; align-items: center; gap: 8px; color: var(--fg); font-size: 12px; cursor: pointer; }
+.chk input, .checklist input { accent-color: var(--accent); }
+input[type=range] { accent-color: var(--accent); }
+
+.drop {
+  border: 1.5px dashed var(--line); border-radius: 8px;
+  padding: 22px 12px; text-align: center; color: var(--fg); cursor: pointer; line-height: 1.6;
+  transition: border-color 0.15s, background-color 0.15s;
+}
+.drop:hover, .drop.over { border-color: var(--accent); background: rgba(142, 156, 255, 0.06); }
+
+details { border-top: 1px solid var(--line); padding-top: 10px; margin-top: 12px; }
+details > summary { cursor: pointer; font-size: 13px; color: var(--fg); list-style: none; }
+details > summary::-webkit-details-marker { display: none; }
+details > summary::before { content: "+ "; color: var(--accent); }
+details[open] > summary::before { content: "− "; }
+details .body { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+
+/* ---------- Lists ---------- */
+ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+li { display: grid; grid-template-columns: 12px 1fr auto; gap: 8px; align-items: center; padding: 7px 8px; border: 1px solid transparent; border-radius: 5px; cursor: pointer; }
+li:hover { background: var(--bg); }
+li.sel { border-color: var(--accent); background: var(--bg); }
+li .sw { width: 12px; height: 12px; border-radius: 2px; }
+li .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+li .st { font-size: 11px; color: var(--muted); }
+li .st.bad { color: var(--bad); } li .st.warn { color: var(--warn); }
+/* Parts list: name on top, fit status underneath, so names are not cut short */
+#listPrint li, #listGame li { grid-template-columns: 12px minmax(0, 1fr) auto auto; row-gap: 1px; }
+#listPrint li > .sw, #listGame li > .sw { grid-row: 1 / 3; }
+#listPrint li > .nm, #listGame li > .nm { grid-column: 2; grid-row: 1; }
+#listPrint li > .st, #listGame li > .st { grid-column: 2; grid-row: 2; }
+#listPrint li > .eye, #listGame li > .eye { grid-column: 3; grid-row: 1 / 3; }
+#listPrint li > .lk, #listGame li > .lk { grid-column: 4; grid-row: 1 / 3; }
+#listPrint li.hid .nm, #listPrint li.hid .sw, #listGame li.hid .nm, #listGame li.hid .sw { opacity: 0.4; }
+#listPrint li.lock .nm, #listGame li.lock .nm { font-style: italic; }
+.ib { padding: 2px 4px; line-height: 0; border-color: transparent; background: transparent; color: var(--muted); }
+.ib:hover { color: var(--fg); border-color: transparent; } .ib.on { color: var(--accent); }
+.ib svg { width: 15px; height: 15px; }
+.slots li { grid-template-columns: 1fr auto auto; cursor: default; }
+.slots li .when { font-size: 11px; color: var(--muted); }
+.slots button { padding: 4px 8px; font-size: 11px; }
+.pockets li { grid-template-columns: 22px 1fr auto; cursor: default; }
+.probs li { grid-template-columns: minmax(0, 1fr) auto; row-gap: 1px; }
+.probs li .nm { white-space: normal; }
+.probs li .amt { color: var(--bad); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.pockets .tag { color: var(--good); }
+.list-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 6px; }
+.list-head h2 { margin: 0; }
+.list-head button { padding: 4px 8px; font-size: 11px; }
+
+.checklist label { flex-direction: row; align-items: center; gap: 8px; color: var(--fg); font-size: 12px; padding: 2px 0; cursor: pointer; }
+.checklist label.done span { color: var(--muted); text-decoration: line-through; }
+
+table.est { border-collapse: collapse; width: 100%; font-size: 11px; font-variant-numeric: tabular-nums; }
+table.est th, table.est td { padding: 5px 4px; text-align: right; border-bottom: 1px solid var(--line); white-space: nowrap; }
+table.est th:first-child, table.est td:first-child { text-align: left; white-space: normal; }
+table.est th { color: var(--muted); font-weight: 400; }
+table.est tr.total td { color: var(--accent); border-bottom: 0; }
+
+.exports { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.exports button { text-align: left; }
+
+/* ---------- 3D stage ---------- */
+.stage { position: relative; background: var(--stage); min-width: 0; overflow: hidden; }
+#c { display: block; width: 100%; height: 100%; touch-action: none; }
+.stage #labels { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+
+/* Fit status is always in view */
+.status {
+  position: absolute; top: 14px; left: 14px; max-width: min(360px, calc(100% - 200px));
+  padding: 10px 12px; border-radius: 8px;
+  background: rgba(27, 33, 48, 0.92); border: 1px solid var(--line);
+  line-height: 1.5; font-size: 12px;
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+.status:empty { display: none; }
+.status strong { font-weight: 400; font-size: 13px; }
+.status.ok { border-color: rgba(127, 214, 160, 0.55); }
+.status.ok strong { color: var(--good); }
+.status.bad { border-color: var(--bad); color: var(--bad); }
+
+.topbar { position: absolute; top: 14px; right: max(14px, env(safe-area-inset-right, 0px)); display: flex; gap: 6px; align-items: flex-start; }
+.keys { position: relative; border: 0; padding: 0; margin: 0; }
+.keys > summary {
+  padding: 7px 10px; font-size: 12px; color: var(--fg);
+  border: 1px solid var(--line); border-radius: 5px; background: var(--raised);
+}
+.keys > summary::before, .keys[open] > summary::before { content: none; }
+.keys[open] > summary { border-color: var(--accent); }
+.keys .hint {
+  position: absolute; right: 0; top: calc(100% + 6px); width: 300px; z-index: 5;
+  padding: 12px 14px; border-radius: 8px; background: var(--panel); border: 1px solid var(--line);
+  color: var(--muted); font-size: 12px; line-height: 1.7;
+  box-shadow: 0 12px 32px -12px rgba(0, 0, 0, 0.6);
+}
+.keys .hint b { color: var(--fg); font-weight: 400; }
+
+/* Tool bar along the bottom of the stage */
+.toolbar {
+  position: absolute; left: 50%; bottom: max(14px, env(safe-area-inset-bottom, 0px)); transform: translateX(-50%);
+  display: flex; align-items: center; gap: 4px; max-width: calc(100% - 28px); overflow-x: auto;
+  padding: 6px; border-radius: 10px;
+  background: rgba(27, 33, 48, 0.92); border: 1px solid var(--line);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+.toolbar button { border-color: transparent; background: transparent; white-space: nowrap; }
+.toolbar button:hover { border-color: var(--line); }
+.toolbar button.on { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
+.toolbar .sep { width: 1px; align-self: stretch; background: var(--line); margin: 2px 4px; flex-shrink: 0; }
+.explode { flex-direction: row; align-items: center; gap: 8px; padding: 0 6px; font-size: 12px; color: var(--fg); white-space: nowrap; }
+.explode input { width: 110px; }
+
+.mlabel { position: absolute; transform: translate(-50%, -130%); background: var(--panel); color: var(--fg); border: 1px solid var(--accent); border-radius: 4px; padding: 3px 7px; font-size: 12px; white-space: nowrap; pointer-events: none; font-variant-numeric: tabular-nums; }
+.mlabel.pk { border-color: var(--good); transform: translate(-50%, -50%); font-size: 11px; }
+.mlabel small { color: var(--muted); }
+
+.toast { position: absolute; left: 50%; bottom: 74px; transform: translateX(-50%); background: var(--fg); color: var(--bg); padding: 7px 12px; border-radius: 5px; font-size: 12px; pointer-events: none; opacity: 0; transition: opacity 0.2s; }
+.toast.show { opacity: 1; }
+
+/* Inspector */
+.ins-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 10px; }
+.ins-head h2 { margin: 0; color: var(--accent); }
+.ins-group { margin-top: 14px; }
+.ins-group > .note { margin-top: 6px; }
+
+@media (prefers-reduced-motion: reduce) { .toast, button, .drop { transition: none; } }
+
+/* Phones and narrow windows: 3D view on top, then the inspector, then the tools */
+@media (max-width: 860px) {
+  .app { grid-template-columns: 1fr; grid-template-rows: auto; height: auto; }
+  .stage { order: -1; height: 58vh; height: 58dvh; }
+  .inspector { width: auto; border-left: 0; border-bottom: 1px solid var(--line); padding-left: max(18px, env(safe-area-inset-left, 0px)); }
+  .rail { border-right: 0; overflow: visible; }
+  .status { top: 58px; max-width: calc(100% - 28px); }
+  .keys .hint { width: min(300px, calc(100vw - 28px)); }
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- ================= Tool rail ================= -->
+<aside class="rail" aria-label="Tools">
+  <div class="rail-head">
+    <a class="back" href="index.html#boardgame-inserts-made-simple">Back to projects</a>
+    <h1>Insert fit planner</h1>
+    <p class="sub">Drop in STL or 3MF prints from different inserts and see if they share one box. All sizes in mm.</p>
+  </div>
+
+  <div class="tabs" role="tablist" aria-label="Steps">
+    <button type="button" role="tab" id="t-box" aria-controls="tab-box" aria-selected="true"><span class="n">1</span> Box</button>
+    <button type="button" role="tab" id="t-add" aria-controls="tab-add" aria-selected="false"><span class="n">2</span> Add</button>
+    <button type="button" role="tab" id="t-pieces" aria-controls="tab-pieces" aria-selected="false"><span class="n">3</span> <span id="t-pieces-label">Pieces</span></button>
+    <button type="button" role="tab" id="t-save" aria-controls="tab-save" aria-selected="false"><span class="n">4</span> Save</button>
+  </div>
+
+  <!-- 1. Box -->
+  <div class="panel" id="tab-box" role="tabpanel" aria-labelledby="t-box">
+    <section>
+      <h2>Box interior</h2>
+      <p class="lead">Measure the inside of the box, from wall to wall and from the floor to the lid.</p>
+      <div class="grid3">
+        <label>Width (X)<input id="bw" type="number" value="295" min="1"></label>
+        <label>Depth (Y)<input id="bd" type="number" value="295" min="1"></label>
+        <label>Height (Z)<input id="bh" type="number" value="72" min="1"></label>
+      </div>
+      <div class="row" style="margin-top:10px">
+        <label style="flex:1" title="Gap kept between pieces and the box walls. Pieces snap flush against each other.">Wall clearance<input id="tol" type="number" value="0.5" min="0" step="0.1"></label>
+        <label style="flex:1">Snap grid<input id="snap" type="number" value="1" min="0" step="0.5"></label>
+      </div>
+      <details>
+        <summary>Snapping and fit checks</summary>
+        <div class="body">
+          <label class="chk" title="Lets a piece sit inside a hollow tray. Off = compare outer boxes only (faster)."><input id="exact" type="checkbox" checked> Check exact shapes (allow nesting)</label>
+          <div class="row">
+            <label class="chk"><input id="wallSnap" type="checkbox" checked> Snap to walls</label>
+            <label class="chk"><input id="pieceSnap" type="checkbox" checked> Snap to pieces</label>
+          </div>
+          <label style="flex-direction:row;align-items:center;gap:6px">Snap when within<input id="wallDist" type="number" value="6" min="0" step="1" style="width:64px">mm</label>
+        </div>
+      </details>
+    </section>
+  </div>
+
+  <!-- 2. Add -->
+  <div class="panel" id="tab-add" role="tabpanel" aria-labelledby="t-add" hidden>
+    <section>
+      <h2>Your prints</h2>
+      <p class="lead">Files from one or more inserts. Each file becomes a printed part.</p>
+      <div class="drop" id="drop" role="button" tabindex="0">Drop .stl, .3mf or .insert files here<br><span class="muted">or click to choose</span></div>
+      <input id="file" type="file" accept=".stl,.3mf,.insert" multiple hidden>
+    </section>
+
+    <section>
+      <h2>Game components</h2>
+      <p class="lead">Placeholders for what goes in the box besides the insert. Sizes are typical, so check against your own copy.</p>
+      <details open><summary>Cards</summary><div class="body">
+        <label>Card size<select id="cardType">
+          <option value="63,88">Standard TCG / Poker (63 × 88)</option>
+          <option value="59,92">Standard European (59 × 92)</option>
+          <option value="56,87">Standard American (56 × 87)</option>
+          <option value="44,68">Mini European (44 × 68)</option>
+          <option value="41,63">Mini American (41 × 63)</option>
+          <option value="70,120">Tarot (70 × 120)</option>
+          <option value="70,70">Square (70 × 70)</option>
+          <option value="80,120">Large / Dixit (80 × 120)</option>
+        </select></label>
+        <div class="grid3">
+          <label>Count<input id="cardN" type="number" value="100" min="1"></label>
+          <label title="Thickness of one sleeve layer in microns (µm). 0 = unsleeved.">Sleeve µm<input id="cardSleeve" type="number" value="60" min="0" step="5" list="micronList"></label>
+          <label title="Thickness of one bare card">Card mm<input id="cardT" type="number" value="0.30" min="0.1" step="0.01"></label>
+        </div>
+        <datalist id="micronList"><option value="0"></option><option value="40"></option><option value="60"></option><option value="80"></option><option value="100"></option><option value="120"></option></datalist>
+        <div class="row"><label style="flex:1">Stand on<select id="cardOrient"><option value="flat">Lying flat</option><option value="long">Long edge</option><option value="short">Short edge</option></select></label>
+        <button id="addCards" class="primary" style="align-self:end">Add cards</button></div>
+        <p class="note" id="cardInfo"></p>
+      </div></details>
+      <details><summary>Dice</summary><div class="body">
+        <div class="grid3">
+          <label>Count<input id="diceN" type="number" value="10" min="1"></label>
+          <label style="grid-column:span 2">Type<select id="diceT">
+            <option value="d6" selected>d6</option><option value="d4">d4</option><option value="d8">d8</option><option value="d10">d10</option><option value="d12">d12</option><option value="d20">d20</option>
+            <option value="set">Polyhedral set (d4, d6, d8, d10, d%, d12, d20)</option><option value="custom">Custom / special dice</option></select></label>
+        </div>
+        <div class="row"><label style="flex:1">Size mm<input id="diceS" type="number" value="16" min="4" step="1" list="diceSizes"></label><button id="addDice" class="primary" style="align-self:end">Add dice</button></div>
+        <datalist id="diceSizes"><option value="12"></option><option value="16"></option><option value="19"></option><option value="22"></option><option value="25"></option></datalist>
+        <p class="note" id="diceInfo">Packed in one layer, as tight as a dice tray would hold them. Count is the number of dice, or of sets.</p>
+      </div></details>
+      <details><summary>Tokens and coins</summary><div class="body">
+        <div class="grid3">
+          <label>Count<input id="tokN" type="number" value="40" min="1"></label>
+          <label style="grid-column:span 2">Shape<select id="tokShape">
+            <option value="round" selected>Round</option><option value="square">Square</option><option value="hex">Hex</option></select></label>
+        </div>
+        <div class="grid3">
+          <label title="Diameter, side length, or across the flats for hex tokens">Size mm<input id="tokS" type="number" value="20" min="3" step="1" list="tokSizes"></label>
+          <label title="Thickness of one token. Punchboard is usually about 2 mm, metal or plastic coins 2 to 3 mm.">Thick mm<input id="tokT" type="number" value="2" min="0.5" step="0.1" list="tokThick"></label>
+          <label title="How many stacks to split the tokens into">Stacks<input id="tokK" type="number" value="1" min="1"></label>
+        </div>
+        <datalist id="tokSizes"><option value="15"></option><option value="20"></option><option value="25"></option><option value="30"></option></datalist>
+        <datalist id="tokThick"><option value="1.5"></option><option value="2"></option><option value="2.5"></option><option value="3"></option></datalist>
+        <div class="row"><span class="note" style="flex:1;align-self:center" id="tokFit"></span><button id="addTokens" class="primary">Add tokens</button></div>
+        <p class="note" id="tokInfo"></p>
+      </div></details>
+      <details><summary>Any other block</summary><div class="body">
+        <p class="note">A rulebook, a board stack, a bag of tokens: anything you can describe as a box.</p>
+        <div class="grid3">
+          <label>W<input id="nw" type="number" value="90"></label>
+          <label>D<input id="nd" type="number" value="60"></label>
+          <label>H<input id="nh" type="number" value="25"></label>
+        </div>
+        <label>Name<input id="nn" type="text" value="Rulebook"></label>
+        <div class="row">
+          <select id="nRole" style="flex:1;width:auto" aria-label="Block type"><option value="game">Game component</option><option value="print">Printed part</option></select>
+          <button id="addBox" class="primary">Add block</button>
+        </div>
+      </div></details>
+    </section>
+
+    <section>
+      <details style="margin-top:0;border-top:0;padding-top:0"><summary>Packing checklist</summary><div class="body checklist" id="checklist"></div></details>
+    </section>
+  </div>
+
+  <!-- 3. Pieces -->
+  <div class="panel" id="tab-pieces" role="tabpanel" aria-labelledby="t-pieces" hidden>
+    <section id="probSec" hidden>
+      <div class="list-head"><h2 id="hProb">Problems</h2></div>
+      <p class="note" id="probNote" style="margin-bottom:8px"></p>
+      <ul id="listProb" class="probs" aria-live="polite"></ul>
+    </section>
+    <section>
+      <div class="list-head"><h2 id="hPrint">Printed parts</h2><button id="selAll">Select all</button></div>
+      <p class="note" style="margin-bottom:8px">Click a part to select it. Shift- or Ctrl-click to select several.</p>
+      <ul id="listPrint"></ul>
+    </section>
+    <section>
+      <div class="list-head"><h2 id="hGame">Game components</h2></div>
+      <ul id="listGame"></ul>
+    </section>
+  </div>
+
+  <!-- 4. Save -->
+  <div class="panel" id="tab-save" role="tabpanel" aria-labelledby="t-save" hidden>
+    <section>
+      <h2>Layouts</h2>
+      <p class="lead">Saved in this browser, models included. Your current work is also kept automatically between visits.</p>
+      <div class="row">
+        <input id="slotName" type="text" placeholder="e.g. Spirit Island + expansions v2" style="flex:1;min-width:0" aria-label="Layout name">
+        <button id="saveSlot" class="primary">Save</button>
+      </div>
+      <ul class="slots" id="slots" style="margin-top:8px"></ul>
+      <div class="row" style="margin-top:10px">
+        <button id="fileSave" style="flex:1" title="Download the current layout, models included, as one file">Save to file</button>
+        <button id="fileOpen" style="flex:1" title="Open a .insert file. You can also drop it on the 3D view.">Open file</button>
+      </div>
+      <input id="layoutFile" type="file" accept=".insert,.json" hidden>
+      <p class="note">A .insert file works on any computer and can be shared. Opening one replaces the current layout (undo brings it back).</p>
+    </section>
+
+    <section>
+      <h2>Print estimate</h2>
+      <p class="lead">Rough figures for printed parts. Game components are left out.</p>
+      <div style="overflow-x:auto"><table class="est" id="estTable"></table></div>
+      <details><summary>Printer and material</summary><div class="body">
+        <div class="grid3">
+          <label>Infill %<input id="peInfill" type="number" value="15" min="0" max="100"></label>
+          <label>Walls mm<input id="peWall" type="number" value="1.2" min="0.2" step="0.1"></label>
+          <label title="Average volumetric speed. ~8 for a standard printer, 15–20 for a fast CoreXY.">mm³/s<input id="peFlow" type="number" value="10" min="1"></label>
+        </div>
+        <div class="row">
+          <label style="flex:1">Material<select id="peMat"><option value="1.24">PLA (1.24 g/cm³)</option><option value="1.27">PETG (1.27 g/cm³)</option><option value="1.04">ABS (1.04 g/cm³)</option><option value="1.07">ASA (1.07 g/cm³)</option></select></label>
+          <label style="width:90px">Price/kg<input id="pePrice" type="number" value="250" min="0"></label>
+        </div>
+      </div></details>
+    </section>
+
+    <section>
+      <h2>Export</h2>
+      <p class="lead">STL files contain visible printed parts only, with any resizing or trimming, and come zipped.</p>
+      <div class="exports">
+        <button id="exStl" title="Every part where it sits in the box">All parts, one STL</button>
+        <button id="exEach" title="Each part flat at the origin, ready for the slicer">Each part, own STL</button>
+        <button id="exSel">Selected part(s)</button>
+        <button id="exPng">Screenshot (PNG)</button>
+        <button id="exDraw" style="grid-column:span 2">Drawing (PDF, 2 pages)</button>
+      </div>
+      <p class="note" id="exNote" style="margin-top:8px">"One STL" keeps every part where it sits in the box; "own STL" puts each part flat at the origin, ready for the slicer. The drawing has an assembled view on page 1 and an exploded view on page 2, each with numbered parts and a parts list.</p>
+    </section>
+  </div>
+</aside>
+
+<!-- ================= 3D stage ================= -->
+<main class="stage">
+  <canvas id="c" aria-label="3D view of the box"></canvas>
+  <div id="labels"></div>
+
+  <div class="status" id="status" role="status"></div>
+
+  <div class="topbar">
+    <button id="undo" title="Undo (Ctrl+Z)">Undo</button>
+    <button id="redo" title="Redo (Ctrl+Y)">Redo</button>
+    <details class="keys">
+      <summary>Help</summary>
+      <div class="hint" id="hint">
+        <b>Mouse</b><br>
+        Click a piece to select it, Shift/Ctrl-click for several. Drag the arrows to move it. Drag empty space to orbit, scroll to zoom. Alt-drag to drag a copy.<br><br>
+        <b>Keys</b><br>
+        Arrows nudge · R rotate · D drop down<br>
+        M measure · F free space<br>
+        H hide · L lock · Del remove<br>
+        Ctrl+Z / Ctrl+Y undo / redo · Ctrl+A select all
+      </div>
+    </details>
+  </div>
+
+  <div class="toolbar" role="toolbar" aria-label="View and tools">
+    <button id="vTop">Top</button><button id="vFront">Front</button><button id="v3d">3D</button>
+    <span class="sep"></span>
+    <button id="measureBtn" title="Click two points to measure (M)">Measure</button>
+    <button id="thickBtn" title="Click a wall or floor to see how thick it is (T)">Thickness</button>
+    <button id="pocketBtn" title="Find the biggest empty spaces (F)">Free space</button>
+    <button id="lidBtn" title="Show where the lid sits">Lid height</button>
+    <span class="sep"></span>
+    <label class="explode"><span>Explode</span><input id="explode" type="range" min="0" max="100" value="0" aria-label="Exploded view"></label>
+  </div>
+
+  <div class="toast" id="toast"></div>
+</main>
+
+<!-- ================= Inspector (only while something is selected or free space is shown) ================= -->
+<aside class="inspector" aria-label="Selection">
+  <section id="selPanel" hidden>
+    <div class="ins-head"><h2 id="selTitle">Selected</h2><span class="note">Click empty space to deselect</span></div>
+    <label>Name<input id="sname" type="text" aria-label="Piece name"></label>
+    <label style="margin-top:8px">Type<select id="sRole"><option value="print">Printed part (exported, estimated)</option><option value="game">Game component (not printed)</option><option value="mixed" hidden>Mixed</option></select></label>
+    <label class="chk" style="margin-top:8px"><input id="free" type="checkbox"> Ignore overlaps for this piece</label>
+
+    <div class="ins-group">
+      <h2>Position</h2>
+      <div class="grid3">
+        <label>X<input id="px" type="number" step="0.5"></label>
+        <label>Y<input id="py" type="number" step="0.5"></label>
+        <label>Z<input id="pz" type="number" step="0.5"></label>
+      </div>
+      <p class="note" id="sdims" style="margin-top:6px"></p>
+    </div>
+
+    <div class="ins-group">
+      <h2>Turn and place</h2>
+      <div class="row">
+        <button data-rot="z">Rotate 90° flat</button>
+        <button data-rot="x">Tip over X</button>
+        <button data-rot="y">Tip over Y</button>
+      </div>
+      <div class="row" style="margin-top:8px">
+        <button id="dropDown" class="primary">Drop down</button>
+        <button id="dup">Duplicate</button>
+        <button id="del" class="danger">Remove</button>
+      </div>
+    </div>
+
+    <details id="tiltBox"><summary>Tilt</summary><div class="body">
+      <div class="row" style="align-items:end">
+        <label style="width:84px" title="Lean around the width (X) axis">Tilt X °<input id="tiltX" type="number" value="0" step="1"></label>
+        <label style="width:84px" title="Lean around the depth (Y) axis">Tilt Y °<input id="tiltZ" type="number" value="0" step="1"></label>
+      </div>
+      <div class="row">
+        <button data-tilt="x" title="Tilt X by 5° more">X +5°</button><button data-tilt="z" title="Tilt Y by 5° more">Y +5°</button>
+        <button id="straighten" title="Remove all tilt">Straighten</button>
+      </div>
+      <p class="note">Tilts game components so a deck or board can lean in the box. Press Drop down afterwards to settle it.</p>
+    </div></details>
+
+    <details id="scaleBox"><summary>Scale</summary><div class="body">
+      <div class="grid3">
+        <label>W mm<input id="szW" type="number" step="0.5"></label>
+        <label>D mm<input id="szD" type="number" step="0.5"></label>
+        <label>H mm<input id="szH" type="number" step="0.5"></label>
+      </div>
+      <div class="grid3">
+        <label>W %<input id="pcW" type="number" value="100" step="1"></label>
+        <label>D %<input id="pcD" type="number" value="100" step="1"></label>
+        <label>H %<input id="pcH" type="number" value="100" step="1"></label>
+      </div>
+      <label class="chk"><input id="keepProp" type="checkbox" checked> Keep proportions</label>
+      <div class="row"><button id="applyPct" class="primary">Apply %</button><button id="inchFix" title="For files exported in inches">Inches → mm (×25.4)</button><button id="mmFix" title="For files that came in 25.4× too big">÷25.4</button></div>
+      <p class="note">Type a new size in mm to scale straight away, or set percentages and press Apply. Untick Keep proportions to change one axis only.</p>
+    </div></details>
+
+    <details id="cutBox"><summary>Resize or trim</summary><div class="body">
+      <div class="row">
+        <label style="flex:1">Along<select id="cutAxis"><option value="0">Width (X)</option><option value="2">Depth (Y)</option><option value="1">Height (Z)</option></select></label>
+        <label style="flex:1.6">Mode<select id="cutMode"><option value="stretch">Stretch / shrink, walls kept</option><option value="keepStart">Trim: keep first … mm</option><option value="keepEnd">Trim: keep last … mm</option></select></label>
+      </div>
+      <div class="row">
+        <label style="flex:1" id="cutALab">Length mm<input id="cutA" type="number" step="0.5"></label>
+        <label style="flex:1" id="cutBLab" hidden>to mm<input id="cutB" type="number" step="0.5"></label>
+      </div>
+      <button id="applyCut" class="primary">Apply</button>
+      <p class="note" id="cutInfo"></p>
+    </div></details>
+
+    <div class="row" id="splitRow" style="margin-top:12px"><button id="splitBtn">Split into separate parts</button><span class="note" id="splitInfo"></span></div>
+  </section>
+
+  <section id="pocketPanel" hidden>
+    <div class="ins-head"><h2>Free space</h2><button id="clearPockets">Hide</button></div>
+    <p class="note" style="margin-bottom:8px">Largest empty boxes that fit, measured from the tops of pieces up to the lid. Clearance is already subtracted.</p>
+    <ul class="pockets" id="pockets"></ul>
+  </section>
+</aside>
+</div>
+
+<!-- Tabs, and the piece count on the Pieces tab -->
+<script>
+(function () {
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tabs [role="tab"]'));
+  function show(tab) {
+    tabs.forEach(function (b) {
+      var on = b === tab;
+      b.setAttribute('aria-selected', on ? 'true' : 'false');
+      b.tabIndex = on ? 0 : -1;
+      document.getElementById(b.getAttribute('aria-controls')).hidden = !on;
+    });
+    try { localStorage.setItem('ifp-tab', tab.id); } catch (e) {}
+  }
+  tabs.forEach(function (b) { b.addEventListener('click', function () { show(b); }); });
+  try { var saved = document.getElementById(localStorage.getItem('ifp-tab')); if (saved) show(saved); } catch (e) {}
+
+  var label = document.getElementById('t-pieces-label');
+  function count() {
+    var n = 0;
+    ['hPrint', 'hGame'].forEach(function (id) {
+      var m = /\((\d+)\)/.exec(document.getElementById(id).textContent);
+      if (m) n += +m[1];
+    });
+    label.textContent = n ? 'Pieces (' + n + ')' : 'Pieces';
+  }
+  var mo = new MutationObserver(count);
+  ['hPrint', 'hGame'].forEach(function (id) { mo.observe(document.getElementById(id), { childList: true, characterData: true, subtree: true }); });
+
+  /* The drop zone also opens the file picker from the keyboard. */
+  var drop = document.getElementById('drop');
+  drop.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); drop.click(); }
+  });
+})();
+</script>
+
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/","three-mesh-bvh":"https://cdn.jsdelivr.net/npm/three-mesh-bvh@0.7.3/build/index.module.js"}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {TransformControls} from 'three/addons/controls/TransformControls.js';
+import {STLLoader} from 'three/addons/loaders/STLLoader.js';
+import {ThreeMFLoader} from 'three/addons/loaders/3MFLoader.js';
+import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
+import {MeshBVH} from 'three-mesh-bvh';
+
+const $=id=>document.getElementById(id);
+const PALETTE=[0x4f8fbf,0xd08a3c,0x7a9e4a,0xb4588a,0x8a6fc4,0x3fa39a,0xc4a23c,0x9c6b4e];
+let colorIx=0;
+const f=n=>(+(+n).toFixed(1)).toString();
+
+// Internal coords: three.js Y-up. User-facing: X=width, Y=depth, Z=height.
+const canvas=$('c');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(40,1,1,5000);
+const orbit=new OrbitControls(camera,canvas);
+orbit.enableDamping=true;
+scene.add(new THREE.HemisphereLight(0xffffff,0x667060,1.6));
+const dl=new THREE.DirectionalLight(0xffffff,1.6);dl.position.set(200,400,300);scene.add(dl);
+
+// The gizmo drives an invisible proxy at the selection's min corner; moves apply to every selected piece.
+const proxy=new THREE.Object3D();scene.add(proxy);
+const lastPos=new THREE.Vector3();
+const tc=new TransformControls(camera,canvas);
+tc.setMode('translate');tc.setSize(.8);
+let altDown=false;
+canvas.addEventListener('pointerdown',e=>{ altDown=e.altKey; },true);
+tc.addEventListener('dragging-changed',e=>{orbit.enabled=!e.value;
+  if(e.value&&altDown&&sel.length) duplicateInPlace();   // Alt-drag: leave the originals, drag copies
+  if(!e.value){ refresh(); commit(); }});
+function duplicateInPlace(){
+  const copies=sel.map(m=>makeMesh({geo:m.geometry,name:m.userData.name+' copy',color:m.userData.kind?m.userData.color:PALETTE[colorIx++%PALETTE.length],
+    free:m.userData.free,kind:m.userData.kind,printed:m.userData.printed,role:m.userData.role,tilt:m.userData.tilt,pos:m.position.toArray()}));
+  sel=copies; refresh(); toast(`Dragging ${copies.length} cop${copies.length>1?'ies':'y'}`); }
+tc.addEventListener('objectChange',()=>{ snapProxy(); applyProxy(); refresh(); });
+scene.add(tc);
+
+const boxGroup=new THREE.Group();scene.add(boxGroup);
+let B={w:295,d:295,h:72};
+let pieces=[];let sel=[];
+let wallsMesh=null, floorMesh=null;
+
+function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toast.t); toast.t=setTimeout(()=>t.classList.remove('show'),1800); }
+
+function buildBox(){
+  boxGroup.clear();
+  B={w:+$('bw').value||1,d:+$('bd').value||1,h:+$('bh').value||1};
+  floorMesh=new THREE.Mesh(new THREE.PlaneGeometry(B.w,B.d),new THREE.MeshStandardMaterial({color:0xcfc6b2,roughness:1}));
+  floorMesh.rotation.x=-Math.PI/2;floorMesh.position.set(B.w/2,-0.05,B.d/2);boxGroup.add(floorMesh);
+  const M=Math.max(B.w,B.d);
+  const grid=new THREE.GridHelper(M,Math.round(M/10),0x8a8270,0xb5ad99);
+  grid.material.transparent=true;grid.material.opacity=.45;
+  grid.scale.set(B.w/M,1,B.d/M);grid.position.set(B.w/2,0.02,B.d/2);
+  boxGroup.add(grid);
+  wallsMesh=new THREE.Mesh(new THREE.BoxGeometry(B.w,B.h,B.d),new THREE.MeshBasicMaterial({color:0x8a8270,transparent:true,opacity:.07,side:THREE.BackSide,depthWrite:false}));
+  wallsMesh.position.set(B.w/2,B.h/2,B.d/2);boxGroup.add(wallsMesh);
+  const edges=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(B.w,B.h,B.d)),new THREE.LineBasicMaterial({color:0x8a93a6}));
+  edges.position.copy(wallsMesh.position);boxGroup.add(edges);
+  if(lid) placeLid();
+}
+
+// Geometries are treated as immutable (rotation makes a new one) so undo can keep references to them.
+function normalize(geo){ geo.computeBoundingBox(); const m=geo.boundingBox.min; geo.translate(-m.x,-m.y,-m.z); geo.computeBoundingBox(); if(!geo.attributes.normal) geo.computeVertexNormals(); return geo; }
+function edgesOf(geo){ return geo.userData.edges||(geo.userData.edges=new THREE.EdgesGeometry(geo,30)); }
+
+function makeMesh({geo,name,color,free,pos,hidden,locked,kind,printed,role,tilt}){
+  const mat=new THREE.MeshStandardMaterial({color,roughness:.6,metalness:0});
+  const mesh=new THREE.Mesh(geo,mat);
+  mesh.add(new THREE.LineSegments(edgesOf(geo),new THREE.LineBasicMaterial({color:0x000000,transparent:true,opacity:.25})));
+  mesh.userData={name,color,free:!!free,hidden:!!hidden,locked:!!locked,kind:kind||null,printed:!!printed,tilt:tilt||[0,0]};
+  // older layouts have no role: cards/dice and plain boxes are game components, real models are printed parts
+  mesh.userData.role=role||(kind?'game':printed?'print':(geo.index?geo.index.count:geo.attributes.position.count)<=36?'game':'print');
+  mesh.visible=!mesh.userData.hidden;
+  mesh.position.fromArray(pos||[0,0,0]);
+  buildDeco(mesh);
+  scene.add(mesh); pieces.push(mesh); return mesh;
+}
+
+// ===== Look of component placeholders =====
+// Cards and dice get a decoration drawn inside their box; the plain box stays (invisible) for picking and fit checks.
+const texCache=new Map();
+function canvasTex(key,w,h,draw){ if(texCache.has(key)) return texCache.get(key);
+  const c=document.createElement('canvas'); c.width=w; c.height=h; draw(c.getContext('2d'),w,h);
+  const t=new THREE.CanvasTexture(c); t.colorSpace=THREE.SRGBColorSpace; t.anisotropy=4; texCache.set(key,t); return t; }
+const hex=c=>'#'+c.toString(16).padStart(6,'0');
+function rr(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.roundRect(x,y,w,h,r); }
+function cardBackTex(color,label,aw,ah){
+  const W=Math.round(256*Math.min(1,aw/ah)), H=Math.round(256*Math.min(1,ah/aw));
+  return canvasTex(`back${color}${label}${W}x${H}`,W,H,(g,w,h)=>{
+    g.fillStyle='#f4f1e8'; g.fillRect(0,0,w,h);
+    const m=Math.min(w,h)*.06; rr(g,m,m,w-2*m,h-2*m,m*1.4); g.fillStyle=hex(color); g.fill();
+    g.save(); g.clip(); g.strokeStyle='rgba(255,255,255,.22)'; g.lineWidth=2;
+    for(let i=-h;i<w+h;i+=14){ g.beginPath(); g.moveTo(i,0); g.lineTo(i+h,h); g.stroke(); g.beginPath(); g.moveTo(i+h,0); g.lineTo(i,h); g.stroke(); }
+    g.restore();
+    g.strokeStyle='rgba(255,255,255,.85)'; g.lineWidth=3; rr(g,m*2.2,m*2.2,w-4.4*m,h-4.4*m,m); g.stroke();
+    const fs=Math.min(w,h)*.16; g.font=`700 ${fs}px "Bricolage Grotesque",system-ui,sans-serif`; g.textAlign='center'; g.textBaseline='middle';
+    g.fillStyle='rgba(0,0,0,.35)'; rr(g,w/2-fs*2,h/2-fs*.8,fs*4,fs*1.6,fs*.4); g.fill();
+    g.fillStyle='#fff'; g.fillText(label,w/2,h/2); }); }
+function edgeTex(color,repeat,vertical){
+  const base=canvasTex(`edge${color}`,8,16,(g,w,h)=>{ g.fillStyle='#fbfaf5'; g.fillRect(0,0,w,h); g.fillStyle=hex(color); g.globalAlpha=.55; g.fillRect(0,h/2,w,h/2); });
+  const t=base.clone(); t.needsUpdate=true; t.wrapS=t.wrapT=THREE.RepeatWrapping; t.magFilter=THREE.NearestFilter;
+  if(vertical){ t.center.set(.5,.5); t.rotation=Math.PI/2; } t.repeat.set(1,repeat); return t; }
+const PIPS={1:[[.5,.5]],2:[[.27,.27],[.73,.73]],3:[[.25,.25],[.5,.5],[.75,.75]],4:[[.27,.27],[.73,.27],[.27,.73],[.73,.73]],
+  5:[[.27,.27],[.73,.27],[.5,.5],[.27,.73],[.73,.73]],6:[[.27,.25],[.73,.25],[.27,.5],[.73,.5],[.27,.75],[.73,.75]]};
+function pipTex(n){ return canvasTex('pip'+n,128,128,(g,w,h)=>{ g.fillStyle='#fff'; rr(g,0,0,w,h,26); g.fill();
+  g.fillStyle='#1c1c1c'; for(const [x,y] of PIPS[n]){ g.beginPath(); g.arc(x*w,y*h,11,0,7); g.fill(); } }); }
+const DIE_COLORS=[0xffffff,0xe0533d,0x3d7fe0,0x3fae5a,0xe8c23a,0x9a5ad6];
+const SET=['d4','d6','d8','d10','d10','d12','d20'];
+function d10Geo(){ const v=[0,1,0, 0,-1,0]; for(let i=0;i<10;i++){ const a=i*Math.PI/5; v.push(Math.cos(a),i%2?-.11:.11,Math.sin(a)); }
+  const idx=[]; for(let i=0;i<10;i++){ const a=2+i,b=2+(i+1)%10; idx.push(0,b,a, 1,a,b); }
+  const g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.Float32BufferAttribute(v,3)); g.setIndex(idx); return g.toNonIndexed(); }
+// Each die shape scaled so it fits a sphere of the given size, so any orientation stays inside its cell.
+function dieGeo(shape,size){ let g;
+  if(shape==='d6') return new THREE.BoxGeometry(size*.95,size*.95,size*.95);
+  if(shape==='d4') g=new THREE.TetrahedronGeometry(1); else if(shape==='d8') g=new THREE.OctahedronGeometry(1);
+  else if(shape==='d12') g=new THREE.DodecahedronGeometry(1); else if(shape==='d20') g=new THREE.IcosahedronGeometry(1);
+  else if(shape==='d10') g=d10Geo(); else g=new THREE.SphereGeometry(1,10,6);
+  g.computeBoundingSphere(); const k=size/2/g.boundingSphere.radius; g.scale(k,k,k); g.computeVertexNormals(); return g; }
+function diceList(k){ return k.shape==='set'?Array.from({length:k.n},(_,i)=>SET[i%7]):Array(k.n).fill(k.shape||'d6'); }
+function buildDiceDeco(k,S){
+  const s=k.size, gap=0.15, step=s+gap, list=diceList(k);
+  const nx=Math.max(1,Math.floor((S.x+gap)/step)), ny=Math.max(1,Math.floor((S.y+gap)/step)), nz=Math.max(1,Math.floor((S.z+gap)/step));
+  const count=Math.min(list.length,nx*ny*nz), ox=(S.x-(nx*step-gap))/2, oz=(S.z-(nz*step-gap))/2;
+  const group=new THREE.Group(), byShape={}; group.userData.mats=[];
+  for(let i=0;i<count;i++) (byShape[list[i]]??=[]).push(i);
+  const M=new THREE.Matrix4(), q=new THREE.Quaternion(), e=new THREE.Euler(), col=new THREE.Color();
+  for(const [shape,ids] of Object.entries(byShape)){
+    const mats=shape==='d6'?[1,6,2,5,3,4].map(n=>new THREE.MeshStandardMaterial({map:pipTex(n),roughness:.35}))
+      :new THREE.MeshStandardMaterial({color:0xffffff,roughness:.3,flatShading:true});
+    const im=new THREE.InstancedMesh(dieGeo(shape,s),mats,ids.length);
+    ids.forEach((i,j)=>{ const ix=i%nx, iz=Math.floor(i/nx)%nz, iy=Math.floor(i/(nx*nz));
+      if(shape==='d6') e.set((i*7%4)*Math.PI/2,(i*3%4)*Math.PI/2+(((i*13)%9)-4)*0.05,(i*5%4)*Math.PI/2); else e.set(i*1.3,i*2.1,i*0.7);
+      q.setFromEuler(e); M.compose(new THREE.Vector3(ox+ix*step+s/2,iy*step+s/2,oz+iz*step+s/2),q,new THREE.Vector3(1,1,1)); im.setMatrixAt(j,M);
+      im.setColorAt(j,col.setHex(k.shape==='set'?DIE_COLORS[(Math.floor(i/7)+1)%DIE_COLORS.length]:DIE_COLORS[i%DIE_COLORS.length])); });
+    if(shape!=='d6'){ const ed=new THREE.EdgesGeometry(im.geometry,20); const lm=new THREE.LineBasicMaterial({color:0x000000,transparent:true,opacity:.35});
+      ids.forEach((i,j)=>{ const l=new THREE.LineSegments(ed,lm); im.getMatrixAt(j,M); l.applyMatrix4(M); group.add(l); }); }
+    group.add(im); group.userData.mats.push(...[mats].flat());
+  }
+  return group;
+}
+function buildDeco(m){
+  const old=m.children.find(c=>c.userData.deco); if(old){ m.remove(old); }
+  const k=m.userData.kind; m.userData.decoMats=null;
+  m.material.visible=!k; m.children[0].visible=!k;
+  if(!k) return;
+  const kd=kindDims(m), q=new THREE.Quaternion().fromArray(kd.q), S=new THREE.Vector3().fromArray(kd.dims), bb=new THREE.Box3(new THREE.Vector3(),S.clone()); let deco;
+  if(k.type==='cards'){
+    // the stack's thin axis is the one the cards are stacked along
+    const dims=[S.x,S.y,S.z], thin=dims.indexOf(Math.min(...dims));
+    const reps=Math.max(1,Math.min(k.n,160)/2);
+    const face=[0,1,2].filter(a=>a!==thin).map(a=>dims[a]);
+    const back=new THREE.MeshStandardMaterial({map:cardBackTex(m.userData.color,`${k.n}`,face[0],face[1]),roughness:.55});
+    // BoxGeometry face order: +x,-x,+y,-y,+z,-z; on each face decide whether stack layers run along u or v
+    const mats=[0,1,2,3,4,5].map(i=>{ const ax=Math.floor(i/2); if(ax===thin) return back;
+      // u/v axes of each face: x-faces (u=z,v=y), y-faces (u=x,v=z), z-faces (u=x,v=y)
+      const uv=[[2,1],[0,2],[0,1]][ax]; const vertical=uv[0]===thin;
+      return new THREE.MeshStandardMaterial({map:edgeTex(m.userData.color,reps,vertical),roughness:.8}); });
+    deco=new THREE.Mesh(new THREE.BoxGeometry(S.x,S.y,S.z),mats);
+    deco.position.copy(bb.getCenter(new THREE.Vector3()));
+    m.userData.decoMats=[...new Set(mats)];
+  } else if(k.type==='dice'){
+    deco=buildDiceDeco(k,S); m.userData.decoMats=deco.userData.mats;
+  }
+  // turn the deco about its centre, then sit its rotated box on the piece's min corner (same as the geometry)
+  const wrap=new THREE.Group(); deco.position.sub(S.clone().multiplyScalar(.5)); wrap.add(deco); wrap.quaternion.copy(q);
+  const rb=new THREE.Box3(S.clone().multiplyScalar(-.5),S.clone().multiplyScalar(.5)).applyMatrix4(new THREE.Matrix4().makeRotationFromQuaternion(q));
+  wrap.position.copy(rb.min).negate();
+  wrap.userData.deco=true; wrap.traverse(o=>o.raycast=()=>{}); m.add(wrap);
+}
+// The untilted size and orientation of a card/dice placeholder (older layouts didn't store it: use the current box).
+function kindDims(m){ const k=m.userData.kind;
+  if(k.dims&&k.q) return k; const S=m.geometry.boundingBox.getSize(new THREE.Vector3()); return {...k,dims:S.toArray(),q:[0,0,0,1]}; }
+
+function addPiece(geo,name,{select:doSel=true,record=true,color,kind,printed,role}={}){
+  normalize(geo);
+  const mesh=makeMesh({geo,name,kind,printed,role,color:color??PALETTE[colorIx++%PALETTE.length]});
+  findSpot(mesh,geo.boundingBox.getSize(new THREE.Vector3()));
+  if(doSel) setSel([mesh]); else refresh();
+  if(record) commit();
+  return mesh;
+}
+
+function findSpot(mesh,s){ // scan the floor for a free spot, else stack in the corner
+  const step=5;
+  for(let z=0;z+s.z<=B.d;z+=step)for(let x=0;x+s.x<=B.w;x+=step){
+    mesh.position.set(x,0,z);
+    if(s.y<=B.h && !pieces.some(o=>o!==mesh&&boxHit(aabb(mesh),aabb(o)))) return;
+  }
+  mesh.position.set(0,2000,0); dropDown(mesh);
+}
+
+function aabb(m){ m.updateMatrixWorld(); return new THREE.Box3().copy(m.geometry.boundingBox).applyMatrix4(m.matrixWorld); }
+function selBox(){ const b=new THREE.Box3(); sel.forEach(m=>b.union(aabb(m))); return b; }
+function tol(){return Math.max(0,+$('tol').value||0)}
+function boxHit(a,b){ const e=0.01; return a.min.x<b.max.x-e&&a.max.x>b.min.x+e&&a.min.y<b.max.y-e&&a.max.y>b.min.y+e&&a.min.z<b.max.z-e&&a.max.z>b.min.z+e; }
+
+// Exact shape test: bounding boxes overlap, but do the actual surfaces cross, or is one solid buried in the other?
+// The other piece is shrunk by ~0.2 mm so parts resting on each other don't count as touching.
+function bvh(m){ return m.geometry.boundsTree||(m.geometry.boundsTree=new MeshBVH(m.geometry)); }
+const _m=new THREE.Matrix4(),_v=new THREE.Vector3(),_c=new THREE.Vector3();
+function shrinkMatrix(m){ const bb=m.geometry.boundingBox, size=bb.getSize(_v), c=bb.getCenter(_c), e=0.2;
+  const k=new THREE.Vector3(Math.max(.01,1-2*e/size.x||1),Math.max(.01,1-2*e/size.y||1),Math.max(.01,1-2*e/size.z||1));
+  return new THREE.Matrix4().makeTranslation(c.x,c.y,c.z).multiply(new THREE.Matrix4().makeScale(k.x,k.y,k.z)).multiply(new THREE.Matrix4().makeTranslation(-c.x,-c.y,-c.z)); }
+function inside(pWorld,m){ const inv=new THREE.Matrix4().copy(m.matrixWorld).invert();
+  const ray=new THREE.Ray(pWorld.clone().applyMatrix4(inv),new THREE.Vector3(.577,.5771,.5772).normalize());
+  return bvh(m).raycast(ray,THREE.DoubleSide).length%2===1; }
+const pairCache=new Map();
+function shapesHit(a,b){
+  const key=a.uuid<b.uuid?a.uuid+b.uuid:b.uuid+a.uuid;
+  const sig=a.matrixWorld.elements.join()+b.matrixWorld.elements.join()+a.geometry.uuid+b.geometry.uuid;
+  const hit=pairCache.get(key); if(hit&&hit.sig===sig) return hit.v;
+  // shrink the smaller piece: shrinking a hollow tray would lift its floor into whatever rests in it
+  const vol=m=>{ const z=m.geometry.boundingBox.getSize(new THREE.Vector3()); return z.x*z.y*z.z; };
+  if(vol(b)>vol(a)) [a,b]=[b,a];
+  bvh(a); bvh(b); a.updateMatrixWorld(); b.updateMatrixWorld();
+  _m.copy(a.matrixWorld).invert().multiply(b.matrixWorld).multiply(shrinkMatrix(b));
+  let v=bvh(a).intersectsGeometry(b.geometry,_m);
+  if(!v){ const p=new THREE.Vector3().fromBufferAttribute(b.geometry.attributes.position,0).applyMatrix4(shrinkMatrix(b)).applyMatrix4(b.matrixWorld);
+    const q=new THREE.Vector3().fromBufferAttribute(a.geometry.attributes.position,0).applyMatrix4(shrinkMatrix(a)).applyMatrix4(a.matrixWorld);
+    v=inside(p,a)||inside(q,b); }
+  pairCache.set(key,{sig,v}); return v;
+}
+// 'clear' | 'nested' (boxes overlap, shapes don't) | 'overlap'
+function pair(a,b){
+  if(!boxHit(aabb(a),aabb(b))) return 'clear';
+  if(a.userData.free||b.userData.free) return 'nested';
+  if(!$('exact').checked) return 'overlap';
+  try{ return shapesHit(a,b)?'overlap':'nested'; }catch(e){ console.warn(e); return 'overlap'; }
+}
+function wallTight(a){ const t=tol()-0.01; return t>0&&(a.min.x<t||a.min.z<t||a.max.x>B.w-t||a.max.z>B.d-t); }
+function tight(a,b){ const t=tol(); if(t<=0) return false; const g=new THREE.Box3(a.min.clone().subScalar(t-0.01),a.max.clone().addScalar(t-0.01)); g.min.y=a.min.y+0.01;g.max.y=a.max.y-0.01; return boxHit(g,b); }
+
+// Samples rays straight down from the piece's underside onto the actual shapes below it (so it can settle into a tray cavity).
+// Pieces above it are ignored.
+const _down=new THREE.Vector3(0,-1,0), _ray=new THREE.Ray(), _inv=new THREE.Matrix4();
+function surfaceBelow(o,x0,x1,z0,z1,fromY){
+  const n=(a,b)=>Math.min(24,Math.max(2,Math.ceil((b-a)/3))), nx=n(x0,x1), nz=n(z0,z1); let best=-Infinity;
+  _inv.copy(o.matrixWorld).invert();
+  for(let i=0;i<nx;i++)for(let j=0;j<nz;j++){
+    const x=x0+(x1-x0)*(i/(nx-1)), z=z0+(z1-z0)*(j/(nz-1));
+    _ray.origin.set(x,fromY,z).applyMatrix4(_inv); _ray.direction.copy(_down).transformDirection(_inv);
+    const h=bvh(o).raycastFirst(_ray,THREE.DoubleSide);
+    if(h){ const y=h.point.applyMatrix4(o.matrixWorld).y; if(y>best) best=y; } }
+  return best;
+}
+function dropDown(m,ignore=[]){
+  const a=aabb(m), from=a.min.y+0.05; let rest=0;
+  for(const o of pieces){ if(o===m||ignore.includes(o)) continue; const b=aabb(o);
+    if(b.min.y>=from) continue;                                   // above us: not in the way
+    const x0=Math.max(a.min.x,b.min.x)+0.3, x1=Math.min(a.max.x,b.max.x)-0.3, z0=Math.max(a.min.z,b.min.z)+0.3, z1=Math.min(a.max.z,b.max.z)-0.3;
+    if(x0>=x1||z0>=z1) continue;                                  // no shared footprint
+    const y=surfaceBelow(o,x0,x1,z0,z1,from); if(y<=from&&y>rest) rest=y; }
+  m.position.y+=rest-a.min.y;
+}
+function liftOutOfOverlaps(m){ // a piece buried in another first rises to sit on top of it, then falls
+  for(let k=0;k<pieces.length;k++){ const hit=pieces.find(o=>o!==m&&pair(m,o)==='overlap'); if(!hit) return; m.position.y+=aabb(hit).max.y-aabb(m).min.y+0.01; } }
+function dropSelection(){ // lowest first, so stacked selections settle in order
+  const order=[...sel].sort((a,b)=>aabb(a).min.y-aabb(b).min.y);
+  const pending=[...order];
+  for(const m of order){ pending.shift(); liftOutOfOverlaps(m); dropDown(m,pending); }
+  syncProxy(); refresh(); commit();
+}
+
+// --- proxy / multi-move / snapping
+function syncProxy(){
+  if(!sel.length){ tc.detach(); return; }
+  proxy.position.copy(selBox().min); lastPos.copy(proxy.position); tc.attach(proxy);
+}
+function applyProxy(){
+  const d=proxy.position.clone().sub(lastPos);
+  if(d.lengthSq()===0) return;
+  sel.forEach(m=>m.position.add(d)); lastPos.copy(proxy.position);
+}
+// Find the nearest snap target for one axis; returns the new min-coordinate or null.
+function nearest(v,cands,th){ let best=null,bd=th+1e-9; for(const c of cands){ const d=Math.abs(v-c); if(d<=bd){bd=d;best=c;} } return best; }
+// Distance from one face of the moving box [p, p+S] to the nearest real surface of another piece, along axis `ax`
+// in direction `sg` (+1/-1). Rays start `th` inside the face, so slight overlaps are found too.
+// Returns the gap (negative = overlapping), or Infinity if nothing is within reach.
+const _r=new THREE.Ray(), _iv=new THREE.Matrix4(), AX=['x','y','z'];
+function faceGap(ax,sg,p,S,th,others){
+  const [u,v]=[0,1,2].filter(a=>a!==ax), face=sg>0?p.getComponent(ax)+S.getComponent(ax):p.getComponent(ax);
+  const span=(a)=>[p.getComponent(a)+0.4,p.getComponent(a)+S.getComponent(a)-0.4];
+  const [u0,u1]=span(u),[v0,v1]=span(v); if(u1<=u0||v1<=v0) return Infinity;
+  const nu=Math.min(7,Math.max(2,Math.ceil((u1-u0)/12))), nv=Math.min(7,Math.max(2,Math.ceil((v1-v0)/12)));
+  // the slab this face sweeps through, to skip pieces that can't be hit
+  const reach=new THREE.Box3().copy(new THREE.Box3(p.clone(),p.clone().add(S)));
+  reach.min.setComponent(ax,sg>0?face-th:face-2*th); reach.max.setComponent(ax,sg>0?face+2*th:face+th);
+  let best=Infinity; const dir=new THREE.Vector3().setComponent(ax,sg), o3=new THREE.Vector3();
+  for(const o of others){ const b=aabb(o); if(!b.intersectsBox(reach)) continue;
+    _iv.copy(o.matrixWorld).invert();
+    for(let i=0;i<nu;i++)for(let j=0;j<nv;j++){
+      o3.set(0,0,0).setComponent(ax,face-sg*th).setComponent(u,u0+(u1-u0)*i/(nu-1)).setComponent(v,v0+(v1-v0)*j/(nv-1));
+      _r.origin.copy(o3).applyMatrix4(_iv); _r.direction.copy(dir).transformDirection(_iv);
+      const h=bvh(o).raycastFirst(_r,THREE.DoubleSide,0,3*th);
+      if(h&&h.distance-th<best) best=h.distance-th; } }
+  return best;
+}
+function snapProxy(){
+  const p=proxy.position, s=+$('snap').value||0;
+  if(s>0){ p.x=Math.round(p.x/s)*s; p.y=Math.round(p.y/s)*s; p.z=Math.round(p.z/s)*s; }
+  if(p.y<0) p.y=0;
+  const th=Math.max(0,+$('wallDist').value||0); if(!th) return;
+  const S=selBox().getSize(new THREE.Vector3()), t=tol();
+  const C={x:[],y:[0],z:[]};
+  if($('wallSnap').checked){ C.x.push(t,B.w-S.x-t); C.z.push(t,B.d-S.z-t); if(B.h-S.y>th) C.y.push(B.h-S.y); }
+  if($('pieceSnap').checked){
+    const others=pieces.filter(o=>!sel.includes(o)&&o.visible);
+    // 1) touch the nearest real surface: works against outer sides and the inner walls/floor of a tray
+    for(const ax of [0,2]){ const k=AX[ax];
+      const gp=faceGap(ax,+1,p,S,th,others), gm=faceGap(ax,-1,p,S,th,others);
+      if(Math.abs(gp)<=th) C[k].push(p[k]+gp); if(Math.abs(gm)<=th) C[k].push(p[k]-gm); }
+    const gd=faceGap(1,-1,p,S,th,others); if(Math.abs(gd)<=th) C.y.push(p.y-gd);
+    // 2) line up edges with a piece that sits next to it (side by side, not overlapping)
+    const ov=(a0,a1,b0,b1)=>a0<b1-0.01&&a1>b0+0.01, adj=(a0,a1,b0,b1)=>!ov(a0,a1,b0,b1)&&Math.min(Math.abs(a0-b1),Math.abs(b0-a1))<=th;
+    for(const o of others){ const b=aabb(o); if(!ov(p.y,p.y+S.y,b.min.y,b.max.y)) continue;
+      if(adj(p.z,p.z+S.z,b.min.z,b.max.z)) C.x.push(b.min.x,b.max.x-S.x);
+      if(adj(p.x,p.x+S.x,b.min.x,b.max.x)) C.z.push(b.min.z,b.max.z-S.z); }
+  }
+  const nx=nearest(p.x,C.x,th), nz=nearest(p.z,C.z,th), ny=nearest(p.y,C.y,th);
+  if(nx!==null) p.x=nx; if(nz!==null) p.z=nz; if(ny!==null) p.y=Math.max(0,ny);
+}
+function moveSelBy(dx,dy,dz){ proxy.position.add(new THREE.Vector3(dx,dy,dz)); applyProxy(); refresh(); commitSoon(); }
+function moveSelTo(axis,v){ const d=v-selBox().min[axis]; proxy.position[axis]+=d; applyProxy(); refresh(); commit(); }
+
+function rotated(geo,axis){
+  const g=geo.clone(); g.userData={}; g.boundsTree=null;
+  if(axis==='z') g.rotateY(Math.PI/2); if(axis==='x') g.rotateX(Math.PI/2); if(axis==='y') g.rotateZ(Math.PI/2);
+  return normalize(g);
+}
+function setGeo(m,g){ m.geometry=g; m.children[0].geometry=edgesOf(g); buildDeco(m); }
+// Rotate the whole selection as one rigid group around its shared centre, keeping the group's min corner in place.
+function rotateSel(axis){
+  if(!sel.length) return;
+  const G=selBox(), center=G.getCenter(new THREE.Vector3()), oldMin=G.min.clone();
+  const R=new THREE.Matrix4();
+  if(axis==='z') R.makeRotationY(Math.PI/2); if(axis==='x') R.makeRotationX(Math.PI/2); if(axis==='y') R.makeRotationZ(Math.PI/2);
+  const Rq=new THREE.Quaternion().setFromRotationMatrix(R);
+  for(const m of sel){
+    const c=aabb(m).getCenter(new THREE.Vector3()).sub(center).applyMatrix4(R).add(center);
+    if(m.userData.kind){ const q=new THREE.Quaternion().fromArray(m.userData.kind.q||[0,0,0,1]).premultiply(Rq); m.userData.kind={...kindDims(m),q:q.toArray()}; }
+    setGeo(m,rotated(m.geometry,axis));
+    const half=m.geometry.boundingBox.getSize(new THREE.Vector3()).multiplyScalar(.5);
+    m.position.copy(c).sub(half);
+  }
+  const shift=oldMin.sub(selBox().min);
+  sel.forEach(m=>m.position.add(shift));
+  syncProxy(); refresh(); commit();
+}
+
+function setSel(list){ sel=list.filter(m=>m&&!m.userData.locked&&!m.userData.hidden); syncProxy(); refresh(); }
+function toggleSel(m){ setSel(sel.includes(m)?sel.filter(x=>x!==m):[...sel,m]); }
+
+function status(m){
+  const a=aabb(m), t=0.01;
+  if(a.min.x<-t||a.min.z<-t||a.max.x>B.w+t||a.max.z>B.d+t) return ['bad','outside walls'];
+  if(a.max.y>B.h+t) return ['bad',`${(a.max.y-B.h).toFixed(1)} over lid`];
+  let nestedIn=null;
+  for(const o of pieces){ if(o===m) continue; const p=pair(m,o);
+    if(p==='overlap') return ['bad','overlaps '+o.userData.name]; if(p==='nested') nestedIn=o; }
+  if(m.userData.free) return ['','overlaps ignored'];
+  if(wallTight(a)) return ['warn','tight to wall'];
+  if(nestedIn) return ['','fits, nested with '+nestedIn.userData.name];
+  return ['','fits'];
+}
+
+function refresh(){
+  let bad=0,warn=0,vol=0;
+  const items=pieces.map(m=>{const [k,txt]=status(m); if(k==='bad')bad++; if(k==='warn')warn++;
+    const s=aabb(m).getSize(new THREE.Vector3()); vol+=s.x*s.y*s.z;
+    const em=k==='bad'?0x661100:(sel.includes(m)?0x1c2452:0); m.material.emissive.setHex(em); (m.userData.decoMats||[]).forEach(x=>x.emissive.setHex(em)); return {m,k,txt};});
+  const LP=$('listPrint'), LG=$('listGame'); LP.innerHTML=''; LG.innerHTML='';
+  const nP=pieces.filter(m=>m.userData.role==='print').length, nG=pieces.length-nP;
+  $('hPrint').textContent=`Printed parts (${nP})`; $('hGame').textContent=`Game components (${nG})`;
+  if(!nP) LP.innerHTML='<li style="cursor:default"><span></span><span class="muted">None yet. Drop in STL or 3MF files.</span><span></span></li>';
+  if(!nG) LG.innerHTML='<li style="cursor:default"><span></span><span class="muted">None yet. Add cards, dice or blocks.</span><span></span></li>';
+  for(const {m,k,txt} of items){ const li=document.createElement('li'); if(sel.includes(m)) li.className='sel'; const list=m.userData.role==='print'?LP:LG;
+    const u=m.userData;
+    if(u.hidden) li.classList.add('hid'); if(u.locked) li.classList.add('lock');
+    li.innerHTML=`<span class="sw" style="background:#${u.color.toString(16).padStart(6,'0')}"></span><span class="nm"></span><span class="st ${k}">${txt}</span>`+
+      `<button class="ib eye${u.hidden?'':' on'}" title="${u.hidden?'Show':'Hide'}" aria-label="${u.hidden?'Show':'Hide'} piece">${u.hidden?ICON.eyeOff:ICON.eye}</button>`+
+      `<button class="ib lk${u.locked?' on':''}" title="${u.locked?'Unlock':'Lock'}" aria-label="${u.locked?'Unlock':'Lock'} piece">${u.locked?ICON.lock:ICON.unlock}</button>`;
+    li.querySelector('.nm').textContent=u.name;
+    li.querySelector('.eye').onclick=e=>{ e.stopPropagation(); u.hidden=!u.hidden; m.visible=!u.hidden; if(u.hidden) setSel(sel.filter(x=>x!==m)); else refresh(); commit(); };
+    li.querySelector('.lk').onclick=e=>{ e.stopPropagation(); u.locked=!u.locked; if(u.locked) setSel(sel.filter(x=>x!==m)); else refresh(); commit(); };
+    li.onclick=e=>{ if(u.locked){ toast('Locked. Unlock it to move it.'); return; } if(u.hidden){ toast('Hidden. Show it to select it.'); return; }
+      (e.shiftKey||e.ctrlKey||e.metaKey)?toggleSel(m):setSel([m]); };
+    list.appendChild(li); }
+  renderProblems();
+  const st=$('status'); const boxVol=B.w*B.d*B.h;
+  st.className='status '+(bad?'bad':pieces.length?'ok':'');
+  st.innerHTML=pieces.length?`<strong>${bad?bad+' problem'+(bad>1?'s':''):'Everything fits'}</strong>${warn?` · ${warn} tight`:''}<br><span class="muted">${pieces.length} pieces · ${Math.round(vol/boxVol*100)}% of box volume (bounding boxes)</span>`:'Add a piece to start.';
+  if(explodeT) computeExplode(explodeT); renderEstimate();
+  $('selPanel').hidden=!sel.length;
+  if(sel.length){
+    const a=selBox(), s=a.getSize(new THREE.Vector3()), multi=sel.length>1, ae=document.activeElement;
+    $('selTitle').textContent=multi?`${sel.length} pieces selected`:'Selected';
+    $('sname').hidden=multi;
+    if(ae!==$('px')) $('px').value=f(a.min.x);
+    if(ae!==$('py')) $('py').value=f(a.min.z);
+    if(ae!==$('pz')) $('pz').value=f(a.min.y);
+    if(!multi && ae!==$('sname')) $('sname').value=sel[0].userData.name;
+    $('free').checked=sel.every(m=>m.userData.free);
+    const roles=new Set(sel.map(m=>m.userData.role)); $('sRole').value=roles.size>1?'mixed':[...roles][0];
+    $('tiltBox').hidden=!sel.every(m=>m.userData.role==='game');
+    const tl=sel[0].userData.tilt||[0,0]; if(ae!==$('tiltX')) $('tiltX').value=tl[0]; if(ae!==$('tiltZ')) $('tiltZ').value=tl[1];
+    $('splitRow').hidden=multi||sel[0].userData.kind!=null; $('splitInfo').textContent='';
+    const ax=+$('cutAxis').value, len=s.getComponent(ax); $('cutInfo').textContent=cutHelp(len);
+    if(ae!==$('szW')) $('szW').value=f(s.x); if(ae!==$('szD')) $('szD').value=f(s.z); if(ae!==$('szH')) $('szH').value=f(s.y);
+    $('sdims').textContent=`${f(s.x)} × ${f(s.z)} × ${f(s.y)} mm (W×D×H)${multi?' as a group':''}`;
+  }
+}
+
+
+// ===== Overlap report: every collision and wall/lid problem, with how much to trim or move =====
+const AXN=['width','height','depth'];
+function smallestFix(a,b){ // overlap of two boxes per axis; the smallest one is the least you need to move or trim
+  const e=[Math.min(a.max.x,b.max.x)-Math.max(a.min.x,b.min.x),Math.min(a.max.y,b.max.y)-Math.max(a.min.y,b.min.y),Math.min(a.max.z,b.max.z)-Math.max(a.min.z,b.min.z)];
+  let ax=0; for(let i=1;i<3;i++) if(e[i]<e[ax]) ax=i; return {mm:e[ax],ax}; }
+function renderProblems(){
+  const ul=$('listProb'), rows=[], t=0.01;
+  for(const m of pieces){ const a=aabb(m), n=m.userData.name;
+    const out=Math.max(-a.min.x,-a.min.z,a.max.x-B.w,a.max.z-B.d);
+    if(out>t) rows.push({txt:`${n} sticks out of the box`,mm:out,ax:null,list:[m]});
+    if(a.max.y>B.h+t) rows.push({txt:`${n} is above the lid`,mm:a.max.y-B.h,ax:1,list:[m]}); }
+  for(let i=0;i<pieces.length;i++) for(let j=i+1;j<pieces.length;j++){ const a=pieces[i], b=pieces[j];
+    if(pair(a,b)!=='overlap') continue; const fx=smallestFix(aabb(a),aabb(b));
+    rows.push({txt:`${a.userData.name} ↔ ${b.userData.name}`,mm:fx.mm,ax:fx.ax,list:[a,b],pair:true}); }
+  $('probSec').hidden=!rows.length; ul.innerHTML='';
+  if(!rows.length) return;
+  rows.sort((x,y)=>y.mm-x.mm);
+  $('hProb').textContent=`Problems (${rows.length})`;
+  $('probNote').textContent=rows.some(r=>r.pair)?'Each figure is the least you need to move or trim, along the direction shown.'+($('exact').checked?' Collisions are measured on bounding boxes, so the real overlap can be smaller.':''):'Click a row to select the pieces.';
+  for(const r of rows){ const li=document.createElement('li');
+    li.innerHTML='<span class="nm"></span><span class="amt"></span>';
+    li.querySelector('.nm').textContent=r.txt;
+    li.querySelector('.amt').textContent=`${r.pair&&$('exact').checked?'up to ':''}${f(r.mm)} mm${r.ax!=null?' '+AXN[r.ax]:''}`;
+    li.title='Select '+(r.list.length>1?'both pieces':'this piece');
+    li.onclick=()=>{ const ok=r.list.filter(m=>!m.userData.locked&&!m.userData.hidden); if(!ok.length){ toast('Locked or hidden. Unlock or show it to select it.'); return; } setSel(ok); };
+    ul.appendChild(li); }
+}
+
+// ===== Undo / redo =====
+// A snapshot holds the box size and each piece's geometry reference + placement. Geometries are never mutated.
+const SETTINGS=['snap','tol','wallDist'], FLAGS=['exact','wallSnap','pieceSnap'];
+function snapshot(){
+  return { box:{...B}, settings:Object.fromEntries([...SETTINGS.map(k=>[k,$(k).value]),...FLAGS.map(k=>[k,$(k).checked])]),
+    pieces:pieces.map(m=>({geo:m.geometry,name:m.userData.name,color:m.userData.color,free:m.userData.free,hidden:m.userData.hidden,locked:m.userData.locked,kind:m.userData.kind,printed:m.userData.printed,role:m.userData.role,tilt:m.userData.tilt,pos:m.position.toArray()})),
+    sel:sel.map(m=>pieces.indexOf(m)) };
+}
+function sigOf(s){ return JSON.stringify([s.box,s.pieces.map(p=>[p.geo.uuid,p.name,p.free,p.hidden,p.locked,p.role,p.tilt,p.kind&&p.kind.q,p.pos.map(v=>+v.toFixed(3))])]); }
+function restore(s,{keepSel=true}={}){
+  tc.detach(); for(const m of pieces){ scene.remove(m); m.material.dispose(); } pieces=[]; pairCache.clear();
+  $('bw').value=s.box.w; $('bd').value=s.box.d; $('bh').value=s.box.h;
+  if(s.settings){ SETTINGS.forEach(k=>{ if(s.settings[k]!=null) $(k).value=s.settings[k]; }); FLAGS.forEach(k=>{ if(s.settings[k]!=null) $(k).checked=s.settings[k]; }); }
+  buildBox();
+  s.pieces.forEach(p=>makeMesh(p));
+  colorIx=pieces.length;
+  clearPockets(); clearMeasure();
+  setSel(keepSel&&s.sel?s.sel.map(i=>pieces[i]):[]);
+}
+let undoStack=[], redoStack=[], current=null;
+function commit(){
+  clearTimeout(commitSoon.t);
+  const s=snapshot(); if(current&&sigOf(s)===sigOf(current)) return;
+  if(current) undoStack.push(current); if(undoStack.length>100) undoStack.shift();
+  current=s; redoStack=[]; updateUndo(); clearPockets(); autosave();
+}
+function commitSoon(){ clearTimeout(commitSoon.t); commitSoon.t=setTimeout(commit,500); }
+function undo(){ clearTimeout(commitSoon.t); const s=snapshot(); if(current&&sigOf(s)!==sigOf(current)){ undoStack.push(current); current=s; }
+  if(!undoStack.length) return; redoStack.push(current); current=undoStack.pop(); restore(current); updateUndo(); autosave(); toast('Undone'); }
+function redo(){ if(!redoStack.length) return; undoStack.push(current); current=redoStack.pop(); restore(current); updateUndo(); autosave(); toast('Redone'); }
+function updateUndo(){ $('undo').disabled=!undoStack.length; $('redo').disabled=!redoStack.length; }
+$('undo').onclick=undo; $('redo').onclick=redo;
+
+// ===== Saved layouts (IndexedDB, models included) =====
+const AUTO='__autosave__';
+let dbP=null;
+function db(){ return dbP||(dbP=new Promise((res,rej)=>{ try{ const r=indexedDB.open('insert-fit-planner',1);
+  r.onupgradeneeded=()=>r.result.createObjectStore('layouts',{keyPath:'name'}); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }catch(e){ rej(e); } })); }
+async function idb(mode,fn){ const d=await db(); return new Promise((res,rej)=>{ const tx=d.transaction('layouts',mode); const st=tx.objectStore('layouts'); const r=fn(st); tx.oncomplete=()=>res(r&&r.result); tx.onerror=()=>rej(tx.error); }); }
+function serialize(name,s){
+  const geos=new Map();
+  for(const p of s.pieces) if(!geos.has(p.geo.uuid)){ const g=p.geo;
+    geos.set(g.uuid,{pos:new Float32Array(g.attributes.position.array), idx:g.index?Array.from(g.index.array):null}); }
+  return { name, saved:Date.now(), box:s.box, settings:s.settings, geos:Object.fromEntries(geos),
+    pieces:s.pieces.map(p=>({geo:p.geo.uuid,name:p.name,color:p.color,free:p.free,hidden:p.hidden,locked:p.locked,kind:p.kind,printed:p.printed,role:p.role,tilt:p.tilt,pos:p.pos})), checklist };
+}
+function deserialize(rec){
+  const geos={};
+  for(const [id,g] of Object.entries(rec.geos)){ const geo=new THREE.BufferGeometry();
+    geo.setAttribute('position',new THREE.BufferAttribute(new Float32Array(g.pos),3)); if(g.idx) geo.setIndex(g.idx);
+    geo.computeVertexNormals(); geo.computeBoundingBox(); geos[id]=geo; }
+  if(rec.checklist){ checklist=rec.checklist; renderChecklist(); }
+  return { box:rec.box, settings:rec.settings, pieces:rec.pieces.map(p=>({...p,geo:geos[p.geo]})), sel:[] };
+}
+let autoT=null;
+function autosave(){ clearTimeout(autoT); autoT=setTimeout(()=>{ idb('readwrite',st=>st.put(serialize(AUTO,current))).catch(()=>{}); },800); }
+async function renderSlots(){
+  const ul=$('slots'); let all=[];
+  try{ all=(await idb('readonly',st=>st.getAll()))||[]; }catch(e){ ul.innerHTML='<li><span class="muted">Saving is not available in this browser window.</span></li>'; return; }
+  all=all.filter(r=>r.name!==AUTO).sort((a,b)=>b.saved-a.saved);
+  ul.innerHTML=all.length?'':'<li><span class="muted">No saved layouts yet.</span></li>';
+  for(const r of all){ const li=document.createElement('li');
+    li.innerHTML=`<span class="nm"><span></span><br><span class="when"></span></span><button>Load</button><button class="danger">Delete</button>`;
+    li.querySelector('.nm span').textContent=r.name;
+    li.querySelector('.when').textContent=`${r.pieces.length} pieces · ${new Date(r.saved).toLocaleString([], {dateStyle:'medium',timeStyle:'short'})}`;
+    const [load,del]=li.querySelectorAll('button');
+    load.onclick=()=>{ restore(deserialize(r),{keepSel:false}); commit(); $('slotName').value=r.name; view('3d'); toast(`Loaded “${r.name}”`); };
+    del.onclick=async()=>{ if(del.dataset.armed){ await idb('readwrite',st=>st.delete(r.name)); renderSlots(); toast('Deleted'); }
+      else { del.dataset.armed=1; del.textContent='Sure?'; setTimeout(()=>{ delete del.dataset.armed; del.textContent='Delete'; },2500); } };
+    ul.appendChild(li); }
+}
+$('saveSlot').onclick=async()=>{ const name=$('slotName').value.trim(); if(!name){ $('slotName').focus(); toast('Give the layout a name first'); return; }
+  commit();
+  try{ await idb('readwrite',st=>st.put(serialize(name,current))); toast(`Saved “${name}”`); renderSlots(); }
+  catch(e){ toast('Could not save: '+(e.message||'storage blocked')); } };
+$('slotName').addEventListener('keydown',e=>{ if(e.key==='Enter') $('saveSlot').click(); });
+
+
+// ===== Layout files (.insert): the same record as a saved layout, as gzipped JSON with the models in base64 =====
+const b64=u8=>{ let s=''; for(let i=0;i<u8.length;i+=0x8000) s+=String.fromCharCode.apply(null,u8.subarray(i,i+0x8000)); return btoa(s); };
+const unb64=str=>{ const s=atob(str), u=new Uint8Array(s.length); for(let i=0;i<s.length;i++) u[i]=s.charCodeAt(i); return u; };
+async function gz(text,mode){ // mode: 'compress' | 'decompress'; falls back to plain text where streams are missing
+  const S=mode==='compress'?window.CompressionStream:window.DecompressionStream; if(!S) return null;
+  return new Response(new Blob([text]).stream().pipeThrough(new S('gzip'))).arrayBuffer(); }
+$('fileSave').onclick=async()=>{ commit(); const rec=serialize(baseName(),current);
+  const geos={}; for(const [id,g] of Object.entries(rec.geos)) geos[id]={pos:b64(new Uint8Array(g.pos.buffer)),idx:g.idx?b64(new Uint8Array(new Uint32Array(g.idx).buffer)):null};
+  const json=JSON.stringify({format:'insert-fit-planner',version:1,layout:{...rec,geos}});
+  let data; try{ data=await gz(json,'compress'); }catch(e){ data=null; }
+  saveFile(baseName()+'.insert',data?new Blob([data],{type:'application/gzip'}):new Blob([json],{type:'application/json'})); };
+$('fileOpen').onclick=()=>$('layoutFile').click();
+$('layoutFile').onchange=e=>{ if(e.target.files[0]) openLayout(e.target.files[0]); e.target.value=''; };
+async function openLayout(file){
+  try{
+    const buf=new Uint8Array(await file.arrayBuffer()); let text;
+    if(buf[0]===0x1f&&buf[1]===0x8b){ const out=await gz(buf,'decompress'); if(!out) throw new Error('this browser cannot unpack it'); text=new TextDecoder().decode(out); }
+    else text=new TextDecoder().decode(buf);
+    const doc=JSON.parse(text);
+    if(doc.format!=='insert-fit-planner'||!doc.layout||!doc.layout.geos||!Array.isArray(doc.layout.pieces)) throw new Error('not an Insert Fit Planner layout');
+    if(doc.version>1) throw new Error('made by a newer version of the planner');
+    const L=doc.layout, geos={};
+    for(const [id,g] of Object.entries(L.geos)){ const p=unb64(g.pos), q=g.idx?unb64(g.idx):null;
+      geos[id]={pos:new Float32Array(p.buffer,0,p.length>>2),idx:q?Array.from(new Uint32Array(q.buffer,0,q.length>>2)):null}; }
+    if(L.pieces.some(p=>!geos[p.geo])) throw new Error('a model is missing from the file');
+    restore(deserialize({...L,geos}),{keepSel:false}); commit();
+    if(L.name) $('slotName').value=L.name; view('3d'); toast(`Opened “${L.name||file.name}”`);
+  }catch(err){ fail(file.name,err); }
+}
+
+// ===== Measure =====
+let measuring=false, mPts=[], mGroup=new THREE.Group(); scene.add(mGroup);
+const labelsEl=$('labels'); let labelItems=[];
+function addLabel(pos,html,cls='mlabel'){ const d=document.createElement('div'); d.className=cls; d.innerHTML=html; labelsEl.appendChild(d); const it={pos,d}; labelItems.push(it); return it; }
+function removeLabels(filter){ labelItems=labelItems.filter(it=>{ if(filter(it)){ it.d.remove(); return false; } return true; }); }
+function clearMeasure(){ mPts=[]; mGroup.clear(); removeLabels(it=>it.kind==='m'); }
+function setMeasuring(on){ measuring=on; $('measureBtn').classList.toggle('on',on); if(on){ select0(); toast('Click two points to measure'); } else clearMeasure(); }
+function select0(){ setSel([]); }
+$('measureBtn').onclick=()=>{ if(thickMode) setThick(false); setMeasuring(!measuring); };
+let thickMode=false;
+function setThick(on){ thickMode=on; $('thickBtn').classList.toggle('on',on); clearMeasure(); if(on){ if(measuring) setMeasuring(false); setSel([]); toast('Click a wall or floor to see its thickness'); } }
+$('thickBtn').onclick=()=>setThick(!thickMode);
+// From the clicked point, shoot a ray straight into the part (against the surface normal) to the far side.
+function thicknessAt(hit){
+  const m=hit.object, n=hit.face.normal.clone().normalize(), inv=new THREE.Matrix4().copy(m.matrixWorld).invert();
+  const local=hit.point.clone().applyMatrix4(inv), ray=new THREE.Ray(local.clone().addScaledVector(n,-0.01),n.clone().negate());
+  const h=bvh(m).raycastFirst(ray,THREE.DoubleSide); clearMeasure();
+  const a=hit.point.clone(); const d1=dot(); d1.position.copy(a); d1.renderOrder=10; mGroup.add(d1);
+  if(!h){ const it=addLabel(a,'No far side found (open model?)'); it.kind='m'; return; }
+  const b=h.point.clone().applyMatrix4(m.matrixWorld), d2=dot(); d2.position.copy(b); d2.renderOrder=10; mGroup.add(d2);
+  const line=new THREE.Line(new THREE.BufferGeometry().setFromPoints([a,b]),new THREE.LineBasicMaterial({color:0x8e9cff,depthTest:false})); line.renderOrder=10; mGroup.add(line);
+  const it=addLabel(a.clone().add(b).multiplyScalar(.5),`<strong>${(h.distance+0.01).toFixed(2)} mm</strong> <small>thick</small>`); it.kind='m'; }
+const dot=()=>new THREE.Mesh(new THREE.SphereGeometry(1.6,12,8),new THREE.MeshBasicMaterial({color:0x8e9cff,depthTest:false}));
+function measureClick(hit){
+  if(mPts.length>=2) clearMeasure();
+  const p=hit.clone(); mPts.push(p); const d=dot(); d.position.copy(p); d.renderOrder=10; mGroup.add(d);
+  if(mPts.length===2){ const [a,b]=mPts;
+    const line=new THREE.Line(new THREE.BufferGeometry().setFromPoints([a,b]),new THREE.LineBasicMaterial({color:0x8e9cff,depthTest:false})); line.renderOrder=10; mGroup.add(line);
+    const dx=Math.abs(b.x-a.x), dy=Math.abs(b.z-a.z), dz=Math.abs(b.y-a.y);
+    const it=addLabel(a.clone().add(b).multiplyScalar(.5),`<strong>${f(a.distanceTo(b))} mm</strong> <small>X ${f(dx)} · Y ${f(dy)} · Z ${f(dz)}</small>`); it.kind='m'; }
+}
+
+// ===== Free space finder =====
+// Height map from above (exact shapes, so tray cavities count), then the largest empty rectangle at each floor level.
+let pocketGroup=new THREE.Group(); scene.add(pocketGroup); let pockets=[];
+function clearPockets(){ pocketGroup.clear(); pockets=[]; removeLabels(it=>it.kind==='p'); $('pocketPanel').hidden=true; $('pocketBtn').classList.remove('on'); }
+function largestRect(ok,nx,nz){ // ok: Uint8Array nz*nx; returns {area,x0,z0,w,d}
+  const h=new Int32Array(nx); let best={area:0};
+  for(let z=0;z<nz;z++){
+    for(let x=0;x<nx;x++) h[x]=ok[z*nx+x]?h[x]+1:0;
+    const st=[];
+    for(let x=0;x<=nx;x++){ const cur=x<nx?h[x]:0; let start=x;
+      while(st.length&&st[st.length-1][1]>=cur){ const [sx,sh]=st.pop(); const area=sh*(x-sx); if(area>best.area) best={area,x0:sx,z0:z-sh+1,w:x-sx,d:sh}; start=sx; }
+      st.push([start,cur]); }
+  }
+  return best;
+}
+// Final check of a candidate space against the real shapes.
+function pocketFree(c){ const g=new THREE.BoxGeometry(c.w,c.h,c.d); normalize(g); const t=new THREE.Mesh(g); t.position.set(c.x,c.y+0.02,c.z); t.userData={};
+  const ok=!pieces.some(o=>o.visible!==null&&pair(t,o)==='overlap'); pairCache.forEach((v,k)=>{ if(k.includes(t.uuid)) pairCache.delete(k); }); return ok; }
+function findPockets(){
+  clearPockets(); clearMeasure(); if(measuring) setMeasuring(false);
+  const step=Math.max(1,Math.ceil(Math.max(B.w,B.d)/220)), nx=Math.floor(B.w/step), nz=Math.floor(B.d/step);
+  const H=new Float32Array(nx*nz), ray=new THREE.Raycaster(); ray.firstHitOnly=true;
+  const down=new THREE.Vector3(0,-1,0), inv=new THREE.Matrix4(), boxes=pieces.map(aabb);
+  const local=new THREE.Ray();
+  for(let z=0;z<nz;z++)for(let x=0;x<nx;x++){
+    const cx0=x*step, cx1=cx0+step, cz0=z*step, cz1=cz0+step; let top=0;
+    pieces.forEach((m,i)=>{ const b=boxes[i]; if(b.max.y<=top||b.max.x<=cx0||b.min.x>=cx1||b.max.z<=cz0||b.min.z>=cz1) return;
+      // sample the part of this cell the piece covers (corners, edges and centre) so thin walls aren't missed
+      const x0=Math.max(cx0,b.min.x)+0.05, x1=Math.min(cx1,b.max.x)-0.05, z0=Math.max(cz0,b.min.z)+0.05, z1=Math.min(cz1,b.max.z)-0.05;
+      inv.copy(m.matrixWorld).invert();
+      for(const fx of [0,.5,1]) for(const fz of [0,.5,1]){
+        local.origin.set(x0+(x1-x0)*fx,B.h+1000,z0+(z1-z0)*fz).applyMatrix4(inv); local.direction.copy(down).transformDirection(inv);
+        const h=bvh(m).raycastFirst(local,THREE.DoubleSide);
+        if(h){ const y=h.point.clone().applyMatrix4(m.matrixWorld).y; if(y>top) top=y; } } });
+    H[z*nx+x]=top;
+  }
+  const levels=[...new Set(Array.from(H,v=>Math.round(v*2)/2))].filter(v=>v<B.h-1).sort((a,b)=>a-b).slice(0,40);
+  const t=tol(), cands=[];
+  const ok=new Uint8Array(nx*nz);
+  for(const L of levels){
+    for(let i=0;i<H.length;i++) ok[i]=H[i]<=L+0.25?1:0;
+    const r=largestRect(ok,nx,nz); if(!r.area) continue;
+    let floorY=0; for(let zz=r.z0;zz<r.z0+r.d;zz++) for(let xx=r.x0;xx<r.x0+r.w;xx++) floorY=Math.max(floorY,H[zz*nx+xx]);
+    const w=r.w*step-2*t, d=r.d*step-2*t, h=B.h-floorY-t;
+    if(w<5||d<5||h<3) continue;
+    const c={x:r.x0*step+t,z:r.z0*step+t,y:floorY,w,d,h,vol:w*d*h};
+    if(pocketFree(c)) cands.push(c);
+  }
+  // keep the most useful distinct ones: biggest volume, biggest footprint, tallest
+  const pick=[]; const add=c=>{ if(c&&!pick.some(p=>Math.abs(p.x-c.x)<2&&Math.abs(p.z-c.z)<2&&Math.abs(p.w-c.w)<2&&Math.abs(p.d-c.d)<2)) pick.push(c); };
+  add([...cands].sort((a,b)=>b.vol-a.vol)[0]); add([...cands].sort((a,b)=>b.w*b.d-a.w*a.d)[0]); add([...cands].sort((a,b)=>b.h-a.h)[0]);
+  [...cands].sort((a,b)=>b.vol-a.vol).forEach(c=>{ if(pick.length<4) add(c); });
+  pockets=pick;
+  const ul=$('pockets'); ul.innerHTML='';
+  if(!pick.length){ ul.innerHTML='<li><span></span><span class="muted">No usable empty space found.</span><span></span></li>'; }
+  pick.forEach((p,i)=>{ const tag=String.fromCharCode(65+i);
+    const g=new THREE.Mesh(new THREE.BoxGeometry(p.w,p.h,p.d),new THREE.MeshBasicMaterial({color:0x2e8a4e,transparent:true,opacity:.14,depthWrite:false}));
+    g.position.set(p.x+p.w/2,p.y+p.h/2,p.z+p.d/2); pocketGroup.add(g);
+    const e=new THREE.LineSegments(new THREE.EdgesGeometry(g.geometry),new THREE.LineDashedMaterial({color:0x2e8a4e,dashSize:3,gapSize:2})); e.computeLineDistances(); e.position.copy(g.position); pocketGroup.add(e);
+    const it=addLabel(g.position.clone(),`<strong>${tag}</strong> ${f(p.w)}×${f(p.d)}×${f(p.h)}`,'mlabel pk'); it.kind='p';
+    const li=document.createElement('li');
+    li.innerHTML=`<span class="tag">${tag}</span><span>${f(p.w)} × ${f(p.d)} × ${f(p.h)} mm<br><span class="muted">at X ${f(p.x)}, Y ${f(p.z)}, Z ${f(p.y)}</span></span><button>Fill with block</button>`;
+    li.querySelector('button').onclick=()=>{ const m=makeMesh({geo:normalize(new THREE.BoxGeometry(p.w,p.h,p.d)),name:`Space ${tag}`,color:PALETTE[colorIx++%PALETTE.length],pos:[p.x,p.y,p.z]}); setSel([m]); commit(); };
+    ul.appendChild(li); });
+  $('pocketPanel').hidden=false; $('pocketBtn').classList.add('on');
+  $('pocketPanel').scrollIntoView({block:'nearest',behavior:'smooth'});
+}
+$('pocketBtn').onclick=()=>{ if(pockets.length) clearPockets(); else { $('pocketBtn').textContent='Finding…'; setTimeout(()=>{ try{ findPockets(); } finally { $('pocketBtn').textContent='Free space'; } },20); } };
+$('clearPockets').onclick=clearPockets;
+
+// ===== Icons =====
+const sv=p=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+const ICON={eye:sv('<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>'),
+  eyeOff:sv('<path d="M3 3l18 18"/><path d="M10.6 5.1A10 10 0 0 1 12 5c6.5 0 10 7 10 7a17 17 0 0 1-3 3.9M6.1 6.1C3.6 7.9 2 12 2 12s3.5 7 10 7a9.6 9.6 0 0 0 4-.9"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/>'),
+  lock:sv('<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>'),
+  unlock:sv('<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 7.5-2"/>')};
+
+// ===== Component placeholders =====
+const COMP=0xa8a196;
+// thickness per card and the size a sleeve adds (typical values)
+// A sleeve wraps the card front and back, so it adds 2 × its micron rating; outer size grows ~3 mm (perfect-fit inner sleeves add less).
+function cardDims(){
+  const [w,h]=$('cardType').value.split(',').map(Number), um=Math.max(0,+$('cardSleeve').value||0), n=Math.max(1,+$('cardN').value||1);
+  const per=(+$('cardT').value||0.3)+2*um/1000, add=um>0?3:0;
+  return {w:w+add,h:h+add,t:n*per,per,n,um};
+}
+function updCardInfo(){ const c=cardDims(); $('cardInfo').textContent=`${f(c.w)} × ${f(c.h)} mm${c.um?' sleeved':''}, stack ${f(c.t)} mm thick (${c.per.toFixed(2)} mm per card). Sleeve microns count once per layer, so a 100 µm sleeve adds 0.2 mm.`; }
+['cardType','cardSleeve','cardN','cardT'].forEach(id=>$(id).addEventListener('input',updCardInfo)); updCardInfo();
+$('addCards').onclick=()=>{ const c=cardDims(), o=$('cardOrient').value;
+  // geometry is (x=width, y=height, z=depth) in scene terms
+  const g=o==='flat'?new THREE.BoxGeometry(c.w,c.t,c.h):o==='long'?new THREE.BoxGeometry(c.h,c.w,c.t):new THREE.BoxGeometry(c.w,c.h,c.t);
+  const label=$('cardType').selectedOptions[0].text.split(' (')[0];
+  addPiece(g,`${c.n} ${label} cards${c.um?` (${c.um} µm sleeves)`:''}`,{kind:{type:'cards',n:c.n,dims:[g.parameters.width,g.parameters.height,g.parameters.depth],q:[0,0,0,1]}}); };
+
+// Tokens and coins: stacks laid out in a grid, like the dice
+function tokDims(){ const n=Math.max(1,Math.round(+$('tokN').value||1)), k=Math.min(n,Math.max(1,Math.round(+$('tokK').value||1))),
+    s=Math.max(3,+$('tokS').value||20), t=Math.max(0.5,+$('tokT').value||2), sh=$('tokShape').value;
+  const per=Math.ceil(n/k), h=per*t, fx=sh==='hex'?s*2/Math.sqrt(3):s, fz=s, gap=0.5, cols=Math.ceil(Math.sqrt(k)), rows=Math.ceil(k/cols);
+  return {n,k,s,t,sh,per,h,W:cols*(fx+gap)+gap,D:rows*(fz+gap)+gap}; }
+function updTokInfo(){ const c=tokDims();
+  $('tokInfo').textContent=`${c.k>1?`${c.k} stacks of up to ${c.per}, `:''}${f(c.h)} mm tall. Footprint ${f(c.W)} × ${f(c.D)} mm with 0.5 mm play around each stack.`;
+  $('tokFit').textContent=c.h>B.h?`Taller than the box (${f(B.h)} mm). Add stacks.`:''; $('tokFit').style.color=c.h>B.h?'var(--warn)':''; }
+['tokN','tokS','tokT','tokK','tokShape','bh'].forEach(id=>$(id).addEventListener('input',updTokInfo)); updTokInfo();
+$('addTokens').onclick=()=>{ const c=tokDims(), shape={round:'round',square:'square',hex:'hex'}[c.sh];
+  addPiece(new THREE.BoxGeometry(c.W,c.h,c.D),`${c.n} ${shape} tokens (${f(c.s)} mm${c.k>1?`, ${c.k} stacks`:''})`,{color:COMP,role:'game'}); };
+const DICE_DEF={d6:16,d4:18,d8:18,d10:19,d12:20,d20:22,set:22,custom:20};
+$('diceT').addEventListener('change',()=>{ $('diceS').value=DICE_DEF[$('diceT').value]; });
+$('addDice').onclick=()=>{ const t=$('diceT').value, cnt=Math.max(1,+$('diceN').value||1), s=Math.max(4,+$('diceS').value||16);
+  const n=t==='set'?cnt*7:cnt, cols=Math.ceil(Math.sqrt(n)), rows=Math.ceil(n/cols);
+  const label=t==='set'?`${cnt} polyhedral set${cnt>1?'s':''}`:t==='custom'?`${n} special dice`:`${n} × ${t}`;
+  const W=cols*(s+.15)+1, D=rows*(s+.15)+1;
+  addPiece(new THREE.BoxGeometry(W,s,D),`${label} (${s} mm)`,{color:COMP,kind:{type:'dice',n,size:s,shape:t,dims:[W,s,D],q:[0,0,0,1]}}); };
+const CHECK_ITEMS=['Rulebook(s), quick-start and reference sheets','Game board (folded)','Player boards / mats','All card decks, including promos and expansion cards','Card sleeves (they add thickness and size)','Tokens, markers and cardboard chits','Dice','Miniatures, meeples and standees','Score pad and pencils','First-player marker, trackers and timers','Bags, baggies or token boxes','Expansion and Kickstarter extras','Lid clearance: nothing above the box edge'];
+let checklist={};
+function renderChecklist(){ const el=$('checklist'); el.innerHTML='';
+  CHECK_ITEMS.forEach((t,i)=>{ const l=document.createElement('label'); l.className=checklist[i]?'done':'';
+    l.innerHTML=`<input type="checkbox" id="ck${i}"${checklist[i]?' checked':''}><span></span>`; l.querySelector('span').textContent=t;
+    l.querySelector('input').onchange=e=>{ checklist[i]=e.target.checked; l.className=e.target.checked?'done':''; autosave(); };
+    el.appendChild(l); });
+  const p=document.createElement('p'); p.className='note'; p.textContent='Ticks are saved with the layout.'; el.appendChild(p); }
+renderChecklist();
+
+// ===== Scale =====
+// Scales each selected piece, and spreads their positions, from the group's min corner. sx/sy/sz are in scene axes.
+function scaleSel(sx,sy,sz){
+  if(!sel.length) return; if(![sx,sy,sz].every(v=>v>0&&isFinite(v))){ toast('Scale must be above 0'); return; }
+  if(sel.some(m=>m.userData.kind&&!new THREE.Quaternion().fromArray(kindDims(m).q).equals(new THREE.Quaternion()))){ toast('Straighten tilted cards or dice before scaling'); return; }
+  const g0=selBox().min.clone();
+  for(const m of sel){ if(m.userData.kind){ const kd=kindDims(m); m.userData.kind={...kd,dims:[kd.dims[0]*sx,kd.dims[1]*sy,kd.dims[2]*sz]}; }
+    const g=m.geometry.clone(); g.userData={}; g.boundsTree=null; g.scale(sx,sy,sz); normalize(g); g.computeVertexNormals();
+    const p=aabb(m).min.sub(g0); m.position.set(g0.x+p.x*sx,g0.y+p.y*sy,g0.z+p.z*sz); setGeo(m,g); }
+  syncProxy(); refresh(); commit();
+}
+function sizeInput(id,axis){ $(id).addEventListener('change',e=>{ const S=selBox().getSize(new THREE.Vector3()); const v=+e.target.value; if(!(v>0)) return;
+  const k=v/S[axis]; if($('keepProp').checked) scaleSel(k,k,k); else scaleSel(axis==='x'?k:1,axis==='y'?k:1,axis==='z'?k:1); }); }
+sizeInput('szW','x'); sizeInput('szD','z'); sizeInput('szH','y');
+['pcW','pcD','pcH'].forEach(id=>$(id).addEventListener('input',e=>{ if($('keepProp').checked) ['pcW','pcD','pcH'].forEach(o=>{ if(o!==id) $(o).value=e.target.value; }); }));
+$('applyPct').onclick=()=>{ const w=(+$('pcW').value)/100,d=(+$('pcD').value)/100,h=(+$('pcH').value)/100; scaleSel(w,h,d); ['pcW','pcD','pcH'].forEach(o=>$(o).value=100); };
+$('inchFix').onclick=()=>scaleSel(25.4,25.4,25.4);
+$('mmFix').onclick=()=>scaleSel(1/25.4,1/25.4,1/25.4);
+
+// ===== Cut / trim =====
+// Clip each triangle against an axis-aligned plane, keeping the side where (keepBelow ? v<=c : v>=c).
+function clipGeo(geo,ax,c,keepBelow){
+  const src=(geo.index?geo.toNonIndexed():geo).attributes.position.array, out=[];
+  const inside=v=>keepBelow?v[ax]<=c+1e-6:v[ax]>=c-1e-6;
+  for(let i=0;i<src.length;i+=9){
+    const tri=[0,1,2].map(k=>[src[i+k*3],src[i+k*3+1],src[i+k*3+2]]); const poly=[];
+    for(let k=0;k<3;k++){ const a=tri[k], b=tri[(k+1)%3], ia=inside(a), ib=inside(b);
+      if(ia) poly.push(a);
+      if(ia!==ib){ const t=(c-a[ax])/(b[ax]-a[ax]); poly.push([a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t,a[2]+(b[2]-a[2])*t]); } }
+    for(let k=1;k+1<poly.length;k++) out.push(...poly[0],...poly[k],...poly[k+1]);
+  }
+  const g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.Float32BufferAttribute(out,3)); return g;
+}
+$('cutMode').addEventListener('change',updCutUi); $('cutAxis').addEventListener('change',updCutUi); updCutUi();
+$('applyCut').onclick=()=>{
+  if(!sel.length) return; const ax=+$('cutAxis').value, mode=$('cutMode').value, a=+$('cutA').value, b=+$('cutB').value;
+  if(sel.some(m=>m.userData.kind)){ toast('Cards and dice can’t be resized here. Change their count instead.'); return; }
+  if(mode==='stretch'&&!b){ toast('Enter how much to stretch (+) or shrink (−)'); return; }
+  if(mode!=='stretch'&&!(a>0)){ toast('Enter a length to keep'); return; }
+  let changed=0;
+  for(const m of sel){ const g=m.geometry, size=g.boundingBox.max.getComponent(ax), oldMin=aabb(m).min; let out;
+    if(mode==='stretch'){ const at=$('cutA').value===''?size/2:a; if(at<=0||at>=size||(b<0&&at-b>size)){ continue; }
+      out=stretchGeo(g,ax,at,b); setGeo(m,out); m.position.copy(oldMin); changed++; continue; }
+    if(mode==='keepStart'){ if(a>=size) continue; out=clipGeo(g,ax,a,true); }
+    else if(mode==='keepEnd'){ if(a>=size) continue; out=clipGeo(g,ax,size-a,false); }
+    else { if(a>=size) continue; const p1=clipGeo(g,ax,a,true), p2=clipGeo(g,ax,Math.min(b,size),false);
+      const sh=[0,0,0]; sh[ax]=-(Math.min(b,size)-a); p2.translate(...sh); out=p1.attributes.position.count&&p2.attributes.position.count?mergeGeometries([p1,p2]):(p1.attributes.position.count?p1:p2); }
+    if(!out||!out.attributes.position.count) continue;
+    normalize(out); out.computeVertexNormals(); setGeo(m,out);
+    const keepEndShift=mode==='keepEnd'?size-a:0; /* the kept end stays where it was */ m.position.copy(oldMin).setComponent(ax,oldMin.getComponent(ax)+keepEndShift); changed++; }
+  if(!changed){ toast(mode==='stretch'?'“At” must be inside the part, and a shrink can’t remove more than is past that point':'Nothing to trim: the length is longer than the part'); return; }
+  syncProxy(); refresh(); commit(); toast(`Changed ${changed} part${changed>1?'s':''}`); };
+
+// ===== Roles =====
+$('sRole').addEventListener('change',e=>{ if(e.target.value==='mixed') return; sel.forEach(m=>m.userData.role=e.target.value); refresh(); commit(); });
+
+// ===== Tilt (game components) =====
+function tiltSel(axis,deg){
+  const list=sel.filter(m=>m.userData.role==='game'); if(!list.length) return;
+  for(const m of list) tiltOne(m,axis,deg);
+  syncProxy(); refresh(); commit();
+}
+function tiltOne(m,axis,deg){
+  const Rq=new THREE.Quaternion().setFromAxisAngle(axis==='x'?new THREE.Vector3(1,0,0):new THREE.Vector3(0,0,1),deg*Math.PI/180);
+  const t=[...(m.userData.tilt||[0,0])]; t[axis==='x'?0:1]=Math.round((t[axis==='x'?0:1]+deg)*100)/100; m.userData.tilt=t;
+  { const a=aabb(m), c=a.getCenter(new THREE.Vector3()), y0=a.min.y; let g;
+    if(m.userData.kind){ const kd=kindDims(m), q=new THREE.Quaternion().fromArray(kd.q).premultiply(Rq);
+      m.userData.kind={...kd,q:q.toArray()}; g=new THREE.BoxGeometry(...kd.dims).applyQuaternion(q); }
+    else { g=m.geometry.clone(); g.userData={}; g.boundsTree=null; g.applyQuaternion(Rq); }
+    normalize(g); g.computeVertexNormals(); setGeo(m,g);
+    const half=g.boundingBox.getSize(new THREE.Vector3()).multiplyScalar(.5); m.position.set(c.x-half.x,y0,c.z-half.z); }
+}
+document.querySelectorAll('[data-tilt]').forEach(b=>b.onclick=()=>tiltSel(b.dataset.tilt,5));
+// typed angles are absolute: tilt each piece by the difference to what it has now
+for(const [id,ax,i] of [['tiltX','x',0],['tiltZ','z',1]]) $(id).addEventListener('change',e=>{ const v=+e.target.value||0;
+  for(const m of sel.filter(m=>m.userData.role==='game')){ const d=v-(m.userData.tilt||[0,0])[i]; if(d) tiltOne(m,ax,d); }
+  syncProxy(); refresh(); commit(); });
+$('straighten').onclick=()=>{ for(const m of sel){ const t=m.userData.tilt||[0,0];
+    if(m.userData.kind){ const kd=kindDims(m), a=aabb(m); m.userData.kind={...kd,q:[0,0,0,1]}; const g=normalize(new THREE.BoxGeometry(...kd.dims)); setGeo(m,g); m.position.copy(a.min); m.userData.tilt=[0,0]; }
+    else { if(t[1]) tiltOne(m,'z',-t[1]); if(t[0]) tiltOne(m,'x',-t[0]); m.userData.tilt=[0,0]; } }
+  syncProxy(); refresh(); commit(); };
+
+// ===== Split a model into its separate bodies =====
+// Triangles that share a corner belong to the same body (union-find over welded vertices).
+function bodies(geo){
+  const src=(geo.index?geo.toNonIndexed():geo).attributes.position.array, nT=src.length/9, key=new Map(), vid=new Int32Array(nT*3);
+  for(let i=0;i<nT*3;i++){ const k=Math.round(src[i*3]*1e3)+','+Math.round(src[i*3+1]*1e3)+','+Math.round(src[i*3+2]*1e3);
+    let id=key.get(k); if(id===undefined){ id=key.size; key.set(k,id); } vid[i]=id; }
+  const par=new Int32Array(key.size).map((_,i)=>i), find=x=>{ while(par[x]!==x){ par[x]=par[par[x]]; x=par[x]; } return x; };
+  for(let t=0;t<nT;t++){ const a=find(vid[t*3]); par[find(vid[t*3+1])]=a; par[find(vid[t*3+2])]=a; }
+  const groups=new Map(); for(let t=0;t<nT;t++){ const r=find(vid[t*3]); (groups.get(r)||groups.set(r,[]).get(r)).push(t); }
+  return [...groups.values()].sort((a,b)=>b.length-a.length).map(ts=>{ const out=new Float32Array(ts.length*9);
+    ts.forEach((t,j)=>out.set(src.subarray(t*9,t*9+9),j*9)); const g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.BufferAttribute(out,3)); return g; });
+}
+$('splitBtn').onclick=()=>{ if(sel.length!==1) return; const m=sel[0], parts=bodies(m.geometry);
+  if(parts.length<2){ $('splitInfo').textContent='This model is a single body.'; return; }
+  if(parts.length>60){ $('splitInfo').textContent=`Found ${parts.length} loose bodies; too many to split sensibly.`; return; }
+  const made=parts.map((g,i)=>{ g.computeBoundingBox(); const off=g.boundingBox.min.clone(); normalize(g); g.computeVertexNormals();
+    return makeMesh({geo:g,name:`${m.userData.name} – part ${i+1}`,color:PALETTE[colorIx++%PALETTE.length],role:m.userData.role,printed:m.userData.printed,pos:m.position.clone().add(off).toArray()}); });
+  scene.remove(m); pieces.splice(pieces.indexOf(m),1); setSel(made); commit(); toast(`Split into ${made.length} parts. Remove the ones you don't want.`); };
+
+// ===== Resize keeping walls =====
+// Everything past a plane moves; triangles that cross the plane stretch. Walls and floors keep their thickness
+// as long as the plane passes through a plain stretch of the part (no holes or features right at the plane).
+function stretchGeo(geo,ax,c,d){
+  const g=geo.clone(); g.userData={}; g.boundsTree=null; const p=g.attributes.position;
+  for(let i=0;i<p.count;i++){ let v=p.getComponent(i,ax);
+    if(d>=0){ if(v>c+1e-6) v+=d; } else { const L=-d; if(v>c+L) v-=L; else if(v>c) v=c; }
+    p.setComponent(i,ax,v); }
+  p.needsUpdate=true; normalize(g); g.computeVertexNormals(); return g; }
+function cutHelp(len){ const m=$('cutMode').value;
+  if(m==='stretch') return `Current length ${f(len)} mm. The part is cut at "At" (empty = the middle) and that point is stretched or shrunk by "Change", so walls and floor keep their thickness. To thicken a wall or floor, put "At" inside it (e.g. 1 mm on Height for the floor).`;
+  return `Current length ${f(len)} mm. Measured from the part's left / front / bottom edge. Trimmed faces are left open.`; }
+function updCutUi(){ const m=$('cutMode').value; $('cutBLab').hidden=m!=='stretch';
+  $('cutALab').firstChild.textContent=m==='stretch'?'At mm':'Length mm'; $('cutBLab').firstChild.textContent='Change ± mm';
+  if(sel.length){ const S=selBox().getSize(new THREE.Vector3()); $('cutInfo').textContent=cutHelp(S.getComponent(+$('cutAxis').value)); } }
+
+// Display only.
+let explodeT=0; const explodeOff=new Map();
+// Bottom-up: each piece rises until it clears everything already placed under its footprint (plus a gap),
+// so stacked and nested pieces all come apart; pieces with nothing beneath them stay put.
+function computeExplode(t){
+  explodeOff.clear(); if(!t) return;
+  const vol=b=>{ const s=b.getSize(new THREE.Vector3()); return s.x*s.y*s.z; };
+  const items=pieces.filter(m=>m.visible).map(m=>({m,a:aabb(m)})).sort((p,q)=>(p.a.min.y-q.a.min.y)||(vol(q.a)-vol(p.a)));
+  const foot=(a,b)=>a.min.x<b.max.x-0.5&&a.max.x>b.min.x+0.5&&a.min.z<b.max.z-0.5&&a.max.z>b.min.z+0.5;
+  const gap=Math.max(10,B.h*.15), placed=[];
+  for(const it of items){ let y=it.a.min.y;
+    for(const p of placed) if(foot(it.a,p.a)) y=Math.max(y,p.y+(p.a.max.y-p.a.min.y)+gap);
+    it.y=y; placed.push(it); explodeOff.set(it.m,new THREE.Vector3(0,(y-it.a.min.y)*t,0)); }
+}
+function withExplode(fn){ for(const [m,o] of explodeOff) m.position.add(o); try{ return fn(); } finally{ for(const [m,o] of explodeOff) m.position.sub(o); } }
+$('explode').addEventListener('input',e=>{ explodeT=e.target.value/100;
+  if(explodeT>0){ setSel([]); clearMeasure(); if(measuring) setMeasuring(false); clearPockets(); }
+  computeExplode(explodeT); });
+function exploded(){ return explodeT>0; }
+
+// ===== Print estimate =====
+function meshStats(geo){ const p=geo.attributes.position, idx=geo.index; let vol=0,area=0;
+  const a=new THREE.Vector3(),b=new THREE.Vector3(),c=new THREE.Vector3(),ab=new THREE.Vector3(),ac=new THREE.Vector3();
+  const n=idx?idx.count:p.count;
+  for(let i=0;i<n;i+=3){ const i0=idx?idx.getX(i):i,i1=idx?idx.getX(i+1):i+1,i2=idx?idx.getX(i+2):i+2;
+    a.fromBufferAttribute(p,i0); b.fromBufferAttribute(p,i1); c.fromBufferAttribute(p,i2);
+    vol+=a.dot(ab.copy(b).cross(c))/6; area+=ab.subVectors(b,a).cross(ac.subVectors(c,a)).length()/2; }
+  return {vol:Math.abs(vol),area}; }
+function estimate(m){
+  const g=m.geometry; if(!g.userData.stats) g.userData.stats=meshStats(g);
+  const {vol,area}=g.userData.stats, wall=+$('peWall').value||1.2, inf=(+$('peInfill').value||0)/100;
+  const shell=Math.min(vol,area*wall), printed=shell+Math.max(0,vol-shell)*inf; // mm³
+  const grams=printed/1000*(+$('peMat').value||1.24), meters=printed/(Math.PI*0.875*0.875)/1000;
+  const hours=printed/(+$('peFlow').value||10)/3600*1.15+0.1; // +15% travel/moves, +6 min heat-up
+  return {grams,meters,hours,cost:grams/1000*(+$('pePrice').value||0)}; }
+function hm(h){ const H=Math.floor(h), M=Math.round((h-H)*60); return H?`${H} h ${M} min`:`${M} min`; }
+function renderEstimate(){
+  const rows=pieces.filter(m=>m.userData.role==='print'), t=$('estTable');
+  if(!rows.length){ t.innerHTML='<tr><td class="muted" style="text-align:left">Load an STL or 3MF, or mark a piece as a printed part, to see estimates.</td></tr>'; return; }
+  let G=0,Mt=0,H=0,C=0;
+  const body=rows.map(m=>{ const e=estimate(m); G+=e.grams; Mt+=e.meters; H+=e.hours; C+=e.cost;
+    return `<tr><td>${esc(m.userData.name)}</td><td>${Math.round(e.grams)} g</td><td>${e.meters.toFixed(1)} m</td><td>${hm(e.hours)}</td><td>${Math.round(e.cost)}</td></tr>`; }).join('');
+  t.innerHTML=`<tr><th>Piece</th><th>Filament</th><th>Length</th><th>Time</th><th>Cost</th></tr>${body}<tr class="total"><td>Total</td><td>${Math.round(G)} g</td><td>${Mt.toFixed(1)} m</td><td>${hm(H)}</td><td>${Math.round(C)}</td></tr>`; }
+function esc(t){ return String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+['peInfill','peWall','peFlow','peMat','pePrice'].forEach(id=>$(id).addEventListener('input',renderEstimate));
+
+// ===== Export =====
+async function saveFile(filename,data){
+  let dlc=null; try{ dlc=await window.claude?.use?.('downloads'); }catch(e){}
+  if(!dlc){ // ordinary browser (e.g. GitHub Pages): plain download link
+    const blob=data instanceof Blob?data:new Blob([data]), url=URL.createObjectURL(blob), a=document.createElement('a');
+    a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),4000);
+    toast('Saved '+filename); return; }
+  try{ await dlc.save({filename,data}); toast('Saved '+filename); }
+  catch(e){ if(e?.code==='declined') return; toast(e?.code==='rate_limited'?'A save is already waiting for you to confirm':'Could not save: '+(e?.message||e?.code||'error')); } }
+const baseName=()=>($('slotName').value.trim()||'insert-layout').replace(/[\\/:*?"<>|]+/g,'-');
+const canvasBlob=c=>new Promise(r=>c.toBlob(r,'image/png'));
+
+$('exPng').onclick=async()=>{ tc.visible=false; const was=renderer.getPixelRatio(); renderer.setPixelRatio(2); resize();
+  withExplode(()=>renderer.render(scene,camera)); const blob=await canvasBlob(canvas);
+  renderer.setPixelRatio(was); resize(); tc.visible=true; saveFile(baseName()+'.png',blob); };
+
+// Binary STL of every piece in world position, turned back to Z-up, wrapped in a stored (uncompressed) zip.
+function buildStl(list){
+  const tris=[]; const R=new THREE.Matrix4().makeRotationX(Math.PI/2);
+  for(const m of list){ m.updateMatrixWorld(); const g=(m.geometry.index?m.geometry.toNonIndexed():m.geometry).clone(); g.applyMatrix4(m.matrixWorld); g.applyMatrix4(R); tris.push(g.attributes.position.array); }
+  const n=tris.reduce((a,t)=>a+t.length/9,0), buf=new ArrayBuffer(84+n*50), dv=new DataView(buf);
+  new Uint8Array(buf,0,80).set(new TextEncoder().encode('Insert Fit Planner export'.padEnd(80,' ')));
+  dv.setUint32(80,n,true); let o=84; const a=new THREE.Vector3(),b=new THREE.Vector3(),c=new THREE.Vector3(),nn=new THREE.Vector3();
+  for(const arr of tris) for(let i=0;i<arr.length;i+=9){ a.fromArray(arr,i); b.fromArray(arr,i+3); c.fromArray(arr,i+6);
+    nn.subVectors(c,b).cross(a.clone().sub(b)).normalize().negate();
+    for(const v of [nn,a,b,c]){ dv.setFloat32(o,v.x,true); dv.setFloat32(o+4,v.y,true); dv.setFloat32(o+8,v.z,true); o+=12; } dv.setUint16(o,0,true); o+=2; }
+  return new Uint8Array(buf); }
+const CRC=(()=>{ const t=new Uint32Array(256); for(let n=0;n<256;n++){ let c=n; for(let k=0;k<8;k++) c=c&1?0xEDB88320^(c>>>1):c>>>1; t[n]=c>>>0; } return t; })();
+function crc32(d){ let c=0xFFFFFFFF; for(let i=0;i<d.length;i++) c=CRC[(c^d[i])&255]^(c>>>8); return (c^0xFFFFFFFF)>>>0; }
+// stored (uncompressed) zip with several files
+function zipMany(files){
+  const enc=new TextEncoder(), parts=[], central=[]; let off=0;
+  for(const {name,data} of files){ const nm=enc.encode(name), crc=crc32(data), h=new Uint8Array(30+nm.length), dv=new DataView(h.buffer);
+    dv.setUint32(0,0x04034b50,true); dv.setUint16(4,20,true); dv.setUint16(6,0x0800,true); dv.setUint32(14,crc,true); dv.setUint32(18,data.length,true); dv.setUint32(22,data.length,true); dv.setUint16(26,nm.length,true); h.set(nm,30);
+    const c=new Uint8Array(46+nm.length), cv=new DataView(c.buffer);
+    cv.setUint32(0,0x02014b50,true); cv.setUint16(4,20,true); cv.setUint16(6,20,true); cv.setUint16(8,0x0800,true); cv.setUint32(16,crc,true); cv.setUint32(20,data.length,true); cv.setUint32(24,data.length,true); cv.setUint16(28,nm.length,true); cv.setUint32(42,off,true); c.set(nm,46);
+    parts.push(h,data); central.push(c); off+=h.length+data.length; }
+  const csize=central.reduce((a,c)=>a+c.length,0), e=new Uint8Array(22), ev=new DataView(e.buffer);
+  ev.setUint32(0,0x06054b50,true); ev.setUint16(8,files.length,true); ev.setUint16(10,files.length,true); ev.setUint32(12,csize,true); ev.setUint32(16,off,true);
+  return new Blob([...parts,...central,e],{type:'application/zip'}); }
+// one part on its own: flat at the origin, Z-up
+function partStl(m){ const g=m.geometry.clone().applyMatrix4(new THREE.Matrix4().makeRotationX(Math.PI/2)); g.computeBoundingBox(); g.translate(...g.boundingBox.min.clone().negate().toArray()); g.applyMatrix4(new THREE.Matrix4().makeRotationX(-Math.PI/2)); const t=new THREE.Mesh(g); t.updateMatrixWorld(); return buildStl([t]); }
+const safe=n=>n.replace(/[\\/:*?"<>|]+/g,'-').trim()||'part';
+function uniqueNames(list){ const seen={}; return list.map(m=>{ let n=safe(m.userData.name); if(seen[n]) n+=` (${++seen[n]})`; else seen[n]=1; return n+'.stl'; }); }
+function zipOne(name,data){
+  const nm=new TextEncoder().encode(name), crc=crc32(data), L=30+nm.length, C=46+nm.length;
+  const buf=new Uint8Array(L+data.length+C+22), dv=new DataView(buf.buffer);
+  dv.setUint32(0,0x04034b50,true); dv.setUint16(4,20,true); dv.setUint32(14,crc,true); dv.setUint32(18,data.length,true); dv.setUint32(22,data.length,true); dv.setUint16(26,nm.length,true); buf.set(nm,30); buf.set(data,L);
+  const c=L+data.length; dv.setUint32(c,0x02014b50,true); dv.setUint16(c+4,20,true); dv.setUint16(c+6,20,true); dv.setUint32(c+16,crc,true); dv.setUint32(c+20,data.length,true); dv.setUint32(c+24,data.length,true); dv.setUint16(c+28,nm.length,true); buf.set(nm,c+46);
+  const e=c+C; dv.setUint32(e,0x06054b50,true); dv.setUint16(e+8,1,true); dv.setUint16(e+10,1,true); dv.setUint32(e+12,C,true); dv.setUint32(e+16,c,true);
+  return new Blob([buf],{type:'application/zip'}); }
+const printedParts=()=>pieces.filter(m=>m.userData.role==='print'&&m.visible);
+$('exStl').onclick=()=>{ const list=printedParts();
+  if(!list.length){ toast('No printed parts to export'); return; }
+  saveFile(baseName()+'.zip',zipOne(baseName()+'.stl',buildStl(list))); };
+$('exEach').onclick=()=>{ const list=printedParts(); if(!list.length){ toast('No printed parts to export'); return; }
+  const names=uniqueNames(list); saveFile(baseName()+'-parts.zip',zipMany(list.map((m,i)=>({name:names[i],data:partStl(m)})))); };
+$('exSel').onclick=()=>{ const list=sel.filter(m=>m.userData.role==='print'&&m.visible);
+  if(!list.length){ toast(sel.length?'Only printed parts can be exported as STL':'Select the part(s) to export first'); return; }
+  const names=uniqueNames(list); saveFile((list.length===1?names[0].replace(/\.stl$/,''):baseName()+'-selected')+'.zip',zipMany(list.map((m,i)=>({name:names[i],data:partStl(m)})))); };
+
+// Engineering-style sheet: isometric exploded view in line style, numbered balloons, parts list and title block.
+function drawSheet(exp,page,pages){
+  const list=pieces.filter(m=>m.visible);
+  computeExplode(exp?1:0);
+  const W=3508,H=2480, VW=2300, VH=1900;
+  // line-style materials
+  const saved=[], white=new THREE.MeshBasicMaterial({color:0xffffff,polygonOffset:true,polygonOffsetFactor:1,polygonOffsetUnits:1}), ink=new THREE.LineBasicMaterial({color:0x111111});
+  const hideList=[boxGroup,tc,mGroup,pocketGroup]; if(lid) hideList.push(lid);
+  const hiddenWas=hideList.map(o=>o.visible); hideList.forEach(o=>o.visible=false);
+  const extra=[];
+  for(const m of pieces){ saved.push([m,m.material,m.children.map(c=>[c,c.visible,c.material])]);
+    m.material=white; m.children.forEach(c=>{ if(c.userData.deco) c.visible=false; else { c.visible=true; c.material=ink; } }); }
+  // box outline, dashed, at its own position (not exploded)
+  const boxLines=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(B.w,B.h,B.d)),new THREE.LineDashedMaterial({color:0x777777,dashSize:6,gapSize:4}));
+  boxLines.position.set(B.w/2,B.h/2,B.d/2); boxLines.computeLineDistances(); scene.add(boxLines); extra.push(boxLines);
+  // isometric ortho camera fitted to everything
+  const all=new THREE.Box3(new THREE.Vector3(0,0,0),new THREE.Vector3(B.w,B.h,B.d));
+  withExplode(()=>list.forEach(m=>all.union(aabb(m))));
+  const ctr=all.getCenter(new THREE.Vector3()), cam=new THREE.OrthographicCamera(-1,1,1,-1,-10000,10000);
+  cam.position.copy(ctr).add(new THREE.Vector3(1,0.82,1).normalize().multiplyScalar(2000)); cam.lookAt(ctr); cam.updateMatrixWorld();
+  const corners=[]; for(const x of [all.min.x,all.max.x])for(const y of [all.min.y,all.max.y])for(const z of [all.min.z,all.max.z]) corners.push(new THREE.Vector3(x,y,z).applyMatrix4(cam.matrixWorldInverse));
+  const bx=new THREE.Box2(); corners.forEach(c=>bx.expandByPoint(new THREE.Vector2(c.x,c.y)));
+  const sz=bx.getSize(new THREE.Vector2()), cc=bx.getCenter(new THREE.Vector2()), half=Math.max(sz.x/VW,sz.y/VH)*1.12/2;
+  cam.left=cc.x-half*VW; cam.right=cc.x+half*VW; cam.top=cc.y+half*VH; cam.bottom=cc.y-half*VH; cam.updateProjectionMatrix();
+  const was=[renderer.getPixelRatio(),canvas.width,canvas.height]; renderer.setPixelRatio(1); renderer.setSize(VW,VH,false); renderer.setClearColor(0xffffff,1);
+  const hemi=scene.children.filter(o=>o.isLight);
+  withExplode(()=>renderer.render(scene,cam));
+  // balloon anchor points
+  const anchors=withExplode(()=>list.map(m=>{ const p=aabb(m).getCenter(new THREE.Vector3()).project(cam); return {x:(p.x+1)/2*VW,y:(1-p.y)/2*VH}; }));
+  const view=document.createElement('canvas'); view.width=VW; view.height=VH; view.getContext('2d').drawImage(canvas,0,0,VW,VH);
+  // restore scene
+  renderer.setClearColor(0x000000,0); renderer.setPixelRatio(was[0]); resize();
+  for(const [m,mat,ch] of saved){ m.material=mat; ch.forEach(([c,v,cm])=>{ c.visible=v; c.material=cm; }); }
+  extra.forEach(o=>scene.remove(o)); hideList.forEach((o,i)=>o.visible=hiddenWas[i]);
+  computeExplode(explodeT);
+  // compose sheet
+  const sh=document.createElement('canvas'); sh.width=W; sh.height=H; const g=sh.getContext('2d');
+  g.fillStyle='#fff'; g.fillRect(0,0,W,H); g.strokeStyle='#111'; g.lineWidth=6; g.strokeRect(60,60,W-120,H-120); g.lineWidth=2; g.strokeRect(90,90,W-180,H-180);
+  // zone markers
+  g.font='28px "IBM Plex Mono",monospace'; g.fillStyle='#111'; g.textAlign='center'; g.textBaseline='middle';
+  for(let i=0;i<8;i++){ const x=90+(W-180)*(i+.5)/8; g.fillText(String(i+1),x,75); g.fillText(String(i+1),x,H-75); }
+  for(let i=0;i<6;i++){ const y=90+(H-180)*(i+.5)/6; g.fillText('ABCDEF'[i],75,y); g.fillText('ABCDEF'[i],W-75,y); }
+  const VX=150,VY=170; g.drawImage(view,VX,VY);
+  g.textAlign='left'; g.font='600 34px "IBM Plex Mono",monospace'; g.fillText(exp?'EXPLODED ISOMETRIC VIEW (PARTS LIFTED) — NOT TO SCALE':'ASSEMBLED ISOMETRIC VIEW — NOT TO SCALE',VX,VY+VH+20);
+  // balloons, pushed outward from the view centre
+  const cx=VW/2, cy=VH/2; g.font='700 34px "IBM Plex Mono",monospace'; g.textAlign='center';
+  const placed=[];
+  anchors.forEach((a,i)=>{ let dx=a.x-cx, dy=a.y-cy; const L=Math.hypot(dx,dy)||1; dx/=L; dy/=L;
+    let bx=a.x+dx*170, by=a.y+dy*170;
+    for(let k=0;k<20&&placed.some(p=>Math.hypot(p[0]-bx,p[1]-by)<80);k++){ bx+=dx*40-dy*30; by+=dy*40+dx*30; }
+    bx=Math.min(VW-40,Math.max(40,bx)); by=Math.min(VH-40,Math.max(40,by)); placed.push([bx,by]);
+    g.strokeStyle='#111'; g.lineWidth=2.5; g.beginPath(); g.moveTo(VX+a.x,VY+a.y); g.lineTo(VX+bx,VY+by); g.stroke();
+    g.beginPath(); g.arc(VX+a.x,VY+a.y,6,0,7); g.fillStyle='#111'; g.fill();
+    g.beginPath(); g.arc(VX+bx,VY+by,32,0,7); g.fillStyle='#fff'; g.fill(); g.stroke();
+    g.fillStyle='#111'; g.fillText(String(i+1),VX+bx,VY+by+2); });
+  // parts list
+  const TX=2560, TW=W-90-TX-30, rowH=46; let ty=170;
+  g.textAlign='left'; g.font='700 34px "IBM Plex Mono",monospace'; g.fillText('PARTS LIST',TX,ty-30);
+  const cols=[[TX,'ITEM',90],[TX+90,'DESCRIPTION',430],[TX+520,'SIZE W×D×H (mm)',TW-520]];
+  g.lineWidth=2; g.strokeRect(TX,ty,TW,rowH); g.font='600 24px "IBM Plex Mono",monospace';
+  cols.forEach(([x,t])=>g.fillText(t,x+10,ty+rowH/2+1)); ty+=rowH;
+  const maxRows=Math.floor((H-760-ty)/rowH); g.font='24px "IBM Plex Mono",monospace';
+  list.slice(0,maxRows).forEach((m,i)=>{ const s=aabb(m).getSize(new THREE.Vector3()); g.strokeRect(TX,ty,TW,rowH);
+    let nm=m.userData.name; while(g.measureText(nm).width>410&&nm.length>3) nm=nm.slice(0,-2); if(nm!==m.userData.name) nm=nm.slice(0,-1)+'…';
+    g.fillText(String(i+1),TX+10,ty+rowH/2+1); g.fillText(nm,TX+100,ty+rowH/2+1); g.fillText(`${f(s.x)} × ${f(s.z)} × ${f(s.y)}`,TX+530,ty+rowH/2+1); ty+=rowH; });
+  if(list.length>maxRows){ g.fillText(`+ ${list.length-maxRows} more parts not listed`,TX+10,ty+30); }
+  [TX+90,TX+520].forEach(x=>{ g.beginPath(); g.moveTo(x,170); g.lineTo(x,170+rowH*(Math.min(list.length,maxRows)+1)); g.stroke(); });
+  // notes + title block
+  const BX=TX, BY=H-90-560, BW=W-90-TX;
+  g.lineWidth=4; g.strokeRect(BX,BY,BW,560); g.lineWidth=2;
+  const cell=(y,h,label,val,font)=>{ g.strokeRect(BX,BY+y,BW,h); g.font='22px "IBM Plex Mono",monospace'; g.fillStyle='#555'; g.fillText(label,BX+14,BY+y+24); g.fillStyle='#111'; g.font=font||'600 32px "IBM Plex Mono",monospace'; g.fillText(val,BX+14,BY+y+h-30); };
+  cell(0,150,'TITLE',$('slotName').value.trim()||'Board game insert layout','700 44px "Bricolage Grotesque",system-ui,sans-serif');
+  cell(150,100,'BOX INTERIOR (W × D × H)',`${f(B.w)} × ${f(B.d)} × ${f(B.h)} mm`);
+  const fits=pieces.filter(m=>status(m)[0]==='bad').length;
+  cell(250,100,'FIT CHECK',fits?`${fits} PART(S) DO NOT FIT`:`ALL ${pieces.length} PARTS FIT · CLEARANCE ${f(tol())} mm`);
+  cell(350,100,'DATE · SCALE · SHEET',`${new Date().toISOString().slice(0,10)} · NTS · ${page} / ${pages}`);
+  cell(450,110,'DRAWN WITH','Insert Fit Planner');
+  return sh;
+}
+// Minimal PDF: one full-page JPEG per A4-landscape page.
+function pdfFromJpegs(imgs){
+  const enc=new TextEncoder(), chunks=[], offs=[]; let len=0;
+  const push=x=>{ const b=typeof x==='string'?enc.encode(x):x; chunks.push(b); len+=b.length; };
+  const obj=(n,body)=>{ offs[n]=len; push(`${n} 0 obj\n`); body(); push('\nendobj\n'); };
+  push('%PDF-1.4\n');
+  obj(1,()=>push('<< /Type /Catalog /Pages 2 0 R >>'));
+  obj(2,()=>push(`<< /Type /Pages /Kids [${imgs.map((_,i)=>`${3+3*i} 0 R`).join(' ')}] /Count ${imgs.length} >>`));
+  imgs.forEach((im,i)=>{ const p=3+3*i, cs=`q 842 0 0 595 0 0 cm /Im${i} Do Q`;
+    obj(p,()=>push(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 842 595] /Resources << /XObject << /Im${i} ${p+2} 0 R >> >> /Contents ${p+1} 0 R >>`));
+    obj(p+1,()=>push(`<< /Length ${cs.length} >>\nstream\n${cs}\nendstream`));
+    obj(p+2,()=>{ push(`<< /Type /XObject /Subtype /Image /Width ${im.w} /Height ${im.h} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${im.bytes.length} >>\nstream\n`); push(im.bytes); push('\nendstream'); }); });
+  const xref=len, total=3+3*imgs.length;
+  push(`xref\n0 ${total}\n0000000000 65535 f \n`+offs.slice(1).map(o=>String(o).padStart(10,'0')+' 00000 n \n').join(''));
+  push(`trailer\n<< /Size ${total} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`);
+  return new Blob(chunks,{type:'application/pdf'});
+}
+$('exDraw').onclick=async()=>{
+  if(!pieces.some(m=>m.visible)){ toast('No pieces to draw'); return; }
+  const imgs=[];
+  for(const [exp,page] of [[false,1],[true,2]]){ const c=drawSheet(exp,page,2);
+    const blob=await new Promise(r=>c.toBlob(r,'image/jpeg',0.9)); imgs.push({bytes:new Uint8Array(await blob.arrayBuffer()),w:c.width,h:c.height}); }
+  saveFile(baseName()+'-drawing.pdf',pdfFromJpegs(imgs));
+};
+
+// ===== inputs =====
+['bw','bd','bh'].forEach(id=>$(id).addEventListener('change',()=>{buildBox();syncProxy();refresh();commit();}));
+$('tol').addEventListener('input',()=>refresh());
+$('exact').addEventListener('change',()=>refresh());
+$('free').addEventListener('change',e=>{ sel.forEach(m=>m.userData.free=e.target.checked); refresh(); commit(); });
+$('px').addEventListener('change',e=>moveSelTo('x',+e.target.value));
+$('py').addEventListener('change',e=>moveSelTo('z',+e.target.value));
+$('pz').addEventListener('change',e=>moveSelTo('y',Math.max(0,+e.target.value)));
+$('sname').addEventListener('input',e=>{ if(sel.length===1){sel[0].userData.name=e.target.value;refresh();commitSoon();} });
+document.querySelectorAll('[data-rot]').forEach(b=>b.onclick=()=>rotateSel(b.dataset.rot));
+$('dropDown').onclick=dropSelection;
+$('del').onclick=removeSel;
+$('selAll').onclick=()=>setSel([...pieces]);
+$('dup').onclick=()=>{ if(!sel.length) return;
+  const copies=sel.map(m=>{ const c=makeMesh({geo:m.geometry,name:m.userData.name+' copy',color:m.userData.kind?m.userData.color:PALETTE[colorIx++%PALETTE.length],free:m.userData.free,kind:m.userData.kind,printed:m.userData.printed,role:m.userData.role}); findSpot(c,m.geometry.boundingBox.getSize(new THREE.Vector3())); return c; });
+  setSel(copies); commit(); };
+$('addBox').onclick=()=>addPiece(new THREE.BoxGeometry(+$('nw').value||10,+$('nh').value||10,+$('nd').value||10),$('nn').value||'Block',{role:$('nRole').value});
+function removeSel(){ if(!sel.length) return; tc.detach();
+  for(const m of sel){ scene.remove(m); pieces.splice(pieces.indexOf(m),1); }
+  setSel([]); commit(); }
+
+// ===== file loading (STL and 3MF; both are Z-up and in mm) =====
+const stl=new STLLoader(), tmf=new ThreeMFLoader();
+function geometryFromGroup(group){
+  group.updateMatrixWorld(true); const parts=[];
+  group.traverse(o=>{ if(!o.isMesh) return;
+    const g=o.geometry.index?o.geometry.toNonIndexed():o.geometry.clone();
+    const clean=new THREE.BufferGeometry(); clean.setAttribute('position',g.getAttribute('position').clone());
+    clean.applyMatrix4(o.matrixWorld); parts.push(clean); });
+  if(!parts.length) throw new Error('no printable objects found');
+  return parts.length===1?parts[0]:mergeGeometries(parts,false);
+}
+function fail(name,err){ const st=$('status'); st.className='status bad'; st.textContent=`Could not read ${name}: ${err.message||err}`; }
+function loadFiles(files){ for(const file of files){
+  if(/\.insert$/i.test(file.name)){ openLayout(file); continue; }
+  const ext=(file.name.match(/\.(stl|3mf)$/i)||[])[1]?.toLowerCase(); if(!ext) continue;
+  const name=file.name.replace(/\.(stl|3mf)$/i,'');
+  const r=new FileReader();
+  r.onload=()=>{ try{
+      let g=ext==='stl'?stl.parse(r.result):geometryFromGroup(tmf.parse(r.result));
+      const clean=new THREE.BufferGeometry(); clean.setAttribute('position',g.getAttribute('position')); if(g.index) clean.setIndex(g.index); g=clean;
+      g.rotateX(-Math.PI/2); // Z-up file -> Y-up scene
+      addPiece(g,name,{printed:true});
+    }catch(err){ fail(file.name,err); } };
+  r.readAsArrayBuffer(file); } }
+const drop=$('drop');
+drop.onclick=()=>$('file').click();
+$('file').onchange=e=>{loadFiles(e.target.files);e.target.value=''};
+for(const el of [drop,canvas]){
+  el.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('over')});
+  el.addEventListener('dragleave',()=>drop.classList.remove('over'));
+  el.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('over');loadFiles(e.dataTransfer.files)});
+}
+
+// ===== picking =====
+const ray=new THREE.Raycaster(),ptr=new THREE.Vector2();let down=null;
+canvas.addEventListener('pointerdown',e=>down=[e.clientX,e.clientY]);
+canvas.addEventListener('pointerup',e=>{ if(!down||Math.hypot(e.clientX-down[0],e.clientY-down[1])>4||tc.dragging) return;
+  const r=canvas.getBoundingClientRect(); ptr.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);
+  ray.setFromCamera(ptr,camera);
+  if(exploded()){ toast('Exploded view: set Explode back to 0 to edit'); return; }
+  if(thickMode){ const hit=ray.intersectObjects(pieces.filter(m=>m.visible&&!m.userData.kind),false)[0]; if(hit) thicknessAt(hit); return; }
+  if(measuring){ const hit=ray.intersectObjects([...pieces.filter(m=>m.visible),floorMesh,wallsMesh],false)[0]; if(hit) measureClick(hit.point); return; }
+  const hit=ray.intersectObjects(pieces.filter(m=>m.visible),false)[0];
+  const add=e.shiftKey||e.ctrlKey||e.metaKey;
+  if(hit&&hit.object.userData.locked){ if(!add) setSel([]); toast('Locked. Unlock it in the list to move it.'); return; }
+  if(hit) add?toggleSel(hit.object):setSel([hit.object]);
+  else if(!tc.axis && !add) setSel([]); });
+
+addEventListener('keydown',e=>{ if(/INPUT/.test(document.activeElement.tagName)) return;
+  const k=e.key, mod=e.ctrlKey||e.metaKey;
+  if(mod&&(k==='z'||k==='Z')&&!e.shiftKey){ e.preventDefault(); undo(); return; }
+  if(mod&&(k==='y'||k==='Y'||((k==='z'||k==='Z')&&e.shiftKey))){ e.preventDefault(); redo(); return; }
+  if(mod&&(k==='a'||k==='A')){ e.preventDefault(); setSel([...pieces]); return; }
+  if(mod) return;
+  if(k==='m'||k==='M'){ $('measureBtn').click(); return; }
+  if(k==='t'||k==='T'){ setThick(!thickMode); return; }
+  if(k==='f'||k==='F'){ $('pocketBtn').click(); return; }
+  if(k==='Escape'){ if(thickMode) setThick(false); else if(measuring) setMeasuring(false); else setSel([]); return; }
+  if(!sel.length||exploded()) return;
+  const s=+$('snap').value||1;
+  if(k==='ArrowLeft')moveSelBy(-s,0,0); else if(k==='ArrowRight')moveSelBy(s,0,0);
+  else if(k==='ArrowUp')moveSelBy(0,0,-s); else if(k==='ArrowDown')moveSelBy(0,0,s);
+  else if(k==='h'||k==='H'){ sel.forEach(m=>{m.userData.hidden=true;m.visible=false;}); setSel([]); commit(); }
+  else if(k==='l'||k==='L'){ sel.forEach(m=>m.userData.locked=true); setSel([]); commit(); toast('Locked'); }
+  else if(k==='r'||k==='R')rotateSel('z'); else if(k==='d'||k==='D')dropSelection();
+  else if(k==='Delete'||k==='Backspace')removeSel(); else return;
+  e.preventDefault(); });
+
+// ===== views =====
+function view(kind){ const c=new THREE.Vector3(B.w/2,B.h/2,B.d/2), r=Math.max(B.w,B.d)*1.5;
+  if(kind==='top') camera.position.set(c.x,r*1.1,c.z+0.01);
+  else if(kind==='front') camera.position.set(c.x,c.y,c.z+r);
+  else camera.position.set(c.x+r*.6,r*.75,c.z+r*.8);
+  orbit.target.copy(c); orbit.update(); }
+$('vTop').onclick=()=>view('top');$('vFront').onclick=()=>view('front');$('v3d').onclick=()=>view('3d');
+let lid=null;
+function placeLid(){ if(lid) scene.remove(lid);
+  lid=new THREE.Mesh(new THREE.PlaneGeometry(B.w,B.d),new THREE.MeshBasicMaterial({color:0xc2412d,transparent:true,opacity:.15,side:THREE.DoubleSide,depthWrite:false}));
+  lid.rotation.x=-Math.PI/2;lid.position.set(B.w/2,B.h,B.d/2);scene.add(lid); }
+$('lidBtn').onclick=()=>{ if(lid){scene.remove(lid);lid=null;} else placeLid(); };
+
+function resize(){ const p=canvas.parentElement; renderer.setSize(p.clientWidth,p.clientHeight,false); camera.aspect=p.clientWidth/p.clientHeight; camera.updateProjectionMatrix(); }
+new ResizeObserver(resize).observe(canvas.parentElement);
+const _p=new THREE.Vector3();
+(function loop(){ orbit.update(); withExplode(()=>renderer.render(scene,camera));
+  const w=canvas.clientWidth,h=canvas.clientHeight;
+  for(const it of labelItems){ _p.copy(it.pos).project(camera); const vis=_p.z<1;
+    it.d.style.display=vis?'':'none'; it.d.style.left=((_p.x+1)/2*w)+'px'; it.d.style.top=((1-_p.y)/2*h)+'px'; }
+  requestAnimationFrame(loop); })();
+
+// ===== start: restore last session, else example layout =====
+(async()=>{
+  buildBox(); resize();
+  let restored=false;
+  try{ const rec=await idb('readonly',st=>st.get(AUTO)); if(rec&&rec.pieces){ restore(deserialize(rec),{keepSel:false}); restored=true; } }catch(e){}
+  if(!restored){
+    const ex=[['Example: card tray',140,70,40],['Example: token bin',70,70,30],['Example: token bin',70,70,30],['Example: player board stack',290,200,8]];
+    for(const [n,w,d,h] of ex) addPiece(new THREE.BoxGeometry(w,h,d),n,{select:false,record:false});
+    setSel([]);
+  }
+  current=snapshot(); updateUndo(); view('3d'); renderSlots(); refresh();
+})();
+</script>
+
+</body>
+</html>

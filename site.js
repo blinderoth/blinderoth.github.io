@@ -55,7 +55,11 @@
     tl.querySelectorAll('.item[data-start]').forEach(function (b) {
       var endRaw = b.getAttribute('data-end');
       var s = monthOf(b.getAttribute('data-start'));
-      var e = monthOf(endRaw) + 1;
+      /* Starts on the 1st of the start month and runs to the last day of the end month.
+         A current role ("present") runs to today. */
+      var e = endRaw === 'present'
+        ? nowM + now.getDate() / new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate()
+        : monthOf(endRaw) + 1;
       info[b.getAttribute('aria-controls')] = {
         s: s, e: e,
         startText: monthLabel(s),

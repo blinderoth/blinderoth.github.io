@@ -1334,3 +1334,25 @@ footer button.print-link:hover { color: var(--accent); }
 /* Key figures: room for four results side by side, two by two on phones */
 .nd-figures { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 @media (max-width: 560px) { .nd-figures { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 1.1rem; } }
+
+/* Book covers and other upright pictures: a small print, not a full-width frame */
+.personal-page .pane figure:has(img), .personal-page .detail figure:has(img) { width: fit-content; max-width: 100%; margin-left: auto; margin-right: auto; }
+.personal-page .pane figure img, .personal-page .detail figure img { max-height: 20rem; width: auto; max-width: 100%; margin: 0 auto; }
+
+/* Star ratings on the Personal page */
+.personal-page .items li { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 0.55rem; row-gap: 0.45rem; }
+.personal-page .items li .detail { flex-basis: 100%; }
+.pe-rating { display: flex; align-items: center; gap: 0.6rem; margin: -0.4rem 0 1rem; }
+.pe-stars {
+  position: relative; display: inline-block; white-space: nowrap;
+  font-family: var(--sans); font-size: 1.15rem; line-height: 1; letter-spacing: 0.12em;
+  color: var(--rule);
+}
+.pe-stars::before { content: "★★★★★"; }
+.pe-stars::after {
+  content: "★★★★★"; position: absolute; left: 0; top: 0;
+  width: var(--fill); overflow: hidden; color: var(--warm);
+}
+.pe-rating-text { font-family: var(--sans); font-size: 0.82rem; color: var(--muted); }
+.pe-rating-sm { display: inline-flex; margin: 0; }
+.pe-rating-sm .pe-stars { font-size: 0.72rem; letter-spacing: 0.08em; }

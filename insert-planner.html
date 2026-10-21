@@ -154,6 +154,24 @@ li .st.bad { color: var(--bad); } li .st.warn { color: var(--warn); }
 .slots button { padding: 4px 8px; font-size: 11px; }
 .pockets li { grid-template-columns: 22px 1fr auto; cursor: default; }
 .probs li { grid-template-columns: minmax(0, 1fr) auto; row-gap: 1px; }
+.sets li { grid-template-columns: minmax(0, 1fr) auto; cursor: default; }
+.sets select { width: auto; padding: 4px 6px; font-size: 11px; }
+#tiltBox .grid3 .row { flex-wrap: nowrap; gap: 4px; }
+#tiltBox [data-nudge] { flex: 1; padding: 6px 0; min-width: 0; }
+.boxes li { grid-template-columns: minmax(0, 1fr) auto auto auto; }
+.boxes li .when { font-size: 11px; color: var(--muted); }
+.boxes button { padding: 4px 8px; font-size: 11px; }
+.status .stb { background: none; border: 0; padding: 0; font: inherit; font-size: 13px; color: var(--good); cursor: pointer; text-decoration: underline dotted; text-underline-offset: 3px; }
+.status .stb.bad { color: var(--bad); }
+.status .stb.act { text-decoration-style: solid; }
+.cmp td.best { color: var(--good); }
+.cmp td.best::after { content: " ✓"; }
+.cmp th:first-child, .cmp td:first-child { text-align: left; }
+.sets li .when, .plates li .when { font-size: 11px; color: var(--muted); }
+.sets button { padding: 4px 8px; font-size: 11px; }
+.plates li { grid-template-columns: minmax(0, 1fr) auto; cursor: default; align-items: start; }
+.plates li .nm { white-space: normal; }
+.plates li.bad .nm strong { color: var(--bad); }
 .probs li .nm { white-space: normal; }
 .probs li .amt { color: var(--bad); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .pockets .tag { color: var(--good); }
@@ -175,6 +193,7 @@ table.est tr.total td { color: var(--accent); border-bottom: 0; }
 
 /* ---------- 3D stage ---------- */
 .stage { position: relative; background: var(--stage); min-width: 0; overflow: hidden; }
+.selrect { position: absolute; pointer-events: none; border: 1px dashed var(--accent); background: rgba(142, 156, 255, 0.12); border-radius: 2px; z-index: 3; }
 #c { display: block; width: 100%; height: 100%; touch-action: none; }
 .stage #labels { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
 
@@ -255,7 +274,7 @@ table.est tr.total td { color: var(--accent); border-bottom: 0; }
 <!-- ================= Tool rail ================= -->
 <aside class="rail" aria-label="Tools">
   <div class="rail-head">
-    <a class="back" href="index.html#boardgame-inserts-made-simple">Back to projects</a>
+    <a class="back" href="personal.html">Back to Personal</a>
     <h1>Insert fit planner</h1>
     <p class="sub">Drop in STL or 3MF prints from different inserts and see if they share one box. All sizes in mm.</p>
   </div>
@@ -270,8 +289,14 @@ table.est tr.total td { color: var(--accent); border-bottom: 0; }
   <!-- 1. Box -->
   <div class="panel" id="tab-box" role="tabpanel" aria-labelledby="t-box">
     <section>
-      <h2>Box interior</h2>
+      <div class="list-head"><h2>Boxes</h2><button id="boxAdd" title="Add an empty box next to the others">Add box</button></div>
+      <p class="note" style="margin-bottom:8px">Split a collection over several boxes, or duplicate a box to compare two designs side by side.</p>
+      <ul id="boxList" class="boxes"></ul>
+    </section>
+    <section>
+      <h2 id="hBoxInt">Box interior</h2>
       <p class="lead">Measure the inside of the box, from wall to wall and from the floor to the lid.</p>
+      <label style="margin-bottom:8px">Name<input id="bname" type="text" aria-label="Box name"></label>
       <div class="grid3">
         <label>Width (X)<input id="bw" type="number" value="295" min="1"></label>
         <label>Depth (Y)<input id="bd" type="number" value="295" min="1"></label>
@@ -279,19 +304,9 @@ table.est tr.total td { color: var(--accent); border-bottom: 0; }
       </div>
       <div class="row" style="margin-top:10px">
         <label style="flex:1" title="Gap kept between pieces and the box walls. Pieces snap flush against each other.">Wall clearance<input id="tol" type="number" value="0.5" min="0" step="0.1"></label>
-        <label style="flex:1">Snap grid<input id="snap" type="number" value="1" min="0" step="0.5"></label>
       </div>
-      <details>
-        <summary>Snapping and fit checks</summary>
-        <div class="body">
-          <label class="chk" title="Lets a piece sit inside a hollow tray. Off = compare outer boxes only (faster)."><input id="exact" type="checkbox" checked> Check exact shapes (allow nesting)</label>
-          <div class="row">
-            <label class="chk"><input id="wallSnap" type="checkbox" checked> Snap to walls</label>
-            <label class="chk"><input id="pieceSnap" type="checkbox" checked> Snap to pieces</label>
-          </div>
-          <label style="flex-direction:row;align-items:center;gap:6px">Snap when within<input id="wallDist" type="number" value="6" min="0" step="1" style="width:64px">mm</label>
-        </div>
-      </details>
+      <label class="chk" style="margin-top:8px" title="Lets a piece sit inside a hollow tray. Off = compare outer boxes only (faster)."><input id="exact" type="checkbox" checked> Check exact shapes (allow nesting)</label>
+      <p class="note">Snapping settings are in the panel for the selected piece.</p>
     </section>
   </div>
 
@@ -377,6 +392,11 @@ table.est tr.total td { color: var(--accent); border-bottom: 0; }
 
   <!-- 3. Pieces -->
   <div class="panel" id="tab-pieces" role="tabpanel" aria-labelledby="t-pieces" hidden>
+    <section id="setSec" hidden>
+      <div class="list-head"><h2>Sets</h2></div>
+      <p class="note" style="margin-bottom:8px">Move a whole set between boxes, or out and back, to test combinations. Pieces return to where they were.</p>
+      <ul id="listSets" class="sets"></ul>
+    </section>
     <section id="probSec" hidden>
       <div class="list-head"><h2 id="hProb">Problems</h2></div>
       <p class="note" id="probNote" style="margin-bottom:8px"></p>
@@ -384,7 +404,7 @@ table.est tr.total td { color: var(--accent); border-bottom: 0; }
     </section>
     <section>
       <div class="list-head"><h2 id="hPrint">Printed parts</h2><button id="selAll">Select all</button></div>
-      <p class="note" style="margin-bottom:8px">Click a part to select it. Shift- or Ctrl-click to select several.</p>
+      <p class="note" style="margin-bottom:8px">Click a part to select it. Shift- or Ctrl-click to select several, or Shift-drag in the view to select an area.</p>
       <ul id="listPrint"></ul>
     </section>
     <section>
@@ -395,8 +415,14 @@ table.est tr.total td { color: var(--accent); border-bottom: 0; }
 
   <!-- 4. Save -->
   <div class="panel" id="tab-save" role="tabpanel" aria-labelledby="t-save" hidden>
+    <section id="cmpSec" hidden>
+      <h2>Compare boxes</h2>
+      <p class="lead">Each box side by side. The best value in a row is marked.</p>
+      <div style="overflow-x:auto"><table class="est cmp" id="cmpTable"></table></div>
+    </section>
+
     <section>
-      <h2>Layouts</h2>
+      <div class="list-head"><h2>Layouts</h2><button id="newLayout" title="Start over with one empty box. Undo brings the current layout back.">New empty layout</button></div>
       <p class="lead">Saved in this browser, models included. Your current work is also kept automatically between visits.</p>
       <div class="row">
         <input id="slotName" type="text" placeholder="e.g. Spirit Island + expansions v2" style="flex:1;min-width:0" aria-label="Layout name">
@@ -413,7 +439,7 @@ table.est tr.total td { color: var(--accent); border-bottom: 0; }
 
     <section>
       <h2>Print estimate</h2>
-      <p class="lead">Rough figures for printed parts. Game components are left out.</p>
+      <p class="lead">Rough figures for printed parts<span class="scope"></span>. Game components are left out.</p>
       <div style="overflow-x:auto"><table class="est" id="estTable"></table></div>
       <details><summary>Printer and material</summary><div class="body">
         <div class="grid3">
@@ -426,6 +452,26 @@ table.est tr.total td { color: var(--accent); border-bottom: 0; }
           <label style="width:90px">Price/kg<input id="pePrice" type="number" value="250" min="0"></label>
         </div>
       </div></details>
+    </section>
+
+    <section>
+      <h2>Printer bed</h2>
+      <p class="lead">Which printed parts<span class="scope"></span> fit your printer, grouped into plates. Parts may be turned flat on the bed, not tipped over.</p>
+      <div class="row">
+        <label style="flex:1">Printer<select id="bedPreset">
+          <option value="256,256,256">Bambu Lab A1, P1, X1 (256 mm)</option>
+          <option value="180,180,180">Bambu Lab A1 mini (180 mm)</option>
+          <option value="250,210,220">Prusa MK4 (250 × 210)</option>
+          <option value="180,180,180">Prusa MINI (180 mm)</option>
+          <option value="220,220,250">Creality Ender 3 (220 mm)</option>
+          <option value="custom">Custom</option></select></label>
+      </div>
+      <div class="grid3" style="margin-top:8px">
+        <label>W mm<input id="bedW" type="number" value="256" min="10"></label>
+        <label>D mm<input id="bedD" type="number" value="256" min="10"></label>
+        <label>H mm<input id="bedH" type="number" value="256" min="10"></label>
+      </div>
+      <ul id="bedPlates" class="plates" style="margin-top:8px"></ul>
     </section>
 
     <section>
@@ -468,9 +514,9 @@ table.est tr.total td { color: var(--accent); border-bottom: 0; }
   </div>
 
   <div class="toolbar" role="toolbar" aria-label="View and tools">
-    <button id="vTop">Top</button><button id="vFront">Front</button><button id="v3d">3D</button>
+    <button id="vTop">Top</button><button id="vFront">Front</button><button id="v3d">3D</button><button id="vAll" hidden title="Show every box">All</button>
     <span class="sep"></span>
-    <button id="measureBtn" title="Click two points to measure (M)">Measure</button>
+    <button id="areaBtn" title="Drag a rectangle to select several pieces. On a computer you can also hold Shift and drag.">Select area</button><button id="measureBtn" title="Click two points to measure (M)">Measure</button>
     <button id="thickBtn" title="Click a wall or floor to see how thick it is (T)">Thickness</button>
     <button id="pocketBtn" title="Find the biggest empty spaces (F)">Free space</button>
     <button id="lidBtn" title="Show where the lid sits">Lid height</button>
@@ -487,6 +533,8 @@ table.est tr.total td { color: var(--accent); border-bottom: 0; }
     <div class="ins-head"><h2 id="selTitle">Selected</h2><span class="note">Click empty space to deselect</span></div>
     <label>Name<input id="sname" type="text" aria-label="Piece name"></label>
     <label style="margin-top:8px">Type<select id="sRole"><option value="print">Printed part (exported, estimated)</option><option value="game">Game component (not printed)</option><option value="mixed" hidden>Mixed</option></select></label>
+    <label style="margin-top:8px" title="Base game, an expansion or any group you want to move in and out of the box together">Set<input id="sSet" type="text" list="setList" placeholder="Base game" aria-label="Set"></label>
+    <datalist id="setList"></datalist>
     <label class="chk" style="margin-top:8px"><input id="free" type="checkbox"> Ignore overlaps for this piece</label>
 
     <div class="ins-group">
@@ -497,11 +545,25 @@ table.est tr.total td { color: var(--accent); border-bottom: 0; }
         <label>Z<input id="pz" type="number" step="0.5"></label>
       </div>
       <p class="note" id="sdims" style="margin-top:6px"></p>
+      <details id="snapBox" style="margin-top:6px"><summary>Snapping</summary><div class="body">
+        <div class="row">
+          <label style="flex:1" title="Moves land on whole multiples of this. 0 = free.">Grid mm<input id="snap" type="number" value="1" min="0" step="0.5"></label>
+          <label style="flex:1" title="How close a piece must come before it snaps">Snap within mm<input id="wallDist" type="number" value="6" min="0" step="1"></label>
+        </div>
+        <div class="row">
+          <label class="chk"><input id="wallSnap" type="checkbox" checked> Snap to walls</label>
+          <label class="chk"><input id="pieceSnap" type="checkbox" checked> Snap to pieces</label>
+        </div>
+      </div></details>
     </div>
 
     <div class="ins-group">
       <h2>Turn and place</h2>
-      <div class="row">
+      <div class="row" role="group" aria-label="Gizmo">
+        <button id="gzMove" class="on" title="Drag arrows to move (W)">Move</button>
+        <button id="gzRot" title="Drag rings to rotate each piece around its own centre, in 1° steps (E)">Rotate</button>
+      </div>
+      <div class="row" style="margin-top:8px">
         <button data-rot="z">Rotate 90° flat</button>
         <button data-rot="x">Tip over X</button>
         <button data-rot="y">Tip over Y</button>
@@ -511,47 +573,75 @@ table.est tr.total td { color: var(--accent); border-bottom: 0; }
         <button id="dup">Duplicate</button>
         <button id="del" class="danger">Remove</button>
       </div>
+      <div class="row" style="margin-top:8px">
+        <label style="flex:1">Move to<select id="moveTo" title="Pieces return to where they were in a box they've been in before"></select></label>
+      </div>
     </div>
 
-    <details id="tiltBox"><summary>Tilt</summary><div class="body">
-      <div class="row" style="align-items:end">
-        <label style="width:84px" title="Lean around the width (X) axis">Tilt X °<input id="tiltX" type="number" value="0" step="1"></label>
-        <label style="width:84px" title="Lean around the depth (Y) axis">Tilt Y °<input id="tiltZ" type="number" value="0" step="1"></label>
+    <div class="ins-group" id="wallBox">
+      <h2>Walls and floors</h2>
+      <button id="wallPick" title="Then click a wall or floor of this part">Pick a wall or floor</button>
+      <div id="wallEdit" hidden style="margin-top:8px">
+        <p class="note" id="wallInfo" aria-live="polite"></p>
+        <div class="row" style="margin-top:6px">
+          <label style="width:110px">New thickness mm<input id="wallT" type="number" step="0.1" min="0.4"></label>
+          <label style="flex:1">Extra thickness goes<select id="wallMode"><option value="keep">Inward, outside size kept</option><option value="grow">Outward, part grows</option></select></label>
+        </div>
+        <button id="wallApply" class="primary" style="margin-top:8px">Apply</button>
       </div>
-      <div class="row">
-        <button data-tilt="x" title="Tilt X by 5° more">X +5°</button><button data-tilt="z" title="Tilt Y by 5° more">Y +5°</button>
-        <button id="straighten" title="Remove all tilt">Straighten</button>
+    </div>
+
+    <details id="tiltBox"><summary>Rotate by degrees</summary><div class="body">
+      <div class="grid3">
+        <label title="Around the width axis">X °<input id="rotX" type="number" value="0" step="1"></label>
+        <label title="Around the depth axis">Y °<input id="rotY" type="number" value="0" step="1"></label>
+        <label title="Around the height axis (turn flat)">Z °<input id="rotZ" type="number" value="0" step="1"></label>
       </div>
-      <p class="note">Tilts game components so a deck or board can lean in the box. Press Drop down afterwards to settle it.</p>
+      <div class="grid3" style="margin-top:6px">
+        <div class="row"><button data-nudge="x,-1" aria-label="X minus 1 degree">−1°</button><button data-nudge="x,1" aria-label="X plus 1 degree">+1°</button></div>
+        <div class="row"><button data-nudge="z,-1" aria-label="Y minus 1 degree">−1°</button><button data-nudge="z,1" aria-label="Y plus 1 degree">+1°</button></div>
+        <div class="row"><button data-nudge="y,-1" aria-label="Z minus 1 degree">−1°</button><button data-nudge="y,1" aria-label="Z plus 1 degree">+1°</button></div>
+      </div>
+      <button id="straighten" style="margin-top:8px" title="Undo all free rotation">Straighten</button>
+      <p class="note">Each piece turns around its own centre and keeps its bottom where it was. Press Drop down afterwards to settle it. With several pieces selected, each one turns by the same amount.</p>
     </div></details>
 
-    <details id="scaleBox"><summary>Scale</summary><div class="body">
+    <details id="scaleBox"><summary>Size</summary><div class="body">
       <div class="grid3">
         <label>W mm<input id="szW" type="number" step="0.5"></label>
         <label>D mm<input id="szD" type="number" step="0.5"></label>
         <label>H mm<input id="szH" type="number" step="0.5"></label>
       </div>
-      <div class="grid3">
-        <label>W %<input id="pcW" type="number" value="100" step="1"></label>
-        <label>D %<input id="pcD" type="number" value="100" step="1"></label>
-        <label>H %<input id="pcH" type="number" value="100" step="1"></label>
-      </div>
-      <label class="chk"><input id="keepProp" type="checkbox" checked> Keep proportions</label>
-      <div class="row"><button id="applyPct" class="primary">Apply %</button><button id="inchFix" title="For files exported in inches">Inches → mm (×25.4)</button><button id="mmFix" title="For files that came in 25.4× too big">÷25.4</button></div>
-      <p class="note">Type a new size in mm to scale straight away, or set percentages and press Apply. Untick Keep proportions to change one axis only.</p>
+      <label class="chk" id="keepWallsRow"><input id="keepWalls" type="checkbox" checked> Keep walls and floor thickness</label>
+      <p class="note" id="sizeNote"></p>
+      <details><summary>Scale by percent</summary><div class="body">
+        <div class="grid3">
+          <label>W %<input id="pcW" type="number" value="100" step="1"></label>
+          <label>D %<input id="pcD" type="number" value="100" step="1"></label>
+          <label>H %<input id="pcH" type="number" value="100" step="1"></label>
+        </div>
+        <label class="chk"><input id="keepProp" type="checkbox" checked> Keep proportions</label>
+        <div class="row"><button id="applyPct" class="primary">Apply %</button><button id="inchFix" title="For files exported in inches">Inches → mm (×25.4)</button><button id="mmFix" title="For files that came in 25.4× too big">÷25.4</button></div>
+        <p class="note">Scales everything, walls included.</p>
+      </div></details>
     </div></details>
 
-    <details id="cutBox"><summary>Resize or trim</summary><div class="body">
-      <div class="row">
-        <label style="flex:1">Along<select id="cutAxis"><option value="0">Width (X)</option><option value="2">Depth (Y)</option><option value="1">Height (Z)</option></select></label>
-        <label style="flex:1.6">Mode<select id="cutMode"><option value="stretch">Stretch / shrink, walls kept</option><option value="keepStart">Trim: keep first … mm</option><option value="keepEnd">Trim: keep last … mm</option></select></label>
+    <details id="cutBox"><summary>Trim and shorten</summary><div class="body">
+      <label>What to do<select id="trimMode"><option value="mid">Remove a section from the middle</option><option value="end">Cut off one side</option></select></label>
+      <div id="trimMid" style="margin-top:8px">
+        <div class="grid3">
+          <label>Along<select id="midAx"><option value="0">Width</option><option value="2">Depth</option><option value="1">Height</option></select></label>
+          <label title="Where the removed section starts, measured from the left, back or bottom. Empty = centred.">From mm<input id="midFrom" type="number" step="0.5" placeholder="centre"></label>
+          <label>Remove mm<input id="midLen" type="number" step="0.5" min="0"></label>
+        </div>
       </div>
-      <div class="row">
-        <label style="flex:1" id="cutALab">Length mm<input id="cutA" type="number" step="0.5"></label>
-        <label style="flex:1" id="cutBLab" hidden>to mm<input id="cutB" type="number" step="0.5"></label>
+      <div id="trimEnd" class="row" style="margin-top:8px" hidden>
+        <label style="flex:1">Cut off from<select id="trimSide">
+          <option value="1,1">Top</option><option value="1,-1">Bottom</option><option value="0,-1">Left</option><option value="0,1">Right</option><option value="2,1">Front</option><option value="2,-1">Back</option></select></label>
+        <label style="width:90px">mm<input id="trimMm" type="number" step="0.5" min="0"></label>
       </div>
-      <button id="applyCut" class="primary">Apply</button>
-      <p class="note" id="cutInfo"></p>
+      <button id="applyCut" class="primary" style="margin-top:8px">Apply</button>
+      <p class="note" id="trimNote"></p>
     </div></details>
 
     <div class="row" id="splitRow" style="margin-top:12px"><button id="splitBtn">Split into separate parts</button><span class="note" id="splitInfo"></span></div>
@@ -620,12 +710,19 @@ const f=n=>(+(+n).toFixed(1)).toString();
 
 // Internal coords: three.js Y-up. User-facing: X=width, Y=depth, Z=height.
 const canvas=$('c');
-const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
-renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+const BASE_DPR=Math.min(devicePixelRatio,2);
+const renderer=new THREE.WebGLRenderer({canvas,antialias:BASE_DPR<1.5,alpha:true,powerPreference:'high-performance'});
+renderer.setPixelRatio(BASE_DPR);
+// Draw only when something changed. While the camera or a piece is moving, draw at lower resolution on high-DPI screens.
+let needsRender=true, moving=false, movingT=0;
+const redraw=()=>{ needsRender=true; };
+function interacting(){ if(!moving&&BASE_DPR>1){ moving=true; renderer.setPixelRatio(1); resize(); }
+  clearTimeout(movingT); movingT=setTimeout(()=>{ moving=false; if(renderer.getPixelRatio()!==BASE_DPR){ renderer.setPixelRatio(BASE_DPR); resize(); } redraw(); },180); redraw(); }
 const scene=new THREE.Scene();
 const camera=new THREE.PerspectiveCamera(40,1,1,5000);
 const orbit=new OrbitControls(camera,canvas);
 orbit.enableDamping=true;
+orbit.addEventListener('change',interacting);
 scene.add(new THREE.HemisphereLight(0xffffff,0x667060,1.6));
 const dl=new THREE.DirectionalLight(0xffffff,1.6);dl.position.set(200,400,300);scene.add(dl);
 
@@ -638,47 +735,94 @@ let altDown=false;
 canvas.addEventListener('pointerdown',e=>{ altDown=e.altKey; },true);
 tc.addEventListener('dragging-changed',e=>{orbit.enabled=!e.value;
   if(e.value&&altDown&&sel.length) duplicateInPlace();   // Alt-drag: leave the originals, drag copies
-  if(!e.value){ refresh(); commit(); }});
+  if(gizmo==='rotate'){ if(e.value) rotDragStart(); else rotDragEnd(); }
+  if(!e.value){ refresh(); commit(); if(panelsDirty) schedulePanels(); }});
 function duplicateInPlace(){
   const copies=sel.map(m=>makeMesh({geo:m.geometry,name:m.userData.name+' copy',color:m.userData.kind?m.userData.color:PALETTE[colorIx++%PALETTE.length],
-    free:m.userData.free,kind:m.userData.kind,printed:m.userData.printed,role:m.userData.role,tilt:m.userData.tilt,pos:m.position.toArray()}));
+    free:m.userData.free,kind:m.userData.kind,printed:m.userData.printed,role:m.userData.role,tilt:m.userData.tilt,set:m.userData.set,pos:m.position.toArray()}));
   sel=copies; refresh(); toast(`Dragging ${copies.length} cop${copies.length>1?'ies':'y'}`); }
-tc.addEventListener('objectChange',()=>{ snapProxy(); applyProxy(); refresh(); });
+tc.addEventListener('objectChange',()=>{ interacting(); if(gizmo==='rotate'){ rotDragMove(); refresh(); return; } snapProxy(); applyProxy(); refresh(); });
+tc.addEventListener('change',redraw);
 scene.add(tc);
 
 const boxGroup=new THREE.Group();scene.add(boxGroup);
-let B={w:295,d:295,h:72};
+// Boxes stand in a row along X, BOX_GAP apart; the area for pieces set aside follows the last one.
+// B is the active box (the one free space, the lid, the drawing and the Box tab work on). It has an x offset.
+let BOXES=[{name:'Box 1',w:295,d:295,h:72,x:0}], act=0, B=BOXES[0];
+const BOX_GAP=40, MAX_BOXES=4;
+function layoutBoxes(){ let x=0; BOXES.forEach(b=>{ b.x=x; x+=b.w+BOX_GAP; }); B=BOXES[act]; }
+const endX=()=>{ const b=BOXES[BOXES.length-1]; return b.x+b.w; };
+const maxD=()=>Math.max(...BOXES.map(b=>b.d));
+const cx=m=>{ const a=aabb(m); return (a.min.x+a.max.x)/2; };
+function boxIx(m){ const c=cx(m); if(c>endX()+PARK_GAP/2) return -1; for(let i=0;i<BOXES.length;i++) if(c<BOXES[i].x+BOXES[i].w+BOX_GAP/2) return i; return BOXES.length-1; }
+const boxOf=m=>{ const i=boxIx(m); return i<0?null:BOXES[i]; };
+const inScope=m=>boxOf(m)===B||(BOXES.length===1&&parked(m)); // what estimates, exports and the bed check cover
+// Move every piece along with its box when boxes are added, removed or resized. map: old index -> new index (or -1 = set aside)
+function relayout(change){
+  const before=pieces.map(m=>{ const i=boxIx(m); return {m,i,ox:i<0?endX()+PARK_GAP:BOXES[i].x}; });
+  const map=change()||BOXES.map((_,i)=>i); layoutBoxes();
+  const toPark=[];
+  for(const {m,i,ox} of before){ const ni=i<0?-1:map[i];
+    if(i>=0&&ni<0){ toPark.push(m); m.position.x+=endX()+PARK_GAP-ox; continue; }
+    m.position.x+=(ni<0?endX()+PARK_GAP:BOXES[ni].x)-ox;
+    if(ni>=0){ const b=BOXES[ni], a=aabb(m), over=a.max.x-(b.x+b.w); if(over>0) m.position.x-=Math.min(over,a.min.x-b.x); } // a smaller box keeps its pieces
+    const H=m.userData.homes; if(H){ const nh={}; for(const k in H){ const nk=map[k]; if(nk!=null&&nk>=0) nh[nk]=H[k]; } m.userData.homes=nh; } }
+  pairCache.clear(); buildBox(); toPark.forEach(placeOutside); }
+function setActive(i,frame){ if(i<0||i>=BOXES.length) return; const ch=i!==act; act=i; B=BOXES[i];
+  if(ch){ clearPockets(); buildBox(); } loadBoxInputs(); if(frame) view('3d'); }
+function loadBoxInputs(){ $('bw').value=B.w; $('bd').value=B.d; $('bh').value=B.h; $('bname').value=B.name; $('hBoxInt').textContent=BOXES.length>1?`Box interior: ${B.name}`:'Box interior'; }
 let pieces=[];let sel=[];
-let wallsMesh=null, floorMesh=null;
+let wallsMeshes=[], floorMeshes=[];
 
-function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toast.t); toast.t=setTimeout(()=>t.classList.remove('show'),1800); }
+function toast(msg,ms=1800){ redraw(); const t=$("toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(toast.t); toast.t=setTimeout(()=>t.classList.remove("show"),ms); }
 
 function buildBox(){
-  boxGroup.clear();
-  B={w:+$('bw').value||1,d:+$('bd').value||1,h:+$('bh').value||1};
-  floorMesh=new THREE.Mesh(new THREE.PlaneGeometry(B.w,B.d),new THREE.MeshStandardMaterial({color:0xcfc6b2,roughness:1}));
-  floorMesh.rotation.x=-Math.PI/2;floorMesh.position.set(B.w/2,-0.05,B.d/2);boxGroup.add(floorMesh);
-  const M=Math.max(B.w,B.d);
-  const grid=new THREE.GridHelper(M,Math.round(M/10),0x8a8270,0xb5ad99);
-  grid.material.transparent=true;grid.material.opacity=.45;
-  grid.scale.set(B.w/M,1,B.d/M);grid.position.set(B.w/2,0.02,B.d/2);
-  boxGroup.add(grid);
-  wallsMesh=new THREE.Mesh(new THREE.BoxGeometry(B.w,B.h,B.d),new THREE.MeshBasicMaterial({color:0x8a8270,transparent:true,opacity:.07,side:THREE.BackSide,depthWrite:false}));
-  wallsMesh.position.set(B.w/2,B.h/2,B.d/2);boxGroup.add(wallsMesh);
-  const edges=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(B.w,B.h,B.d)),new THREE.LineBasicMaterial({color:0x8a93a6}));
-  edges.position.copy(wallsMesh.position);boxGroup.add(edges);
+  boxGroup.clear(); floorMeshes=[]; wallsMeshes=[]; removeLabels(it=>it.kind==='park'||it.kind==='boxname');
+  BOXES.forEach((b,i)=>{ const on=i===act&&BOXES.length>1;
+    if(b.hidden){ const e=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(b.w,b.h,b.d)),new THREE.LineDashedMaterial({color:0x8a93a6,dashSize:4,gapSize:4}));
+      e.position.set(b.x+b.w/2,b.h/2,b.d/2); e.computeLineDistances(); boxGroup.add(e);
+      const l=addLabel(new THREE.Vector3(b.x+b.w/2,0,b.d+6),esc(b.name)+' (hidden)','mlabel'); l.kind='boxname'; return; }
+    const fm=new THREE.Mesh(new THREE.PlaneGeometry(b.w,b.d),new THREE.MeshStandardMaterial({color:0xcfc6b2,roughness:1}));
+    fm.rotation.x=-Math.PI/2; fm.position.set(b.x+b.w/2,-0.05,b.d/2); boxGroup.add(fm); floorMeshes.push(fm);
+    const M=Math.max(b.w,b.d), grid=new THREE.GridHelper(M,Math.round(M/10),0x8a8270,0xb5ad99);
+    grid.material.transparent=true; grid.material.opacity=.45; grid.scale.set(b.w/M,1,b.d/M); grid.position.set(b.x+b.w/2,0.02,b.d/2); boxGroup.add(grid);
+    const wm=new THREE.Mesh(new THREE.BoxGeometry(b.w,b.h,b.d),new THREE.MeshBasicMaterial({color:0x8a8270,transparent:true,opacity:.07,side:THREE.BackSide,depthWrite:false}));
+    wm.position.set(b.x+b.w/2,b.h/2,b.d/2); boxGroup.add(wm); wallsMeshes.push(wm);
+    const edges=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(b.w,b.h,b.d)),new THREE.LineBasicMaterial({color:on?0x8e9cff:0x8a93a6}));
+    edges.position.copy(wm.position); boxGroup.add(edges);
+    if(BOXES.length>1){ const l=addLabel(new THREE.Vector3(b.x+b.w/2,0,b.d+6),esc(b.name),'mlabel'); l.kind='boxname'; } });
+  // area beside the boxes for pieces set aside (expansions you're trying in and out)
+  const PW=parkW(), D=maxD(), X=endX()+PARK_GAP, pf=new THREE.Mesh(new THREE.PlaneGeometry(PW,D),new THREE.MeshStandardMaterial({color:0x3a3f4d,roughness:1}));
+  pf.rotation.x=-Math.PI/2; pf.position.set(X+PW/2,-0.05,D/2); boxGroup.add(pf);
+  const pe=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.PlaneGeometry(PW,D)),new THREE.LineDashedMaterial({color:0x8a93a6,dashSize:4,gapSize:3}));
+  pe.rotation.x=-Math.PI/2; pe.position.copy(pf.position); pe.position.y=0.03; pe.computeLineDistances(); boxGroup.add(pe);
+  const pl=addLabel(new THREE.Vector3(X+PW/2,0,D+6),BOXES.length>1?'Outside the boxes':'Outside the box','mlabel'); pl.kind='park';
   if(lid) placeLid();
 }
+const PARK_GAP=30, parkW=()=>Math.max(120,Math.max(...BOXES.map(b=>b.w))*0.8);
+const parked=m=>cx(m)>endX()+PARK_GAP/2;
+function findSpotIn(mesh,s,x0,w){ const step=5;
+  for(let z=0;z+s.z<=maxD();z+=step)for(let x=x0;x+s.x<=x0+w;x+=step){ mesh.position.set(x,0,z);
+    if(!pieces.some(o=>o!==mesh&&boxHit(aabb(mesh),aabb(o)))) return true; }
+  return false; }
+function leaveBox(m){ const i=boxIx(m); if(i<0) return; const b=BOXES[i]; m.userData.homes={...(m.userData.homes||{}),[i]:[m.position.x-b.x,m.position.y,m.position.z]}; }
+function parkOne(m){ if(parked(m)) return; leaveBox(m); placeOutside(m); }
+function placeOutside(m){ const s=aabb(m).getSize(new THREE.Vector3()), x0=endX()+PARK_GAP;
+  if(!findSpotIn(m,s,x0,Math.max(parkW(),s.x))){ m.position.set(x0,2000,0); dropDown(m); } }
+function toBox(m,i){ if(boxIx(m)===i) return; leaveBox(m); const b=BOXES[i], h=m.userData.homes&&m.userData.homes[i];
+  if(h) m.position.set(b.x+h[0],h[1],h[2]); else { m.position.x=-1e5; findSpot(m,aabb(m).getSize(new THREE.Vector3()),b); } }
+function moveTo(list,target){ list.forEach(m=>target<0?parkOne(m):toBox(m,target)); pairCache.clear(); syncProxy(); refresh(); commit(); }
+const targetName=t=>t<0?(BOXES.length>1?'outside the boxes':'outside the box'):BOXES[t].name;
 
 // Geometries are treated as immutable (rotation makes a new one) so undo can keep references to them.
 function normalize(geo){ geo.computeBoundingBox(); const m=geo.boundingBox.min; geo.translate(-m.x,-m.y,-m.z); geo.computeBoundingBox(); if(!geo.attributes.normal) geo.computeVertexNormals(); return geo; }
 function edgesOf(geo){ return geo.userData.edges||(geo.userData.edges=new THREE.EdgesGeometry(geo,30)); }
 
-function makeMesh({geo,name,color,free,pos,hidden,locked,kind,printed,role,tilt}){
-  const mat=new THREE.MeshStandardMaterial({color,roughness:.6,metalness:0});
+function makeMesh({geo,name,color,free,pos,hidden,locked,kind,printed,role,tilt,set,home,homes}){
+  const mat=new THREE.MeshLambertMaterial({color});
   const mesh=new THREE.Mesh(geo,mat);
-  mesh.add(new THREE.LineSegments(edgesOf(geo),new THREE.LineBasicMaterial({color:0x000000,transparent:true,opacity:.25})));
-  mesh.userData={name,color,free:!!free,hidden:!!hidden,locked:!!locked,kind:kind||null,printed:!!printed,tilt:tilt||[0,0]};
+  mesh.add(new THREE.LineSegments(edgesOf(geo),new THREE.LineBasicMaterial({color:new THREE.Color(color).multiplyScalar(.6)})));
+  mesh.userData={name,color,free:!!free,hidden:!!hidden,locked:!!locked,kind:kind||null,printed:!!printed,tilt:tilt||[0,0],set:set||'',homes:homes||(home?{0:home}:null)};
   // older layouts have no role: cards/dice and plain boxes are game components, real models are printed parts
   mesh.userData.role=role||(kind?'game':printed?'print':(geo.index?geo.index.count:geo.attributes.position.count)<=36?'game':'print');
   mesh.visible=!mesh.userData.hidden;
@@ -744,7 +888,7 @@ function buildDiceDeco(k,S){
       q.setFromEuler(e); M.compose(new THREE.Vector3(ox+ix*step+s/2,iy*step+s/2,oz+iz*step+s/2),q,new THREE.Vector3(1,1,1)); im.setMatrixAt(j,M);
       im.setColorAt(j,col.setHex(k.shape==='set'?DIE_COLORS[(Math.floor(i/7)+1)%DIE_COLORS.length]:DIE_COLORS[i%DIE_COLORS.length])); });
     if(shape!=='d6'){ const ed=new THREE.EdgesGeometry(im.geometry,20); const lm=new THREE.LineBasicMaterial({color:0x000000,transparent:true,opacity:.35});
-      ids.forEach((i,j)=>{ const l=new THREE.LineSegments(ed,lm); im.getMatrixAt(j,M); l.applyMatrix4(M); group.add(l); }); }
+      const parts=ids.map((i,j)=>{ im.getMatrixAt(j,M); return ed.clone().applyMatrix4(M); }); group.add(new THREE.LineSegments(mergeGeometries(parts,false),lm)); }
     group.add(im); group.userData.mats.push(...[mats].flat());
   }
   return group;
@@ -791,16 +935,20 @@ function addPiece(geo,name,{select:doSel=true,record=true,color,kind,printed,rol
   return mesh;
 }
 
-function findSpot(mesh,s){ // scan the floor for a free spot, else stack in the corner
+function findSpot(mesh,s,bx=B){ // scan the box floor for a free spot, else stack in the corner
   const step=5;
-  for(let z=0;z+s.z<=B.d;z+=step)for(let x=0;x+s.x<=B.w;x+=step){
-    mesh.position.set(x,0,z);
-    if(s.y<=B.h && !pieces.some(o=>o!==mesh&&boxHit(aabb(mesh),aabb(o)))) return;
+  for(let z=0;z+s.z<=bx.d;z+=step)for(let x=0;x+s.x<=bx.w;x+=step){
+    mesh.position.set(bx.x+x,0,z);
+    if(s.y<=bx.h && !pieces.some(o=>o!==mesh&&boxHit(aabb(mesh),aabb(o)))) return;
   }
-  mesh.position.set(0,2000,0); dropDown(mesh);
+  mesh.position.set(bx.x,2000,0); dropDown(mesh);
 }
 
-function aabb(m){ m.updateMatrixWorld(); return new THREE.Box3().copy(m.geometry.boundingBox).applyMatrix4(m.matrixWorld); }
+// World bounding box, cached until the piece moves, turns or gets a new shape (called thousands of times per refresh)
+function aabb(m){ const p=m.position, q=m.quaternion, sc=m.scale, c=m.userData._ab;
+  if(c&&c.g===m.geometry&&c.px===p.x&&c.py===p.y&&c.pz===p.z&&c.qx===q.x&&c.qy===q.y&&c.qz===q.z&&c.qw===q.w&&c.sx===sc.x&&c.sy===sc.y&&c.sz===sc.z) return c.box.clone();
+  m.updateMatrixWorld(); const box=new THREE.Box3().copy(m.geometry.boundingBox).applyMatrix4(m.matrixWorld);
+  m.userData._ab={g:m.geometry,px:p.x,py:p.y,pz:p.z,qx:q.x,qy:q.y,qz:q.z,qw:q.w,sx:sc.x,sy:sc.y,sz:sc.z,box}; return box.clone(); }
 function selBox(){ const b=new THREE.Box3(); sel.forEach(m=>b.union(aabb(m))); return b; }
 function tol(){return Math.max(0,+$('tol').value||0)}
 function boxHit(a,b){ const e=0.01; return a.min.x<b.max.x-e&&a.max.x>b.min.x+e&&a.min.y<b.max.y-e&&a.max.y>b.min.y+e&&a.min.z<b.max.z-e&&a.max.z>b.min.z+e; }
@@ -816,10 +964,15 @@ function inside(pWorld,m){ const inv=new THREE.Matrix4().copy(m.matrixWorld).inv
   const ray=new THREE.Ray(pWorld.clone().applyMatrix4(inv),new THREE.Vector3(.577,.5771,.5772).normalize());
   return bvh(m).raycast(ray,THREE.DoubleSide).length%2===1; }
 const pairCache=new Map();
+// Cached per pair until either piece moves, turns or changes shape. The pair is put in a fixed order first,
+// so asking (a,b) and later (b,a) hits the same entry.
+const poseOf=m=>{ const p=m.position, q=m.quaternion, s=m.scale; return [p.x,p.y,p.z,q.x,q.y,q.z,q.w,s.x,s.y,s.z]; };
 function shapesHit(a,b){
-  const key=a.uuid<b.uuid?a.uuid+b.uuid:b.uuid+a.uuid;
-  const sig=a.matrixWorld.elements.join()+b.matrixWorld.elements.join()+a.geometry.uuid+b.geometry.uuid;
-  const hit=pairCache.get(key); if(hit&&hit.sig===sig) return hit.v;
+  if(a.uuid>b.uuid) [a,b]=[b,a];
+  const key=a.uuid+b.uuid, pa=poseOf(a), pb=poseOf(b);
+  const hit=pairCache.get(key);
+  if(hit&&hit.ga===a.geometry&&hit.gb===b.geometry&&hit.pa.every((x,i)=>x===pa[i])&&hit.pb.every((x,i)=>x===pb[i])) return hit.v;
+  const a0=a, b0=b;
   // shrink the smaller piece: shrinking a hollow tray would lift its floor into whatever rests in it
   const vol=m=>{ const z=m.geometry.boundingBox.getSize(new THREE.Vector3()); return z.x*z.y*z.z; };
   if(vol(b)>vol(a)) [a,b]=[b,a];
@@ -829,7 +982,7 @@ function shapesHit(a,b){
   if(!v){ const p=new THREE.Vector3().fromBufferAttribute(b.geometry.attributes.position,0).applyMatrix4(shrinkMatrix(b)).applyMatrix4(b.matrixWorld);
     const q=new THREE.Vector3().fromBufferAttribute(a.geometry.attributes.position,0).applyMatrix4(shrinkMatrix(a)).applyMatrix4(a.matrixWorld);
     v=inside(p,a)||inside(q,b); }
-  pairCache.set(key,{sig,v}); return v;
+  pairCache.set(key,{ga:a0.geometry,gb:b0.geometry,pa,pb,v}); return v;
 }
 // 'clear' | 'nested' (boxes overlap, shapes don't) | 'overlap'
 function pair(a,b){
@@ -838,7 +991,7 @@ function pair(a,b){
   if(!$('exact').checked) return 'overlap';
   try{ return shapesHit(a,b)?'overlap':'nested'; }catch(e){ console.warn(e); return 'overlap'; }
 }
-function wallTight(a){ const t=tol()-0.01; return t>0&&(a.min.x<t||a.min.z<t||a.max.x>B.w-t||a.max.z>B.d-t); }
+function wallTight(a,b=B){ const t=tol()-0.01; return t>0&&(a.min.x<b.x+t||a.min.z<t||a.max.x>b.x+b.w-t||a.max.z>b.d-t); }
 function tight(a,b){ const t=tol(); if(t<=0) return false; const g=new THREE.Box3(a.min.clone().subScalar(t-0.01),a.max.clone().addScalar(t-0.01)); g.min.y=a.min.y+0.01;g.max.y=a.max.y-0.01; return boxHit(g,b); }
 
 // Samples rays straight down from the piece's underside onto the actual shapes below it (so it can settle into a tray cavity).
@@ -875,7 +1028,7 @@ function dropSelection(){ // lowest first, so stacked selections settle in order
 // --- proxy / multi-move / snapping
 function syncProxy(){
   if(!sel.length){ tc.detach(); return; }
-  proxy.position.copy(selBox().min); lastPos.copy(proxy.position); tc.attach(proxy);
+  proxy.quaternion.identity(); proxy.position.copy(gizmo==='rotate'?selBox().getCenter(new THREE.Vector3()):selBox().min); lastPos.copy(proxy.position); tc.attach(proxy);
 }
 function applyProxy(){
   const d=proxy.position.clone().sub(lastPos);
@@ -913,7 +1066,7 @@ function snapProxy(){
   const th=Math.max(0,+$('wallDist').value||0); if(!th) return;
   const S=selBox().getSize(new THREE.Vector3()), t=tol();
   const C={x:[],y:[0],z:[]};
-  if($('wallSnap').checked){ C.x.push(t,B.w-S.x-t); C.z.push(t,B.d-S.z-t); if(B.h-S.y>th) C.y.push(B.h-S.y); }
+  if($('wallSnap').checked){ C.x.push(B.x+t,B.x+B.w-S.x-t); C.z.push(t,B.d-S.z-t); if(B.h-S.y>th) C.y.push(B.h-S.y); }
   if($('pieceSnap').checked){
     const others=pieces.filter(o=>!sel.includes(o)&&o.visible);
     // 1) touch the nearest real surface: works against outer sides and the inner walls/floor of a tray
@@ -949,6 +1102,7 @@ function rotateSel(axis){
   for(const m of sel){
     const c=aabb(m).getCenter(new THREE.Vector3()).sub(center).applyMatrix4(R).add(center);
     if(m.userData.kind){ const q=new THREE.Quaternion().fromArray(m.userData.kind.q||[0,0,0,1]).premultiply(Rq); m.userData.kind={...kindDims(m),q:q.toArray()}; }
+    m.userData.tilt=Rq.clone().multiply(getRq(m)).multiply(Rq.clone().invert()).toArray();
     setGeo(m,rotated(m.geometry,axis));
     const half=m.geometry.boundingBox.getSize(new THREE.Vector3()).multiplyScalar(.5);
     m.position.copy(c).sub(half);
@@ -958,28 +1112,29 @@ function rotateSel(axis){
   syncProxy(); refresh(); commit();
 }
 
-function setSel(list){ sel=list.filter(m=>m&&!m.userData.locked&&!m.userData.hidden); syncProxy(); refresh(); }
+function setSel(list){ sel=list.filter(m=>m&&!m.userData.locked&&!m.userData.hidden&&!inHiddenBox(m)); syncProxy(); refresh(); }
 function toggleSel(m){ setSel(sel.includes(m)?sel.filter(x=>x!==m):[...sel,m]); }
 
 function status(m){
-  const a=aabb(m), t=0.01;
-  if(a.min.x<-t||a.min.z<-t||a.max.x>B.w+t||a.max.z>B.d+t) return ['bad','outside walls'];
-  if(a.max.y>B.h+t) return ['bad',`${(a.max.y-B.h).toFixed(1)} over lid`];
+  if(parked(m)) return ['','outside the box'];
+  const a=aabb(m), t=0.01, bx=boxOf(m);
+  if(a.min.x<bx.x-t||a.min.z<-t||a.max.x>bx.x+bx.w+t||a.max.z>bx.d+t) return ['bad','outside walls'];
+  if(a.max.y>bx.h+t) return ['bad',`${(a.max.y-bx.h).toFixed(1)} over lid`];
   let nestedIn=null;
-  for(const o of pieces){ if(o===m) continue; const p=pair(m,o);
+  for(const o of pieces){ if(o===m||boxOf(o)!==bx) continue; const p=pair(m,o);
     if(p==='overlap') return ['bad','overlaps '+o.userData.name]; if(p==='nested') nestedIn=o; }
   if(m.userData.free) return ['','overlaps ignored'];
-  if(wallTight(a)) return ['warn','tight to wall'];
+  if(wallTight(a,bx)) return ['warn','tight to wall'];
   if(nestedIn) return ['','fits, nested with '+nestedIn.userData.name];
   return ['','fits'];
 }
 
-function refresh(){
-  let bad=0,warn=0,vol=0;
-  const items=pieces.map(m=>{const [k,txt]=status(m); if(k==='bad')bad++; if(k==='warn')warn++;
-    const s=aabb(m).getSize(new THREE.Vector3()); vol+=s.x*s.y*s.z;
-    const em=k==='bad'?0x661100:(sel.includes(m)?0x1c2452:0); m.material.emissive.setHex(em); (m.userData.decoMats||[]).forEach(x=>x.emissive.setHex(em)); return {m,k,txt};});
-  const LP=$('listPrint'), LG=$('listGame'); LP.innerHTML=''; LG.innerHTML='';
+const inHiddenBox=m=>{ const i=boxIx(m); return i>=0&&!!BOXES[i].hidden; };
+let lastItems=[], panelsQueued=false, panelsDirty=false;
+function schedulePanels(){ if(panelsQueued) return; panelsQueued=true;
+  requestAnimationFrame(()=>{ panelsQueued=false; redraw(); if(tc.dragging){ panelsDirty=true; return; } panelsDirty=false; renderPanels(); }); }
+// Piece lists, problems, sets, boxes, comparison and estimates
+function renderPanels(){ const items=lastItems.filter(it=>pieces.includes(it.m)), LP=$('listPrint'), LG=$('listGame'); LP.innerHTML=''; LG.innerHTML='';
   const nP=pieces.filter(m=>m.userData.role==='print').length, nG=pieces.length-nP;
   $('hPrint').textContent=`Printed parts (${nP})`; $('hGame').textContent=`Game components (${nG})`;
   if(!nP) LP.innerHTML='<li style="cursor:default"><span></span><span class="muted">None yet. Drop in STL or 3MF files.</span><span></span></li>';
@@ -991,31 +1146,55 @@ function refresh(){
       `<button class="ib eye${u.hidden?'':' on'}" title="${u.hidden?'Show':'Hide'}" aria-label="${u.hidden?'Show':'Hide'} piece">${u.hidden?ICON.eyeOff:ICON.eye}</button>`+
       `<button class="ib lk${u.locked?' on':''}" title="${u.locked?'Unlock':'Lock'}" aria-label="${u.locked?'Unlock':'Lock'} piece">${u.locked?ICON.lock:ICON.unlock}</button>`;
     li.querySelector('.nm').textContent=u.name;
-    li.querySelector('.eye').onclick=e=>{ e.stopPropagation(); u.hidden=!u.hidden; m.visible=!u.hidden; if(u.hidden) setSel(sel.filter(x=>x!==m)); else refresh(); commit(); };
+    li.querySelector('.eye').onclick=e=>{ e.stopPropagation(); u.hidden=!u.hidden; m.visible=!u.hidden&&!inHiddenBox(m); if(u.hidden) setSel(sel.filter(x=>x!==m)); else refresh(); commit(); };
     li.querySelector('.lk').onclick=e=>{ e.stopPropagation(); u.locked=!u.locked; if(u.locked) setSel(sel.filter(x=>x!==m)); else refresh(); commit(); };
-    li.onclick=e=>{ if(u.locked){ toast('Locked. Unlock it to move it.'); return; } if(u.hidden){ toast('Hidden. Show it to select it.'); return; }
+    if(inHiddenBox(m)) li.classList.add('hid');
+    li.onclick=e=>{ if(u.locked){ toast('Locked. Unlock it to move it.'); return; } if(u.hidden){ toast('Hidden. Show it to select it.'); return; } if(inHiddenBox(m)){ toast('Its box is hidden. Show the box on the Box tab.'); return; }
       (e.shiftKey||e.ctrlKey||e.metaKey)?toggleSel(m):setSel([m]); };
     list.appendChild(li); }
-  renderProblems();
-  const st=$('status'); const boxVol=B.w*B.d*B.h;
+  renderProblems(); renderSets(); renderBoxes(); renderCompare(); renderEstimate(); }
+function refresh(){ redraw();
+  let bad=0,warn=0,vol=0;
+  const per=BOXES.map(()=>({bad:0,warn:0,vol:0,n:0}));
+  const items=pieces.map(m=>{ const bh=boxIx(m), hb=bh>=0&&BOXES[bh].hidden; m.visible=!m.userData.hidden&&!hb;
+    const [k,txt]=status(m); if(k==='bad')bad++; if(k==='warn')warn++;
+    const bi=boxIx(m); if(bi>=0){ const s=aabb(m).getSize(new THREE.Vector3()), P=per[bi]; P.vol+=s.x*s.y*s.z; P.n++; if(k==='bad') P.bad++; if(k==='warn') P.warn++; }
+    const em=k==='bad'?0x661100:(sel.includes(m)?0x1c2452:0); m.material.emissive.setHex(em); (m.userData.decoMats||[]).forEach(x=>x.emissive.setHex(em)); return {m,k,txt};});
+  lastItems=items; schedulePanels();
+  if(sel.length){ const bi=boxIx(sel[0]); if(bi>=0&&bi!==act) setActive(bi,false); }
+  const nOut=pieces.filter(parked).length;
+  lastPer=per; const st=$('status'), P=per[act], pl=n=>`${n} piece${n===1?'':'s'}`;
   st.className='status '+(bad?'bad':pieces.length?'ok':'');
-  st.innerHTML=pieces.length?`<strong>${bad?bad+' problem'+(bad>1?'s':''):'Everything fits'}</strong>${warn?` · ${warn} tight`:''}<br><span class="muted">${pieces.length} pieces · ${Math.round(vol/boxVol*100)}% of box volume (bounding boxes)</span>`:'Add a piece to start.';
-  if(explodeT) computeExplode(explodeT); renderEstimate();
-  $('selPanel').hidden=!sel.length;
+  if(!pieces.length) st.innerHTML='Add a piece to start.';
+  else if(BOXES.length===1) st.innerHTML=`<strong>${bad?bad+' problem'+(bad>1?'s':''):'Everything fits'}</strong>${warn?` · ${warn} tight`:''}<br><span class="muted">${pl(P.n)} in the box${nOut?` · ${nOut} outside`:''} · ${Math.round(P.vol/(B.w*B.d*B.h)*100)}% of box volume (bounding boxes)</span>`;
+  else { st.innerHTML=BOXES.map((b,i)=>`<button class="stb${per[i].bad?' bad':''}${i===act?' act':''}" data-b="${i}">${esc(b.name)}: ${per[i].bad?per[i].bad+' problem'+(per[i].bad>1?'s':''):'fits'}</button>`).join(' · ')+
+      `<br><span class="muted">${esc(B.name)}: ${pl(P.n)}${P.warn?` · ${P.warn} tight`:''} · ${Math.round(P.vol/(B.w*B.d*B.h)*100)}% of box volume${nOut?` · ${nOut} outside`:''}</span>`;
+    st.querySelectorAll('.stb').forEach(b=>b.onclick=()=>setActive(+b.dataset.b,true)); }
+  $('vAll').hidden=BOXES.length<2;
+  document.querySelectorAll('.scope').forEach(e=>e.textContent=BOXES.length>1?` in ${B.name}`:'');
+  if(explodeT) computeExplode(explodeT);
+  $('selPanel').hidden=!sel.length; if(!sel.length){ closeWall(); cutPrev.clear(); }
   if(sel.length){
     const a=selBox(), s=a.getSize(new THREE.Vector3()), multi=sel.length>1, ae=document.activeElement;
     $('selTitle').textContent=multi?`${sel.length} pieces selected`:'Selected';
     $('sname').hidden=multi;
-    if(ae!==$('px')) $('px').value=f(a.min.x);
+    const ox=(boxOf(sel[0])||{x:endX()+PARK_GAP}).x; if(ae!==$('px')) $('px').value=f(a.min.x-ox);
     if(ae!==$('py')) $('py').value=f(a.min.z);
     if(ae!==$('pz')) $('pz').value=f(a.min.y);
     if(!multi && ae!==$('sname')) $('sname').value=sel[0].userData.name;
     $('free').checked=sel.every(m=>m.userData.free);
     const roles=new Set(sel.map(m=>m.userData.role)); $('sRole').value=roles.size>1?'mixed':[...roles][0];
-    $('tiltBox').hidden=!sel.every(m=>m.userData.role==='game');
-    const tl=sel[0].userData.tilt||[0,0]; if(ae!==$('tiltX')) $('tiltX').value=tl[0]; if(ae!==$('tiltZ')) $('tiltZ').value=tl[1];
+    const eu=new THREE.Euler().setFromQuaternion(getRq(sel[0]),'XYZ'), dg=v=>+(THREE.MathUtils.radToDeg(v)).toFixed(1);
+    if(ae!==$('rotX')) $('rotX').value=dg(eu.x); if(ae!==$('rotY')) $('rotY').value=dg(eu.z); if(ae!==$('rotZ')) $('rotZ').value=dg(eu.y);
     $('splitRow').hidden=multi||sel[0].userData.kind!=null; $('splitInfo').textContent='';
-    const ax=+$('cutAxis').value, len=s.getComponent(ax); $('cutInfo').textContent=cutHelp(len);
+    const sets=new Set(sel.map(m=>m.userData.set)); if(ae!==$('sSet')) $('sSet').value=sets.size>1?'':[...sets][0]; $('sSet').placeholder=sets.size>1?'Mixed':'Base game';
+    fillMoveTo($('moveTo'),sel);
+    const one=!multi&&sel[0].userData.role==='print'&&!sel[0].userData.kind;
+    $('wallBox').hidden=!one; if(!one||(wallSel&&wallSel.m!==sel[0])) closeWall();
+    $('keepWallsRow').hidden=!one;
+    $('sizeNote').textContent=one&&$('keepWalls').checked?'Type a new size and press Enter. The part grows or shrinks in its open spaces, so walls, floor and dividers keep their thickness.':'Type a new size and press Enter to scale. Untick Keep proportions under Scale by percent to change one side only.';
+    $('cutBox').hidden=sel.some(m=>m.userData.kind);
+    if(sel[0]!==lastTrimSel){ lastTrimSel=sel[0]; $('midFrom').value=''; } updTrim();
     if(ae!==$('szW')) $('szW').value=f(s.x); if(ae!==$('szD')) $('szD').value=f(s.z); if(ae!==$('szH')) $('szH').value=f(s.y);
     $('sdims').textContent=`${f(s.x)} × ${f(s.z)} × ${f(s.y)} mm (W×D×H)${multi?' as a group':''}`;
   }
@@ -1029,39 +1208,41 @@ function smallestFix(a,b){ // overlap of two boxes per axis; the smallest one is
   let ax=0; for(let i=1;i<3;i++) if(e[i]<e[ax]) ax=i; return {mm:e[ax],ax}; }
 function renderProblems(){
   const ul=$('listProb'), rows=[], t=0.01;
-  for(const m of pieces){ const a=aabb(m), n=m.userData.name;
-    const out=Math.max(-a.min.x,-a.min.z,a.max.x-B.w,a.max.z-B.d);
+  const inBox=pieces.filter(m=>!parked(m)), pre=m=>BOXES.length>1?boxOf(m).name+': ':'';
+  for(const m of inBox){ const a=aabb(m), n=pre(m)+m.userData.name, bx=boxOf(m);
+    const out=Math.max(bx.x-a.min.x,-a.min.z,a.max.x-bx.x-bx.w,a.max.z-bx.d);
     if(out>t) rows.push({txt:`${n} sticks out of the box`,mm:out,ax:null,list:[m]});
-    if(a.max.y>B.h+t) rows.push({txt:`${n} is above the lid`,mm:a.max.y-B.h,ax:1,list:[m]}); }
-  for(let i=0;i<pieces.length;i++) for(let j=i+1;j<pieces.length;j++){ const a=pieces[i], b=pieces[j];
-    if(pair(a,b)!=='overlap') continue; const fx=smallestFix(aabb(a),aabb(b));
-    rows.push({txt:`${a.userData.name} ↔ ${b.userData.name}`,mm:fx.mm,ax:fx.ax,list:[a,b],pair:true}); }
+    if(a.max.y>bx.h+t) rows.push({txt:`${n} is above the lid`,mm:a.max.y-bx.h,ax:1,list:[m]}); }
+  for(let i=0;i<inBox.length;i++) for(let j=i+1;j<inBox.length;j++){ const a=inBox[i], b=inBox[j];
+    if(boxOf(a)!==boxOf(b)||pair(a,b)!=='overlap') continue; const fx=smallestFix(aabb(a),aabb(b));
+    rows.push({txt:`${pre(a)}${a.userData.name} ↔ ${b.userData.name}`,mm:fx.mm,ax:fx.ax,list:[a,b],pair:true}); }
   $('probSec').hidden=!rows.length; ul.innerHTML='';
   if(!rows.length) return;
   rows.sort((x,y)=>y.mm-x.mm);
   $('hProb').textContent=`Problems (${rows.length})`;
   $('probNote').textContent=rows.some(r=>r.pair)?'Each figure is the least you need to move or trim, along the direction shown.'+($('exact').checked?' Collisions are measured on bounding boxes, so the real overlap can be smaller.':''):'Click a row to select the pieces.';
-  for(const r of rows){ const li=document.createElement('li');
+  const MAXR=60; for(const r of rows.slice(0,MAXR)){ const li=document.createElement('li');
     li.innerHTML='<span class="nm"></span><span class="amt"></span>';
     li.querySelector('.nm').textContent=r.txt;
     li.querySelector('.amt').textContent=`${r.pair&&$('exact').checked?'up to ':''}${f(r.mm)} mm${r.ax!=null?' '+AXN[r.ax]:''}`;
     li.title='Select '+(r.list.length>1?'both pieces':'this piece');
     li.onclick=()=>{ const ok=r.list.filter(m=>!m.userData.locked&&!m.userData.hidden); if(!ok.length){ toast('Locked or hidden. Unlock or show it to select it.'); return; } setSel(ok); };
     ul.appendChild(li); }
+  if(rows.length>MAXR){ const li=document.createElement('li'); li.style.cursor='default'; li.innerHTML=`<span class="nm muted">…and ${rows.length-MAXR} more. Fix the ones above first.</span>`; ul.appendChild(li); }
 }
 
 // ===== Undo / redo =====
 // A snapshot holds the box size and each piece's geometry reference + placement. Geometries are never mutated.
 const SETTINGS=['snap','tol','wallDist'], FLAGS=['exact','wallSnap','pieceSnap'];
 function snapshot(){
-  return { box:{...B}, settings:Object.fromEntries([...SETTINGS.map(k=>[k,$(k).value]),...FLAGS.map(k=>[k,$(k).checked])]),
-    pieces:pieces.map(m=>({geo:m.geometry,name:m.userData.name,color:m.userData.color,free:m.userData.free,hidden:m.userData.hidden,locked:m.userData.locked,kind:m.userData.kind,printed:m.userData.printed,role:m.userData.role,tilt:m.userData.tilt,pos:m.position.toArray()})),
+  return { boxes:BOXES.map(({name,w,d,h,hidden})=>({name,w,d,h,hidden:!!hidden})), act, settings:Object.fromEntries([...SETTINGS.map(k=>[k,$(k).value]),...FLAGS.map(k=>[k,$(k).checked])]),
+    pieces:pieces.map(m=>({geo:m.geometry,name:m.userData.name,color:m.userData.color,free:m.userData.free,hidden:m.userData.hidden,locked:m.userData.locked,kind:m.userData.kind,printed:m.userData.printed,role:m.userData.role,tilt:m.userData.tilt,set:m.userData.set,homes:m.userData.homes,pos:m.position.toArray()})),
     sel:sel.map(m=>pieces.indexOf(m)) };
 }
-function sigOf(s){ return JSON.stringify([s.box,s.pieces.map(p=>[p.geo.uuid,p.name,p.free,p.hidden,p.locked,p.role,p.tilt,p.kind&&p.kind.q,p.pos.map(v=>+v.toFixed(3))])]); }
+function sigOf(s){ return JSON.stringify([s.boxes,s.act,s.pieces.map(p=>[p.geo.uuid,p.name,p.free,p.hidden,p.locked,p.role,p.tilt,p.set,p.kind&&p.kind.q,p.pos.map(v=>+v.toFixed(3))])]); }
 function restore(s,{keepSel=true}={}){
   tc.detach(); for(const m of pieces){ scene.remove(m); m.material.dispose(); } pieces=[]; pairCache.clear();
-  $('bw').value=s.box.w; $('bd').value=s.box.d; $('bh').value=s.box.h;
+  lastPer=null; BOXES=(s.boxes||[{name:'Box 1',...s.box}]).map(b=>({...b})); act=Math.min(s.act||0,BOXES.length-1); layoutBoxes(); loadBoxInputs();
   if(s.settings){ SETTINGS.forEach(k=>{ if(s.settings[k]!=null) $(k).value=s.settings[k]; }); FLAGS.forEach(k=>{ if(s.settings[k]!=null) $(k).checked=s.settings[k]; }); }
   buildBox();
   s.pieces.forEach(p=>makeMesh(p));
@@ -1093,8 +1274,8 @@ function serialize(name,s){
   const geos=new Map();
   for(const p of s.pieces) if(!geos.has(p.geo.uuid)){ const g=p.geo;
     geos.set(g.uuid,{pos:new Float32Array(g.attributes.position.array), idx:g.index?Array.from(g.index.array):null}); }
-  return { name, saved:Date.now(), box:s.box, settings:s.settings, geos:Object.fromEntries(geos),
-    pieces:s.pieces.map(p=>({geo:p.geo.uuid,name:p.name,color:p.color,free:p.free,hidden:p.hidden,locked:p.locked,kind:p.kind,printed:p.printed,role:p.role,tilt:p.tilt,pos:p.pos})), checklist };
+  return { name, saved:Date.now(), boxes:s.boxes, act:s.act, settings:s.settings, geos:Object.fromEntries(geos),
+    pieces:s.pieces.map(p=>({geo:p.geo.uuid,name:p.name,color:p.color,free:p.free,hidden:p.hidden,locked:p.locked,kind:p.kind,printed:p.printed,role:p.role,tilt:p.tilt,set:p.set,homes:p.homes,pos:p.pos})), checklist };
 }
 function deserialize(rec){
   const geos={};
@@ -1102,7 +1283,7 @@ function deserialize(rec){
     geo.setAttribute('position',new THREE.BufferAttribute(new Float32Array(g.pos),3)); if(g.idx) geo.setIndex(g.idx);
     geo.computeVertexNormals(); geo.computeBoundingBox(); geos[id]=geo; }
   if(rec.checklist){ checklist=rec.checklist; renderChecklist(); }
-  return { box:rec.box, settings:rec.settings, pieces:rec.pieces.map(p=>({...p,geo:geos[p.geo]})), sel:[] };
+  return { box:rec.box, boxes:rec.boxes, act:rec.act, settings:rec.settings, pieces:rec.pieces.map(p=>({...p,geo:geos[p.geo]})), sel:[] };
 }
 let autoT=null;
 function autosave(){ clearTimeout(autoT); autoT=setTimeout(()=>{ idb('readwrite',st=>st.put(serialize(AUTO,current))).catch(()=>{}); },800); }
@@ -1136,9 +1317,12 @@ async function gz(text,mode){ // mode: 'compress' | 'decompress'; falls back to 
   return new Response(new Blob([text]).stream().pipeThrough(new S('gzip'))).arrayBuffer(); }
 $('fileSave').onclick=async()=>{ commit(); const rec=serialize(baseName(),current);
   const geos={}; for(const [id,g] of Object.entries(rec.geos)) geos[id]={pos:b64(new Uint8Array(g.pos.buffer)),idx:g.idx?b64(new Uint8Array(new Uint32Array(g.idx).buffer)):null};
-  const json=JSON.stringify({format:'insert-fit-planner',version:1,layout:{...rec,geos}});
+  const json=JSON.stringify({format:'insert-fit-planner',version:2,layout:{...rec,geos}});
   let data; try{ data=await gz(json,'compress'); }catch(e){ data=null; }
   saveFile(baseName()+'.insert',data?new Blob([data],{type:'application/gzip'}):new Blob([json],{type:'application/json'})); };
+$('newLayout').onclick=()=>{ commit();
+  restore({boxes:[{name:'Box 1',w:295,d:295,h:72}],act:0,settings:null,pieces:[],sel:[]},{keepSel:false});
+  $('slotName').value=''; commit(); view('3d'); toast('New empty layout. Undo brings the old one back.'); };
 $('fileOpen').onclick=()=>$('layoutFile').click();
 $('layoutFile').onchange=e=>{ if(e.target.files[0]) openLayout(e.target.files[0]); e.target.value=''; };
 async function openLayout(file){
@@ -1148,7 +1332,7 @@ async function openLayout(file){
     else text=new TextDecoder().decode(buf);
     const doc=JSON.parse(text);
     if(doc.format!=='insert-fit-planner'||!doc.layout||!doc.layout.geos||!Array.isArray(doc.layout.pieces)) throw new Error('not an Insert Fit Planner layout');
-    if(doc.version>1) throw new Error('made by a newer version of the planner');
+    if(doc.version>2) throw new Error('made by a newer version of the planner');
     const L=doc.layout, geos={};
     for(const [id,g] of Object.entries(L.geos)){ const p=unb64(g.pos), q=g.idx?unb64(g.idx):null;
       geos[id]={pos:new Float32Array(p.buffer,0,p.length>>2),idx:q?Array.from(new Uint32Array(q.buffer,0,q.length>>2)):null}; }
@@ -1164,11 +1348,11 @@ const labelsEl=$('labels'); let labelItems=[];
 function addLabel(pos,html,cls='mlabel'){ const d=document.createElement('div'); d.className=cls; d.innerHTML=html; labelsEl.appendChild(d); const it={pos,d}; labelItems.push(it); return it; }
 function removeLabels(filter){ labelItems=labelItems.filter(it=>{ if(filter(it)){ it.d.remove(); return false; } return true; }); }
 function clearMeasure(){ mPts=[]; mGroup.clear(); removeLabels(it=>it.kind==='m'); }
-function setMeasuring(on){ measuring=on; $('measureBtn').classList.toggle('on',on); if(on){ select0(); toast('Click two points to measure'); } else clearMeasure(); }
+function setMeasuring(on){ measuring=on; if(on&&areaMode) setArea(false); $('measureBtn').classList.toggle('on',on); if(on){ select0(); toast('Click two points to measure'); } else clearMeasure(); }
 function select0(){ setSel([]); }
 $('measureBtn').onclick=()=>{ if(thickMode) setThick(false); setMeasuring(!measuring); };
 let thickMode=false;
-function setThick(on){ thickMode=on; $('thickBtn').classList.toggle('on',on); clearMeasure(); if(on){ if(measuring) setMeasuring(false); setSel([]); toast('Click a wall or floor to see its thickness'); } }
+function setThick(on){ thickMode=on; if(on&&areaMode) setArea(false); $('thickBtn').classList.toggle('on',on); clearMeasure(); if(on){ if(measuring) setMeasuring(false); setSel([]); toast('Click a wall or floor to see its thickness'); } }
 $('thickBtn').onclick=()=>setThick(!thickMode);
 // From the clicked point, shoot a ray straight into the part (against the surface normal) to the far side.
 function thicknessAt(hit){
@@ -1213,9 +1397,10 @@ function findPockets(){
   const step=Math.max(1,Math.ceil(Math.max(B.w,B.d)/220)), nx=Math.floor(B.w/step), nz=Math.floor(B.d/step);
   const H=new Float32Array(nx*nz), ray=new THREE.Raycaster(); ray.firstHitOnly=true;
   const down=new THREE.Vector3(0,-1,0), inv=new THREE.Matrix4(), boxes=pieces.map(aabb);
+  if(BOXES.length>1) toast(`Free space in ${B.name}`);
   const local=new THREE.Ray();
   for(let z=0;z<nz;z++)for(let x=0;x<nx;x++){
-    const cx0=x*step, cx1=cx0+step, cz0=z*step, cz1=cz0+step; let top=0;
+    const cx0=B.x+x*step, cx1=cx0+step, cz0=z*step, cz1=cz0+step; let top=0;
     pieces.forEach((m,i)=>{ const b=boxes[i]; if(b.max.y<=top||b.max.x<=cx0||b.min.x>=cx1||b.max.z<=cz0||b.min.z>=cz1) return;
       // sample the part of this cell the piece covers (corners, edges and centre) so thin walls aren't missed
       const x0=Math.max(cx0,b.min.x)+0.05, x1=Math.min(cx1,b.max.x)-0.05, z0=Math.max(cz0,b.min.z)+0.05, z1=Math.min(cz1,b.max.z)-0.05;
@@ -1235,7 +1420,7 @@ function findPockets(){
     let floorY=0; for(let zz=r.z0;zz<r.z0+r.d;zz++) for(let xx=r.x0;xx<r.x0+r.w;xx++) floorY=Math.max(floorY,H[zz*nx+xx]);
     const w=r.w*step-2*t, d=r.d*step-2*t, h=B.h-floorY-t;
     if(w<5||d<5||h<3) continue;
-    const c={x:r.x0*step+t,z:r.z0*step+t,y:floorY,w,d,h,vol:w*d*h};
+    const c={x:B.x+r.x0*step+t,z:r.z0*step+t,y:floorY,w,d,h,vol:w*d*h};
     if(pocketFree(c)) cands.push(c);
   }
   // keep the most useful distinct ones: biggest volume, biggest footprint, tallest
@@ -1324,10 +1509,13 @@ function scaleSel(sx,sy,sz){
   syncProxy(); refresh(); commit();
 }
 function sizeInput(id,axis){ $(id).addEventListener('change',e=>{ const S=selBox().getSize(new THREE.Vector3()); const v=+e.target.value; if(!(v>0)) return;
+  if(sel.length===1&&sel[0].userData.role==='print'&&!sel[0].userData.kind&&$('keepWalls').checked){
+    const msg=resizeKeepWalls(sel[0],{x:0,y:1,z:2}[axis],v); if(msg){ toast(msg); refresh(); } return; }
   const k=v/S[axis]; if($('keepProp').checked) scaleSel(k,k,k); else scaleSel(axis==='x'?k:1,axis==='y'?k:1,axis==='z'?k:1); }); }
 sizeInput('szW','x'); sizeInput('szD','z'); sizeInput('szH','y');
 ['pcW','pcD','pcH'].forEach(id=>$(id).addEventListener('input',e=>{ if($('keepProp').checked) ['pcW','pcD','pcH'].forEach(o=>{ if(o!==id) $(o).value=e.target.value; }); }));
 $('applyPct').onclick=()=>{ const w=(+$('pcW').value)/100,d=(+$('pcD').value)/100,h=(+$('pcH').value)/100; scaleSel(w,h,d); ['pcW','pcD','pcH'].forEach(o=>$(o).value=100); };
+$('keepWalls').addEventListener('change',refresh);
 $('inchFix').onclick=()=>scaleSel(25.4,25.4,25.4);
 $('mmFix').onclick=()=>scaleSel(1/25.4,1/25.4,1/25.4);
 
@@ -1345,55 +1533,159 @@ function clipGeo(geo,ax,c,keepBelow){
   }
   const g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.Float32BufferAttribute(out,3)); return g;
 }
-$('cutMode').addEventListener('change',updCutUi); $('cutAxis').addEventListener('change',updCutUi); updCutUi();
+// Trim: cut off one side, or take a section out of the middle and join the two ends
+const cutPrev=new THREE.Group(); scene.add(cutPrev);
+const midLabel=['left','bottom','back'];
+function midSpan(m){ const ax=+$('midAx').value, L=m.geometry.boundingBox.max.getComponent(ax), len=+$('midLen').value||0;
+  const from=$('midFrom').value===''?(L-len)/2:+$('midFrom').value; return {ax,L,len,from}; }
+function updTrim(){ cutPrev.clear(); const mid=$('trimMode').value==='mid'; $('trimMid').hidden=!mid; $('trimEnd').hidden=mid;
+  if(!mid||!sel.length||!$('cutBox').open||$('cutBox').hidden){ $('trimNote').textContent=mid?'':'Sides as seen in the Front view. The cut face is left open, so close it in your slicer if it matters.'; return; }
+  if(sel.length>1){ $('trimNote').textContent='Select one part to remove a section from it.'; return; }
+  const m=sel[0], {ax,L,len,from}=midSpan(m);
+  if(!(len>0)){ $('trimNote').textContent=`The part is ${f(L)} mm along this side. Enter how much to remove.`; return; }
+  if(from<0.01||from+len>L-0.01){ $('trimNote').textContent=`That runs past the end of the part (${f(L)} mm). Lower From or Remove.`; return; }
+  // red slab where the section comes out
+  const a=aabb(m), sz=a.getSize(new THREE.Vector3()).addScalar(2), c=a.getCenter(new THREE.Vector3()); sz.setComponent(ax,len); c.setComponent(ax,a.min.getComponent(ax)+from+len/2);
+  const sl=new THREE.Mesh(new THREE.BoxGeometry(sz.x,sz.y,sz.z),new THREE.MeshBasicMaterial({color:0xff6b5a,transparent:true,opacity:.45,depthWrite:false})); sl.position.copy(c); cutPrev.add(sl);
+  const ed=new THREE.LineSegments(new THREE.EdgesGeometry(sl.geometry),new THREE.LineBasicMaterial({color:0xff6b5a})); ed.position.copy(c); cutPrev.add(ed);
+  $('trimNote').textContent=`Removes ${f(from)}–${f(from+len)} mm from the ${midLabel[ax]} (shown in red). The part gets ${f(len)} mm shorter, and everything outside the red section keeps its size and spacing. Put both cuts where the part looks the same, for example across a run of card slots, so the ends join cleanly.`+(sectionsMatch(m,ax,from,from+len)?' Both cuts match.':' Warning: the two cuts don’t match here (one goes through a wall or divider), so the join will have a gap or step.'); }
+['trimMode','midAx','midFrom','midLen'].forEach(id=>$(id).addEventListener('input',updTrim)); $('cutBox').addEventListener('toggle',updTrim);
+// Do the two cut faces have the same shape? Sample a grid on both planes and compare where there is material.
+function sectionsMatch(m,ax,c1,c2){ const bb=m.geometry.boundingBox, [u,v]=[0,1,2].filter(a=>a!==ax), P=new THREE.Vector3(), dir=new THREE.Vector3(.577,.5771,.5772).normalize(), N=28;
+  const solid=(c,a,b)=>{ P.setComponent(ax,c).setComponent(u,a).setComponent(v,b); return bvh(m).raycast(new THREE.Ray(P.clone(),dir),THREE.DoubleSide).length%2===1; };
+  for(let i=0;i<N;i++)for(let j=0;j<N;j++){ const a=bb.min.getComponent(u)+(bb.max.getComponent(u)-bb.min.getComponent(u))*(i+0.5)/N, b=bb.min.getComponent(v)+(bb.max.getComponent(v)-bb.min.getComponent(v))*(j+0.5)/N;
+    if(solid(c1-0.01,a,b)!==solid(c2+0.01,a,b)) return false; } return true; }
 $('applyCut').onclick=()=>{
-  if(!sel.length) return; const ax=+$('cutAxis').value, mode=$('cutMode').value, a=+$('cutA').value, b=+$('cutB').value;
-  if(sel.some(m=>m.userData.kind)){ toast('Cards and dice can’t be resized here. Change their count instead.'); return; }
-  if(mode==='stretch'&&!b){ toast('Enter how much to stretch (+) or shrink (−)'); return; }
-  if(mode!=='stretch'&&!(a>0)){ toast('Enter a length to keep'); return; }
+  if(!sel.length) return;
+  if(sel.some(m=>m.userData.kind)){ toast('Cards and dice can’t be trimmed. Change their count instead.'); return; }
+  if($('trimMode').value==='mid'){
+    if(sel.length>1){ toast('Select one part'); return; }
+    const m=sel[0], {ax,L,len,from}=midSpan(m);
+    if(!(len>0)){ $('midLen').focus(); toast('Enter how many mm to remove'); return; }
+    if(from<0.01||from+len>L-0.01){ toast('That runs past the end of the part'); return; }
+    const a=clipGeo(m.geometry,ax,from,true), b=clipGeo(m.geometry,ax,from+len,false);
+    const sh=[0,0,0]; sh[ax]=-len; b.translate(...sh);
+    const same=sectionsMatch(m,ax,from,from+len);
+    const out=mergeGeometries([a,b],false); normalize(out); out.computeVertexNormals(); setGeo(m,out); pairCache.clear();
+    cutPrev.clear(); syncProxy(); refresh(); commit(); updTrim();
+    toast(same?`Removed ${f(len)} mm. The ends are joined.`:`Removed ${f(len)} mm, but the two cuts don’t match exactly. Check the join in your slicer, or move From a little.`,6000); return; }
+  const [ax,side]=$('trimSide').value.split(',').map(Number), mm=+$('trimMm').value;
+  if(!(mm>0)){ $('trimMm').focus(); toast('Enter how many mm to cut off'); return; }
   let changed=0;
-  for(const m of sel){ const g=m.geometry, size=g.boundingBox.max.getComponent(ax), oldMin=aabb(m).min; let out;
-    if(mode==='stretch'){ const at=$('cutA').value===''?size/2:a; if(at<=0||at>=size||(b<0&&at-b>size)){ continue; }
-      out=stretchGeo(g,ax,at,b); setGeo(m,out); m.position.copy(oldMin); changed++; continue; }
-    if(mode==='keepStart'){ if(a>=size) continue; out=clipGeo(g,ax,a,true); }
-    else if(mode==='keepEnd'){ if(a>=size) continue; out=clipGeo(g,ax,size-a,false); }
-    else { if(a>=size) continue; const p1=clipGeo(g,ax,a,true), p2=clipGeo(g,ax,Math.min(b,size),false);
-      const sh=[0,0,0]; sh[ax]=-(Math.min(b,size)-a); p2.translate(...sh); out=p1.attributes.position.count&&p2.attributes.position.count?mergeGeometries([p1,p2]):(p1.attributes.position.count?p1:p2); }
-    if(!out||!out.attributes.position.count) continue;
+  for(const m of sel){ const g=m.geometry, size=g.boundingBox.max.getComponent(ax), oldMin=aabb(m).min; if(mm>=size) continue;
+    const out=side>0?clipGeo(g,ax,size-mm,true):clipGeo(g,ax,mm,false); if(!out.attributes.position.count) continue;
     normalize(out); out.computeVertexNormals(); setGeo(m,out);
-    const keepEndShift=mode==='keepEnd'?size-a:0; /* the kept end stays where it was */ m.position.copy(oldMin).setComponent(ax,oldMin.getComponent(ax)+keepEndShift); changed++; }
-  if(!changed){ toast(mode==='stretch'?'“At” must be inside the part, and a shrink can’t remove more than is past that point':'Nothing to trim: the length is longer than the part'); return; }
-  syncProxy(); refresh(); commit(); toast(`Changed ${changed} part${changed>1?'s':''}`); };
+    m.position.copy(oldMin).setComponent(ax,oldMin.getComponent(ax)+(side<0?mm:0)); changed++; }
+  if(!changed){ toast('Nothing to trim: that’s more than the whole part'); return; }
+  syncProxy(); refresh(); commit(); toast(`Trimmed ${f(mm)} mm`); };
+
+// ===== Sets (base game, expansions) and the area outside the box =====
+const setName=m=>m.userData.set||'Base game';
+$('sSet').addEventListener('change',e=>{ const v=e.target.value.trim(); sel.forEach(m=>m.userData.set=v==='Base game'?'':v); refresh(); commit(); });
+let lastPer=null, lastTrimSel=null;
+function fillMoveTo(selEl,list){ const here=new Set(list.map(boxIx)), cur=here.size===1?[...here][0]:null;
+  selEl.innerHTML=`<option value="" disabled${cur==null?' selected':''}>Mixed</option>`+BOXES.map((b,i)=>`<option value="${i}"${cur===i?' selected':''}>${esc(b.name)}</option>`).join('')+`<option value="-1"${cur===-1?' selected':''}>${BOXES.length>1?'Outside the boxes':'Outside the box'}</option>`; }
+$('moveTo').addEventListener('change',e=>{ if(!sel.length||e.target.value==='') return; const t=+e.target.value; moveTo(sel,t); if(t<0) showPark(); else setActive(t,false); toast(`Moved to ${targetName(t)}`); });
+function renderBoxes(){ const ul=$('boxList'); ul.innerHTML='';
+  BOXES.forEach((b,i)=>{ const li=document.createElement('li'); if(i===act) li.className='sel';
+    li.innerHTML=`<span class="nm"><span></span><br><span class="when"></span></span><button class="ib eyeB${b.hidden?'':' on'}" title="${b.hidden?'Show':'Hide'} this box" aria-label="${b.hidden?'Show':'Hide'} ${esc(b.name)}">${b.hidden?ICON.eyeOff:ICON.eye}</button><button class="dupB" title="Copy this box with everything in it">Duplicate</button><button class="delB danger" title="Remove this box. Its pieces move outside.">Remove</button>`;
+    if(b.hidden) li.classList.add('hid');
+    li.querySelector('.eyeB').onclick=e=>{ e.stopPropagation(); b.hidden=!b.hidden; if(b.hidden) sel=sel.filter(m=>boxIx(m)!==i); buildBox(); syncProxy(); refresh(); commit(); toast(`${b.name} ${b.hidden?'hidden':'shown'}`); };
+    li.querySelector('.nm span').textContent=b.name;
+    const n=lastPer&&lastPer[i]?lastPer[i].n:0; li.querySelector('.when').textContent=`${f(b.w)} × ${f(b.d)} × ${f(b.h)} · ${n} piece${n===1?'':'s'}`;
+    li.onclick=()=>setActive(i,true);
+    const dup=li.querySelector('.dupB'); dup.disabled=BOXES.length>=MAX_BOXES; dup.onclick=e=>{ e.stopPropagation(); duplicateBox(i); };
+    const del=li.querySelector('.delB'); del.hidden=BOXES.length<2; del.onclick=e=>{ e.stopPropagation(); removeBox(i); };
+    ul.appendChild(li); });
+  $('boxAdd').disabled=BOXES.length>=MAX_BOXES; }
+function nextName(base){ if(!base){ let n=BOXES.length+1; while(BOXES.some(b=>b.name===`Box ${n}`)) n++; return `Box ${n}`; }
+  let name=base, n=1; while(BOXES.some(b=>b.name===name)) name=`${base} ${++n}`; return name; }
+$('boxAdd').onclick=()=>{ if(BOXES.length>=MAX_BOXES) return;
+  relayout(()=>{ BOXES.push({name:nextName(),w:B.w,d:B.d,h:B.h}); }); setActive(BOXES.length-1,false); view('all'); refresh(); commit(); toast(`Added ${B.name}`); };
+function duplicateBox(i){ if(BOXES.length>=MAX_BOXES){ toast(`Up to ${MAX_BOXES} boxes`); return; }
+  const src=BOXES[i], inside=pieces.filter(m=>boxIx(m)===i);
+  relayout(()=>{ BOXES.push({...src,name:nextName(src.name+' copy')}); });
+  const nb=BOXES[BOXES.length-1], dx=nb.x-src.x;
+  inside.forEach(m=>makeMesh({geo:m.geometry,name:m.userData.name,color:m.userData.color,free:m.userData.free,hidden:m.userData.hidden,locked:m.userData.locked,kind:m.userData.kind,printed:m.userData.printed,
+    role:m.userData.role,tilt:m.userData.tilt,set:m.userData.set,pos:[m.position.x+dx,m.position.y,m.position.z]}));
+  colorIx=pieces.length; pairCache.clear(); setActive(BOXES.length-1,false); view('all'); refresh(); commit(); toast(`Copied ${src.name} with ${inside.length} piece${inside.length===1?'':'s'}`); }
+function removeBox(i){ if(BOXES.length<2) return; const name=BOXES[i].name, n=pieces.filter(m=>boxIx(m)===i).length;
+  relayout(()=>{ BOXES.splice(i,1); act=Math.min(act>i?act-1:act,BOXES.length-1); return [...Array(BOXES.length+1)].map((_,k)=>k<i?k:k===i?-1:k-1); });
+  setActive(act,false); loadBoxInputs(); refresh(); commit(); toast(`Removed ${name}${n?`. ${n} piece${n===1?'':'s'} moved outside`:''} (undo brings it back)`); }
+// Compare: one column per box
+function renderCompare(){ const sec=$('cmpSec'); sec.hidden=BOXES.length<2; if(sec.hidden) return;
+  const cols=BOXES.map((b,i)=>{ const P=lastPer?lastPer[i]:{bad:0,n:0,vol:0}, parts=pieces.filter(m=>boxIx(m)===i&&m.userData.role==='print');
+    let g=0,h=0,c=0; parts.forEach(m=>{ const e=estimate(m); g+=e.grams; h+=e.hours; c+=e.cost; });
+    const pk=packPlates(parts.filter(m=>m.visible)); return {name:b.name,bad:P.bad,n:P.n,fill:P.vol/(b.w*b.d*b.h)*100,np:parts.length,g,h,c,plates:pk.big.length?null:pk.plates.length,big:pk.big.length}; });
+  const best=(k,lower=true)=>{ const v=cols.map(c=>c[k]).filter(x=>x!=null); if(new Set(v.map(x=>Math.round(x*10))).size<2) return null; return lower?Math.min(...v):Math.max(...v); };
+  const row=(label,k,fmt,lower=true)=>{ const b=best(k,lower); return `<tr><td>${label}</td>${cols.map(c=>`<td${b!=null&&c[k]===b?' class="best"':''}>${fmt(c)}</td>`).join('')}</tr>`; };
+  $('cmpTable').innerHTML=`<tr><th></th>${cols.map(c=>`<th>${esc(c.name)}</th>`).join('')}</tr>`+
+    row('Fit','bad',c=>c.bad?`${c.bad} problem${c.bad>1?'s':''}`:'Fits')+
+    `<tr><td>Pieces</td>${cols.map(c=>`<td>${c.n}</td>`).join('')}</tr>`+
+    `<tr><td>Box fill</td>${cols.map(c=>`<td>${Math.round(c.fill)}%</td>`).join('')}</tr>`+
+    `<tr><td>Printed parts</td>${cols.map(c=>`<td>${c.np}</td>`).join('')}</tr>`+
+    row('Filament','g',c=>`${Math.round(c.g)} g`)+row('Print time','h',c=>hm(c.h))+row('Cost','c',c=>`${Math.round(c.c)}`)+
+    row('Plates','plates',c=>c.plates==null?`${c.big} too big`:`${c.plates}`); }
+
+function showPark(){ const W=endX()+PARK_GAP+parkW(), D=maxD(), c=new THREE.Vector3(W/2,B.h/2,D/2); orbit.target.copy(c); const r=Math.max(W,D)*1.45; camera.position.set(c.x+r*.25,r*.85,c.z+r*.95); orbit.update(); }
+function renderSets(){
+  const names=[...new Set(pieces.map(setName))].sort((a,b)=>a==='Base game'?-1:b==='Base game'?1:a.localeCompare(b));
+  $('setList').innerHTML=names.map(n=>`<option value="${esc(n)}"></option>`).join('');
+  $('setSec').hidden=names.length<2&&!pieces.some(parked)&&BOXES.length<2; const ul=$('listSets'); ul.innerHTML='';
+  if($('setSec').hidden) return;
+  for(const n of names){ const list=pieces.filter(m=>setName(m)===n), out=list.filter(parked).length;
+    const li=document.createElement('li'); li.innerHTML='<span class="nm"><span></span><br><span class="when"></span></span><select aria-label="Move set to"></select>';
+    li.querySelector('.nm span').textContent=n;
+    const where=[...new Set(list.map(boxIx))];
+    li.querySelector('.when').textContent=`${list.length} piece${list.length>1?'s':''} · ${where.length>1?'in several places':targetName(where[0]).replace(/^outside/,'outside')}`;
+    const sl=li.querySelector('select'); fillMoveTo(sl,list);
+    sl.onchange=()=>{ if(sl.value==='') return; const t=+sl.value; moveTo(list.filter(m=>!m.userData.locked),t); if(t<0) showPark(); else setActive(t,false); toast(`${n}: moved to ${targetName(t)}`); };
+    ul.appendChild(li); } }
 
 // ===== Roles =====
 $('sRole').addEventListener('change',e=>{ if(e.target.value==='mixed') return; sel.forEach(m=>m.userData.role=e.target.value); refresh(); commit(); });
 
-// ===== Tilt (game components) =====
-function tiltSel(axis,deg){
-  const list=sel.filter(m=>m.userData.role==='game'); if(!list.length) return;
-  for(const m of list) tiltOne(m,axis,deg);
-  syncProxy(); refresh(); commit();
-}
-function tiltOne(m,axis,deg){
-  const Rq=new THREE.Quaternion().setFromAxisAngle(axis==='x'?new THREE.Vector3(1,0,0):new THREE.Vector3(0,0,1),deg*Math.PI/180);
-  const t=[...(m.userData.tilt||[0,0])]; t[axis==='x'?0:1]=Math.round((t[axis==='x'?0:1]+deg)*100)/100; m.userData.tilt=t;
-  { const a=aabb(m), c=a.getCenter(new THREE.Vector3()), y0=a.min.y; let g;
-    if(m.userData.kind){ const kd=kindDims(m), q=new THREE.Quaternion().fromArray(kd.q).premultiply(Rq);
-      m.userData.kind={...kd,q:q.toArray()}; g=new THREE.BoxGeometry(...kd.dims).applyQuaternion(q); }
-    else { g=m.geometry.clone(); g.userData={}; g.boundsTree=null; g.applyQuaternion(Rq); }
-    normalize(g); g.computeVertexNormals(); setGeo(m,g);
-    const half=g.boundingBox.getSize(new THREE.Vector3()).multiplyScalar(.5); m.position.set(c.x-half.x,y0,c.z-half.z); }
-}
-document.querySelectorAll('[data-tilt]').forEach(b=>b.onclick=()=>tiltSel(b.dataset.tilt,5));
-// typed angles are absolute: tilt each piece by the difference to what it has now
-for(const [id,ax,i] of [['tiltX','x',0],['tiltZ','z',1]]) $(id).addEventListener('change',e=>{ const v=+e.target.value||0;
-  for(const m of sel.filter(m=>m.userData.role==='game')){ const d=v-(m.userData.tilt||[0,0])[i]; if(d) tiltOne(m,ax,d); }
-  syncProxy(); refresh(); commit(); });
-$('straighten').onclick=()=>{ for(const m of sel){ const t=m.userData.tilt||[0,0];
-    if(m.userData.kind){ const kd=kindDims(m), a=aabb(m); m.userData.kind={...kd,q:[0,0,0,1]}; const g=normalize(new THREE.BoxGeometry(...kd.dims)); setGeo(m,g); m.position.copy(a.min); m.userData.tilt=[0,0]; }
-    else { if(t[1]) tiltOne(m,'z',-t[1]); if(t[0]) tiltOne(m,'x',-t[0]); m.userData.tilt=[0,0]; } }
-  syncProxy(); refresh(); commit(); };
+// ===== Free rotation: each piece turns around its own centre and keeps its bottom height =====
+// userData.tilt holds the piece's free rotation as a quaternion [x,y,z,w] (older files: [tiltX, tiltY] in degrees).
+const D2R=THREE.MathUtils.degToRad, AXV={x:new THREE.Vector3(1,0,0),y:new THREE.Vector3(0,1,0),z:new THREE.Vector3(0,0,1)};
+function getRq(m){ const t=m.userData.tilt||[];
+  if(t.length===4) return new THREE.Quaternion().fromArray(t);
+  return new THREE.Quaternion().setFromAxisAngle(AXV.z,D2R(t[1]||0)).multiply(new THREE.Quaternion().setFromAxisAngle(AXV.x,D2R(t[0]||0))); }
+// bake rotation Rq into the piece's shape, around its centre, bottom kept
+function rotateOne(m,Rq){
+  const a=aabb(m), c=a.getCenter(new THREE.Vector3()), y0=a.min.y; let g;
+  if(m.userData.kind){ const kd=kindDims(m), q=new THREE.Quaternion().fromArray(kd.q).premultiply(Rq);
+    m.userData.kind={...kd,q:q.toArray()}; g=new THREE.BoxGeometry(...kd.dims).applyQuaternion(q); }
+  else { g=m.geometry.clone(); g.userData={}; g.boundsTree=null; g.applyQuaternion(Rq); }
+  normalize(g); g.computeVertexNormals(); setGeo(m,g);
+  const half=g.boundingBox.getSize(new THREE.Vector3()).multiplyScalar(.5); m.position.set(c.x-half.x,y0,c.z-half.z);
+  m.userData.tilt=getRq(m).premultiply(Rq).toArray(); }
+const tidy=m=>{ m.userData.tilt=m.userData.tilt.map(v=>Math.abs(v)<1e-9?0:v); };
+function nudgeSel(axis,deg){ if(!sel.length) return; const Rq=new THREE.Quaternion().setFromAxisAngle(AXV[axis],D2R(deg));
+  sel.forEach(m=>{ rotateOne(m,Rq); tidy(m); }); pairCache.clear(); syncProxy(); refresh(); commit(); }
+document.querySelectorAll('[data-nudge]').forEach(b=>b.onclick=()=>{ const [ax,d]=b.dataset.nudge.split(','); nudgeSel(ax,+d); });
+// typed angles are absolute: turn each piece from where it is to that angle
+function setAngles(){ if(!sel.length) return;
+  const t=new THREE.Quaternion().setFromEuler(new THREE.Euler(D2R(+$('rotX').value||0),D2R(+$('rotZ').value||0),D2R(+$('rotY').value||0),'XYZ'));
+  sel.forEach(m=>{ const d=t.clone().multiply(getRq(m).invert()); if(Math.abs(d.w)<0.9999999){ rotateOne(m,d); m.userData.tilt=t.toArray(); tidy(m); } });
+  pairCache.clear(); syncProxy(); refresh(); commit(); }
+['rotX','rotY','rotZ'].forEach(id=>$(id).addEventListener('change',setAngles));
+$('straighten').onclick=()=>{ for(const m of sel){
+    if(m.userData.kind){ const kd=kindDims(m), a=aabb(m); m.userData.kind={...kd,q:[0,0,0,1]}; const g=normalize(new THREE.BoxGeometry(...kd.dims)); setGeo(m,g); m.position.copy(a.min); m.userData.tilt=[0,0,0,1]; }
+    else { rotateOne(m,getRq(m).invert()); m.userData.tilt=[0,0,0,1]; } }
+  pairCache.clear(); syncProxy(); refresh(); commit(); };
 
+// ===== Rotate gizmo: rings drive the proxy's rotation; pieces turn live, the shape is baked on release =====
+let gizmo='translate', rotStart=null;
+tc.setRotationSnap(D2R(1));
+function setGizmo(mode){ gizmo=mode; tc.setMode(mode); tc.setSpace('world'); $('gzMove').classList.toggle('on',mode==='translate'); $('gzRot').classList.toggle('on',mode==='rotate'); syncProxy(); redraw(); }
+$('gzMove').onclick=()=>setGizmo('translate'); $('gzRot').onclick=()=>setGizmo('rotate');
+function rotDragStart(){ rotStart=sel.map(m=>{ const a=aabb(m); return {m,pos:m.position.clone(),c:a.getCenter(new THREE.Vector3()),y0:a.min.y,lc:m.geometry.boundingBox.getCenter(new THREE.Vector3())}; }); }
+function rotDragMove(){ if(!rotStart) return; const q=proxy.quaternion;
+  for(const r of rotStart){ r.m.quaternion.copy(q); r.m.position.copy(r.c).sub(r.lc.clone().applyQuaternion(q)); const a=aabb(r.m); r.m.position.y+=r.y0-a.min.y; } }
+function rotDragEnd(){ if(!rotStart) return; const q=proxy.quaternion.clone(), list=rotStart; rotStart=null;
+  for(const r of list){ r.m.quaternion.identity(); r.m.position.copy(r.pos); if(Math.abs(q.w)<0.9999999){ rotateOne(r.m,q); tidy(r.m); } }
+  proxy.quaternion.identity(); pairCache.clear(); syncProxy(); }
 // ===== Split a model into its separate bodies =====
 // Triangles that share a corner belong to the same body (union-find over welded vertices).
 function bodies(geo){
@@ -1414,20 +1706,78 @@ $('splitBtn').onclick=()=>{ if(sel.length!==1) return; const m=sel[0], parts=bod
   scene.remove(m); pieces.splice(pieces.indexOf(m),1); setSel(made); commit(); toast(`Split into ${made.length} parts. Remove the ones you don't want.`); };
 
 // ===== Resize keeping walls =====
-// Everything past a plane moves; triangles that cross the plane stretch. Walls and floors keep their thickness
-// as long as the plane passes through a plain stretch of the part (no holes or features right at the plane).
-function stretchGeo(geo,ax,c,d){
-  const g=geo.clone(); g.userData={}; g.boundsTree=null; const p=g.attributes.position;
-  for(let i=0;i<p.count;i++){ let v=p.getComponent(i,ax);
-    if(d>=0){ if(v>c+1e-6) v+=d; } else { const L=-d; if(v>c+L) v-=L; else if(v>c) v=c; }
-    p.setComponent(i,ax,v); }
-  p.needsUpdate=true; normalize(g); g.computeVertexNormals(); return g; }
-function cutHelp(len){ const m=$('cutMode').value;
-  if(m==='stretch') return `Current length ${f(len)} mm. The part is cut at "At" (empty = the middle) and that point is stretched or shrunk by "Change", so walls and floor keep their thickness. To thicken a wall or floor, put "At" inside it (e.g. 1 mm on Height for the floor).`;
-  return `Current length ${f(len)} mm. Measured from the part's left / front / bottom edge. Trimmed faces are left open.`; }
-function updCutUi(){ const m=$('cutMode').value; $('cutBLab').hidden=m!=='stretch';
-  $('cutALab').firstChild.textContent=m==='stretch'?'At mm':'Length mm'; $('cutBLab').firstChild.textContent='Change ± mm';
-  if(sel.length){ const S=selBox().getSize(new THREE.Vector3()); $('cutInfo').textContent=cutHelp(S.getComponent(+$('cutAxis').value)); } }
+// Vertices past a plane move by d along the axis, in direction s (+1/-1). Triangles crossing the plane stretch.
+// When shrinking, vertices that would pass the plane stop at it (only safe where nothing sits in that band).
+function shiftBeyond(pos,ax,p,s,d){
+  for(let i=0;i<pos.count;i++){ const v=pos.getComponent(i,ax); if(s*(v-p)<=1e-6) continue;
+    let nv=v+s*d; if(s*(nv-p)<0) nv=p; pos.setComponent(i,ax,nv); } pos.needsUpdate=true; }
+function vertsInBand(pos,ax,p,s,len){ for(let i=0;i<pos.count;i++){ const t=s*(pos.getComponent(i,ax)-p); if(t>1e-4&&t<=len+1e-4) return true; } return false; }
+function editable(m){ const g=m.geometry.clone(); g.userData={}; g.boundsTree=null; return g; }
+// put an edited geometry back; its corner stays where it was, so a part on the floor stays on the floor
+function commitGeo(m,g){ normalize(g); g.computeVertexNormals(); setGeo(m,g); pairCache.clear(); syncProxy(); refresh(); commit(); }
+// New length along one axis without thickening anything: the change goes into the empty spans between features.
+function resizeKeepWalls(m,ax,len){
+  const g=editable(m), pos=g.attributes.position, L=m.geometry.boundingBox.max.getComponent(ax), delta=len-L;
+  const cs=[...new Set(Array.from({length:pos.count},(_,i)=>Math.round(pos.getComponent(i,ax)*1000)/1000))].sort((a,b)=>a-b);
+  let gaps=[]; for(let i=1;i<cs.length;i++) if(cs[i]-cs[i-1]>0.5) gaps.push({lo:cs[i-1],hi:cs[i],w:cs[i]-cs[i-1]});
+  // a span inside a wall (material that ends at both ends of the span) must not change, or the wall changes thickness
+  const bb=m.geometry.boundingBox, [ua,va]=[0,1,2].filter(a=>a!==ax), P=new THREE.Vector3(), N=9;
+  const solid=(c,u,v)=>{ P.setComponent(ax,c).setComponent(ua,u).setComponent(va,v); return bvh(m).raycast(new THREE.Ray(P.clone(),new THREE.Vector3(.577,.5771,.5772).normalize()),THREE.DoubleSide).length%2===1; };
+  const inWall=gp=>{ const m0=(gp.lo+gp.hi)/2;
+    for(let i=0;i<N;i++)for(let j=0;j<N;j++){ const u=bb.min.getComponent(ua)+0.2+(bb.max.getComponent(ua)-bb.min.getComponent(ua)-0.4)*i/(N-1), v=bb.min.getComponent(va)+0.2+(bb.max.getComponent(va)-bb.min.getComponent(va)-0.4)*j/(N-1);
+      if(solid(m0,u,v)&&(!solid(gp.lo-0.05,u,v)||!solid(gp.hi+0.05,u,v))) return true; }
+    return false; };
+  const open=gaps.filter(gp=>!inWall(gp)); if(open.length) gaps=open; else if(delta<0) gaps=[];
+  if(!gaps.length) return 'There is no open space to shrink into without making walls thinner. Untick Keep walls and floor thickness to scale instead.';
+  if(delta>0){ // grow in the widest open span, preferring the middle
+    const g0=gaps.reduce((a,b)=>(b.w-0.05*Math.abs((b.lo+b.hi)/2-L/2))>(a.w-0.05*Math.abs((a.lo+a.hi)/2-L/2))?b:a);
+    shiftBeyond(pos,ax,(g0.lo+g0.hi)/2,1,delta); }
+  else { let need=-delta; const cuts=[];
+    for(const gp of [...gaps].sort((a,b)=>b.w-a.w)){ if(need<=0.001) break; const a=Math.min(need,gp.w-0.4); if(a>0.05){ cuts.push({p:gp.lo+0.2,a}); need-=a; } }
+    if(need>0.01) return `It can only shrink ${f(-delta-need)} mm along that side without squashing walls. Untick Keep walls and floor thickness to scale instead.`;
+    cuts.sort((a,b)=>b.p-a.p).forEach(c=>shiftBeyond(pos,ax,c.p,1,-c.a)); }
+  commitGeo(m,g); return null; }
+
+// ===== Walls and floors: click one, type its new thickness =====
+let wallPicking=false, wallSel=null;
+const AXIS_LABEL=['wall','floor','wall'];
+function setWallPick(on){ wallPicking=on; $('wallPick').classList.toggle('on',on); if(on){ if(measuring) setMeasuring(false); if(thickMode) setThick(false); toast('Click a wall or floor of the selected part'); } }
+function closeWall(){ wallSel=null; if($('wallEdit')) $('wallEdit').hidden=true; if(wallPicking) setWallPick(false); }
+$('wallPick').onclick=()=>setWallPick(!wallPicking);
+function pickWall(hit){
+  const m=hit.object, n=hit.face.normal.clone().normalize(), ax=[0,1,2].reduce((a,b)=>Math.abs(n.getComponent(b))>Math.abs(n.getComponent(a))?b:a);
+  setWallPick(false);
+  if(Math.abs(n.getComponent(ax))<0.98){ toast('That face is sloped or curved. Pick a flat wall or floor.'); return; }
+  const local=hit.point.clone().sub(m.position), dir=new THREE.Vector3().setComponent(ax,-Math.sign(n.getComponent(ax)));
+  const h=bvh(m).raycastFirst(new THREE.Ray(local.clone().addScaledVector(dir,0.01),dir),THREE.DoubleSide);
+  thicknessAt(hit);
+  if(!h){ toast('No far side found. Is the model open there?'); return; }
+  const a=local.getComponent(ax), b=h.point.getComponent(ax), lo=Math.min(a,b), hi=Math.max(a,b);
+  // the inside of the part is on whichever side it carries on past this wall; room = open space before the next surface
+  const bb=m.geometry.boundingBox, bmin=bb.min.getComponent(ax), bmax=bb.max.getComponent(ax);
+  const gap=(start,sg,edge)=>{ if(sg*(edge-start)<0.3) return Infinity; const o=local.clone().setComponent(ax,start+sg*0.01), r=bvh(m).raycastFirst(new THREE.Ray(o,new THREE.Vector3().setComponent(ax,sg)),THREE.DoubleSide);
+    return Math.min(r?r.distance+0.01:Infinity,Math.abs(edge-start)); };
+  wallSel={m,ax,lo,hi,gP:gap(hi,1,bmax),gM:gap(lo,-1,bmin)};
+  const t=hi-lo, what=ax===1?(lo<m.geometry.boundingBox.max.y/2?'Floor':'Top layer'):'Wall';
+  $('wallInfo').textContent=`${what}, ${t.toFixed(2)} mm thick.`; $('wallT').value=+t.toFixed(2); $('wallEdit').hidden=false; $('wallT').focus(); $('wallT').select(); }
+function applyWall(){
+  if(!wallSel) return; const {m,ax,lo,hi,gP,gM}=wallSel, t=hi-lo, T=+$('wallT').value;
+  if(!(T>=0.4)){ toast('Use at least 0.4 mm'); return; }
+  const dd=T-t; if(Math.abs(dd)<0.01) return;
+  let mode=$('wallMode').value; const g=editable(m), pos=g.attributes.position;
+  const sides=[]; if(isFinite(gP)) sides.push(1); if(isFinite(gM)) sides.push(-1);
+  if(mode==='keep'&&!sides.length){ mode='grow'; toast('No open space next to it, so the part grows'); }
+  if(mode==='keep'){ const ds=dd/sides.length;
+    for(const sg of sides){ const room=sg>0?gP:gM;
+      if(ds>0&&room<ds+0.8){ toast(`Only ${f(room)} mm of room inside. Try Outward instead.`); return; } }
+    for(const sg of sides){ const F=sg>0?hi:lo, p=sides.length===2?(lo+hi)/2:(sg>0?lo:hi)+sg*0.1;
+      shiftBeyond(pos,ax,p,sg,ds); const q=F+sg*ds+sg*0.3;
+      if(ds>0&&vertsInBand(pos,ax,q,sg,ds)){ toast('Something sits right against it inside (a scoop or a divider). Try Outward instead.'); return; }
+      shiftBeyond(pos,ax,q,sg,-ds); } }
+  else { const out=isFinite(gP)&&!isFinite(gM)?-1:1, Fin=out>0?lo:hi; shiftBeyond(pos,ax,Fin+out*0.1,out,dd); }
+  commitGeo(m,g); clearMeasure(); const what=$('wallInfo').textContent.split(',')[0]; closeWall(); toast(`${what} is now ${f(T)} mm`); }
+$('wallApply').onclick=applyWall;
+$('wallT').addEventListener('keydown',e=>{ if(e.key==='Enter') applyWall(); });
 
 // Display only.
 let explodeT=0; const explodeOff=new Map();
@@ -1466,12 +1816,45 @@ function estimate(m){
   return {grams,meters,hours,cost:grams/1000*(+$('pePrice').value||0)}; }
 function hm(h){ const H=Math.floor(h), M=Math.round((h-H)*60); return H?`${H} h ${M} min`:`${M} min`; }
 function renderEstimate(){
-  const rows=pieces.filter(m=>m.userData.role==='print'), t=$('estTable');
-  if(!rows.length){ t.innerHTML='<tr><td class="muted" style="text-align:left">Load an STL or 3MF, or mark a piece as a printed part, to see estimates.</td></tr>'; return; }
+  const rows=pieces.filter(m=>m.userData.role==='print'&&inScope(m)), t=$('estTable');
+  if(!rows.length){ t.innerHTML='<tr><td class="muted" style="text-align:left">Load an STL or 3MF, or mark a piece as a printed part, to see estimates.</td></tr>'; renderBed(); return; }
   let G=0,Mt=0,H=0,C=0;
   const body=rows.map(m=>{ const e=estimate(m); G+=e.grams; Mt+=e.meters; H+=e.hours; C+=e.cost;
     return `<tr><td>${esc(m.userData.name)}</td><td>${Math.round(e.grams)} g</td><td>${e.meters.toFixed(1)} m</td><td>${hm(e.hours)}</td><td>${Math.round(e.cost)}</td></tr>`; }).join('');
-  t.innerHTML=`<tr><th>Piece</th><th>Filament</th><th>Length</th><th>Time</th><th>Cost</th></tr>${body}<tr class="total"><td>Total</td><td>${Math.round(G)} g</td><td>${Mt.toFixed(1)} m</td><td>${hm(H)}</td><td>${Math.round(C)}</td></tr>`; }
+  t.innerHTML=`<tr><th>Piece</th><th>Filament</th><th>Length</th><th>Time</th><th>Cost</th></tr>${body}<tr class="total"><td>Total</td><td>${Math.round(G)} g</td><td>${Mt.toFixed(1)} m</td><td>${hm(H)}</td><td>${Math.round(C)}</td></tr>`; renderBed(); }
+// Printer bed: which parts fit, and a simple shelf packing into plates (parts may turn 90° on the bed)
+const BED_GAP=5;
+function renderBed(){
+  const ul=$('bedPlates'); if(!ul) return;
+  const parts=pieces.filter(m=>m.userData.role==='print'&&m.visible&&inScope(m));
+  if(!parts.length){ ul.innerHTML='<li><span class="nm muted">No printed parts yet.</span></li>'; return; }
+  const {plates,big}=packPlates(parts);
+  ul.innerHTML='';
+  const row=(title,names,extra,bad)=>{ const li=document.createElement('li'); if(bad) li.className='bad';
+    li.innerHTML='<span class="nm"><strong></strong><br><span class="when"></span></span><span class="when"></span>';
+    li.querySelector('strong').textContent=title; li.querySelectorAll('.when')[0].textContent=names; li.querySelectorAll('.when')[1].textContent=extra; ul.appendChild(li); };
+  for(const {m,s} of big) row(`Too big: ${m.userData.name}`,`${f(s.x)} × ${f(s.z)} × ${f(s.y)} mm. Split it, or trim it to fit.`,'',true);
+  plates.forEach((pl,i)=>row(`Plate ${i+1}`,pl.list.map(m=>m.userData.name).join(', '),hm(pl.list.reduce((a,m)=>a+estimate(m).hours,0)),false));
+}
+function packPlates(parts,W=+$('bedW').value||0,D=+$('bedD').value||0,H=+$('bedH').value||0){
+  const big=[], items=[];
+  for(const m of parts){ const s=aabb(m).getSize(new THREE.Vector3()), fits=(s.x<=W&&s.z<=D)||(s.z<=W&&s.x<=D);
+    if(!fits||s.y>H) big.push({m,s}); else items.push({m,w:s.x,d:s.z}); }
+  items.sort((a,b)=>Math.max(b.w,b.d)-Math.max(a.w,a.d));
+  const plates=[];
+  for(const it of items){ let done=false;
+    for(const pl of plates){ if(place(pl,it)){ done=true; break; } }
+    if(!done){ const pl={shelves:[],used:0,list:[]}; place(pl,it); plates.push(pl); } }
+  function place(pl,it){ for(const [w,d] of [[it.w,it.d],[it.d,it.w]]){ if(w>W||d>D) continue;
+      for(const sh of pl.shelves) if(d<=sh.d&&sh.x+w<=W){ sh.x+=w+BED_GAP; pl.list.push(it.m); return true; }
+      if(pl.used+d<=D){ pl.shelves.push({d,x:w+BED_GAP}); pl.used+=d+BED_GAP; pl.list.push(it.m); return true; } }
+    return false; }
+  return {plates,big};
+}
+(function(){ try{ const b=JSON.parse(localStorage.getItem('ifp-bed')||'null'); if(b){ $('bedPreset').value=b.p; $('bedW').value=b.w; $('bedD').value=b.d; $('bedH').value=b.h; } }catch(e){}
+  const save=()=>{ try{ localStorage.setItem('ifp-bed',JSON.stringify({p:$('bedPreset').value,w:$('bedW').value,d:$('bedD').value,h:$('bedH').value})); }catch(e){} };
+  $('bedPreset').addEventListener('change',e=>{ if(e.target.value!=='custom'){ const [w,d,h]=e.target.value.split(','); $('bedW').value=w; $('bedD').value=d; $('bedH').value=h; } save(); renderBed(); });
+  ['bedW','bedD','bedH'].forEach(id=>$(id).addEventListener('input',()=>{ $('bedPreset').value='custom'; save(); renderBed(); })); })();
 function esc(t){ return String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 ['peInfill','peWall','peFlow','peMat','pePrice'].forEach(id=>$(id).addEventListener('input',renderEstimate));
 
@@ -1526,7 +1909,7 @@ function zipOne(name,data){
   const c=L+data.length; dv.setUint32(c,0x02014b50,true); dv.setUint16(c+4,20,true); dv.setUint16(c+6,20,true); dv.setUint32(c+16,crc,true); dv.setUint32(c+20,data.length,true); dv.setUint32(c+24,data.length,true); dv.setUint16(c+28,nm.length,true); buf.set(nm,c+46);
   const e=c+C; dv.setUint32(e,0x06054b50,true); dv.setUint16(e+8,1,true); dv.setUint16(e+10,1,true); dv.setUint32(e+12,C,true); dv.setUint32(e+16,c,true);
   return new Blob([buf],{type:'application/zip'}); }
-const printedParts=()=>pieces.filter(m=>m.userData.role==='print'&&m.visible);
+const printedParts=()=>pieces.filter(m=>m.userData.role==='print'&&m.visible&&inScope(m));
 $('exStl').onclick=()=>{ const list=printedParts();
   if(!list.length){ toast('No printed parts to export'); return; }
   saveFile(baseName()+'.zip',zipOne(baseName()+'.stl',buildStl(list))); };
@@ -1538,7 +1921,7 @@ $('exSel').onclick=()=>{ const list=sel.filter(m=>m.userData.role==='print'&&m.v
 
 // Engineering-style sheet: isometric exploded view in line style, numbered balloons, parts list and title block.
 function drawSheet(exp,page,pages){
-  const list=pieces.filter(m=>m.visible);
+  const list=pieces.filter(m=>m.visible&&boxOf(m)===B), others=pieces.filter(m=>m.visible&&!list.includes(m)); others.forEach(m=>m.visible=false);
   computeExplode(exp?1:0);
   const W=3508,H=2480, VW=2300, VH=1900;
   // line-style materials
@@ -1550,9 +1933,9 @@ function drawSheet(exp,page,pages){
     m.material=white; m.children.forEach(c=>{ if(c.userData.deco) c.visible=false; else { c.visible=true; c.material=ink; } }); }
   // box outline, dashed, at its own position (not exploded)
   const boxLines=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(B.w,B.h,B.d)),new THREE.LineDashedMaterial({color:0x777777,dashSize:6,gapSize:4}));
-  boxLines.position.set(B.w/2,B.h/2,B.d/2); boxLines.computeLineDistances(); scene.add(boxLines); extra.push(boxLines);
+  boxLines.position.set(B.x+B.w/2,B.h/2,B.d/2); boxLines.computeLineDistances(); scene.add(boxLines); extra.push(boxLines);
   // isometric ortho camera fitted to everything
-  const all=new THREE.Box3(new THREE.Vector3(0,0,0),new THREE.Vector3(B.w,B.h,B.d));
+  const all=new THREE.Box3(new THREE.Vector3(B.x,0,0),new THREE.Vector3(B.x+B.w,B.h,B.d));
   withExplode(()=>list.forEach(m=>all.union(aabb(m))));
   const ctr=all.getCenter(new THREE.Vector3()), cam=new THREE.OrthographicCamera(-1,1,1,-1,-10000,10000);
   cam.position.copy(ctr).add(new THREE.Vector3(1,0.82,1).normalize().multiplyScalar(2000)); cam.lookAt(ctr); cam.updateMatrixWorld();
@@ -1569,6 +1952,7 @@ function drawSheet(exp,page,pages){
   // restore scene
   renderer.setClearColor(0x000000,0); renderer.setPixelRatio(was[0]); resize();
   for(const [m,mat,ch] of saved){ m.material=mat; ch.forEach(([c,v,cm])=>{ c.visible=v; c.material=cm; }); }
+  others.forEach(m=>m.visible=true);
   extra.forEach(o=>scene.remove(o)); hideList.forEach((o,i)=>o.visible=hiddenWas[i]);
   computeExplode(explodeT);
   // compose sheet
@@ -1641,11 +2025,13 @@ $('exDraw').onclick=async()=>{
 };
 
 // ===== inputs =====
-['bw','bd','bh'].forEach(id=>$(id).addEventListener('change',()=>{buildBox();syncProxy();refresh();commit();}));
+['bw','bd','bh'].forEach(id=>$(id).addEventListener('change',()=>{ const w=+$('bw').value, d=+$('bd').value, h=+$('bh').value;
+  if(!(w>0&&d>0&&h>0)){ loadBoxInputs(); return; } relayout(()=>{ Object.assign(B,{w,d,h}); }); syncProxy(); refresh(); commit(); }));
+$('bname').addEventListener('change',e=>{ B.name=e.target.value.trim()||`Box ${act+1}`; loadBoxInputs(); buildBox(); refresh(); commit(); });
 $('tol').addEventListener('input',()=>refresh());
 $('exact').addEventListener('change',()=>refresh());
 $('free').addEventListener('change',e=>{ sel.forEach(m=>m.userData.free=e.target.checked); refresh(); commit(); });
-$('px').addEventListener('change',e=>moveSelTo('x',+e.target.value));
+$('px').addEventListener('change',e=>moveSelTo('x',+e.target.value+(boxOf(sel[0])||{x:endX()+PARK_GAP}).x));
 $('py').addEventListener('change',e=>moveSelTo('z',+e.target.value));
 $('pz').addEventListener('change',e=>moveSelTo('y',Math.max(0,+e.target.value)));
 $('sname').addEventListener('input',e=>{ if(sel.length===1){sel[0].userData.name=e.target.value;refresh();commitSoon();} });
@@ -1654,7 +2040,7 @@ $('dropDown').onclick=dropSelection;
 $('del').onclick=removeSel;
 $('selAll').onclick=()=>setSel([...pieces]);
 $('dup').onclick=()=>{ if(!sel.length) return;
-  const copies=sel.map(m=>{ const c=makeMesh({geo:m.geometry,name:m.userData.name+' copy',color:m.userData.kind?m.userData.color:PALETTE[colorIx++%PALETTE.length],free:m.userData.free,kind:m.userData.kind,printed:m.userData.printed,role:m.userData.role}); findSpot(c,m.geometry.boundingBox.getSize(new THREE.Vector3())); return c; });
+  const copies=sel.map(m=>{ const c=makeMesh({geo:m.geometry,name:m.userData.name+' copy',color:m.userData.kind?m.userData.color:PALETTE[colorIx++%PALETTE.length],free:m.userData.free,kind:m.userData.kind,printed:m.userData.printed,role:m.userData.role,set:m.userData.set}); findSpot(c,m.geometry.boundingBox.getSize(new THREE.Vector3())); return c; });
   setSel(copies); commit(); };
 $('addBox').onclick=()=>addPiece(new THREE.BoxGeometry(+$('nw').value||10,+$('nh').value||10,+$('nd').value||10),$('nn').value||'Block',{role:$('nRole').value});
 function removeSel(){ if(!sel.length) return; tc.detach();
@@ -1694,6 +2080,24 @@ for(const el of [drop,canvas]){
   el.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('over');loadFiles(e.dataTransfer.files)});
 }
 
+// ===== drag to select an area: Shift+drag, or drag in Select area mode. Pieces whose centre falls inside are selected. =====
+let areaMode=false, rectSel=null;
+function setArea(on){ areaMode=on; $('areaBtn').classList.toggle('on',on); if(on){ if(measuring) setMeasuring(false); if(thickMode) setThick(false); if(wallPicking) setWallPick(false); toast('Drag to select pieces. Shift adds to the selection.'); } }
+$('areaBtn').onclick=()=>setArea(!areaMode);
+canvas.addEventListener('pointerdown',e=>{
+  if(!(e.shiftKey||areaMode)||e.button!==0||tc.axis||exploded()||measuring||thickMode||wallPicking) return;
+  orbit.enabled=false; const st=canvas.parentElement.getBoundingClientRect(), d=document.createElement('div'); d.className='selrect'; canvas.parentElement.appendChild(d);
+  rectSel={x0:e.clientX,y0:e.clientY,add:e.shiftKey,st,d,id:e.pointerId}; canvas.setPointerCapture(e.pointerId); },true);
+canvas.addEventListener('pointermove',e=>{ if(!rectSel) return; const {x0,y0,st,d}=rectSel;
+  d.style.left=(Math.min(x0,e.clientX)-st.left)+'px'; d.style.top=(Math.min(y0,e.clientY)-st.top)+'px'; d.style.width=Math.abs(e.clientX-x0)+'px'; d.style.height=Math.abs(e.clientY-y0)+'px'; });
+function endRect(e){ if(!rectSel) return; const {x0,y0,add,d}=rectSel; rectSel=null; d.remove(); orbit.enabled=true;
+  if(Math.hypot(e.clientX-x0,e.clientY-y0)<=4) return; // a click: the normal click handler deals with it
+  const r=canvas.getBoundingClientRect(), L=Math.min(x0,e.clientX), R=Math.max(x0,e.clientX), T=Math.min(y0,e.clientY), Bm=Math.max(y0,e.clientY);
+  const hits=pieces.filter(m=>{ if(!m.visible||m.userData.locked||m.userData.hidden) return false; const c=aabb(m).getCenter(new THREE.Vector3()).project(camera);
+    if(c.z>1) return false; const x=r.left+(c.x+1)/2*r.width, y=r.top+(1-c.y)/2*r.height; return x>=L&&x<=R&&y>=T&&y<=Bm; });
+  setSel(add?[...new Set([...sel,...hits])]:hits); if(hits.length) toast(`${sel.length} piece${sel.length===1?'':'s'} selected`); }
+canvas.addEventListener('pointerup',endRect); canvas.addEventListener('pointercancel',endRect);
+
 // ===== picking =====
 const ray=new THREE.Raycaster(),ptr=new THREE.Vector2();let down=null;
 canvas.addEventListener('pointerdown',e=>down=[e.clientX,e.clientY]);
@@ -1701,8 +2105,9 @@ canvas.addEventListener('pointerup',e=>{ if(!down||Math.hypot(e.clientX-down[0],
   const r=canvas.getBoundingClientRect(); ptr.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);
   ray.setFromCamera(ptr,camera);
   if(exploded()){ toast('Exploded view: set Explode back to 0 to edit'); return; }
+  if(wallPicking){ const hit=sel[0]&&ray.intersectObject(sel[0],false)[0]; if(hit) pickWall(hit); else setWallPick(false); return; }
   if(thickMode){ const hit=ray.intersectObjects(pieces.filter(m=>m.visible&&!m.userData.kind),false)[0]; if(hit) thicknessAt(hit); return; }
-  if(measuring){ const hit=ray.intersectObjects([...pieces.filter(m=>m.visible),floorMesh,wallsMesh],false)[0]; if(hit) measureClick(hit.point); return; }
+  if(measuring){ const hit=ray.intersectObjects([...pieces.filter(m=>m.visible),...floorMeshes,...wallsMeshes],false)[0]; if(hit) measureClick(hit.point); return; }
   const hit=ray.intersectObjects(pieces.filter(m=>m.visible),false)[0];
   const add=e.shiftKey||e.ctrlKey||e.metaKey;
   if(hit&&hit.object.userData.locked){ if(!add) setSel([]); toast('Locked. Unlock it in the list to move it.'); return; }
@@ -1716,9 +2121,10 @@ addEventListener('keydown',e=>{ if(/INPUT/.test(document.activeElement.tagName))
   if(mod&&(k==='a'||k==='A')){ e.preventDefault(); setSel([...pieces]); return; }
   if(mod) return;
   if(k==='m'||k==='M'){ $('measureBtn').click(); return; }
+  if(k==='w'||k==='W'){ setGizmo('translate'); return; } if(k==='e'||k==='E'){ setGizmo('rotate'); return; }
   if(k==='t'||k==='T'){ setThick(!thickMode); return; }
   if(k==='f'||k==='F'){ $('pocketBtn').click(); return; }
-  if(k==='Escape'){ if(thickMode) setThick(false); else if(measuring) setMeasuring(false); else setSel([]); return; }
+  if(k==='Escape'){ if(areaMode) setArea(false); else if(wallPicking) setWallPick(false); else if(thickMode) setThick(false); else if(measuring) setMeasuring(false); else setSel([]); return; }
   if(!sel.length||exploded()) return;
   const s=+$('snap').value||1;
   if(k==='ArrowLeft')moveSelBy(-s,0,0); else if(k==='ArrowRight')moveSelBy(s,0,0);
@@ -1730,22 +2136,25 @@ addEventListener('keydown',e=>{ if(/INPUT/.test(document.activeElement.tagName))
   e.preventDefault(); });
 
 // ===== views =====
-function view(kind){ const c=new THREE.Vector3(B.w/2,B.h/2,B.d/2), r=Math.max(B.w,B.d)*1.5;
+function view(kind){ if(kind==='all'){ showPark(); return; } const c=new THREE.Vector3(B.x+B.w/2,B.h/2,B.d/2), r=Math.max(B.w,B.d)*1.5;
   if(kind==='top') camera.position.set(c.x,r*1.1,c.z+0.01);
   else if(kind==='front') camera.position.set(c.x,c.y,c.z+r);
   else camera.position.set(c.x+r*.6,r*.75,c.z+r*.8);
   orbit.target.copy(c); orbit.update(); }
-$('vTop').onclick=()=>view('top');$('vFront').onclick=()=>view('front');$('v3d').onclick=()=>view('3d');
+$('vTop').onclick=()=>view('top');$('vFront').onclick=()=>view('front');$('v3d').onclick=()=>view('3d'); $('vAll').onclick=()=>view('all');
 let lid=null;
 function placeLid(){ if(lid) scene.remove(lid);
   lid=new THREE.Mesh(new THREE.PlaneGeometry(B.w,B.d),new THREE.MeshBasicMaterial({color:0xc2412d,transparent:true,opacity:.15,side:THREE.DoubleSide,depthWrite:false}));
-  lid.rotation.x=-Math.PI/2;lid.position.set(B.w/2,B.h,B.d/2);scene.add(lid); }
+  lid.rotation.x=-Math.PI/2;lid.position.set(B.x+B.w/2,B.h,B.d/2);scene.add(lid); }
 $('lidBtn').onclick=()=>{ if(lid){scene.remove(lid);lid=null;} else placeLid(); };
 
-function resize(){ const p=canvas.parentElement; renderer.setSize(p.clientWidth,p.clientHeight,false); camera.aspect=p.clientWidth/p.clientHeight; camera.updateProjectionMatrix(); }
+function resize(){ const p=canvas.parentElement; renderer.setSize(p.clientWidth,p.clientHeight,false); camera.aspect=p.clientWidth/p.clientHeight; camera.updateProjectionMatrix(); redraw(); }
 new ResizeObserver(resize).observe(canvas.parentElement);
 const _p=new THREE.Vector3();
-(function loop(){ orbit.update(); withExplode(()=>renderer.render(scene,camera));
+// any user action may change the scene, so redraw after it; refresh() and the camera also ask for a redraw
+['pointerdown','pointerup','keydown','input','change','click','wheel'].forEach(t=>document.addEventListener(t,redraw,true));
+(function loop(){ orbit.update(); if(!needsRender){ requestAnimationFrame(loop); return; } needsRender=false;
+  withExplode(()=>renderer.render(scene,camera));
   const w=canvas.clientWidth,h=canvas.clientHeight;
   for(const it of labelItems){ _p.copy(it.pos).project(camera); const vis=_p.z<1;
     it.d.style.display=vis?'':'none'; it.d.style.left=((_p.x+1)/2*w)+'px'; it.d.style.top=((1-_p.y)/2*h)+'px'; }

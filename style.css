@@ -1356,3 +1356,15 @@ footer button.print-link:hover { color: var(--accent); }
 .pe-rating-text { font-family: var(--sans); font-size: 0.82rem; color: var(--muted); }
 .pe-rating-sm { display: inline-flex; margin: 0; }
 .pe-rating-sm .pe-stars { font-size: 0.72rem; letter-spacing: 0.08em; }
+
+
+/* Category tags: pastel background, dark text (contrast above 7:1) */
+.tag { display: inline-block; padding: 0.15rem 0.6rem; border-radius: 999px; font-family: var(--sans); font-size: 0.72rem; font-weight: 500; line-height: 1.5; letter-spacing: 0.01em; }
+.tag-books  { background: #DCE8F5; color: #1F3A5C; }
+.tag-games  { background: #F6EBC2; color: #5A4410; }
+.tag-videos { background: #DCEBD8; color: #25502C; }
+.tags { margin: 0.45rem 0 0; }
+.item-meta { display: flex; align-items: center; gap: 0.6rem; margin: 0.1rem 0 0.5rem; }
+.item-meta .pe-rating-sm { margin: 0; }
+.detail > .tag { margin: 0 0 1rem; }
+@media print { .tag, .tags { display: none !important; } }

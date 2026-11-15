@@ -74,6 +74,7 @@
          title: "Title of the entry",
          when: "Summer 2018",            // optional small line under the title
          rating: 3.5,                    // optional stars, 0 to 5 in steps of 0.5
+         tag: "books",                   // optional: "books", "games" or "videos"
          body: [
            "A paragraph of text.",
            { img: "images/photo.jpg", alt: "What the picture shows", caption: "Optional caption" },
@@ -128,6 +129,7 @@
     {
       year: 2026,
       title: "Book review: Nudge",
+      tag: "books",
       when: "October 7, 2026",
       rating: 4,
 	  body: [
@@ -145,6 +147,7 @@
     {
       year: 2026,
       title: "Book review: All Systems Red",
+      tag: "books",
       when: "September 28, 2026",
       rating: 3.5,
       body: [
@@ -161,6 +164,7 @@
     {
       year: 2026,
       title: "Book review: Compulsory",
+      tag: "books",
       when: "September 28, 2026",
       rating: 2,
       body: [
@@ -176,6 +180,7 @@
     {
       year: 2026,
       title: "Book review: You Like It Darker",
+      tag: "books",
       when: "September 11, 2026",
       rating: 5,
       body: [
@@ -188,6 +193,7 @@
     {
       year: 2026,
       title: "Book review: Dungeon Crawler Carl",
+      tag: "books",
       when: "February 27, 2026",
       rating: 5,
       body: [
@@ -205,6 +211,7 @@
     {
       year: 2025,
       title: "Book review: The Art of Spending Money",
+      tag: "books",
       rating: 5,
       body: [
         "Review of The Art of Spending Money by Morgan Housel.",
@@ -219,6 +226,7 @@
     {
       year: 2025,
       title: "Book review: Freakonomics",
+      tag: "books",
       rating: 5,
       body: [
         "Review of Freakonomics by Steven D. Levitt and Stephen J. Dubner.",
@@ -231,8 +239,9 @@
     {
       year: 2023,
       title: "Book review: And Then There Were None",
+      tag: "books",
       when: "September 23, 2023",
-      rating: 5,
+      rating: 2,
 	  body: [
         "Review of And Then There Were None by Agatha Christie.",
         { img: "images/and-then-there-were-none.jpg", alt: "Cover of And Then There Were None by Agatha Christie", caption: "" },
@@ -255,6 +264,15 @@
     box.textContent = 'Picture missing: ' + img.getAttribute('src');
     img.replaceWith(box);
   }, true);
+
+  var TAGS = { books: 'Book reviews', games: 'Board games', videos: 'Videos' };
+  function tagEl(key) {
+    if (!TAGS[key]) return null;
+    var t = document.createElement('span');
+    t.className = 'tag tag-' + key;
+    t.textContent = TAGS[key];
+    return t;
+  }
 
   /* Five stars, filled to the rating (half stars allowed). */
   function stars(rating, small) {
@@ -318,7 +336,12 @@
         btn.setAttribute('aria-controls', id);
         btn.textContent = e.title;
         item.appendChild(btn);
-        if (typeof e.rating === 'number') item.appendChild(stars(e.rating, true));
+        var meta = document.createElement('div');
+        meta.className = 'item-meta';
+        if (typeof e.rating === 'number') meta.appendChild(stars(e.rating, true));
+        var itemTag = tagEl(e.tag);
+        if (itemTag) meta.appendChild(itemTag);
+        if (meta.childNodes.length) item.appendChild(meta);
 
         var detail = document.createElement('div');
         detail.className = 'detail';
@@ -335,6 +358,8 @@
           detail.appendChild(where);
         }
         if (typeof e.rating === 'number') detail.appendChild(stars(e.rating, false));
+        var detailTag = tagEl(e.tag);
+        if (detailTag) detail.appendChild(detailTag);
 
         (e.body || []).forEach(function (part) {
           if (typeof part === 'string') {

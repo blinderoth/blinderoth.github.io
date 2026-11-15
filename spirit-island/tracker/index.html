@@ -1,1 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="no-referrer" />
+  <title>Spirit Island tracker</title>
+  <meta name="description" content="Game log and stats for Spirit Island: win rates, scores, adversary progress and spirit records." />
+  <meta name="theme-color" content="#F3F5F0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css?v=8" />
+  <link rel="stylesheet" href="css/botanical_zen.css?v=8" />
+  <link rel="stylesheet" href="css/spirit_animations.css?v=9" />
+  <link rel="stylesheet" href="css/tracker_polish.css?v=12" />
+</head>
+<body data-theme="zen">
+  <script>
+    /* Apply the saved color scheme before first paint (no light flash in dark mode) */
+    try {
+      var t = localStorage.getItem("si_color_scheme");
+      var c = { zen: "#F3F5F0", parchment: "#F4EFE6", dark: "#111815" };
+      if (c[t]) {
+        document.body.setAttribute("data-theme", t);
+        document.querySelector('meta[name="theme-color"]').setAttribute("content", c[t]);
+      }
+    } catch (e) {}
+  </script>
 
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Status bar with 3-way color scheme switcher -->
+  <div class="status-bar">
+    <a href="../../index.html#spirit-island-memoir">Back to the main site</a>
+    <div class="theme-switcher" role="group" aria-label="Color scheme">
+      <span>Theme:</span>
+      <button type="button" class="theme-pill active" data-scheme="zen" aria-pressed="true">Botanical Zen</button>
+      <button type="button" class="theme-pill" data-scheme="parchment" aria-pressed="false">Parchment</button>
+      <button type="button" class="theme-pill" data-scheme="dark" aria-pressed="false">Dark Mode</button>
+    </div>
+    <div class="player-filter-bar">
+      <label for="globalPlayerFilter">Player Stats:</label>
+      <select id="globalPlayerFilter" class="select-input" aria-label="Filter stats by player">
+        <option value="">All Players</option>
+      </select>
+    </div>
+    <span class="sync-pill">
+      <span class="sync-dot"></span>
+      <span id="syncStatusText">Loading…</span>
+    </span>
+  </div>
+
+  <div class="zen-wrap" id="main">
+    <!-- Header -->
+    <header class="zen-header">
+      <div class="zen-eyebrow">Spirit Island · Campaign Sanctuary</div>
+      <h1>Spirit Island Memoir</h1>
+
+      <nav class="zen-nav" aria-label="Tracker sections">
+        <button type="button" class="zen-nav-btn nav-tab active" data-tab="dashboard">Overview</button>
+        <button type="button" class="zen-nav-btn nav-tab" data-tab="adversaries">Adversaries</button>
+        <button type="button" class="zen-nav-btn nav-tab" data-tab="matches">Games</button>
+        <button type="button" class="zen-nav-btn nav-tab" data-tab="achievements">Achievements</button>
+        <button type="button" class="zen-nav-btn nav-tab" data-tab="codex">Spirits</button>
+        <button type="button" class="zen-nav-btn nav-tab" data-tab="settings">Settings</button>
+      </nav>
+
+      <div class="zen-header-actions">
+      <button type="button" class="btn-zen btn-zen-primary" id="openLogMatchBtn">
+          <span>+ Record Reckoning</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- =================================================================== -->
+    <!-- VIEW 1: SANCTUARY (DASHBOARD)                                       -->
+    <!-- =================================================================== -->
+    <section id="view-dashboard" class="view-section active">
+      <!-- 4 Whisper-Quiet Figures -->
+      <div class="zen-figures" id="heroKpiGrid"></div>
+
+      <!-- Spotlight Strip: Top Awakened Spirits -->
+      <div class="zen-section-label">
+        <span>Awakened Spirits</span>
+        <span>Most Frequent Guardians</span>
+      </div>
+      <div class="pantheon-strip" id="zenAwakenedStrip"></div>
+
+      <!-- Adversary Clearance Progression (Authentic Mockup V Style) -->
+      <div class="zen-section-label">
+        <span>Adversary Clearance Progression</span>
+        <span>Levels 0 — 6 · Click Tier to Log Reckoning</span>
+      </div>
+      <div id="zenGauntletContainer" style="margin-bottom:3.5rem;"></div>
+
+      <div class="zen-section-label" style="margin-top:2rem;"><span>Council of Spirits</span><span>Who plays what, and how it goes</span></div>
+      <div class="zen-card">
+          <div class="zen-card-title">Council of Spirits</div>
+          <div class="zen-card-subtitle">Guardian leaderboards and signature deployments</div>
+          <div class="table-wrap">
+            <table class="zen-table">
+              <thead>
+                <tr>
+                  <th>Guardian</th>
+                  <th>Deployments</th>
+                  <th>Wins</th>
+                  <th>Win %</th>
+                  <th>Signature Spirit</th>
+                  <th>High Score</th>
+                </tr>
+              </thead>
+              <tbody id="councilTbody"></tbody>
+              <tfoot id="councilTfoot"></tfoot>
+            </table>
+          </div>
+          <div id="councilNotes" style="margin-top:0.85rem;padding:0.6rem 0.85rem;background:var(--sage-paper);border:1px solid var(--sage-rule);border-radius:4px;font-size:0.8rem;color:var(--pine-muted);"></div>
+        </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- VIEW: ADVERSARIES & LOSS BREAKDOWN                                  -->
+    <!-- =================================================================== -->
+    <section id="view-adversaries" class="view-section">
+      <div class="adv-single">
+        <!-- Invader Threat Matrix -->
+        <div class="zen-card">
+          <div class="zen-card-title">Invader Threat Matrix</div>
+          <div class="zen-card-subtitle">Containment rates and conquered tiers</div>
+          <div class="table-wrap">
+            <table class="zen-table">
+              <thead>
+                <tr>
+                  <th>Adversary</th>
+                  <th>Games</th>
+                  <th>Win %</th>
+                  <th>Max Cleared</th>
+                  <th>Threat Status</th>
+                </tr>
+              </thead>
+              <tbody id="adversaryThreatTbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- VIEW 2: MATCH HISTORY & GAME LOG                                    -->
+    <!-- =================================================================== -->
+    <section id="view-matches" class="view-section">
+      <details class="zen-card autopsy-panel" id="expeditionPanel">
+        <summary><span class="zen-card-title">Expedition generator: what to play next</span><span class="autopsy-hint">Suggests spirits and a target adversary</span></summary>
+        <div style="display:flex;gap:0.4rem;flex-wrap:wrap;margin:0.75rem 0;">
+          <select id="recPlayerCount" class="select-input" aria-label="Number of players" style="padding:0.3rem 0.5rem;font-size:0.75rem;">
+            <option value="1">1 Player</option>
+            <option value="2" selected>2 Players</option>
+            <option value="3">3 Players</option>
+            <option value="4">4 Players</option>
+          </select>
+          <select id="recMode" class="select-input" aria-label="Suggestion mode" style="padding:0.3rem 0.5rem;font-size:0.75rem;">
+            <option value="campaign" selected>Next Target</option>
+            <option value="unplayed">Unplayed Spirits</option>
+            <option value="synergy">Power Combos</option>
+            <option value="random">Random</option>
+          </select>
+        </div>
+        <div id="recommenderBody"></div>
+      </details>
+
+      <div class="filter-bar" style="margin-bottom:1.5rem;">
+        <input type="text" id="filterMatchSearch" class="text-input" placeholder="🔍 Search spirit, player, adversary, notes..." style="min-width:240px;flex:1;" />
+        <select id="filterMatchPlayer" class="select-input"><option value="">All Guardians</option></select>
+        <select id="filterMatchSpirit" class="select-input"><option value="">All Spirits</option></select>
+        <select id="filterMatchAdv" class="select-input"><option value="">All Adversaries</option></select>
+        <select id="filterMatchOutcome" class="select-input">
+          <option value="">All Outcomes</option>
+          <option value="win">Victories Only</option>
+          <option value="loss">Defeats Only</option>
+        </select>
+        <select id="filterMatchSort" class="select-input">
+          <option value="newest">Newest First</option>
+          <option value="oldest">Oldest First</option>
+          <option value="score_desc">Highest Score</option>
+          <option value="diff_desc">Highest Difficulty</option>
+        </select>
+      </div>
+
+              <!-- Quick Outcome Filter Pills -->
+        <div style="display:flex;gap:0.5rem;margin-bottom:1rem;flex-wrap:wrap;align-items:center;">
+          <span style="font-size:11px;text-transform:uppercase;letter-spacing:0.12em;font-weight:700;color:var(--text-secondary);margin-right:0.25rem;">Filter:</span>
+          <button type="button" class="btn-zen btn-zen-secondary filter-outcome-pill active" data-outcome="" onclick="if(window.setOutcomeFilter) window.setOutcomeFilter('')">All Reckonings</button>
+          <button type="button" class="btn-zen btn-zen-secondary filter-outcome-pill" data-outcome="win" onclick="if(window.setOutcomeFilter) window.setOutcomeFilter('win')">✨ Victories Only</button>
+          <button type="button" class="btn-zen btn-zen-secondary filter-outcome-pill" data-outcome="loss" onclick="if(window.setOutcomeFilter) window.setOutcomeFilter('loss')">💀 Defeats Only</button>
+        </div>
+
+<details class="zen-card autopsy-panel" id="lossAutopsyPanel">
+        <summary><span class="zen-card-title">Why we lose: loss autopsy</span><span class="autopsy-hint">Failure vectors and tactical mitigations</span></summary>
+        
+          <div class="table-wrap">
+            <table class="zen-table">
+              <thead>
+                <tr>
+                  <th>Vector</th>
+                  <th>Losses</th>
+                  <th>Risk Tier</th>
+                  <th>Mitigation Protocol</th>
+                </tr>
+              </thead>
+              <tbody id="lossAutopsyTbody"></tbody>
+            </table>
+          </div>
+      </details>
+
+      <div class="zen-card">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:1rem;">
+          <div class="zen-card-title">📜 Annals of Recorded Reckonings</div>
+          <div id="matchesFilteredCount" style="font-size:12px;color:var(--pine-muted);"></div>
+        </div>
+        <div class="table-wrap">
+          <table class="zen-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Date</th>
+                <th>Outcome</th>
+                <th>Guardians & Spirits</th>
+                <th>Adversary & Scenario</th>
+                <th>Difficulty</th>
+                <th>Island State</th>
+                <th>Score</th>
+                <th>Notes</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="matchesHistoryTbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- VIEW 3: ACHIEVEMENTS & MASTERY MATRIX                               -->
+    <!-- =================================================================== -->
+    <section id="view-achievements" class="view-section">
+      <div id="achievementsSummaryHeader"></div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1.25rem;">
+        <div class="sub-nav" id="achSubNav" style="margin-bottom:0;">
+          <button type="button" class="sub-nav-btn active" data-subtab="mastery">🏅 Mastery</button>
+          <button type="button" class="sub-nav-btn" data-subtab="synergy">🤝 Spirit Synergy</button>
+        </div>
+
+      </div>
+
+      <div class="ach-controls" id="achControls">
+        <label class="ach-check">
+          <input type="checkbox" id="achOwnedOnlyToggle" checked />
+          <span>Show owned spirits only</span>
+        </label>
+        <label class="ach-check">
+          <input type="checkbox" id="achHideEmptyToggle" />
+          <span>Hide spirits with nothing unlocked</span>
+        </label>
+        <label class="ach-sort">
+          <span>Sort by</span>
+          <select id="achSortSelect" class="select-input">
+            <option value="mastery-desc">Mastery, high to low</option>
+            <option value="mastery-asc">Mastery, low to high</option>
+            <option value="name">Name, A to Z</option>
+          </select>
+        </label>
+        <button type="button" class="btn-zen btn-zen-secondary" id="achExpandAllBtn">Expand all</button>
+      </div>
+
+      <div class="zen-card" id="achievementsMatrixContainer" style="padding:1rem;"></div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- VIEW 4: ISLAND CODEX (SPIRITS, ASPECTS, ADVERSARIES, POWERS)        -->
+    <!-- =================================================================== -->
+    <section id="view-codex" class="view-section">
+      <div class="sub-nav" id="codexSubNav" style="margin-bottom:1.5rem;">
+        <button type="button" class="sub-nav-btn active" data-codex="spirits">⚡ Spirits (39)</button>
+        <button type="button" class="sub-nav-btn" data-codex="dossier">📖 Pantheon Dossier</button>
+        <button type="button" class="sub-nav-btn" data-codex="invaders">⚔️ Adversaries & Scenarios</button>
+      </div>
+
+      <!-- Subview A: Spirits Gallery -->
+      <div id="codex-spirits" class="codex-subview">
+        
+
+        <div class="filter-bar" style="margin-bottom:1.5rem;">
+          <input type="text" id="codexSpiritSearch" class="text-input" placeholder="🔍 Search spirits by name, elements, expansion..." style="flex:1;min-width:220px;" />
+          <select id="codexSpiritComplexity" class="select-input">
+            <option value="">All Complexities</option>
+            <option value="Low">Low</option>
+            <option value="Moderate">Moderate</option>
+            <option value="High">High</option>
+            <option value="Very High">Very High</option>
+          </select>
+          <select id="codexSpiritExpansion" class="select-input">
+            <option value="">All Expansions</option>
+            <option value="Core">Core</option>
+            <option value="Branch and Claw">Branch and Claw</option>
+            <option value="Jagged Earth">Jagged Earth</option>
+            <option value="Promo 1">Promo 1</option>
+            <option value="Promo 2">Promo 2</option>
+            <option value="Horizons">Horizons</option>
+            <option value="Apocrypha">Apocrypha</option>
+            <option value="Nature Incarnate">Nature Incarnate</option>
+          </select>
+        </div>
+
+        <div id="codexSpiritsGallery" class="spirits-gallery"></div>
+      </div>
+
+      <!-- Subview: Pantheon Dossier -->
+      <div id="codex-dossier" class="codex-subview" style="display:none;">
+        <div class="zen-card" id="dossierCard">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:0.5rem;">
+            <div>
+              <div class="zen-card-title">Pantheon Dossier</div>
+              <div class="zen-card-subtitle" style="margin-bottom:0;">Elemental affinity, tracks & aspect comparison</div>
+            </div>
+            <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
+                          <div class="dossier-combobox-wrapper" id="dossierCombobox">
+              <div class="combobox-control">
+                <span class="combobox-icon">🔍</span>
+                <input
+                  type="text"
+                  id="dossierSearchableInput"
+                  class="dossier-search-input"
+                  placeholder="Select or search spirit..."
+                  autocomplete="off"
+                  spellcheck="false"
+                  aria-label="Select spirit dossier"
+                />
+                <button type="button" id="dossierComboboxClear" class="combobox-clear-btn" title="Clear search" style="display:none;">&times;</button>
+                <button type="button" id="dossierComboboxToggle" class="combobox-toggle-btn" title="Toggle spirit list" tabindex="-1">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+              </div>
+              <div class="combobox-dropdown" id="dossierComboboxDropdown" style="display:none;">
+                <div class="combobox-dropdown-scroll" id="dossierComboboxOptions" role="listbox"></div>
+              </div>
+              <select id="dossierSpiritSelect" style="display:none;" aria-hidden="true"></select>
+            </div>
+            <select id="dossierAspectSelect" class="select-input aspect-selector" aria-label="Select Aspect" style="display:none;"></select>
+            </div>
+          </div>
+          <div id="dossierBody"></div>
+        </div>
+      </div>
+
+      <!-- Subview A3: Adversaries & Scenarios -->
+      <div id="codex-invaders" class="codex-subview" style="display:none;">
+        <div id="codexInvadersBody"></div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- VIEW 5: COUNCIL & SETTINGS                                          -->
+    <!-- =================================================================== -->
+    <section id="view-settings" class="view-section">
+      <div class="zen-grid-2">
+        <div class="zen-card">
+          <div class="zen-card-title">Guardians Roster</div>
+          <div class="zen-card-subtitle">Manage Council members logging sessions</div>
+          <div style="display:flex;gap:0.5rem;margin-bottom:1rem;">
+            <input type="text" id="newGuardianNameInput" class="text-input" placeholder="New player name..." style="flex:1;" />
+            <button type="button" class="btn-zen btn-zen-primary" id="addNewGuardianBtn">+ Add</button>
+          </div>
+          <div id="settingsPlayersList" style="display:flex;flex-direction:column;gap:0.5rem;"></div>
+        </div>
+
+        <div class="zen-card">
+          <div class="zen-card-title">Expansions Owned</div>
+          <div class="zen-card-subtitle">Used for recommendations and filters</div>
+          <div id="settingsExpansionsList" style="display:flex;flex-direction:column;gap:0.5rem;"></div>
+        </div>
+      </div>
+
+      <div class="zen-card">
+        <div class="zen-card-title">Backup & Campaign Data</div>
+        <div class="zen-card-subtitle">Your games are saved in this browser only. Download a backup after each game night, and import it to move to another device.</div>
+        <p id="backupStatus" class="backup-status" role="status"></p>
+        <div style="display:flex;gap:0.8rem;flex-wrap:wrap;align-items:center;">
+          <button type="button" class="btn-zen btn-zen-primary" id="exportJsonBtn">📥 Download JSON backup</button>
+          <button type="button" class="btn-zen btn-zen-secondary" id="exportCsvBtn">📊 Export CSV</button>
+          <button type="button" class="btn-zen btn-zen-secondary" id="printSummaryBtn">🖨 Print summary (A4)</button>
+          <label class="btn-zen btn-zen-secondary import-label" for="importJsonFileInput">📤 Import JSON backup</label>
+          <input type="file" id="importJsonFileInput" accept=".json,application/json" class="visually-hidden" />
+          <button type="button" class="btn-zen btn-zen-secondary" id="resetOriginalSheetBtn" style="color:var(--rust-blight);">Reset reference data (keeps matches)</button>
+        </div>
+      </div>
+
+      <div class="zen-card">
+        <div class="zen-card-title">Artwork</div>
+        <div class="zen-card-subtitle">Re-center or zoom spirit and aspect pictures so faces sit in the frame.</div>
+        <button type="button" class="btn-zen btn-zen-secondary" id="globalRefitArtBtn" title="Manually refit and center spirit artwork">📐 Refit spirit art</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MATCH LOGGER MODAL                                                    -->
+  <!-- ===================================================================== -->
+  <div id="matchLoggerModal" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal-zen">
+      <div style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--sage-rule);padding-bottom:0.75rem;margin-bottom:1.25rem;">
+        <div>
+          <div style="font-family:'Newsreader',serif;font-size:22px;font-weight:600;" id="matchModalTitle">🌋 Record Spirit Island Reckoning</div>
+          <div style="font-size:12px;color:var(--pine-muted);">Official scoring calculation engine</div>
+        </div>
+        <button type="button" class="btn-zen btn-zen-secondary" id="closeMatchModalBtn">✖ Close</button>
+      </div>
+
+      <form id="matchLoggerForm">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="modalDate">Session Date</label>
+            <input type="date" id="modalDate" class="text-input" required />
+          </div>
+          <div class="form-group">
+            <label for="modalVictory">Match Outcome</label>
+            <select id="modalVictory" class="select-input">
+              <option value="true">✔ Victory (Invaders Repelled)</option>
+              <option value="false">✖ Defeat (Island Overrun)</option>
+            </select>
+          </div>
+          <div class="form-group" id="groupLossCondition" style="display:none;">
+            <label for="modalLossCondition">Loss Condition</label>
+            <select id="modalLossCondition" class="select-input">
+              <option value="Blight Overrun">Blight Overrun (Cascades)</option>
+              <option value="Adversary Special Rule">Adversary Special Rule</option>
+              <option value="Invader Deck Depleted">Invader Deck Depleted (Time Out)</option>
+              <option value="Presence Destroyed">Spirit Presence Destroyed</option>
+            </select>
+          </div>
+          <div class="form-group" style="justify-content:center;">
+            <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;margin-top:1.1rem;">
+              <input type="checkbox" id="modalThematic" style="width:18px;height:18px;accent-color:var(--fern-accent);" />
+              <span>🗺️ Thematic Map (+1 Diff)</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Guardians & Spirits Slots -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin:0.8rem 0 0.45rem;">
+          <label style="font-size:0.76rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--pine-muted);">
+            👥 Guardians, Spirits & Aspects (1–6 Players)
+          </label>
+          <button type="button" class="btn-zen btn-zen-secondary" id="addPlayerSlotBtn" style="font-size:11.5px;padding:0.25rem 0.65rem;">+ Add Guardian</button>
+        </div>
+        <div id="modalPlayerSlots"></div>
+
+        <!-- Adversary & Scenario -->
+        <div class="form-grid" style="margin-top:1rem;">
+          <div class="form-group">
+            <label for="modalAdversary1">Adversary</label>
+            <div style="display:flex;align-items:center;gap:0.5rem;">
+              <span id="modalAdvIconPreview" style="display:inline-flex;min-width:30px;"></span>
+              <select id="modalAdversary1" class="select-input" style="flex:1;"></select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="modalAdversary1Level">Adversary Level (0–6)</label>
+            <select id="modalAdversary1Level" class="select-input">
+              <option value="0">Level 0</option>
+              <option value="1">Level 1</option>
+              <option value="2">Level 2</option>
+              <option value="3">Level 3</option>
+              <option value="4">Level 4</option>
+              <option value="5">Level 5</option>
+              <option value="6">Level 6</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="modalScenario">Scenario</label>
+            <div style="display:flex;align-items:center;gap:0.5rem;">
+              <span id="modalScenIconPreview" style="display:inline-flex;min-width:26px;"></span>
+              <select id="modalScenario" class="select-input" style="flex:1;"></select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="modalManualDifficulty">Total Difficulty</label>
+            <input type="number" id="modalManualDifficulty" class="text-input mono" min="-1" max="30" />
+          </div>
+        </div>
+
+        <!-- Metrics -->
+        <div class="form-grid">
+          <div class="form-group" id="groupInvaderWin">
+            <label for="modalInvaderCardsWin"># Cards in Deck (Win)</label>
+            <input type="number" id="modalInvaderCardsWin" class="text-input mono" min="0" max="20" value="3" />
+          </div>
+          <div class="form-group" id="groupInvaderLoss" style="display:none;">
+            <label for="modalInvaderCardsLoss"># Cards NOT in Deck (Loss)</label>
+            <input type="number" id="modalInvaderCardsLoss" class="text-input mono" min="0" max="20" value="5" />
+          </div>
+          <div class="form-group">
+            <label for="modalDahan">Surviving Dahan</label>
+            <input type="number" id="modalDahan" class="text-input mono" min="0" max="100" value="6" />
+          </div>
+          <div class="form-group">
+            <label for="modalBlight">Blight on Island</label>
+            <input type="number" id="modalBlight" class="text-input mono" min="0" max="100" value="3" />
+          </div>
+          <div class="form-group">
+            <label for="modalFearCards">Fear Cards Left (Optional)</label>
+            <input type="number" id="modalFearCards" class="text-input mono" min="0" max="30" placeholder="—" />
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:1rem;">
+          <label for="modalNotes">Session Highlights / Notes</label>
+          <input type="text" id="modalNotes" class="text-input" placeholder="e.g., Epic finish with Consuming Void" />
+        </div>
+
+        <div style="background:var(--sage-paper);border:1px solid var(--sage-rule);border-radius:6px;padding:0.85rem 1.15rem;display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;">
+          <div>
+            <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.1em;color:var(--pine-muted);font-weight:600;">Scoring Engine Preview</div>
+            <div id="liveDifficultyPreview" style="font-size:13px;color:var(--pine-ink);margin-top:0.2rem;">Difficulty 0</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:11px;text-transform:uppercase;color:var(--accent-gold-light);font-weight:600;">Score</div>
+            <div id="liveScorePreview" class="mono" style="font-size:24px;font-weight:700;color:var(--fern-accent);">16 pts</div>
+          </div>
+        </div>
+
+        <div class="modal-footer" style="display:flex;justify-content:flex-end;gap:0.65rem;padding-top:0.5rem;border-top:1px solid var(--sage-rule);">
+          <button type="button" class="btn btn-secondary" id="cancelMatchModalBtn">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="saveMatchBtn">Save Match</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- ART CENTERING & MANUAL REFIT MODAL                                     -->
+  <!-- ===================================================================== -->
+  <div id="cropArtModal" class="modal-backdrop" role="dialog" aria-modal="true" style="display:none;">
+    <div class="modal-dialog" style="max-width:540px;text-align:center;">
+      <div class="panel-header" style="margin-bottom:0.85rem;justify-content:space-between;display:flex;align-items:center;">
+        <div>
+          <div class="panel-title serif-title" id="cropModalTitle">📐 Manual Artwork Refit & Framing</div>
+          <div class="panel-subtitle" id="cropModalSubtitle">Pan, zoom, and fit spirit artwork across all views</div>
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm" id="closeCropModalBtn">✖ Close</button>
+      </div>
+
+      <!-- Quick Spirit / Aspect Navigator inside the Refit Tool -->
+      <div class="refit-selector-bar" style="display:flex;gap:0.5rem;align-items:center;margin-bottom:0.85rem;background:var(--bg-deep, rgba(0,0,0,0.2));border:1px solid var(--border-subtle);border-radius:8px;padding:0.55rem 0.65rem;">
+        <button type="button" class="btn btn-secondary btn-sm" id="refitPrevSpiritBtn" title="Previous Spirit" style="padding:0.35rem 0.55rem;">◀</button>
+        <div style="flex:1.4;text-align:left;">
+          <label style="display:block;font-size:0.64rem;font-weight:700;text-transform:uppercase;color:var(--text-secondary);margin-bottom:0.2rem;">Select Spirit</label>
+          <select id="refitSpiritSelect" class="select-input" style="width:100%;font-size:0.8rem;padding:0.3rem 0.45rem;"></select>
+        </div>
+        <div style="flex:1.2;text-align:left;" id="refitAspectWrapper">
+          <label style="display:block;font-size:0.64rem;font-weight:700;text-transform:uppercase;color:var(--text-secondary);margin-bottom:0.2rem;">Artwork Variant</label>
+          <select id="refitAspectSelect" class="select-input" style="width:100%;font-size:0.8rem;padding:0.3rem 0.45rem;"></select>
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm" id="refitNextSpiritBtn" title="Next Spirit" style="padding:0.35rem 0.55rem;">▶</button>
+      </div>
+
+      <!-- Interactive Stage & Live Frames -->
+      <div class="crop-preview-wrapper" style="display:flex;gap:1.2rem;align-items:center;justify-content:center;margin-bottom:0.85rem;flex-wrap:wrap;">
+        <div style="text-align:center;">
+          <div style="font-size:0.68rem;font-weight:700;color:var(--text-secondary);margin-bottom:0.3rem;text-transform:uppercase;letter-spacing:0.06em;">Interactive Stage (Drag to Pan · Drag Handles to Resize)</div>
+          <div class="crop-preview-box" id="cropPreviewBox" title="Drag handles to resize • Drag inside to pan • Scroll to zoom">
+            <img id="cropPreviewImg" class="crop-preview-img" src="" alt="Spirit Art Preview" />
+            <div class="crop-crosshair"></div>
+            <!-- Interactive Resize Bounding Box with 8 Handles -->
+            <div class="crop-transform-box" id="cropTransformBox">
+              <div class="crop-resize-handle handle-nw" data-handle="nw" title="Drag to Resize (Top-Left)"></div>
+              <div class="crop-resize-handle handle-ne" data-handle="ne" title="Drag to Resize (Top-Right)"></div>
+              <div class="crop-resize-handle handle-sw" data-handle="sw" title="Drag to Resize (Bottom-Left)"></div>
+              <div class="crop-resize-handle handle-se" data-handle="se" title="Drag to Resize (Bottom-Right)"></div>
+              <div class="crop-resize-handle handle-n" data-handle="n" title="Drag to Resize (Top)"></div>
+              <div class="crop-resize-handle handle-s" data-handle="s" title="Drag to Resize (Bottom)"></div>
+              <div class="crop-resize-handle handle-w" data-handle="w" title="Drag to Resize (Left)"></div>
+              <div class="crop-resize-handle handle-e" data-handle="e" title="Drag to Resize (Right)"></div>
+            </div>
+            <div class="crop-drag-hint" id="cropDragHint">🖐️ Drag to Pan · 📐 Drag Corners to Resize · Scroll to Zoom</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:0.65rem;align-items:center;">
+          <div style="font-size:0.68rem;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.06em;">Live Previews</div>
+          <div style="text-align:center;">
+            <div style="width:96px;height:96px;border-radius:10px;overflow:hidden;border:1px solid var(--border-strong);background:var(--bg-deep,#0b0f19);margin:0 auto 0.2rem;position:relative;">
+              <img id="cropMicroDossier" style="width:100%;height:100%;display:block;" src="" alt="" />
+            </div>
+            <span style="font-size:0.65rem;color:var(--text-secondary);">Pantheon Dossier</span>
+          </div>
+          <div style="text-align:center;">
+            <div style="width:52px;height:52px;border-radius:6px;overflow:hidden;border:1px solid var(--border-subtle);background:var(--bg-deep,#0b0f19);margin:0 auto 0.2rem;position:relative;">
+              <img id="cropMicroCodex" style="width:100%;height:100%;display:block;" src="" alt="" />
+            </div>
+            <span style="font-size:0.65rem;color:var(--text-secondary);">Codex Card</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Size Buttons -->
+      <div style="margin-bottom:0.75rem;">
+        <div style="display:flex;gap:0.35rem;justify-content:center;align-items:center;flex-wrap:wrap;">
+          <span style="font-size:0.68rem;font-weight:700;color:var(--text-secondary);text-transform:uppercase;margin-right:0.25rem;">Quick Size:</span>
+          <button type="button" class="btn-size-pill" data-size="50">50%</button>
+          <button type="button" class="btn-size-pill" data-size="75">75%</button>
+          <button type="button" class="btn-size-pill" data-size="100">100%</button>
+          <button type="button" class="btn-size-pill" data-size="125">125%</button>
+          <button type="button" class="btn-size-pill" data-size="150">150%</button>
+          <button type="button" class="btn-size-pill" data-size="200">200%</button>
+          <button type="button" class="btn-size-pill" data-size="300">300%</button>
+        </div>
+      </div>
+
+      <!-- Fit Mode Segmented Toggle -->
+      <div style="display:flex;gap:0.45rem;justify-content:center;margin-bottom:0.75rem;">
+        <button type="button" class="btn-refit-mode active" id="btnFitCover" data-mode="cover">🔲 Fill Frame (Cover)</button>
+        <button type="button" class="btn-refit-mode" id="btnFitContain" data-mode="contain">🖼️ Fit Entire Image (Contain)</button>
+      </div>
+
+      <!-- Controls Sliders -->
+      <div style="background:var(--bg-deep, rgba(0,0,0,0.2));border:1px solid var(--border-subtle, rgba(255,255,255,0.1));border-radius:8px;padding:0.75rem 0.85rem;margin-bottom:0.85rem;display:flex;flex-direction:column;gap:0.55rem;">
+        <div class="crop-slider-row">
+          <span class="crop-slider-label">🔍 Scale / Size:</span>
+          <button type="button" class="btn-crop-step" id="cropStepZoomOut" title="Zoom Out (-10%)">−</button>
+          <input type="range" id="cropSliderScale" class="crop-slider-input" min="25" max="400" step="1" value="100" />
+          <button type="button" class="btn-crop-step" id="cropStepZoomIn" title="Zoom In (+10%)">+</button>
+          <span id="cropValScale" class="crop-slider-val" style="min-width:55px;">100%</span>
+        </div>
+        <div class="crop-slider-row">
+          <span class="crop-slider-label">↔️ Pan X:</span>
+          <button type="button" class="btn-crop-step" id="cropStepPanLeft" title="Nudge Left">◀</button>
+          <input type="range" id="cropSliderX" class="crop-slider-input" min="-100" max="100" step="1" value="0" />
+          <button type="button" class="btn-crop-step" id="cropStepPanRight" title="Nudge Right">▶</button>
+          <span id="cropValX" class="crop-slider-val" style="min-width:55px;">0%</span>
+        </div>
+        <div class="crop-slider-row">
+          <span class="crop-slider-label">↕️ Pan Y:</span>
+          <button type="button" class="btn-crop-step" id="cropStepPanUp" title="Nudge Up">▲</button>
+          <input type="range" id="cropSliderY" class="crop-slider-input" min="-100" max="100" step="1" value="0" />
+          <button type="button" class="btn-crop-step" id="cropStepPanDown" title="Nudge Down">▼</button>
+          <span id="cropValY" class="crop-slider-val" style="min-width:55px;">0%</span>
+        </div>
+      </div>
+
+      <!-- Quick Presets -->
+      <div class="crop-presets-bar">
+        <button type="button" class="btn-crop-preset" data-preset="center">🎯 Center</button>
+        <button type="button" class="btn-crop-preset" data-preset="head">👤 Head/Top</button>
+        <button type="button" class="btn-crop-preset" data-preset="base">🐾 Base/Low</button>
+        <button type="button" class="btn-crop-preset" data-preset="left">◀ Left</button>
+        <button type="button" class="btn-crop-preset" data-preset="right">▶ Right</button>
+        <button type="button" class="btn-crop-preset" data-preset="contain">🔍 Fit All</button>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:0.6rem;">
+        <button type="button" class="btn btn-secondary" id="resetCropBtn">🔄 Reset Default</button>
+        <div style="display:flex;gap:0.5rem;">
+          <button type="button" class="btn btn-secondary" id="cancelCropBtn">Cancel</button>
+          <button type="button" class="btn btn-primary" id="saveCropBtn">💾 Save & Apply Refit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toastContainer" class="toast-container"></div>
+  <div id="printSheet" aria-hidden="true"></div>
+
+  <!-- Scripts -->
+  <script src="js/default_data.js?v=13"></script>
+  <script src="js/analytics.js?v=9"></script>
+  <script src="js/core/state.js?v=13"></script>
+  <script src="js/core/data.js?v=13"></script>
+  <script src="js/core/nav.js?v=13"></script>
+  <script src="js/views/dashboard.js?v=13"></script>
+  <script src="js/views/spirit_dossier.js?v=13"></script>
+  <script src="js/views/adversaries.js?v=13"></script>
+  <script src="js/views/matches.js?v=13"></script>
+  <script src="js/views/achievements.js?v=13"></script>
+  <script src="js/views/achievements_cards.js?v=13"></script>
+  <script src="js/views/print.js?v=13"></script>
+  <script src="js/views/codex.js?v=13"></script>
+  <script src="js/views/settings.js?v=13"></script>
+  <script src="js/main.js?v=13"></script>
+
+  <script src="js/spirit_animations.js?v=9"></script>
+</body>
+</html>

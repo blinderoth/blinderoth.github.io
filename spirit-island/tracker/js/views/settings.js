@@ -5,6 +5,7 @@
   // 5. SETTINGS, COLLECTION & IMPORT/EXPORT VIEW
   // =========================================================================
   function renderSettingsView() {
+    SICloud.bindSettings();
     // Players management
     const playersList = document.getElementById("settingsPlayersList");
     if (playersList) {
@@ -185,6 +186,11 @@
     const total = (appData?.matches || []).length;
     let info = null;
     try { info = JSON.parse(localStorage.getItem("si_last_backup") || "null"); } catch (e) { info = null; }
+    if (SICloud.mode() !== "local") {
+      el.textContent = info ? `Last JSON download: ${new Date(info.at).toLocaleDateString()}.` : "";
+      el.dataset.state = "ok";
+      return;
+    }
     if (!info) {
       el.textContent = `No backup downloaded from this browser yet. ${total} matches are stored only here.`;
       el.dataset.state = "warn";

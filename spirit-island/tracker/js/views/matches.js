@@ -227,6 +227,7 @@
   }
 
   function openMatchModal(prefill) {
+    if (SICloud.isViewer()) { showToast("View only. Add a GitHub token in Settings to edit."); return; }
     const modal = document.getElementById("matchLoggerModal");
     if (!modal) return;
     modalReturnFocus = document.activeElement;

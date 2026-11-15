@@ -3,17 +3,17 @@
 
   // --- Initialization & Persistence ---
   async function initApp() {
-    // Static app: data lives in this browser (localStorage), seeded from js/default_data.js.
-    {
+    // Data is saved in this browser (localStorage) and, when a GitHub token is set, in the site's repo (js/core/cloud.js).
+    // The seed in js/default_data.js is the fallback.
+    let local = null;
+    try {
       const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        try {
-          appData = JSON.parse(saved);
-        } catch (e) {
-          appData = null;
-        }
-      }
-    }
+      if (saved) local = JSON.parse(saved);
+    } catch (e) { local = null; }
+
+    let fromRepo = null;
+    try { fromRepo = await SICloud.loadOnStart(local); } catch (e) { fromRepo = null; }
+    appData = fromRepo || local;
 
     if (!appData && window.DEFAULT_CAMPAIGN_DATA) {
       appData = JSON.parse(JSON.stringify(window.DEFAULT_CAMPAIGN_DATA));
@@ -102,7 +102,13 @@
       });
     });
     (appData.matches || []).forEach(normalizeMatch);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+    saveLocal();
+  }
+
+  // The local copy is a cache. A view-only visitor never overwrites it with the repo's data.
+  function saveLocal() {
+    if (SICloud.isViewer()) return;
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(appData)); } catch (e) { /* storage full or blocked */ }
   }
 
   // Ownership is set per expansion in Settings. Every spirit, adversary and scenario follows its expansion.
@@ -179,17 +185,19 @@
     const el = document.getElementById("syncStatusText");
     if (!el) return;
     const count = (appData?.matches || []).length;
-    if (selectedPlayerFilter) {
-      const pCount = getStatsData().matches.length;
-      el.textContent = `Saved in this browser • ${pCount}/${count} matches (${selectedPlayerFilter})`;
-    } else {
-      el.textContent = `Saved in this browser • ${count} matches`;
-    }
+    let countText = `${count} matches`;
+    if (selectedPlayerFilter) countText = `${getStatsData().matches.length}/${count} matches (${selectedPlayerFilter})`;
+    el.textContent = SICloud.label(countText);
   }
 
   async function persistData(toastMsg) {
+    if (SICloud.isViewer()) {
+      showToast("View only. Add a GitHub token in Settings to edit.");
+      return;
+    }
     appData.lastUpdated = new Date().toISOString();
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+    saveLocal();
+    SICloud.afterLocalSave();
 
     updateSyncBadge();
     renderBackupStatus();

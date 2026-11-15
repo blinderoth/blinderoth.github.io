@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="css/styles.css?v=8" />
   <link rel="stylesheet" href="css/botanical_zen.css?v=8" />
   <link rel="stylesheet" href="css/spirit_animations.css?v=9" />
-  <link rel="stylesheet" href="css/tracker_polish.css?v=12" />
+  <link rel="stylesheet" href="css/tracker_polish.css?v=14" />
 </head>
 <body data-theme="zen">
   <script>
@@ -381,9 +381,32 @@
         </div>
       </div>
 
+      <div class="zen-card" id="syncCard">
+        <div class="zen-card-title">Sync to GitHub</div>
+        <div class="zen-card-subtitle">Save the campaign in your site's repository so every device shows the same data. Visitors without a token can look but not change anything.</div>
+        <p id="syncStatusLine" class="backup-status" role="status"></p>
+        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center;margin-top:0.5rem;">
+          <input type="password" id="ghTokenInput" class="text-input" placeholder="Paste a GitHub token" autocomplete="off" spellcheck="false" aria-label="GitHub token" style="flex:1;min-width:220px;" />
+          <button type="button" class="btn-zen btn-zen-primary" id="ghTokenSaveBtn">Save token</button>
+          <button type="button" class="btn-zen btn-zen-secondary" id="ghSyncNowBtn" hidden>Sync now</button>
+          <button type="button" class="btn-zen btn-zen-secondary" id="ghTokenRemoveBtn" hidden style="color:var(--rust-blight);">Remove token</button>
+        </div>
+        <details class="sync-help">
+          <summary>How to create the token</summary>
+          <ol>
+            <li>Open <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">GitHub: new fine-grained token</a>.</li>
+            <li>Name it "SI tracker" and pick an expiry date (up to one year).</li>
+            <li>Under Repository access, choose Only select repositories, then <strong>blinderoth.github.io</strong>.</li>
+            <li>Under Repository permissions, set <strong>Contents</strong> to Read and write.</li>
+            <li>Generate the token, copy it and paste it above. Do this once on each device you edit from.</li>
+          </ol>
+          <p>The token stays in this browser and is never saved in the repo. The campaign file is <code>spirit-island/tracker/data/save.json</code>. Every save is a commit, so the repo history is your backup.</p>
+        </details>
+      </div>
+
       <div class="zen-card">
         <div class="zen-card-title">Backup & Campaign Data</div>
-        <div class="zen-card-subtitle">Your games are saved in this browser only. Download a backup after each game night, and import it to move to another device.</div>
+        <div class="zen-card-subtitle">Download a JSON copy of the campaign, or import one to replace it.</div>
         <p id="backupStatus" class="backup-status" role="status"></p>
         <div style="display:flex;gap:0.8rem;flex-wrap:wrap;align-items:center;">
           <button type="button" class="btn-zen btn-zen-primary" id="exportJsonBtn">📥 Download JSON backup</button>
@@ -671,21 +694,22 @@
   <div id="printSheet" aria-hidden="true"></div>
 
   <!-- Scripts -->
-  <script src="js/default_data.js?v=13"></script>
+  <script src="js/default_data.js?v=14"></script>
   <script src="js/analytics.js?v=9"></script>
-  <script src="js/core/state.js?v=13"></script>
-  <script src="js/core/data.js?v=13"></script>
-  <script src="js/core/nav.js?v=13"></script>
-  <script src="js/views/dashboard.js?v=13"></script>
-  <script src="js/views/spirit_dossier.js?v=13"></script>
-  <script src="js/views/adversaries.js?v=13"></script>
-  <script src="js/views/matches.js?v=13"></script>
-  <script src="js/views/achievements.js?v=13"></script>
-  <script src="js/views/achievements_cards.js?v=13"></script>
-  <script src="js/views/print.js?v=13"></script>
-  <script src="js/views/codex.js?v=13"></script>
-  <script src="js/views/settings.js?v=13"></script>
-  <script src="js/main.js?v=13"></script>
+  <script src="js/core/state.js?v=14"></script>
+  <script src="js/core/data.js?v=14"></script>
+  <script src="js/core/cloud.js?v=14"></script>
+  <script src="js/core/nav.js?v=14"></script>
+  <script src="js/views/dashboard.js?v=14"></script>
+  <script src="js/views/spirit_dossier.js?v=14"></script>
+  <script src="js/views/adversaries.js?v=14"></script>
+  <script src="js/views/matches.js?v=14"></script>
+  <script src="js/views/achievements.js?v=14"></script>
+  <script src="js/views/achievements_cards.js?v=14"></script>
+  <script src="js/views/print.js?v=14"></script>
+  <script src="js/views/codex.js?v=14"></script>
+  <script src="js/views/settings.js?v=14"></script>
+  <script src="js/main.js?v=14"></script>
 
   <script src="js/spirit_animations.js?v=9"></script>
 </body>

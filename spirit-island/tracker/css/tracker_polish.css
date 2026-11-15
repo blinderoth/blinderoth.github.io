@@ -752,3 +752,29 @@ button.zen-pillar {
 .spirit-compact-stat { font-size: 0.74rem; color: var(--text-secondary); }
 .spirit-compact-stat strong { color: var(--accent-emerald-light); }
 .spirit-card.compact .inspect-dossier-btn { flex-shrink: 0; min-height: 36px; white-space: nowrap; }
+
+
+/* ==========================================================================
+   GitHub sync and view-only mode (round 4)
+   ========================================================================== */
+.sync-help { margin-top: 0.85rem; font-size: 0.85rem; color: var(--text-secondary); }
+.sync-help summary { cursor: pointer; min-height: 32px; display: flex; align-items: center; font-weight: 600; color: var(--text-primary); }
+.sync-help ol { margin: 0.4rem 0 0.6rem 1.2rem; padding: 0; display: grid; gap: 0.25rem; }
+.sync-help code { font-size: 0.78rem; }
+/* View-only visitors: hide every control that would change data. */
+body.si-viewer #openLogMatchBtn,
+body.si-viewer .edit-match-btn,
+body.si-viewer .delete-match-btn,
+body.si-viewer #addNewGuardianBtn,
+body.si-viewer #newGuardianNameInput,
+body.si-viewer #settingsPlayersList button,
+body.si-viewer #settingsExpansionsList input,
+body.si-viewer #settingsExpansionsList button,
+body.si-viewer #importJsonFileInput,
+body.si-viewer label[for="importJsonFileInput"],
+body.si-viewer #resetOriginalSheetBtn,
+body.si-viewer #globalRefitArtBtn,
+body.si-viewer #dispatchRecBtn,
+body.si-viewer .dossier-log-btn,
+body.si-viewer .log-match-btn { display: none !important; }
+#syncCard [hidden] { display: none !important; }

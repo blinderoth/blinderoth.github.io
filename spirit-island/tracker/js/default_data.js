@@ -1,0 +1,8374 @@
+// Default reference & seed data for Spirit Island Campaign Tracker
+window.DEFAULT_CAMPAIGN_DATA = {
+  "version": "3.0.0",
+  "lastUpdated": "2026-11-14T17:48:50.611Z",
+  "players": [
+    {
+      "name": "Benjamin",
+      "isPrimary": true,
+      "role": "Arch-Guardian"
+    },
+    {
+      "name": "Victor",
+      "isPrimary": false,
+      "role": "Veteran Guardian"
+    },
+    {
+      "name": "Roger",
+      "isPrimary": false,
+      "role": "Island Guardian"
+    },
+    {
+      "name": "Ludvig",
+      "isPrimary": false,
+      "role": "Island Guardian"
+    },
+    {
+      "name": "Osvald",
+      "isPrimary": false,
+      "role": "Island Guardian"
+    },
+    {
+      "name": "Adrian",
+      "isPrimary": false,
+      "role": "Island Guardian"
+    },
+    {
+      "name": "Elias",
+      "isPrimary": false,
+      "role": "Island Guardian"
+    }
+  ],
+  "expansions": [
+    {
+      "name": "Core",
+      "owned": true
+    },
+    {
+      "name": "Branch and Claw",
+      "owned": true
+    },
+    {
+      "name": "Jagged Earth",
+      "owned": true
+    },
+    {
+      "name": "Promo 1",
+      "owned": false
+    },
+    {
+      "name": "Promo 2",
+      "owned": false
+    },
+    {
+      "name": "Feather and Flame",
+      "owned": false
+    },
+    {
+      "name": "Horizons",
+      "owned": false
+    },
+    {
+      "name": "Apocrypha",
+      "owned": true
+    },
+    {
+      "name": "Nature Incarnate",
+      "owned": true
+    }
+  ],
+  "elementIcons": {
+    "Sun": "assets/elements/26px-Esun.png",
+    "Moon": "assets/elements/26px-Emoon.png",
+    "Fire": "assets/elements/26px-Efire.png",
+    "Air": "assets/elements/26px-Eair.png",
+    "Water": "assets/elements/26px-Ewater.png",
+    "Earth": "assets/elements/26px-Eearth.png",
+    "Plant": "assets/elements/26px-Eplant.png",
+    "Animal": "assets/elements/26px-Eanimal.png"
+  },
+  "spirits": [
+    {
+      "name": "Lightning's Swift Strike",
+      "owned": true,
+      "expansion": "Core",
+      "image": "assets/spirits/lightnings_swift_strike.png?v=6",
+      "complexityScore": 1,
+      "complexity": "Low",
+      "minEnergy": 1,
+      "maxEnergy": 4,
+      "minPlays": 1,
+      "maxPlays": 6,
+      "startingCost": 6,
+      "fastCards": 1,
+      "slowCards": 3,
+      "primaryElements": [
+        "Fire",
+        "Air"
+      ],
+      "affinityProfile": "Fire / Air / Water",
+      "elements": {
+        "Sun": 0,
+        "Moon": 0,
+        "Fire": 4,
+        "Air": 4,
+        "Water": 1,
+        "Earth": 0,
+        "Plant": 0,
+        "Animal": 0
+      },
+      "setup": [
+        "Put 2 Presence on your starting board in the highest-numbered Sands."
+      ],
+      "miniature": {
+        "candidate": "MZ Air Elemental",
+        "queries": "“lightning elemental free stl”, “thunderbird miniature”",
+        "links": [
+          {
+            "label": "Stormwreck Isle (Fume Dragon)",
+            "url": "https://www.printables.com/model/933002-dragons-of-stormwreck-isle-collection/files#preview.file.UMVar"
+          },
+          {
+            "label": "Greater Lightning Elemental",
+            "url": "https://www.printables.com/model/1462635-greater-lightning-elementall"
+          }
+        ]
+      },
+      "focalPosition": {
+        "panX": 0,
+        "panY": 0,
+        "scale": 1.02,
+        "fit": "cover"
+      }
+    },
+    {
+      "name": "River Surges in Sunlight",
+      "owned": true,
+      "expansion": "Core",
+      "image": "assets/spirits/river_surges_in_sunlight.png?v=6",
+      "complexityScore": 1,
+      "complexity": "Low",
+      "minEnergy": 1,
+      "maxEnergy": 5,
+      "minPlays": 1,
+      "maxPlays": 5,
+      "startingCost": 3,
+      "fastCards": 2,
+      "slowCards": 2,
+      "primaryElements": [
+        "Sun",
+        "Water"
+      ],
+      "affinityProfile": "Sun / Water / Earth",
+      "elements": {
+        "Sun": 3,
+        "Moon": 0,
+        "Fire": 0,
+        "Air": 0,
+        "Water": 4,
+        "Earth": 1,
+        "Plant": 1,
+        "Animal": 1
+      },
+      "setup": [
+        "Put 1 Presence on your starting board in the highest-numbered Wetlands."
+      ],
+      "miniature": {
+        "candidate": "MZ Water Elemental",
+        "queries": "“river spirit miniature”, “naiad free stl”",
+        "links": [
+          {
+            "label": "Water Linnorm / Fire Snake",
+            "url": "https://www.printables.com/model/1026229-water-linnorm"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Shadows Flicker like Flame",
+      "owned": true,
+      "expansion": "Core",
+      "image": "assets/spirits/shadows_flicker_like_flame.png?v=6",
+      "complexityScore": 1,
+      "complexity": "Low",
+      "minEnergy": 0,
+      "maxEnergy": 6,
+      "minPlays": 1,
+      "maxPlays": 5,
+      "startingCost": 3,
+      "fastCards": 1,
+      "slowCards": 3,
+      "primaryElements": [
+        "Moon",
+        "Fire",
+        "Air"
+      ],
+      "affinityProfile": "Moon / Fire / Air",
+      "elements": {
+        "Sun": 0,
+        "Moon": 4,
+        "Fire": 2,
+        "Air": 3,
+        "Water": 0,
+        "Earth": 0,
+        "Plant": 1,
+        "Animal": 1
+      },
+      "setup": [
+        "Put 2 Presence on your starting board in the highest-numbered Jungle.",
+        "Put 1 Presence on your starting board in land #5."
+      ],
+      "miniature": {
+        "candidate": "MZ Shadow",
+        "queries": "“shadow flame spirit stl”, “shadow wraith free”",
+        "links": [
+          {
+            "label": "Air Elemental 2025",
+            "url": "https://www.printables.com/model/1288176-air-elemental-2025"
+          },
+          {
+            "label": "Shadow 2025",
+            "url": "https://www.printables.com/model/1440873-shadow-2025#preview.VIA4p"
+          }
+        ]
+      },
+      "focalPosition": {
+        "panX": -1,
+        "panY": -18,
+        "scale": 1.41,
+        "fit": "contain"
+      }
+    },
+    {
+      "name": "Vital Strength of the Earth",
+      "owned": true,
+      "expansion": "Core",
+      "image": "assets/spirits/vital_strength_of_the_earth.png?v=6",
+      "complexityScore": 1,
+      "complexity": "Low",
+      "minEnergy": 2,
+      "maxEnergy": 8,
+      "minPlays": 1,
+      "maxPlays": 4,
+      "startingCost": 10,
+      "fastCards": 2,
+      "slowCards": 2,
+      "primaryElements": [
+        "Earth",
+        "Plant"
+      ],
+      "affinityProfile": "Earth / Plant / Sun",
+      "elements": {
+        "Sun": 2,
+        "Moon": 1,
+        "Fire": 1,
+        "Air": 0,
+        "Water": 1,
+        "Earth": 4,
+        "Plant": 3,
+        "Animal": 1
+      },
+      "setup": [
+        "Put 2 Presence on your starting board in the highest-numbered Mountain.",
+        "Put 1 Presence on your starting board in the highest-numbered Jungle."
+      ],
+      "miniature": {
+        "candidate": "MZ Earth Elemental",
+        "queries": "“earth guardian miniature free”, “stone giant spirit stl”",
+        "links": [
+          {
+            "label": "Ice Elemental",
+            "url": "https://www.printables.com/model/39049-ice-elemental"
+          },
+          {
+            "label": "Rock Elemental Golem",
+            "url": "https://www.printables.com/model/1076823-rock-elementalgolem-miniature"
+          }
+        ]
+      },
+      "focalPosition": {
+        "panX": 0,
+        "panY": 14,
+        "scale": 1.35,
+        "fit": "contain"
+      }
+    },
+    {
+      "name": "A Spread of Rampant Green",
+      "owned": true,
+      "expansion": "Core",
+      "image": "assets/spirits/a_spread_of_rampant_green.png?v=6",
+      "complexityScore": 2,
+      "complexity": "Moderate",
+      "minEnergy": 0,
+      "maxEnergy": 3,
+      "minPlays": 1,
+      "maxPlays": 4,
+      "startingCost": 3,
+      "fastCards": 2,
+      "slowCards": 2,
+      "primaryElements": [
+        "Plant",
+        "Water"
+      ],
+      "affinityProfile": "Plant / Water / Moon",
+      "elements": {
+        "Sun": 1,
+        "Moon": 2,
+        "Fire": 0,
+        "Air": 0,
+        "Water": 2,
+        "Earth": 0,
+        "Plant": 4,
+        "Animal": 0
+      },
+      "setup": [
+        "Put 1 Presence on your starting board in the highest-numbered Wetland.",
+        "Put 1 Presence on your starting board in the Jungle without any Dahan."
+      ],
+      "miniature": {
+        "candidate": "MZ Vine Blight or Shambling Mound",
+        "queries": "“vine creature free stl”, “plant elemental miniature”",
+        "links": [
+          {
+            "label": "Myconid Sovereign",
+            "url": "https://www.printables.com/model/933002-dragons-of-stormwreck-isle-collection/files#preview.file.UMVar"
+          },
+          {
+            "label": "Vine Lord",
+            "url": "https://www.printables.com/model/1137652-vine-lord"
+          },
+          {
+            "label": "Shambling Mound",
+            "url": "https://www.printables.com/model/72484-shambling-mound-updated"
+          }
+        ]
+      },
+      "focalPosition": {
+        "panX": 1,
+        "panY": 20,
+        "scale": 1.5,
+        "fit": "contain"
+      }
+    },
+    {
+      "name": "Grinning Trickster Stirs Up Trouble",
+      "owned": true,
+      "expansion": "Jagged Earth",
+      "image": "assets/spirits/grinning_trickster_stirs_up_trouble.png?v=6",
+      "complexityScore": 2,
+      "complexity": "Moderate",
+      "minEnergy": 1,
+      "maxEnergy": 4,
+      "minPlays": 2,
+      "maxPlays": 5,
+      "startingCost": 2,
+      "fastCards": 1,
+      "slowCards": 3,
+      "primaryElements": [
+        "Moon",
+        "Fire",
+        "Air"
+      ],
+      "affinityProfile": "Moon / Fire / Air",
+      "elements": {
+        "Sun": 1,
+        "Moon": 3,
+        "Fire": 3,
+        "Air": 2,
+        "Water": 0,
+        "Earth": 0,
+        "Plant": 0,
+        "Animal": 2
+      },
+      "setup": [
+        "Put 1 Presence on your starting board in the highest-numbered land with Dahan.",
+        "Put 1 Presence on your starting board in land #4."
+      ],
+      "miniature": {
+        "candidate": "MZ Kitsune",
+        "queries": "“trickster spirit miniature”, “coyote spirit free stl”",
+        "links": [
+          {
+            "label": "Kitsune",
+            "url": "https://www.printables.com/model/832529-kitsune"
+          }
+        ]
+      },
+      "focalPosition": {
+        "panX": -1,
+        "panY": 19,
+        "scale": 1.4,
+        "fit": "contain"
+      }
+    },
+    {
+      "name": "Keeper of the Forbidden Wilds",
+      "owned": true,
+      "expansion": "Branch and Claw",
+      "image": "assets/spirits/keeper_of_the_forbidden_wilds.png?v=6",
+      "complexityScore": 2,
+      "complexity": "Moderate",
+      "minEnergy": 2,
+      "maxEnergy": 9,
+      "minPlays": 1,
+      "maxPlays": 4,
+      "startingCost": 7,
+      "fastCards": 1,
+      "slowCards": 3,
+      "primaryElements": [
+        "Sun",
+        "Plant"
+      ],
+      "affinityProfile": "Sun / Plant / Fire",
+      "elements": {
+        "Sun": 3,
+        "Moon": 1,
+        "Fire": 1,
+        "Air": 0,
+        "Water": 1,
+        "Earth": 2,
+        "Plant": 4,
+        "Animal": 0
+      },
+      "setup": [
+        "Put 1 Presence and 1 Wilds on your starting board in the highest-numbered Jungle."
+      ],
+      "miniature": {
+        "candidate": "MZ Treant",
+        "queries": "“forest guardian free stl”, “thorn treant”",
+        "links": [
+          {
+            "label": "Treant Updated",
+            "url": "https://www.printables.com/model/74772-treant-updated"
+          }
+        ]
+      },
+      "focalPosition": {
+        "panX": 0,
+        "panY": 17,
+        "scale": 1.35,
+        "fit": "contain"
+      }
+    },
+    {
+      "name": "Lure of the Deep Wilderness",
+      "owned": true,
+      "expansion": "Jagged Earth",
+      "image": "assets/spirits/lure_of_the_deep_wilderness.png?v=6",
+      "complexityScore": 2,
+      "complexity": "Moderate",
+      "minEnergy": 1,
+      "maxEnergy": 4,
+      "minPlays": 2,
+      "maxPlays": 5,
+      "startingCost": 4,
+      "fastCards": 1,
+      "slowCards": 3,
+      "primaryElements": [
+        "Moon",
+        "Air",
+        "Plant"
+      ],
+      "affinityProfile": "Moon / Air / Plant",
+      "elements": {
+        "Sun": 0,
+        "Moon": 3,
+        "Fire": 1,
+        "Air": 2,
+        "Water": 1,
+        "Earth": 1,
+        "Plant": 3,
+        "Animal": 2
+      },
+      "setup": [
+        "Put 2 Presence and 1 Beasts on your starting board in land #8.",
+        "Put 1 Badlands on your starting board in land #7."
+      ],
+      "miniature": {
+        "candidate": "MZ Will-o’-Wisp",
+        "queries": "“will o wisp free stl”, “forest lure spirit”",
+        "links": [
+          {
+            "label": "Will-o'-Wisp",
+            "url": "https://www.printables.com/model/14733-will-o-wisp#preview.FZE99"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Many Minds Move as One",
+      "owned": true,
+      "expansion": "Jagged Earth",
+      "image": "assets/spirits/many_minds_move_as_one.png?v=6",
+      "complexityScore": 2,
+      "complexity": "Moderate",
+      "minEnergy": 1,
+      "maxEnergy": 3,
+      "minPlays": 2,
+      "maxPlays": 6,
+      "startingCost": 1,
+      "fastCards": 4,
+      "slowCards": 1,
+      "primaryElements": [
+        "Air",
+        "Animal"
+      ],
+      "affinityProfile": "Air / Animal",
+      "elements": {
+        "Sun": 0,
+        "Moon": 1,
+        "Fire": 1,
+        "Air": 4,
+        "Water": 1,
+        "Earth": 0,
+        "Plant": 1,
+        "Animal": 5
+      },
+      "setup": [
+        "Put 1 Presence and 1 Beasts on your starting board in a land with Beasts."
+      ],
+      "miniature": {
+        "candidate": "MZ Swarm of Ravens or Swarm of Bats",
+        "queries": "“bird swarm miniature free”, “flock stl”",
+        "links": []
+      }
+    },
+    {
+      "name": "Sharp Fangs Behind the Leaves",
+      "owned": true,
+      "expansion": "Branch and Claw",
+      "image": "assets/spirits/sharp_fangs_behind_the_leaves.png?v=6",
+      "complexityScore": 2,
+      "complexity": "Moderate",
+      "minEnergy": 1,
+      "maxEnergy": 4,
+      "minPlays": 2,
+      "maxPlays": 5,
+      "startingCost": 3,
+      "fastCards": 1,
+      "slowCards": 3,
+      "primaryElements": [
+        "Animal",
+        "Plant"
+      ],
+      "affinityProfile": "Animal / Plant",
+      "elements": {
+        "Sun": 1,
+        "Moon": 2,
+        "Fire": 1,
+        "Air": 0,
+        "Water": 0,
+        "Earth": 0,
+        "Plant": 2,
+        "Animal": 4
+      },
+      "setup": [
+        "Put 1 Presence and 1 Beasts on your starting board in the highest-numbered Jungle.",
+        "Put 1 Presence in a land of your choice with Beasts anywhere on the island."
+      ],
+      "miniature": {
+        "candidate": "MZ Panther",
+        "queries": "“jungle cat miniature free”, “lurking predator stl”",
+        "links": [
+          {
+            "label": "Giant Panther",
+            "url": "https://www.printables.com/model/14807-female-ranger-and-her-giant-panther-mountt"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Shifting Memory of Ages",
+      "owned": true,
+      "expansion": "Jagged Earth",
+      "image": "assets/spirits/shifting_memory_of_ages.png?v=6",
+      "complexityScore": 2,
+      "complexity": "Moderate",
+      "minEnergy": 0,
+      "maxEnergy": 6,
+      "minPlays": 2,
+      "maxPlays": 4,
+      "startingCost": 1,
+      "fastCards": 3,
+      "slowCards": 1,
+      "primaryElements": [
+        "Earth",
+        "Moon",
+        "Air"
+      ],
+      "affinityProfile": "Earth / Moon / Air",
+      "elements": {
+        "Sun": 1,
+        "Moon": 3,
+        "Fire": 0,
+        "Air": 2,
+        "Water": 0,
+        "Earth": 3,
+        "Plant": 0,
+        "Animal": 0
+      },
+      "setup": [
+        "Put 2 Presence on your starting board in the highest-numbered land that is Sands or Mountain.",
+        "Prepare one Moon, one Air, and one Earth element token."
+      ],
+      "miniature": {
+        "candidate": "Ancient Stone Sage",
+        "queries": "“ancient stone sage stl”, “fossil golem miniature”",
+        "links": [
+          {
+            "label": "Earth Elemental 2025",
+            "url": "https://www.printables.com/model/1471211-earth-elemental-20255"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Stone's Unyielding Defiance",
+      "owned": true,
+      "expansion": "Jagged Earth",
+      "image": "assets/spirits/stones_unyielding_defiance.png?v=6",
+      "complexityScore": 2,
+      "complexity": "Moderate",
+      "minEnergy": 2,
+      "maxEnergy": 6,
+      "minPlays": 1,
+      "maxPlays": 4,
+      "startingCost": 5,
+      "fastCards": 1,
+      "slowCards": 3,
+      "primaryElements": [
+        "Earth"
+      ],
+      "affinityProfile": "Earth",
+      "elements": {
+        "Sun": 1,
+        "Moon": 0,
+        "Fire": 1,
+        "Air": 0,
+        "Water": 0,
+        "Earth": 4,
+        "Plant": 1,
+        "Animal": 1
+      },
+      "setup": [
+        "Put 1 Presence on your starting board in the lowest-numbered Mountain without Dahan.",
+        "Put 1 Presence on your starting board in an adjacent land that has Blight (if possible) or is Sands (if not)."
+      ],
+      "miniature": {
+        "candidate": "MZ Galeb Duhr or Stone Golem",
+        "queries": "“monolith golem free stl”, “standing stone guardian”",
+        "links": [
+          {
+            "label": "Earth Elemental Updated",
+            "url": "https://www.printables.com/model/21550-earth-elemental-updated"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Thunderspeaker",
+      "owned": true,
+      "expansion": "Core",
+      "image": "assets/spirits/thunderspeaker.png?v=6",
+      "complexityScore": 2,
+      "complexity": "Moderate",
+      "minEnergy": 1,
+      "maxEnergy": 4,
+      "minPlays": 2,
+      "maxPlays": 5,
+      "startingCost": 6,
+      "fastCards": 2,
+      "slowCards": 2,
+      "primaryElements": [
+        "Fire",
+        "Air",
+        "Sun"
+      ],
+      "affinityProfile": "Fire / Air / Sun",
+      "elements": {
+        "Sun": 3,
+        "Moon": 0,
+        "Fire": 2,
+        "Air": 4,
+        "Water": 0,
+        "Earth": 0,
+        "Plant": 0,
+        "Animal": 2
+      },
+      "setup": [
+        "Put 1 Presence on your starting board in each of the 2 lands with the most Dahan."
+      ],
+      "miniature": {
+        "candidate": "Storm Shaman",
+        "queries": "“storm shaman miniature free”, “thunder drum spirit stl”",
+        "links": [
+          {
+            "label": "Female Guard with Spear",
+            "url": "https://www.printables.com/model/1191270-dd-female-guard-with-speer"
+          },
+          {
+            "label": "Storm Shaman 3D Model",
+            "url": "https://cults3d.com/en/3d-model/game/storm-shaman-3d-print-model"
+          }
+        ]
+      },
+      "focalPosition": {
+        "panX": 0,
+        "panY": 16,
+        "scale": 1.35,
+        "fit": "contain"
+      }
+    },
+    {
+      "name": "Volcano Looming High",
+      "owned": true,
+      "expansion": "Jagged Earth",
+      "image": "assets/spirits/volcano_looming_high.png?v=6",
+      "complexityScore": 2,
+      "complexity": "Moderate",
+      "minEnergy": 1,
+      "maxEnergy": 5,
+      "minPlays": 1,
+      "maxPlays": 4,
+      "startingCost": 7,
+      "fastCards": 2,
+      "slowCards": 2,
+      "primaryElements": [
+        "Fire",
+        "Earth"
+      ],
+      "affinityProfile": "Fire / Earth",
+      "elements": {
+        "Sun": 0,
+        "Moon": 0,
+        "Fire": 4,
+        "Air": 2,
+        "Water": 0,
+        "Earth": 4,
+        "Plant": 0,
+        "Animal": 0
+      },
+      "setup": [
+        "Put 3 Presence on your starting board in a Mountain of your choice.",
+        "Push all Dahan from that land."
+      ],
+      "miniature": {
+        "candidate": "MZ Magma Mephit on volcano terrain",
+        "queries": "“volcano terrain free stl”, “volcano miniature printables”",
+        "links": []
+      },
+      "focalPosition": {
+        "panX": 1,
+        "panY": 20,
+        "scale": 1.45,
+        "fit": "contain"
+      }
+    },
+    {
+      "name": "Bringer of Dreams and Nightmares",
+      "owned": true,
+      "expansion": "Core",
+      "image": "assets/spirits/bringer_of_dreams_and_nightmares.png?v=6",
+      "complexityScore": 3,
+      "complexity": "High",
+      "minEnergy": 2,
+      "maxEnergy": 5,
+      "minPlays": 1,
+      "maxPlays": 4,
+      "startingCost": 4,
+      "fastCards": 3,
+      "slowCards": 1,
+      "primaryElements": [
+        "Moon",
+        "Air"
+      ],
+      "affinityProfile": "Moon / Air / Animal",
+      "elements": {
+        "Sun": 0,
+        "Moon": 4,
+        "Fire": 1,
+        "Air": 2,
+        "Water": 0,
+        "Earth": 1,
+        "Plant": 0,
+        "Animal": 2
+      },
+      "setup": [
+        "Put 2 Presence on your starting board in the highest-numbered Sands."
+      ],
+      "miniature": {
+        "candidate": "Nightmare Wraith",
+        "queries": "“dream spirit miniature”, “nightmare spirit free stl”",
+        "links": [
+          {
+            "label": "Grim Reaper / Death",
+            "url": "https://www.printables.com/model/1458421-grim-reaper-the-death"
+          }
+        ]
+      },
+      "focalPosition": {
+        "panX": -2,
+        "panY": 19,
+        "scale": 1.4,
+        "fit": "contain"
+      }
+    },
+    {
+      "name": "Downpour Drenches the World",
+      "owned": false,
+      "expansion": "Promo 2",
+      "image": "assets/spirits/downpour_drenches_the_world.png?v=6",
+      "complexityScore": 3,
+      "complexity": "High",
+      "minEnergy": 1,
+      "maxEnergy": 3,
+      "minPlays": 1,
+      "maxPlays": 3,
+      "startingCost": 3,
+      "fastCards": 3,
+      "slowCards": 1,
+      "primaryElements": [
+        "Water",
+        "Plant"
+      ],
+      "affinityProfile": "Water / Plant",
+      "elements": {
+        "Sun": 1,
+        "Moon": 0,
+        "Fire": 0,
+        "Air": 2,
+        "Water": 4,
+        "Earth": 1,
+        "Plant": 2,
+        "Animal": 0
+      },
+      "setup": [
+        "Put 1 Presence on your starting board in the lowest-numbered Wetlands."
+      ],
+      "miniature": {
+        "candidate": "MZ Water Weird",
+        "queries": "“rain elemental free stl”, “storm cloud spirit”",
+        "links": []
+      },
+      "focalPosition": {
+        "panX": 0,
+        "panY": 12,
+        "scale": 1.35,
+        "fit": "contain"
+      }
+    },
+    {
+      "name": "Heart of the Wildfire",
+      "owned": false,
+      "expansion": "Promo 1",
+      "image": "assets/spirits/heart_of_the_wildfire.png?v=6",
+      "complexityScore": 3,
+      "complexity": "High",
+      "minEnergy": 0,
+      "maxEnergy": 5,
+      "minPlays": 1,
+      "maxPlays": 5,
+      "startingCost": 4,
+      "fastCards": 2,
+      "slowCards": 2,
+      "primaryElements": [
+        "Fire",
+        "Plant"
+      ],
+      "affinityProfile": "Fire / Plant",
+      "elements": {
+        "Sun": 1,
+        "Moon": 0,
+        "Fire": 4,
+        "Air": 2,
+        "Water": 0,
+        "Earth": 0,
+        "Plant": 3,
+        "Animal": 0
+      },
+      "setup": [
+        "Put 3 Presence on your starting board in the highest-numbered Sands.",
+        "Put 2 Blight in the same land (Blight comes from the box)."
+      ],
+      "miniature": {
+        "candidate": "MZ Fire Elemental",
+        "queries": "“wildfire elemental free stl”, “flame spirit miniature”",
+        "links": [
+          {
+            "label": "Fire Elemental 2025",
+            "url": "https://www.printables.com/model/1493701-fire-elemental-2025"
+          },
+          {
+            "label": "Agnibarra",
+            "url": "https://www.printables.com/model/14814-agnibarra"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Ocean's Hungry Grasp",
+      "owned": true,
+      "expansion": "Core",
+      "image": "assets/spirits/oceans_hungry_grasp.png?v=6",
+      "complexityScore": 3,
+      "complexity": "High",
+      "minEnergy": 0,
+      "maxEnergy": 2,
+      "minPlays": 1,
+      "maxPlays": 5,
+      "startingCost": 2,
+      "fastCards": 2,
+      "slowCards": 2,
+      "primaryElements": [
+        "Water",
+        "Moon"
+      ],
+      "affinityProfile": "Water / Moon / Earth",
+      "elements": {
+        "Sun": 0,
+        "Moon": 3,
+        "Fire": 0,
+        "Air": 1,
+        "Water": 4,
+        "Earth": 2,
+        "Plant": 0,
+        "Animal": 0
+      },
+      "setup": [
+        "Put 1 Presence on your starting board in the Ocean.",
+        "Put 1 Presence on your starting board in a Coastal land of your choice."
+      ],
+      "miniature": {
+        "candidate": "MakerWorld kraken (small head) or MZ Kraken",
+        "queries": "“kraken tentacles free stl”, “wave elemental”",
+        "links": [
+          {
+            "label": "Water Elemental Updated",
+            "url": "https://www.printables.com/model/21548-water-elemental-updated"
+          },
+          {
+            "label": "Wave Spell Elemental",
+            "url": "https://www.printables.com/model/1141183-water-elementalwave-spell/collections"
+          }
+        ]
+      },
+      "focalPosition": {
+        "panX": 0,
+        "panY": 14,
+        "scale": 1.35,
+        "fit": "contain"
+      }
+    },
+    {
+      "name": "Serpent Slumbering Beneath the Island",
+      "owned": false,
+      "expansion": "Promo 1",
+      "image": "assets/spirits/serpent_slumbering_beneath_the_island.png?v=6",
+      "complexityScore": 3,
+      "complexity": "High",
+      "minEnergy": 1,
+      "maxEnergy": 12,
+      "minPlays": 1,
+      "maxPlays": 5,
+      "startingCost": 5,
+      "fastCards": 4,
+      "slowCards": 0,
+      "primaryElements": [
+        "Earth",
+        "Moon",
+        "Fire"
+      ],
+      "affinityProfile": "Earth / Moon / Fire",
+      "elements": {
+        "Sun": 0,
+        "Moon": 2,
+        "Fire": 3,
+        "Air": 0,
+        "Water": 3,
+        "Earth": 3,
+        "Plant": 0,
+        "Animal": 0
+      },
+      "setup": [
+        "Put 1 Presence on your starting board in land #5."
+      ],
+      "miniature": {
+        "candidate": "MZ Giant Constrictor Snake",
+        "queries": "“giant serpent emerging stl”, “earth serpent free”",
+        "links": [
+          {
+            "label": "Giant Constrictor Snake Coiled",
+            "url": "https://www.printables.com/model/650162-giant-constrictor-snake-coiled"
+          }
+        ]
+      },
+      "focalPosition": {
+        "panX": 0,
+        "panY": -18,
+        "scale": 1.4,
+        "fit": "contain"
+      }
+    },
+    {
+      "name": "Shroud of Silent Mist",
+      "owned": true,
+      "expansion": "Jagged Earth",
+      "image": "assets/spirits/shroud_of_silent_mist.png?v=6",
+      "complexityScore": 3,
+      "complexity": "High",
+      "minEnergy": 0,
+      "maxEnergy": 4,
+      "minPlays": 1,
+      "maxPlays": 5,
+      "startingCost": 4,
+      "fastCards": 2,
+      "slowCards": 2,
+      "primaryElements": [
+        "Moon",
+        "Air",
+        "Water"
+      ],
+      "affinityProfile": "Moon / Air / Water",
+      "elements": {
+        "Sun": 0,
+        "Moon": 3,
+        "Fire": 0,
+        "Air": 4,
+        "Water": 4,
+        "Earth": 0,
+        "Plant": 0,
+        "Animal": 0
+      },
+      "setup": [
+        "Put 1 Presence in the highest-numbered Wetland.",
+        "Put 1 Presence in the highest-numbered Mountain."
+      ],
+      "miniature": {
+        "candidate": "MZ Ghost",
+        "queries": "“mist spirit miniature”, “fog wraith free stl”",
+        "links": [
+          {
+            "label": "Invisible Stalker",
+            "url": "https://www.printables.com/model/63617-invisible-stalker-updated"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Vengenace as a Burning Plague",
+      "owned": true,
+      "expansion": "Jagged Earth",
+      "image": "assets/spirits/vengeance_as_a_burning_plague.png?v=6",
+      "complexityScore": 3,
+      "complexity": "High",
+      "minEnergy": 1,
+      "maxEnergy": 4,
+      "minPlays": 2,
+      "maxPlays": 5,
+      "startingCost": 5,
+      "fastCards": 2,
+      "slowCards": 2,
+      "primaryElements": [
+        "Fire",
+        "Animal"
+      ],
+      "affinityProfile": "Fire / Animal",
+      "elements": {
+        "Sun": 0,
+        "Moon": 1,
+        "Fire": 4,
+        "Air": 1,
+        "Water": 1,
+        "Earth": 1,
+        "Plant": 0,
+        "Animal": 3
+      },
+      "setup": [
+        "1 Presence starts the game already Destroyed.",
+        "Put 1 Presence on your starting board in a land with Blight.",
+        "Put 1 Presence and 1 Disease on your starting board in a Wetland without Dahan."
+      ],
+      "miniature": {
+        "candidate": "MZ Wraith",
+        "queries": "“plague spirit miniature free”, “smoldering wraith stl”",
+        "links": [
+          {
+            "label": "Bearded Dragon Miniature",
+            "url": "https://www.printables.com/model/1496906-bearded-dragon-lizard-dragon-and-bearded-dragon-lii"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Finder of Paths Unseen",
+      "owned": false,
+      "expansion": "Promo 2",
+      "image": "assets/spirits/finder_of_paths_unseen.png?v=6",
+      "complexityScore": 4,
+      "complexity": "Very High",
+      "minEnergy": 0,
+      "maxEnergy": 2,
+      "minPlays": 1,
+      "maxPlays": 4,
+      "startingCost": 4,
+      "fastCards": 3,
+      "slowCards": 3,
+      "primaryElements": [
+        "Air",
+        "Sun",
+        "Moon"
+      ],
+      "affinityProfile": "Air / Sun / Moon",
+      "elements": {
+        "Sun": 3,
+        "Moon": 3,
+        "Fire": 0,
+        "Air": 6,
+        "Water": 2,
+        "Earth": 2,
+        "Plant": 1,
+        "Animal": 1
+      },
+      "setup": [
+        "Put 1 Presence on your starting board in land #3.",
+        "Put 1 Presence on any board in land #1."
+      ],
+      "miniature": {
+        "candidate": "Couatl Spirit Guide",
+        "queries": "“spirit guide miniature free”, “wanderer spirit stl”",
+        "links": [
+          {
+            "label": "Couatl Updated",
+            "url": "https://www.printables.com/model/36363-couatl-updatedd"
+          }
+        ]
+      },
+      "focalPosition": {
+        "panX": 0,
+        "panY": 18,
+        "scale": 1.4,
+        "fit": "contain"
+      }
+    },
+    {
+      "name": "Fractured Days Split the Sky",
+      "owned": true,
+      "expansion": "Jagged Earth",
+      "image": "assets/spirits/fractured_days_split_the_sky.png?v=6",
+      "complexityScore": 4,
+      "complexity": "Very High",
+      "minEnergy": 1,
+      "maxEnergy": 3,
+      "minPlays": 1,
+      "maxPlays": 3,
+      "startingCost": 3,
+      "fastCards": 4,
+      "slowCards": 0,
+      "primaryElements": [
+        "Moon",
+        "Sun",
+        "Air"
+      ],
+      "affinityProfile": "Moon / Sun / Air",
+      "elements": {
+        "Sun": 4,
+        "Moon": 4,
+        "Fire": 0,
+        "Air": 3,
+        "Water": 0,
+        "Earth": 0,
+        "Plant": 0,
+        "Animal": 1
+      },
+      "setup": [
+        "Put 1 Presence on your starting board in the lowest-numbered land with 1 Dahan.",
+        "Put 2 Presence on your starting board in the highest-numbered land without Dahan.",
+        "Deal 4 Minor and Major Powers face-up as your initial Days That Never Were cards (in 1-2 player game, deal 6 of each)."
+      ],
+      "miniature": {
+        "candidate": "Time Elemental",
+        "queries": "“time elemental free stl”, “hourglass spirit miniature”",
+        "links": []
+      },
+      "focalPosition": {
+        "panX": 0,
+        "panY": 19,
+        "scale": 1.4,
+        "fit": "contain"
+      }
+    },
+    {
+      "name": "Starlight Seeks Its Form",
+      "owned": true,
+      "expansion": "Jagged Earth",
+      "image": "assets/spirits/starlight_seeks_its_form.png?v=6",
+      "complexityScore": 4,
+      "complexity": "Very High",
+      "minEnergy": 1,
+      "maxEnergy": 5,
+      "minPlays": 1,
+      "maxPlays": 5,
+      "startingCost": 2,
+      "fastCards": 1,
+      "slowCards": 3,
+      "primaryElements": [
+        "Moon",
+        "Any"
+      ],
+      "affinityProfile": "Adaptable (All)",
+      "elements": {
+        "Sun": 1,
+        "Moon": 2,
+        "Fire": 1,
+        "Air": 1,
+        "Water": 1,
+        "Earth": 1,
+        "Plant": 1,
+        "Animal": 1
+      },
+      "setup": [
+        "Put 1 Presence on your starting board in a land with Blight."
+      ],
+      "miniature": {
+        "candidate": "Crystal / Star Elemental",
+        "queries": "“crystal golem free stl”, “star elemental miniature”",
+        "links": []
+      },
+      "focalPosition": {
+        "panX": 2,
+        "panY": 18,
+        "scale": 1.4,
+        "fit": "contain"
+      }
+    },
+    {
+      "name": "Devouring Teeth Lurk Underfoot",
+      "owned": false,
+      "expansion": "Horizons",
+      "image": "assets/spirits/devouring_teeth_lurk_underfoot.png?v=6",
+      "complexityScore": 1,
+      "complexity": "Low",
+      "minEnergy": 1,
+      "maxEnergy": 4,
+      "minPlays": 1,
+      "maxPlays": 5,
+      "startingCost": 4,
+      "fastCards": 1,
+      "slowCards": 3,
+      "primaryElements": [
+        "Fire",
+        "Earth",
+        "Animal"
+      ],
+      "affinityProfile": "Fire / Earth / Animal",
+      "elements": {
+        "Sun": 0,
+        "Moon": 0,
+        "Fire": 3,
+        "Air": 0,
+        "Water": 0,
+        "Earth": 3,
+        "Plant": 0,
+        "Animal": 4
+      },
+      "setup": [
+        "Put 2 Presence on your starting board in the lowest-numbered Sands."
+      ],
+      "miniature": {
+        "candidate": "MZ Bulette or Purple Worm",
+        "queries": "“sandworm emerging free stl”, “burrowing maw miniature”",
+        "links": [
+          {
+            "label": "Dinosaur Collection (Deinonychus)",
+            "url": "https://www.printables.com/model/14947-dinosaur-collection/files#preview.file.53mh"
+          }
+        ]
+      },
+      "focalPosition": {
+        "panX": -2,
+        "panY": 16,
+        "scale": 1.35,
+        "fit": "contain"
+      }
+    },
+    {
+      "name": "Fathomless Mud of the Swamp",
+      "owned": false,
+      "expansion": "Horizons",
+      "image": "assets/spirits/fathomless_mud_of_the_swamp.png?v=6",
+      "complexityScore": 1,
+      "complexity": "Low",
+      "minEnergy": 1,
+      "maxEnergy": 5,
+      "minPlays": 1,
+      "maxPlays": 4,
+      "startingCost": 3,
+      "fastCards": 2,
+      "slowCards": 2,
+      "primaryElements": [
+        "Water",
+        "Earth",
+        "Moon"
+      ],
+      "affinityProfile": "Water / Earth / Moon",
+      "elements": {
+        "Sun": 0,
+        "Moon": 2,
+        "Fire": 0,
+        "Air": 0,
+        "Water": 3,
+        "Earth": 3,
+        "Plant": 2,
+        "Animal": 0
+      },
+      "setup": [
+        "Put 1 Presence on your starting board in each Wetland."
+      ],
+      "miniature": {
+        "candidate": "MZ Mud Mephit or Shambling Mound",
+        "queries": "“mud elemental free stl”, “swamp creature miniature”",
+        "links": [
+          {
+            "label": "Zombie Cat",
+            "url": "https://www.printables.com/model/21986-zombie-catt"
+          }
+        ]
+      },
+      "focalPosition": {
+        "panX": 2,
+        "panY": 14,
+        "scale": 1.35,
+        "fit": "contain"
+      }
+    },
+    {
+      "name": "Sun-Bright Whirlwind",
+      "owned": false,
+      "expansion": "Horizons",
+      "image": "assets/spirits/sun_bright_whirlwind.png?v=6",
+      "complexityScore": 1,
+      "complexity": "Low",
+      "minEnergy": 1,
+      "maxEnergy": 4,
+      "minPlays": 2,
+      "maxPlays": 5,
+      "startingCost": 3,
+      "fastCards": 3,
+      "slowCards": 1,
+      "primaryElements": [
+        "Sun",
+        "Air"
+      ],
+      "affinityProfile": "Sun / Air",
+      "elements": {
+        "Sun": 4,
+        "Moon": 0,
+        "Fire": 1,
+        "Air": 4,
+        "Water": 0,
+        "Earth": 0,
+        "Plant": 1,
+        "Animal": 0
+      },
+      "setup": [
+        "Put 2 Presence on your starting board in the highest-numbered Sands."
+      ],
+      "miniature": {
+        "candidate": "MZ Air Elemental",
+        "queries": "“tornado elemental free stl”, “whirlwind spirit”",
+        "links": []
+      }
+    },
+    {
+      "name": "Eyes Watch from the Trees",
+      "owned": false,
+      "expansion": "Horizons",
+      "image": "assets/spirits/eyes_watch_from_the_trees.png?v=6",
+      "complexityScore": 1,
+      "complexity": "Low",
+      "minEnergy": 1,
+      "maxEnergy": 4,
+      "minPlays": 2,
+      "maxPlays": 5,
+      "startingCost": 3,
+      "fastCards": 3,
+      "slowCards": 1,
+      "primaryElements": [
+        "Moon",
+        "Plant",
+        "Animal"
+      ],
+      "affinityProfile": "Moon / Plant / Animal",
+      "elements": {
+        "Sun": 0,
+        "Moon": 3,
+        "Fire": 1,
+        "Air": 1,
+        "Water": 0,
+        "Earth": 1,
+        "Plant": 4,
+        "Animal": 2
+      },
+      "setup": [
+        "Put 2 Presence on your starting board in the highest-numbered Jungle."
+      ],
+      "miniature": {
+        "candidate": "MZ Treant (variant)",
+        "queries": "“watcher tree stl”, “tree with eyes miniature free”",
+        "links": [
+          {
+            "label": "Weeping Treant",
+            "url": "https://www.printables.com/model/1102175-weeping-treant"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Rising Heat of Stone and Sand",
+      "owned": false,
+      "expansion": "Horizons",
+      "image": "assets/spirits/rising_heat_of_stone_and_sand.png?v=6",
+      "complexityScore": 1,
+      "complexity": "Low",
+      "minEnergy": 1,
+      "maxEnergy": 5,
+      "minPlays": 1,
+      "maxPlays": 4,
+      "startingCost": 3,
+      "fastCards": 1,
+      "slowCards": 3,
+      "primaryElements": [
+        "Fire",
+        "Earth",
+        "Sun"
+      ],
+      "affinityProfile": "Fire / Earth / Sun",
+      "elements": {
+        "Sun": 3,
+        "Moon": 0,
+        "Fire": 4,
+        "Air": 1,
+        "Water": 0,
+        "Earth": 3,
+        "Plant": 0,
+        "Animal": 0
+      },
+      "setup": [
+        "Put 2 Presence on your starting board in the highest-numbered Mountain or Sands."
+      ],
+      "miniature": {
+        "candidate": "MZ Dust Mephit",
+        "queries": "“sand elemental free stl”, “desert spirit miniature”",
+        "links": []
+      }
+    },
+    {
+      "name": "Covets Gleaming Shards of Earth",
+      "owned": true,
+      "expansion": "Apocrypha",
+      "image": "assets/spirits/covets_gleaming_shards_of_earth.jpg?v=2",
+      "complexityScore": 4,
+      "complexity": "Very High",
+      "minEnergy": 1,
+      "maxEnergy": 5,
+      "minPlays": 1,
+      "maxPlays": 4,
+      "startingCost": 4,
+      "fastCards": 2,
+      "slowCards": 2,
+      "primaryElements": [
+        "Earth"
+      ],
+      "affinityProfile": "Earth",
+      "elements": {
+        "Sun": 3,
+        "Moon": 1,
+        "Fire": 3,
+        "Air": 2,
+        "Water": 0,
+        "Earth": 4,
+        "Plant": 0,
+        "Animal": 3
+      },
+      "setup": [
+        "Put 1 Presence on your starting board in a Mountain or Sands."
+      ],
+      "miniature": {
+        "candidate": "Custom Dragon Hoard Miniature",
+        "queries": "“covets gleaming shards dragon stl”, “earth dragon hoard miniature”",
+        "links": []
+      },
+      "focalPosition": {
+        "panX": 20,
+        "panY": 0,
+        "scale": 1.6,
+        "fit": "contain"
+      }
+    },
+    {
+      "name": "Spreading Rot Renews the Earth",
+      "owned": true,
+      "expansion": "Apocrypha",
+      "image": "assets/spirits/spreading_rot_renews_the_earth.jpg?v=2",
+      "complexityScore": 3,
+      "complexity": "High",
+      "minEnergy": 2,
+      "maxEnergy": 4,
+      "minPlays": 1,
+      "maxPlays": 5,
+      "startingCost": 3,
+      "fastCards": 2,
+      "slowCards": 2,
+      "primaryElements": [
+        "Moon",
+        "Water",
+        "Plant"
+      ],
+      "affinityProfile": "Moon / Water / Plant",
+      "elements": {
+        "Sun": 0,
+        "Moon": 3,
+        "Fire": 0,
+        "Air": 0,
+        "Water": 3,
+        "Earth": 2,
+        "Plant": 4,
+        "Animal": 1
+      },
+      "setup": [
+        "Put 1 Presence on your starting board in a Jungle or Wetland."
+      ],
+      "miniature": {
+        "candidate": "Fungal Rot Spirit",
+        "queries": "“myconid rot spirit stl”, “fungal elemental miniature”",
+        "links": []
+      },
+      "focalPosition": {
+        "panX": 31,
+        "panY": 0,
+        "scale": 1.9,
+        "fit": "contain"
+      }
+    },
+    {
+      "name": "Ember-Eyed Behemoth",
+      "owned": true,
+      "expansion": "Nature Incarnate",
+      "image": "assets/spirits/ember_eyed_behemoth.jpg?v=2",
+      "complexityScore": 2,
+      "complexity": "Moderate",
+      "minEnergy": 0,
+      "maxEnergy": 5,
+      "minPlays": 1,
+      "maxPlays": 4,
+      "startingCost": 4,
+      "fastCards": 1,
+      "slowCards": 3,
+      "primaryElements": [
+        "Fire",
+        "Earth",
+        "Plant"
+      ],
+      "affinityProfile": "Fire / Earth / Plant",
+      "elements": {
+        "Sun": 0,
+        "Moon": 0,
+        "Fire": 4,
+        "Air": 0,
+        "Water": 0,
+        "Earth": 3,
+        "Plant": 2,
+        "Animal": 2
+      },
+      "setup": [
+        "Put 1 Presence and your Behemoth Incarna in the highest-numbered Jungle."
+      ],
+      "miniature": {
+        "candidate": "MZ Magmin or Fire Elemental",
+        "queries": "“lava golem free stl”, “magma behemoth miniature”",
+        "links": [
+          {
+            "label": "Medium Tarrasque",
+            "url": "https://www.printables.com/model/1462678-medium-tarrasque"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Hearth-Vigil",
+      "owned": true,
+      "expansion": "Nature Incarnate",
+      "image": "assets/spirits/hearth_vigil.jpg?v=2",
+      "complexityScore": 2,
+      "complexity": "Moderate",
+      "minEnergy": 0,
+      "maxEnergy": 5,
+      "minPlays": 1,
+      "maxPlays": 4,
+      "startingCost": 4,
+      "fastCards": 3,
+      "slowCards": 1,
+      "primaryElements": [
+        "Sun",
+        "Earth",
+        "Animal"
+      ],
+      "affinityProfile": "Sun / Earth / Animal",
+      "elements": {
+        "Sun": 4,
+        "Moon": 0,
+        "Fire": 3,
+        "Air": 1,
+        "Water": 0,
+        "Earth": 2,
+        "Plant": 0,
+        "Animal": 3
+      },
+      "setup": [
+        "Put 2 Presence on your starting board in the land with the most Dahan."
+      ],
+      "miniature": {
+        "candidate": "Hearth Guardian",
+        "queries": "“hearth spirit miniature free”, “household guardian spirit stl”",
+        "links": []
+      },
+      "focalPosition": {
+        "panX": 0,
+        "panY": 15,
+        "scale": 1.35,
+        "fit": "contain"
+      }
+    },
+    {
+      "name": "Towering Roots of the Jungle",
+      "owned": true,
+      "expansion": "Nature Incarnate",
+      "image": "assets/spirits/towering_roots_of_the_jungle.jpg?v=2",
+      "complexityScore": 2,
+      "complexity": "Moderate",
+      "minEnergy": 1,
+      "maxEnergy": 6,
+      "minPlays": 1,
+      "maxPlays": 4,
+      "startingCost": 4,
+      "fastCards": 2,
+      "slowCards": 2,
+      "primaryElements": [
+        "Sun",
+        "Earth",
+        "Plant",
+        "Moon"
+      ],
+      "affinityProfile": "Sun / Earth / Plant / Moon",
+      "elements": {
+        "Sun": 3,
+        "Moon": 0,
+        "Fire": 0,
+        "Air": 1,
+        "Water": 1,
+        "Earth": 3,
+        "Plant": 4,
+        "Animal": 0
+      },
+      "setup": [
+        "Put 1 Presence and your Incarna on your starting board in a Jungle."
+      ],
+      "miniature": {
+        "candidate": "MZ Treant",
+        "queries": "“root giant stl”, “jungle treant free”",
+        "links": []
+      }
+    },
+    {
+      "name": "Breath of Darkness Down Your Spine",
+      "owned": true,
+      "expansion": "Nature Incarnate",
+      "image": "assets/spirits/breath_of_darkness_down_your_spine.jpg?v=2",
+      "complexityScore": 3,
+      "complexity": "High",
+      "minEnergy": 1,
+      "maxEnergy": 5,
+      "minPlays": 2,
+      "maxPlays": 4,
+      "startingCost": 3,
+      "fastCards": 3,
+      "slowCards": 1,
+      "primaryElements": [
+        "Moon",
+        "Air",
+        "Animal"
+      ],
+      "affinityProfile": "Moon / Air / Animal",
+      "elements": {
+        "Sun": 0,
+        "Moon": 4,
+        "Fire": 0,
+        "Air": 4,
+        "Water": 1,
+        "Earth": 0,
+        "Plant": 0,
+        "Animal": 3
+      },
+      "setup": [
+        "Put 1 Presence and your Incarna on your starting board in land #8."
+      ],
+      "miniature": {
+        "candidate": "MZ Shadow Demon",
+        "queries": "“darkness spirit free stl”, “creeping shadow miniature”",
+        "links": []
+      }
+    },
+    {
+      "name": "Relentless Gaze of the Sun",
+      "owned": true,
+      "expansion": "Nature Incarnate",
+      "image": "assets/spirits/relentless_gaze_of_the_sun.jpg?v=2",
+      "complexityScore": 3,
+      "complexity": "High",
+      "minEnergy": 1,
+      "maxEnergy": 5,
+      "minPlays": 1,
+      "maxPlays": 4,
+      "startingCost": 4,
+      "fastCards": 2,
+      "slowCards": 2,
+      "primaryElements": [
+        "Sun",
+        "Fire"
+      ],
+      "affinityProfile": "Sun / Fire",
+      "elements": {
+        "Sun": 5,
+        "Moon": 0,
+        "Fire": 4,
+        "Air": 1,
+        "Water": 0,
+        "Earth": 1,
+        "Plant": 1,
+        "Animal": 0
+      },
+      "setup": [
+        "Put 2 Presence on your starting board in the highest-numbered Sands."
+      ],
+      "miniature": {
+        "candidate": "Solar Elemental",
+        "queries": "“sun spirit miniature free”, “solar elemental stl”",
+        "links": []
+      }
+    },
+    {
+      "name": "Wandering Voice Keens Delirium",
+      "owned": true,
+      "expansion": "Nature Incarnate",
+      "image": "assets/spirits/wandering_voice_keens_delirium.jpg?v=2",
+      "complexityScore": 3,
+      "complexity": "High",
+      "minEnergy": 0,
+      "maxEnergy": 4,
+      "minPlays": 1,
+      "maxPlays": 4,
+      "startingCost": 3,
+      "fastCards": 2,
+      "slowCards": 2,
+      "primaryElements": [
+        "Air",
+        "Moon"
+      ],
+      "affinityProfile": "Air / Moon",
+      "elements": {
+        "Sun": 3,
+        "Moon": 3,
+        "Fire": 1,
+        "Air": 4,
+        "Water": 0,
+        "Earth": 0,
+        "Plant": 0,
+        "Animal": 0
+      },
+      "setup": [
+        "Put 1 Presence and your Incarna in land #3."
+      ],
+      "miniature": {
+        "candidate": "MZ Banshee",
+        "queries": "“wailing spirit free stl”, “banshee miniature”",
+        "links": []
+      }
+    },
+    {
+      "name": "Wounded Waters Bleeding",
+      "owned": true,
+      "expansion": "Nature Incarnate",
+      "image": "assets/spirits/wounded_waters_bleeding.jpg?v=2",
+      "complexityScore": 3,
+      "complexity": "High",
+      "minEnergy": 0,
+      "maxEnergy": 5,
+      "minPlays": 1,
+      "maxPlays": 4,
+      "startingCost": 2,
+      "fastCards": 2,
+      "slowCards": 2,
+      "primaryElements": [
+        "Water",
+        "Animal"
+      ],
+      "affinityProfile": "Water / Animal",
+      "elements": {
+        "Sun": 0,
+        "Moon": 1,
+        "Fire": 1,
+        "Air": 0,
+        "Water": 4,
+        "Earth": 0,
+        "Plant": 3,
+        "Animal": 4
+      },
+      "setup": [
+        "Put 2 Presence and 1 Blight in the highest-numbered Wetland."
+      ],
+      "miniature": {
+        "candidate": "MZ Water Weird",
+        "queries": "“corrupted water elemental stl”, “blood water spirit”",
+        "links": []
+      }
+    },
+    {
+      "name": "Dances Up Earthquakes",
+      "owned": true,
+      "expansion": "Nature Incarnate",
+      "image": "assets/spirits/dances_up_earthquakes.jpg?v=2",
+      "complexityScore": 4,
+      "complexity": "Very High",
+      "minEnergy": 1,
+      "maxEnergy": 4,
+      "minPlays": 2,
+      "maxPlays": 4,
+      "startingCost": 5,
+      "fastCards": 3,
+      "slowCards": 3,
+      "primaryElements": [
+        "Earth",
+        "Fire",
+        "Moon"
+      ],
+      "affinityProfile": "Earth / Fire / Moon",
+      "elements": {
+        "Sun": 1,
+        "Moon": 3,
+        "Fire": 3,
+        "Air": 1,
+        "Water": 0,
+        "Earth": 5,
+        "Plant": 0,
+        "Animal": 0
+      },
+      "setup": [
+        "Put 1 Presence in the highest-numbered Mountain and 1 Presence in land #1."
+      ],
+      "miniature": {
+        "candidate": "Earth Dancer",
+        "queries": "“earth dancer miniature”, “dancing elemental free stl”",
+        "links": []
+      }
+    }
+  ],
+  "aspects": [
+    {
+      "name": "Immense",
+      "spirit": "Lightning's Swift Strike",
+      "complexityChange": "▲",
+      "expansion": "Promo 2",
+      "description": "Doubles Energy gain from tracks; Power Cards cost +2 Energy (or +1 for Minor) but grant extra elements, pivoting Lightning into a Major Power titan.",
+      "image": "assets/aspects/lightning_immense.jpg?v=5",
+      "focalPosition": {
+        "panX": 29,
+        "panY": 3,
+        "scale": 1.6,
+        "fit": "contain"
+      }
+    },
+    {
+      "name": "Pandemonium",
+      "spirit": "Lightning's Swift Strike",
+      "complexityChange": "▲",
+      "expansion": "Jagged Earth",
+      "description": "Replaces Thundering Destruction with Massive Fear generation and Strife instead of direct Town/City destruction.",
+      "image": null
+    },
+    {
+      "name": "Wind",
+      "spirit": "Lightning's Swift Strike",
+      "complexityChange": "▲",
+      "expansion": "Jagged Earth",
+      "description": "Trades Raging Storm for high-mobility Range & Fast-speed support, pushing Invaders and Dahan across the island.",
+      "image": "assets/aspects/lightning_wind.jpg?v=5",
+      "focalPosition": {
+        "panX": 25,
+        "panY": 0,
+        "scale": 1.53,
+        "fit": "contain"
+      }
+    },
+    {
+      "name": "Sparking",
+      "spirit": "Lightning's Swift Strike",
+      "complexityChange": "▲",
+      "expansion": "Nature Incarnate",
+      "description": "Replaces Raging Storm & Shatter Homesteads with Sparking Impulse, gifting Power Cards and Fast-phase bursts to allies.",
+      "image": null
+    },
+    {
+      "name": "Sunshine",
+      "spirit": "River Surges in Sunlight",
+      "complexityChange": "▲",
+      "expansion": "Jagged Earth",
+      "image": "assets/aspects/river_sunshine.jpg?v=5",
+      "description": "Replaces Boon of Vigor with a Sun-charged innate that grants massive Energy and Reclaim support to Spirits.",
+      "focalPosition": {
+        "panX": 31,
+        "panY": 0,
+        "scale": 1.76,
+        "fit": "contain"
+      }
+    },
+    {
+      "name": "Travel",
+      "spirit": "River Surges in Sunlight",
+      "complexityChange": "▲",
+      "expansion": "Promo 2",
+      "image": "assets/aspects/river_travel.jpg?v=5",
+      "description": "River's Presence forms Sacred Site bridges that carry Dahan along with moved Presence and grant Defend.",
+      "focalPosition": {
+        "panX": 28,
+        "panY": 1,
+        "scale": 1.56,
+        "fit": "contain"
+      }
+    },
+    {
+      "name": "Haven",
+      "spirit": "River Surges in Sunlight",
+      "complexityChange": "▲",
+      "expansion": "Nature Incarnate",
+      "image": "assets/aspects/river_haven.jpg?v=5",
+      "description": "Trades offensive washout for protective Sacred Site sanctuaries that Defend lands and safeguard Dahan.",
+      "focalPosition": {
+        "panX": 24,
+        "panY": 2,
+        "scale": 1.54,
+        "fit": "contain"
+      }
+    },
+    {
+      "name": "Reach",
+      "spirit": "Shadows Flicker like Flame",
+      "complexityChange": "▼",
+      "expansion": "Jagged Earth",
+      "description": "Allows Shadows to ignore Range once per turn without paying Energy, greatly smoothing early board coverage.",
+      "image": "assets/aspects/shadows_reach.jpg?v=5",
+      "focalPosition": {
+        "panX": -22,
+        "panY": 0,
+        "scale": 1.5,
+        "fit": "contain"
+      }
+    },
+    {
+      "name": "Amorphous",
+      "spirit": "Shadows Flicker like Flame",
+      "complexityChange": "▲",
+      "expansion": "Promo 2",
+      "description": "Presence becomes fluid—moving freely whenever Shadows uses powers or gathers/pushes Explorers.",
+      "image": "assets/aspects/shadows_amorphous.jpg?v=5",
+      "focalPosition": {
+        "panX": 29,
+        "panY": -3,
+        "scale": 1.6,
+        "fit": "contain"
+      }
+    },
+    {
+      "name": "Foreboding",
+      "spirit": "Shadows Flicker like Flame",
+      "complexityChange": "▲",
+      "expansion": "Promo 2",
+      "description": "Turns Fear generation into extra Explorer/Town control Pushes across lands with Shadows' Presence.",
+      "image": "assets/aspects/shadows_foreboding.jpg?v=5",
+      "focalPosition": {
+        "panX": 28,
+        "panY": 2,
+        "scale": 1.6,
+        "fit": "contain"
+      }
+    },
+    {
+      "name": "Madness",
+      "spirit": "Shadows Flicker like Flame",
+      "complexityChange": "▲",
+      "expansion": "Jagged Earth",
+      "description": "Inflicts Strife when placing Presence, turning Shadows into a close-range Dahan & Strife brawler.",
+      "image": null
+    },
+    {
+      "name": "Dark Fire",
+      "spirit": "Shadows Flicker like Flame",
+      "complexityChange": "▲",
+      "expansion": "Nature Incarnate",
+      "description": "Grants both Moon and Fire affinity simultaneously and empowers Shadows with extra card-play / fire scaling.",
+      "image": "assets/aspects/shadows_dark_fire.jpg?v=5",
+      "focalPosition": {
+        "panX": 27,
+        "panY": 2,
+        "scale": 1.6,
+        "fit": "contain"
+      }
+    },
+    {
+      "name": "Resilience",
+      "spirit": "Vital Strength of the Earth",
+      "complexityChange": "=",
+      "expansion": "Jagged Earth",
+      "description": "Replaces Earth's innate Defend 3 at Sacred Sites with Dahan health fortification (+5 Health) against Ravages.",
+      "image": "assets/aspects/earth_resilience.jpg?v=5",
+      "focalPosition": {
+        "panX": 28,
+        "panY": 1,
+        "scale": 1.8,
+        "fit": "contain"
+      }
+    },
+    {
+      "name": "Might",
+      "spirit": "Vital Strength of the Earth",
+      "complexityChange": "▲",
+      "expansion": "Promo 2",
+      "image": "assets/aspects/earth_might.jpg?v=5",
+      "description": "Trades passive Sacred Site defense for Earth Moves With Vigor and Might—amplifying Power Card damage and card draw.",
+      "focalPosition": {
+        "panX": 29,
+        "panY": 2,
+        "scale": 1.6,
+        "fit": "contain"
+      }
+    },
+    {
+      "name": "Nourishing",
+      "spirit": "Vital Strength of the Earth",
+      "complexityChange": "▲",
+      "expansion": "Nature Incarnate",
+      "image": null,
+      "description": "Channels Vitality tokens and Dahan growth, healing Blight and fortifying the island's living ecosystems."
+    },
+    {
+      "name": "Regrowth",
+      "spirit": "A Spread of Rampant Green",
+      "complexityChange": "▲",
+      "expansion": "Nature Incarnate",
+      "description": "Focuses on reclaiming destroyed Presence from the island and regrowing lush defenses after Blight strikes.",
+      "image": null
+    },
+    {
+      "name": "Tangles",
+      "spirit": "A Spread of Rampant Green",
+      "complexityChange": "=",
+      "expansion": "Nature Incarnate",
+      "aliases": [
+        "Tangle"
+      ],
+      "description": "Weaves Wilds tokens and tangling undergrowth to halt Invader exploration and choke out inland expansion.",
+      "image": null
+    },
+    {
+      "name": "Enticing",
+      "spirit": "Bringer of Dreams and Nightmares",
+      "complexityChange": "▲",
+      "expansion": "Nature Incarnate",
+      "description": "Beguiles Invaders toward Sacred Sites with irresistible dream illusions, concentrating them for mass nightmares.",
+      "image": null
+    },
+    {
+      "name": "Violence",
+      "spirit": "Bringer of Dreams and Nightmares",
+      "complexityChange": "▲",
+      "expansion": "Nature Incarnate",
+      "description": "Unleashes furious night terrors that grant aggressive damage boosts and accelerate terror victories.",
+      "image": "assets/aspects/bringer_violence.jpg?v=5",
+      "focalPosition": {
+        "panX": 25,
+        "panY": 2,
+        "scale": 1.6,
+        "fit": "contain"
+      }
+    },
+    {
+      "name": "Transforming",
+      "spirit": "Heart of the Wildfire",
+      "complexityChange": "▲",
+      "expansion": "Nature Incarnate",
+      "description": "Transmutes Invaders and Blight into Beasts, Badlands, and new life rather than pure scorched-earth destruction.",
+      "image": null
+    },
+    {
+      "name": "Spreading Hostility",
+      "spirit": "Keeper of the Forbidden Wilds",
+      "complexityChange": "▲",
+      "expansion": "Nature Incarnate",
+      "image": "assets/aspects/keeper_spreading_hostility.jpg?v=5",
+      "description": "Spreads Badlands and aggressive Wilds at the cost of slower Energy scaling, punishing Invaders across multiple lands.",
+      "focalPosition": {
+        "panX": 28,
+        "panY": 2,
+        "scale": 1.6,
+        "fit": "contain"
+      }
+    },
+    {
+      "name": "Lair",
+      "spirit": "Lure of the Deep Wilderness",
+      "complexityChange": "▲",
+      "expansion": "Nature Incarnate",
+      "description": "Establishes an Incarna Lair that continually draws Explorers and Towns into a central wilderness kill-zone.",
+      "image": null
+    },
+    {
+      "name": "Deeps",
+      "spirit": "Ocean's Hungry Grasp",
+      "complexityChange": "▲",
+      "expansion": "Nature Incarnate",
+      "description": "Sinks coastal lands permanently into the Ocean itself, expanding Ocean's reach further inland as the game progresses.",
+      "image": null
+    },
+    {
+      "name": "Locus",
+      "spirit": "Serpent Slumbering Beneath the Island",
+      "complexityChange": "▲",
+      "expansion": "Nature Incarnate",
+      "description": "Replaces Deep Slumber with an Incarna Locus that radiates elemental support and lets allies channel powers through Serpent.",
+      "image": null
+    },
+    {
+      "name": "Encircle",
+      "spirit": "Sharp Fangs Behind the Leaves",
+      "complexityChange": "=",
+      "expansion": "Nature Incarnate",
+      "description": "Rewards surrounding Invader lands with Beasts in adjacent territories to ambush and isolate prey.",
+      "image": null
+    },
+    {
+      "name": "Unconstrained",
+      "spirit": "Sharp Fangs Behind the Leaves",
+      "complexityChange": "▼",
+      "expansion": "Nature Incarnate",
+      "image": "assets/aspects/fangs_unconstrained.jpg?v=5",
+      "description": "Lifts Blight restrictions on Sharp Fangs' Presence and Beasts, allowing relentless predator strikes even in blighted lands.",
+      "focalPosition": {
+        "panX": 22,
+        "panY": -1,
+        "scale": 1.6,
+        "fit": "contain"
+      }
+    },
+    {
+      "name": "Intensify",
+      "spirit": "Shifting Memory of Ages",
+      "complexityChange": "▲",
+      "expansion": "Nature Incarnate",
+      "description": "Spends prepared Element tokens to directly amplify Power Card damage, Defend, and Fear values.",
+      "image": null
+    },
+    {
+      "name": "Mentor",
+      "spirit": "Shifting Memory of Ages",
+      "complexityChange": "▲",
+      "expansion": "Nature Incarnate",
+      "description": "Drafts and teaches Power Cards and prepared Element tokens to fellow Spirits, acting as the ultimate arch-tutor.",
+      "image": null
+    },
+    {
+      "name": "Stranded",
+      "spirit": "Shroud of Silent Mist",
+      "complexityChange": "▼",
+      "expansion": "Nature Incarnate",
+      "description": "Isolates Invaders in mist-shrouded lands, smoothing Shroud's early economy and controlling Explorer movement.",
+      "image": null
+    },
+    {
+      "name": "Tactician",
+      "spirit": "Thunderspeaker",
+      "complexityChange": "=",
+      "expansion": "Nature Incarnate",
+      "description": "Grants precise Dahan battlefield repositioning and tactical skirmish strikes each turn.",
+      "image": null
+    },
+    {
+      "name": "Warrior",
+      "spirit": "Thunderspeaker",
+      "complexityChange": "▲",
+      "expansion": "Nature Incarnate",
+      "description": "Leads the Dahan with an Incarna Warrior avatar that deals direct combat damage alongside Dahan armies.",
+      "image": null
+    }
+  ],
+  "adversaries": [
+    {
+      "name": "The Habsburg Monarchy",
+      "owned": true,
+      "expansion": "Jagged Earth",
+      "flag": "assets/adversaries/habsburg_monarchy.svg",
+      "localIcon": "assets/adversaries/habsburg_monarchy.svg",
+      "levels": [
+        2,
+        3,
+        5,
+        6,
+        8,
+        9,
+        10
+      ],
+      "lossCondition": "More Blight on a board than twice the number of Towns; or Tracked Town count on Wave 4+",
+      "strategyNotes": "Prioritize isolating inland lands before Build to stop Town migration; Diseases and Strife help survive heavy Ravages."
+    },
+    {
+      "name": "The Kingdom of Brandenburg-Prussia",
+      "owned": true,
+      "expansion": "Core",
+      "flag": "assets/adversaries/brandenburg_prussia.svg",
+      "localIcon": "assets/adversaries/brandenburg_prussia.svg",
+      "levels": [
+        1,
+        2,
+        4,
+        6,
+        7,
+        9,
+        10
+      ],
+      "lossCondition": "Standard (Early Stage III Invader Card acceleration)",
+      "strategyNotes": "Fast tempo threat! Prioritize early card plays, Fast phase Explorer control, and rapid Fear generation before Stage III hits."
+    },
+    {
+      "name": "The Kingdom of England",
+      "owned": true,
+      "expansion": "Core",
+      "flag": "assets/adversaries/england.svg",
+      "localIcon": "assets/adversaries/england.svg",
+      "levels": [
+        1,
+        3,
+        4,
+        6,
+        7,
+        9,
+        11
+      ],
+      "lossCondition": "7 or more Towns and/or Cities in a single land (Proud & Mighty Capital)",
+      "strategyNotes": "Invaders build even without adjacent explorers if 2+ Invaders are present. Heavy damage, Town destruction, and Fear racing are key."
+    },
+    {
+      "name": "The Kingdom of France",
+      "owned": true,
+      "expansion": "Branch and Claw",
+      "flag": "assets/adversaries/france.svg",
+      "localIcon": "assets/adversaries/france.svg",
+      "levels": [
+        2,
+        3,
+        5,
+        7,
+        8,
+        9,
+        10
+      ],
+      "lossCondition": "Town supply pool (7 per board) runs out when placing a Town",
+      "strategyNotes": "Explorer control and Town destruction are critical to keep the Plantation Colony Town pool from depleting."
+    },
+    {
+      "name": "The Kingdom of Scotland",
+      "owned": false,
+      "expansion": "Promo 2",
+      "flag": "assets/adversaries/scotland.svg",
+      "localIcon": "assets/adversaries/scotland.svg",
+      "levels": [
+        1,
+        3,
+        4,
+        6,
+        7,
+        8,
+        10
+      ],
+      "lossCondition": "Number of Coastal lands with Cities exceeds 2 × number of boards",
+      "strategyNotes": "Guard Coastal lands relentlessly; prevent Coastal builds and watch out for Stage II Coastal escalation."
+    },
+    {
+      "name": "The Kingdom of Sweden",
+      "owned": true,
+      "expansion": "Core",
+      "flag": "assets/adversaries/sweden.svg",
+      "localIcon": "assets/adversaries/sweden.svg",
+      "levels": [
+        1,
+        2,
+        3,
+        5,
+        6,
+        7,
+        8
+      ],
+      "lossCondition": "Standard (Heavy Mining adds extra Blight on 6+ Ravage damage)",
+      "strategyNotes": "Towns deal 3 and Cities deal 5 damage! Defend powers, Strife, and Explorer prevention stop devastating Blight cascades."
+    },
+    {
+      "name": "The Tsardom of Russia",
+      "owned": true,
+      "expansion": "Jagged Earth",
+      "flag": "assets/adversaries/tsardom_of_russia.svg",
+      "localIcon": "assets/adversaries/tsardom_of_russia.svg",
+      "levels": [
+        1,
+        3,
+        4,
+        6,
+        7,
+        9,
+        11
+      ],
+      "lossCondition": "Number of Beasts destroyed on the Adversary panel reaches or exceeds Beasts on the island",
+      "strategyNotes": "Explorers deal 2 damage and have Sense for Approaching Danger (pushed instead of destroyed once per action). Protect Beasts!"
+    },
+    {
+      "name": "Habsburg Mining Expedition",
+      "owned": true,
+      "expansion": "Nature Incarnate",
+      "flag": "assets/adversaries/habsburg_mining_expedition.svg",
+      "localIcon": "assets/adversaries/habsburg_mining_expedition.svg",
+      "levels": [
+        1,
+        3,
+        4,
+        5,
+        7,
+        9,
+        10
+      ],
+      "lossCondition": "Land has 8+ Invaders after Ravage Step",
+      "strategyNotes": "Disperse Clusters of 3+ Invaders (Mining Lands) so they cannot upgrade and immune-build."
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "A Diversity of Spirits",
+      "owned": false,
+      "expansion": "Feather and Flame",
+      "image": "assets/scenarios/a_diversity_of_spirits.svg",
+      "localIcon": "assets/scenarios/a_diversity_of_spirits.svg",
+      "difficulty": 0
+    },
+    {
+      "name": "Blitz",
+      "owned": true,
+      "expansion": "Core",
+      "image": "assets/scenarios/blitz.svg",
+      "localIcon": "assets/scenarios/blitz.svg",
+      "difficulty": 0
+    },
+    {
+      "name": "Dahan Insurrection",
+      "owned": true,
+      "expansion": "Core",
+      "image": "assets/scenarios/dahan_insurrection.svg",
+      "localIcon": "assets/scenarios/dahan_insurrection.svg",
+      "difficulty": 4
+    },
+    {
+      "name": "Despicable Theft",
+      "owned": true,
+      "expansion": "Jagged Earth",
+      "image": "assets/scenarios/despicable_theft.svg",
+      "localIcon": "assets/scenarios/despicable_theft.svg",
+      "difficulty": 2
+    },
+    {
+      "name": "Elemental Invocation",
+      "owned": true,
+      "expansion": "Jagged Earth",
+      "image": "assets/scenarios/elemental_invocation.svg",
+      "localIcon": "assets/scenarios/elemental_invocation.svg",
+      "difficulty": 1
+    },
+    {
+      "name": "Guard the Isle's Heart",
+      "owned": true,
+      "expansion": "Core",
+      "image": "assets/scenarios/guard_the_isles_heart.svg",
+      "localIcon": "assets/scenarios/guard_the_isles_heart.svg",
+      "difficulty": 0
+    },
+    {
+      "name": "Powers Long Forgotten",
+      "owned": true,
+      "expansion": "Branch and Claw",
+      "image": "assets/scenarios/powers_long_forgotten.svg",
+      "localIcon": "assets/scenarios/powers_long_forgotten.svg",
+      "difficulty": 1
+    },
+    {
+      "name": "Rituals of Terror",
+      "owned": true,
+      "expansion": "Core",
+      "image": "assets/scenarios/rituals_of_terror.svg",
+      "localIcon": "assets/scenarios/rituals_of_terror.svg",
+      "difficulty": 3
+    },
+    {
+      "name": "Rituals of the Destroying Flame",
+      "owned": true,
+      "expansion": "Branch and Claw",
+      "image": "assets/scenarios/rituals_of_the_destroying_flame.svg",
+      "localIcon": "assets/scenarios/rituals_of_the_destroying_flame.svg",
+      "difficulty": 3
+    },
+    {
+      "name": "Second Wave",
+      "owned": true,
+      "expansion": "Branch and Claw",
+      "image": "assets/scenarios/second_wave.svg",
+      "localIcon": "assets/scenarios/second_wave.svg",
+      "difficulty": 0
+    },
+    {
+      "name": "The Great River",
+      "owned": true,
+      "expansion": "Jagged Earth",
+      "image": "assets/scenarios/the_great_river.svg",
+      "localIcon": "assets/scenarios/the_great_river.svg",
+      "difficulty": 3
+    },
+    {
+      "name": "Ward the Shores",
+      "owned": true,
+      "expansion": "Branch and Claw",
+      "image": "assets/scenarios/ward_the_shores.svg",
+      "localIcon": "assets/scenarios/ward_the_shores.svg",
+      "difficulty": 2
+    },
+    {
+      "name": "Varied Terrains",
+      "owned": false,
+      "expansion": "Feather and Flame",
+      "image": "assets/scenarios/varied_terrains.svg",
+      "localIcon": "assets/scenarios/varied_terrains.svg",
+      "difficulty": 2
+    },
+    {
+      "name": "Destiny Unfolds",
+      "owned": true,
+      "expansion": "Nature Incarnate",
+      "image": "assets/scenarios/destiny_unfolds.svg",
+      "localIcon": "assets/scenarios/destiny_unfolds.svg",
+      "difficulty": -1
+    },
+    {
+      "name": "Normal Surges of Colonization",
+      "owned": true,
+      "expansion": "Nature Incarnate",
+      "image": "assets/scenarios/normal_surges_of_colonization.svg",
+      "localIcon": "assets/scenarios/normal_surges_of_colonization.svg",
+      "difficulty": 2
+    },
+    {
+      "name": "Large Surges of Colonization",
+      "owned": true,
+      "expansion": "Nature Incarnate",
+      "image": "assets/scenarios/large_surges_of_colonization.svg",
+      "localIcon": "assets/scenarios/large_surges_of_colonization.svg",
+      "difficulty": 7
+    }
+  ],
+  "matches": [
+    {
+      "id": 1,
+      "date": "2026-10-11",
+      "victory": true,
+      "players": [
+        {
+          "spirit": "Vital Strength of the Earth",
+          "aspect": "",
+          "player": "Benjamin"
+        },
+        {
+          "spirit": "River Surges in Sunlight",
+          "aspect": "",
+          "player": "Victor"
+        }
+      ],
+      "thematicMap": false,
+      "adversary1": "",
+      "adversary1Level": null,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "",
+      "difficulty": 0,
+      "thematicDiff": 0,
+      "adversaryDiff": 0,
+      "scenarioDiff": 0,
+      "invaderCardsInDeck": 2,
+      "invaderCardsNotInDeck": null,
+      "dahan": 0,
+      "blight": 0,
+      "fearCardsLeft": null,
+      "lossCondition": "",
+      "score": 14,
+      "playerCount": 2,
+      "notes": ""
+    },
+    {
+      "id": 2,
+      "date": "2026-10-11",
+      "victory": true,
+      "players": [
+        {
+          "spirit": "Shadows Flicker like Flame",
+          "aspect": "",
+          "player": "Benjamin"
+        },
+        {
+          "spirit": "Lightning's Swift Strike",
+          "aspect": "",
+          "player": "Victor"
+        },
+        {
+          "spirit": "Vital Strength of the Earth",
+          "aspect": "",
+          "player": "Roger"
+        }
+      ],
+      "thematicMap": false,
+      "adversary1": "",
+      "adversary1Level": null,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "",
+      "difficulty": 0,
+      "thematicDiff": 0,
+      "adversaryDiff": 0,
+      "scenarioDiff": 0,
+      "invaderCardsInDeck": 3,
+      "invaderCardsNotInDeck": null,
+      "dahan": 18,
+      "blight": 3,
+      "fearCardsLeft": 3,
+      "lossCondition": "",
+      "score": 21,
+      "playerCount": 3,
+      "notes": ""
+    },
+    {
+      "id": 3,
+      "date": "2026-10-12",
+      "victory": true,
+      "players": [
+        {
+          "spirit": "A Spread of Rampant Green",
+          "aspect": "",
+          "player": "Benjamin"
+        }
+      ],
+      "thematicMap": false,
+      "adversary1": "The Kingdom of Sweden",
+      "adversary1Level": 1,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "",
+      "difficulty": 2,
+      "thematicDiff": 0,
+      "adversaryDiff": 2,
+      "scenarioDiff": 0,
+      "invaderCardsInDeck": 3,
+      "invaderCardsNotInDeck": null,
+      "dahan": 3,
+      "blight": 3,
+      "fearCardsLeft": 2,
+      "lossCondition": "",
+      "score": 26,
+      "playerCount": 1,
+      "notes": ""
+    },
+    {
+      "id": 4,
+      "date": "2026-10-12",
+      "victory": false,
+      "players": [
+        {
+          "spirit": "Thunderspeaker",
+          "aspect": "",
+          "player": "Benjamin"
+        }
+      ],
+      "thematicMap": false,
+      "adversary1": "The Kingdom of Sweden",
+      "adversary1Level": 2,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "",
+      "difficulty": 3,
+      "thematicDiff": 0,
+      "adversaryDiff": 3,
+      "scenarioDiff": 0,
+      "invaderCardsInDeck": null,
+      "invaderCardsNotInDeck": 11,
+      "dahan": 2,
+      "blight": 6,
+      "fearCardsLeft": null,
+      "lossCondition": "Blight Overrun",
+      "score": 13,
+      "playerCount": 1,
+      "notes": ""
+    },
+    {
+      "id": 5,
+      "date": "2026-10-12",
+      "victory": true,
+      "players": [
+        {
+          "spirit": "Lightning's Swift Strike",
+          "aspect": "",
+          "player": "Benjamin"
+        }
+      ],
+      "thematicMap": false,
+      "adversary1": "The Kingdom of Brandenburg-Prussia",
+      "adversary1Level": 2,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "",
+      "difficulty": 4,
+      "thematicDiff": 0,
+      "adversaryDiff": 4,
+      "scenarioDiff": 0,
+      "invaderCardsInDeck": 3,
+      "invaderCardsNotInDeck": null,
+      "dahan": 4,
+      "blight": 6,
+      "fearCardsLeft": 0,
+      "lossCondition": "",
+      "score": 34,
+      "playerCount": 1,
+      "notes": ""
+    },
+    {
+      "id": 6,
+      "date": "2026-10-12",
+      "victory": false,
+      "players": [
+        {
+          "spirit": "River Surges in Sunlight",
+          "aspect": "",
+          "player": "Benjamin"
+        }
+      ],
+      "thematicMap": false,
+      "adversary1": "The Kingdom of Sweden",
+      "adversary1Level": 3,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "",
+      "difficulty": 5,
+      "thematicDiff": 0,
+      "adversaryDiff": 5,
+      "scenarioDiff": 0,
+      "invaderCardsInDeck": null,
+      "invaderCardsNotInDeck": 5,
+      "dahan": 0,
+      "blight": 8,
+      "fearCardsLeft": null,
+      "lossCondition": "Blight Overrun",
+      "score": 7,
+      "playerCount": 1,
+      "notes": ""
+    },
+    {
+      "id": 7,
+      "date": "2026-10-12",
+      "victory": true,
+      "players": [
+        {
+          "spirit": "A Spread of Rampant Green",
+          "aspect": "",
+          "player": "Benjamin"
+        }
+      ],
+      "thematicMap": false,
+      "adversary1": "The Kingdom of England",
+      "adversary1Level": 1,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "",
+      "difficulty": 3,
+      "thematicDiff": 0,
+      "adversaryDiff": 3,
+      "scenarioDiff": 0,
+      "invaderCardsInDeck": 2,
+      "invaderCardsNotInDeck": null,
+      "dahan": 6,
+      "blight": 6,
+      "fearCardsLeft": 0,
+      "lossCondition": "",
+      "score": 29,
+      "playerCount": 1,
+      "notes": ""
+    },
+    {
+      "id": 8,
+      "date": "2026-10-12",
+      "victory": true,
+      "players": [
+        {
+          "spirit": "Bringer of Dreams and Nightmares",
+          "aspect": "",
+          "player": "Benjamin"
+        },
+        {
+          "spirit": "Lightning's Swift Strike",
+          "aspect": "",
+          "player": "Benjamin"
+        }
+      ],
+      "thematicMap": false,
+      "adversary1": "The Kingdom of England",
+      "adversary1Level": 0,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "",
+      "difficulty": 1,
+      "thematicDiff": 0,
+      "adversaryDiff": 1,
+      "scenarioDiff": 0,
+      "invaderCardsInDeck": 6,
+      "invaderCardsNotInDeck": null,
+      "dahan": 6,
+      "blight": 10,
+      "fearCardsLeft": 3,
+      "lossCondition": "",
+      "score": 25,
+      "playerCount": 2,
+      "notes": ""
+    },
+    {
+      "id": 9,
+      "date": "2026-10-13",
+      "victory": true,
+      "players": [
+        {
+          "spirit": "Thunderspeaker",
+          "aspect": "",
+          "player": "Benjamin"
+        },
+        {
+          "spirit": "River Surges in Sunlight",
+          "aspect": "",
+          "player": "Roger"
+        }
+      ],
+      "thematicMap": false,
+      "adversary1": "The Kingdom of Brandenburg-Prussia",
+      "adversary1Level": 3,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "",
+      "difficulty": 6,
+      "thematicDiff": 0,
+      "adversaryDiff": 6,
+      "scenarioDiff": 0,
+      "invaderCardsInDeck": 4,
+      "invaderCardsNotInDeck": null,
+      "dahan": 15,
+      "blight": 9,
+      "fearCardsLeft": null,
+      "lossCondition": "",
+      "score": 51,
+      "playerCount": 2,
+      "notes": ""
+    },
+    {
+      "id": 10,
+      "date": "2026-10-14",
+      "victory": true,
+      "players": [
+        {
+          "spirit": "Vital Strength of the Earth",
+          "aspect": "",
+          "player": "Benjamin"
+        }
+      ],
+      "thematicMap": false,
+      "adversary1": "",
+      "adversary1Level": null,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "",
+      "difficulty": 0,
+      "thematicDiff": 0,
+      "adversaryDiff": 0,
+      "scenarioDiff": 0,
+      "invaderCardsInDeck": 2,
+      "invaderCardsNotInDeck": null,
+      "dahan": 6,
+      "blight": 0,
+      "fearCardsLeft": 0,
+      "lossCondition": "",
+      "score": 20,
+      "playerCount": 1,
+      "notes": ""
+    },
+    {
+      "id": 11,
+      "date": "2026-10-14",
+      "victory": false,
+      "players": [
+        {
+          "spirit": "A Spread of Rampant Green",
+          "aspect": "Tangles",
+          "player": "Benjamin"
+        }
+      ],
+      "thematicMap": false,
+      "adversary1": "The Tsardom of Russia",
+      "adversary1Level": 2,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "",
+      "difficulty": 4,
+      "thematicDiff": 0,
+      "adversaryDiff": 4,
+      "scenarioDiff": 0,
+      "invaderCardsInDeck": null,
+      "invaderCardsNotInDeck": 2,
+      "dahan": 6,
+      "blight": 2,
+      "fearCardsLeft": 11,
+      "lossCondition": "Adversary Special Rule",
+      "score": 14,
+      "playerCount": 1,
+      "notes": ""
+    },
+    {
+      "id": 12,
+      "date": "2026-10-15",
+      "victory": false,
+      "players": [
+        {
+          "spirit": "River Surges in Sunlight",
+          "aspect": "",
+          "player": "Benjamin"
+        }
+      ],
+      "thematicMap": false,
+      "adversary1": "The Kingdom of Brandenburg-Prussia",
+      "adversary1Level": 0,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "Blitz",
+      "difficulty": 1,
+      "thematicDiff": 0,
+      "adversaryDiff": 1,
+      "scenarioDiff": 0,
+      "invaderCardsInDeck": null,
+      "invaderCardsNotInDeck": 3,
+      "dahan": 7,
+      "blight": 7,
+      "fearCardsLeft": null,
+      "lossCondition": "Blight Overrun",
+      "score": 5,
+      "playerCount": 1,
+      "notes": ""
+    },
+    {
+      "id": 13,
+      "date": "2026-10-15",
+      "victory": false,
+      "players": [
+        {
+          "spirit": "Vital Strength of the Earth",
+          "aspect": "Might",
+          "player": "Benjamin"
+        },
+        {
+          "spirit": "Lure of the Deep Wilderness",
+          "aspect": "",
+          "player": "Benjamin"
+        }
+      ],
+      "thematicMap": true,
+      "adversary1": "",
+      "adversary1Level": null,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "",
+      "difficulty": 1,
+      "thematicDiff": 1,
+      "adversaryDiff": 0,
+      "scenarioDiff": 0,
+      "invaderCardsInDeck": null,
+      "invaderCardsNotInDeck": 9,
+      "dahan": 11,
+      "blight": 11,
+      "fearCardsLeft": null,
+      "lossCondition": "Blight Overrun",
+      "score": 11,
+      "playerCount": 2,
+      "notes": ""
+    },
+    {
+      "id": 14,
+      "date": "2026-10-16",
+      "victory": true,
+      "players": [
+        {
+          "spirit": "Devouring Teeth Lurk Underfoot",
+          "aspect": "",
+          "player": "Benjamin"
+        }
+      ],
+      "thematicMap": false,
+      "adversary1": "The Tsardom of Russia",
+      "adversary1Level": 0,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "Blitz",
+      "difficulty": 1,
+      "thematicDiff": 0,
+      "adversaryDiff": 1,
+      "scenarioDiff": 0,
+      "invaderCardsInDeck": 5,
+      "invaderCardsNotInDeck": null,
+      "dahan": 5,
+      "blight": 7,
+      "fearCardsLeft": 0,
+      "lossCondition": "",
+      "score": 23,
+      "playerCount": 1,
+      "notes": ""
+    },
+    {
+      "id": 15,
+      "date": "2026-10-17",
+      "victory": true,
+      "players": [
+        {
+          "spirit": "Bringer of Dreams and Nightmares",
+          "aspect": "",
+          "player": "Benjamin"
+        },
+        {
+          "spirit": "Ocean's Hungry Grasp",
+          "aspect": "",
+          "player": "Victor"
+        }
+      ],
+      "thematicMap": false,
+      "adversary1": "The Kingdom of England",
+      "adversary1Level": 1,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "",
+      "difficulty": 3,
+      "thematicDiff": 0,
+      "adversaryDiff": 3,
+      "scenarioDiff": 0,
+      "invaderCardsInDeck": 4,
+      "invaderCardsNotInDeck": null,
+      "dahan": 12,
+      "blight": 9,
+      "fearCardsLeft": 0,
+      "lossCondition": "",
+      "score": 34.5,
+      "playerCount": 2,
+      "notes": ""
+    },
+    {
+      "id": 16,
+      "date": "2026-10-17",
+      "victory": true,
+      "players": [
+        {
+          "spirit": "River Surges in Sunlight",
+          "aspect": "",
+          "player": "Benjamin"
+        },
+        {
+          "spirit": "Thunderspeaker",
+          "aspect": "",
+          "player": "Victor"
+        }
+      ],
+      "thematicMap": false,
+      "adversary1": "The Kingdom of Brandenburg-Prussia",
+      "adversary1Level": 3,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "Dahan Insurrection",
+      "difficulty": 10,
+      "thematicDiff": 0,
+      "adversaryDiff": 6,
+      "scenarioDiff": 4,
+      "invaderCardsInDeck": 4,
+      "invaderCardsNotInDeck": null,
+      "dahan": 18,
+      "blight": 10,
+      "fearCardsLeft": 5,
+      "lossCondition": "",
+      "score": 72,
+      "playerCount": 2,
+      "notes": ""
+    },
+    {
+      "id": 17,
+      "date": "2026-10-18",
+      "victory": true,
+      "players": [
+        {
+          "spirit": "A Spread of Rampant Green",
+          "aspect": "",
+          "player": "Benjamin"
+        },
+        {
+          "spirit": "River Surges in Sunlight",
+          "aspect": "",
+          "player": "Victor"
+        }
+      ],
+      "thematicMap": false,
+      "adversary1": "The Kingdom of Brandenburg-Prussia",
+      "adversary1Level": 4,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "Rituals of Terror",
+      "difficulty": 10,
+      "thematicDiff": 0,
+      "adversaryDiff": 7,
+      "scenarioDiff": 3,
+      "invaderCardsInDeck": 3,
+      "invaderCardsNotInDeck": null,
+      "dahan": 14,
+      "blight": 13,
+      "fearCardsLeft": 9,
+      "lossCondition": "",
+      "score": 66.5,
+      "playerCount": 2,
+      "notes": ""
+    },
+    {
+      "id": 18,
+      "date": "2026-10-19",
+      "victory": true,
+      "players": [
+        {
+          "spirit": "A Spread of Rampant Green",
+          "aspect": "",
+          "player": "Benjamin"
+        },
+        {
+          "spirit": "Ocean's Hungry Grasp",
+          "aspect": "",
+          "player": "Osvald"
+        },
+        {
+          "spirit": "Thunderspeaker",
+          "aspect": "",
+          "player": "Ludvig"
+        }
+      ],
+      "thematicMap": false,
+      "adversary1": "",
+      "adversary1Level": null,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "",
+      "difficulty": 0,
+      "thematicDiff": 0,
+      "adversaryDiff": 0,
+      "scenarioDiff": 0,
+      "invaderCardsInDeck": 6,
+      "invaderCardsNotInDeck": null,
+      "dahan": 18,
+      "blight": 7,
+      "fearCardsLeft": null,
+      "lossCondition": "",
+      "score": 25.67,
+      "playerCount": 3,
+      "notes": ""
+    },
+    {
+      "id": 19,
+      "date": "2026-10-20",
+      "victory": true,
+      "players": [
+        {
+          "spirit": "Keeper of the Forbidden Wilds",
+          "aspect": "",
+          "player": "Benjamin"
+        }
+      ],
+      "thematicMap": false,
+      "adversary1": "The Kingdom of Brandenburg-Prussia",
+      "adversary1Level": 4,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "",
+      "difficulty": 7,
+      "thematicDiff": 0,
+      "adversaryDiff": 7,
+      "scenarioDiff": 0,
+      "invaderCardsInDeck": 2,
+      "invaderCardsNotInDeck": null,
+      "dahan": 6,
+      "blight": 2,
+      "fearCardsLeft": 3,
+      "lossCondition": "",
+      "score": 53,
+      "playerCount": 1,
+      "notes": ""
+    },
+    {
+      "id": 20,
+      "date": "2026-10-23",
+      "victory": true,
+      "players": [
+        {
+          "spirit": "River Surges in Sunlight",
+          "aspect": "",
+          "player": "Benjamin"
+        },
+        {
+          "spirit": "Thunderspeaker",
+          "aspect": "",
+          "player": "Adrian"
+        }
+      ],
+      "thematicMap": false,
+      "adversary1": "The Kingdom of Sweden",
+      "adversary1Level": 2,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "",
+      "difficulty": 3,
+      "thematicDiff": 0,
+      "adversaryDiff": 3,
+      "scenarioDiff": 0,
+      "invaderCardsInDeck": 3,
+      "invaderCardsNotInDeck": null,
+      "dahan": 7,
+      "blight": 12,
+      "fearCardsLeft": 5,
+      "lossCondition": "",
+      "score": 28.5,
+      "playerCount": 2,
+      "notes": ""
+    },
+    {
+      "id": 21,
+      "date": "2026-10-24",
+      "victory": false,
+      "players": [
+        {
+          "spirit": "Sharp Fangs Behind the Leaves",
+          "aspect": "",
+          "player": "Benjamin"
+        },
+        {
+          "spirit": "Keeper of the Forbidden Wilds",
+          "aspect": "",
+          "player": "Victor"
+        }
+      ],
+      "thematicMap": false,
+      "adversary1": "The Kingdom of France",
+      "adversary1Level": 2,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "",
+      "difficulty": 5,
+      "thematicDiff": 0,
+      "adversaryDiff": 5,
+      "scenarioDiff": 0,
+      "invaderCardsInDeck": 7,
+      "invaderCardsNotInDeck": 5,
+      "dahan": 17,
+      "blight": 9,
+      "fearCardsLeft": null,
+      "lossCondition": "Adversary Special Rule",
+      "score": 19,
+      "playerCount": 2,
+      "notes": ""
+    },
+    {
+      "id": 22,
+      "date": "2026-10-25",
+      "victory": true,
+      "players": [
+        {
+          "spirit": "Lightning's Swift Strike",
+          "aspect": "",
+          "player": "Benjamin"
+        },
+        {
+          "spirit": "Keeper of the Forbidden Wilds",
+          "aspect": "",
+          "player": "Osvald"
+        },
+        {
+          "spirit": "Sharp Fangs Behind the Leaves",
+          "aspect": "",
+          "player": "Ludvig"
+        }
+      ],
+      "thematicMap": true,
+      "adversary1": "The Kingdom of England",
+      "adversary1Level": 0,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "",
+      "difficulty": 2,
+      "thematicDiff": 1,
+      "adversaryDiff": 1,
+      "scenarioDiff": 0,
+      "invaderCardsInDeck": 7,
+      "invaderCardsNotInDeck": null,
+      "dahan": 21,
+      "blight": 1,
+      "fearCardsLeft": 9,
+      "lossCondition": "",
+      "score": 40.67,
+      "playerCount": 3,
+      "notes": ""
+    },
+    {
+      "id": 23,
+      "date": "2026-10-25",
+      "victory": true,
+      "players": [
+        {
+          "spirit": "Shadows Flicker like Flame",
+          "aspect": "",
+          "player": "Benjamin"
+        },
+        {
+          "spirit": "River Surges in Sunlight",
+          "aspect": "",
+          "player": "Osvald"
+        },
+        {
+          "spirit": "Sharp Fangs Behind the Leaves",
+          "aspect": "",
+          "player": "Ludvig"
+        }
+      ],
+      "thematicMap": false,
+      "adversary1": "The Kingdom of England",
+      "adversary1Level": 2,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "",
+      "difficulty": 4,
+      "thematicDiff": 0,
+      "adversaryDiff": 4,
+      "scenarioDiff": 0,
+      "invaderCardsInDeck": 3,
+      "invaderCardsNotInDeck": null,
+      "dahan": 8,
+      "blight": 11,
+      "fearCardsLeft": 3,
+      "lossCondition": "",
+      "score": 35,
+      "playerCount": 3,
+      "notes": ""
+    },
+    {
+      "id": 24,
+      "date": "2026-10-26",
+      "victory": true,
+      "players": [
+        {
+          "spirit": "Keeper of the Forbidden Wilds",
+          "aspect": "",
+          "player": "Benjamin"
+        }
+      ],
+      "thematicMap": false,
+      "adversary1": "The Kingdom of England",
+      "adversary1Level": 3,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "",
+      "difficulty": 6,
+      "thematicDiff": 0,
+      "adversaryDiff": 6,
+      "scenarioDiff": 0,
+      "invaderCardsInDeck": 3,
+      "invaderCardsNotInDeck": null,
+      "dahan": 4,
+      "blight": 3,
+      "fearCardsLeft": 2,
+      "lossCondition": "",
+      "score": 47,
+      "playerCount": 1,
+      "notes": ""
+    },
+    {
+      "id": 25,
+      "date": "2026-10-26",
+      "victory": false,
+      "players": [
+        {
+          "spirit": "Keeper of the Forbidden Wilds",
+          "aspect": "",
+          "player": "Benjamin"
+        }
+      ],
+      "thematicMap": true,
+      "adversary1": "The Kingdom of England",
+      "adversary1Level": 4,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "",
+      "difficulty": 8,
+      "thematicDiff": 1,
+      "adversaryDiff": 7,
+      "scenarioDiff": 0,
+      "invaderCardsInDeck": 5,
+      "invaderCardsNotInDeck": 0,
+      "dahan": 4,
+      "blight": 1,
+      "fearCardsLeft": null,
+      "lossCondition": "Adversary Special Rule",
+      "score": 19,
+      "playerCount": 1,
+      "notes": ""
+    },
+    {
+      "id": 26,
+      "date": "2026-10-26",
+      "victory": true,
+      "players": [
+        {
+          "spirit": "Keeper of the Forbidden Wilds",
+          "aspect": "",
+          "player": "Benjamin"
+        }
+      ],
+      "thematicMap": true,
+      "adversary1": "The Kingdom of England",
+      "adversary1Level": 4,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "",
+      "difficulty": 8,
+      "thematicDiff": 1,
+      "adversaryDiff": 7,
+      "scenarioDiff": 0,
+      "invaderCardsInDeck": 5,
+      "invaderCardsNotInDeck": null,
+      "dahan": 11,
+      "blight": 6,
+      "fearCardsLeft": 5,
+      "lossCondition": "",
+      "score": 65,
+      "playerCount": 1,
+      "notes": ""
+    },
+    {
+      "id": 27,
+      "date": "2026-10-29",
+      "victory": true,
+      "players": [
+        {
+          "spirit": "Lightning's Swift Strike",
+          "aspect": "",
+          "player": "Benjamin"
+        }
+      ],
+      "thematicMap": false,
+      "adversary1": "The Kingdom of England",
+      "adversary1Level": 4,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "",
+      "difficulty": 7,
+      "thematicDiff": 0,
+      "adversaryDiff": 7,
+      "scenarioDiff": 0,
+      "invaderCardsInDeck": 9,
+      "invaderCardsNotInDeck": null,
+      "dahan": 7,
+      "blight": 2,
+      "fearCardsLeft": 11,
+      "lossCondition": "",
+      "score": 68,
+      "playerCount": 1,
+      "notes": ""
+    },
+    {
+      "id": 28,
+      "date": "2026-11-01",
+      "victory": true,
+      "players": [
+        {
+          "spirit": "Ocean's Hungry Grasp",
+          "aspect": "",
+          "player": "Benjamin"
+        },
+        {
+          "spirit": "Keeper of the Forbidden Wilds",
+          "aspect": "",
+          "player": "Elias"
+        },
+        {
+          "spirit": "Bringer of Dreams and Nightmares",
+          "aspect": "",
+          "player": "Adrian"
+        },
+        {
+          "spirit": "Sharp Fangs Behind the Leaves",
+          "aspect": "",
+          "player": "Ludvig"
+        },
+        {
+          "spirit": "Lightning's Swift Strike",
+          "aspect": "Wind",
+          "player": "Osvald"
+        }
+      ],
+      "thematicMap": false,
+      "adversary1": "The Kingdom of Sweden",
+      "adversary1Level": 1,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "",
+      "difficulty": 2,
+      "thematicDiff": 0,
+      "adversaryDiff": 2,
+      "scenarioDiff": 0,
+      "invaderCardsInDeck": 6,
+      "invaderCardsNotInDeck": null,
+      "dahan": 24,
+      "blight": 11,
+      "fearCardsLeft": 3,
+      "lossCondition": "",
+      "score": 34.6,
+      "playerCount": 5,
+      "notes": ""
+    },
+    {
+      "id": 29,
+      "date": "2026-11-01",
+      "victory": true,
+      "players": [
+        {
+          "spirit": "River Surges in Sunlight",
+          "aspect": "",
+          "player": "Benjamin"
+        },
+        {
+          "spirit": "Lightning's Swift Strike",
+          "aspect": "",
+          "player": "Roger"
+        },
+        {
+          "spirit": "Shadows Flicker like Flame",
+          "aspect": "",
+          "player": "Victor"
+        }
+      ],
+      "thematicMap": false,
+      "adversary1": "The Kingdom of Brandenburg-Prussia",
+      "adversary1Level": 3,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "Blitz",
+      "difficulty": 6,
+      "thematicDiff": 0,
+      "adversaryDiff": 6,
+      "scenarioDiff": 0,
+      "invaderCardsInDeck": 4,
+      "invaderCardsNotInDeck": null,
+      "dahan": 21,
+      "blight": 11,
+      "fearCardsLeft": 4,
+      "lossCondition": "",
+      "score": 51.33,
+      "playerCount": 3,
+      "notes": ""
+    },
+    {
+      "id": 30,
+      "date": "2026-11-03",
+      "victory": true,
+      "players": [
+        {
+          "spirit": "Sharp Fangs Behind the Leaves",
+          "aspect": "",
+          "player": "Benjamin"
+        }
+      ],
+      "thematicMap": false,
+      "adversary1": "The Kingdom of France",
+      "adversary1Level": 0,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "Ward the Shores",
+      "difficulty": 4,
+      "thematicDiff": 0,
+      "adversaryDiff": 2,
+      "scenarioDiff": 2,
+      "invaderCardsInDeck": 0,
+      "invaderCardsNotInDeck": null,
+      "dahan": 6,
+      "blight": 1,
+      "fearCardsLeft": 4,
+      "lossCondition": "",
+      "score": 35,
+      "playerCount": 1,
+      "notes": ""
+    },
+    {
+      "id": 31,
+      "date": "2026-11-04",
+      "victory": false,
+      "players": [
+        {
+          "spirit": "Bringer of Dreams and Nightmares",
+          "aspect": "",
+          "player": "Benjamin"
+        },
+        {
+          "spirit": "A Spread of Rampant Green",
+          "aspect": "",
+          "player": "Benjamin"
+        }
+      ],
+      "thematicMap": false,
+      "adversary1": "The Kingdom of England",
+      "adversary1Level": 2,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "Rituals of the Destroying Flame",
+      "difficulty": 7,
+      "thematicDiff": 0,
+      "adversaryDiff": 4,
+      "scenarioDiff": 3,
+      "invaderCardsInDeck": null,
+      "invaderCardsNotInDeck": 6,
+      "dahan": 13,
+      "blight": 5,
+      "fearCardsLeft": 5,
+      "lossCondition": "Invader Deck Depleted",
+      "score": 24,
+      "playerCount": 2,
+      "notes": ""
+    },
+    {
+      "id": 32,
+      "date": "2026-11-04",
+      "victory": false,
+      "players": [
+        {
+          "spirit": "Covets Gleaming Shards of Earth",
+          "aspect": "",
+          "player": "Benjamin"
+        }
+      ],
+      "thematicMap": false,
+      "adversary1": "The Kingdom of France",
+      "adversary1Level": 0,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "",
+      "difficulty": 2,
+      "thematicDiff": 0,
+      "adversaryDiff": 2,
+      "scenarioDiff": 0,
+      "invaderCardsInDeck": null,
+      "invaderCardsNotInDeck": 5,
+      "dahan": 7,
+      "blight": 6,
+      "fearCardsLeft": 4,
+      "lossCondition": "Adversary Special Rule",
+      "score": 10,
+      "playerCount": 1,
+      "notes": ""
+    },
+    {
+      "id": 33,
+      "date": "2026-11-06",
+      "victory": true,
+      "players": [
+        {
+          "spirit": "River Surges in Sunlight",
+          "aspect": "",
+          "player": "Benjamin"
+        },
+        {
+          "spirit": "Lightning's Swift Strike",
+          "aspect": "",
+          "player": "Victor"
+        }
+      ],
+      "thematicMap": false,
+      "adversary1": "The Kingdom of Brandenburg-Prussia",
+      "adversary1Level": 4,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "",
+      "difficulty": 7,
+      "thematicDiff": 0,
+      "adversaryDiff": 7,
+      "scenarioDiff": 0,
+      "invaderCardsInDeck": 1,
+      "invaderCardsNotInDeck": null,
+      "dahan": 22,
+      "blight": 8,
+      "fearCardsLeft": 3,
+      "lossCondition": "",
+      "score": 54,
+      "playerCount": 2,
+      "notes": ""
+    },
+    {
+      "id": 34,
+      "date": "2026-11-07",
+      "victory": true,
+      "players": [
+        {
+          "spirit": "Ocean's Hungry Grasp",
+          "aspect": "",
+          "player": "Benjamin"
+        },
+        {
+          "spirit": "Lightning's Swift Strike",
+          "aspect": "Wind",
+          "player": "Osvald"
+        },
+        {
+          "spirit": "Keeper of the Forbidden Wilds",
+          "aspect": "",
+          "player": "Elias"
+        },
+        {
+          "spirit": "Sharp Fangs Behind the Leaves",
+          "aspect": "",
+          "player": "Ludvig"
+        }
+      ],
+      "thematicMap": false,
+      "adversary1": "The Kingdom of Sweden",
+      "adversary1Level": 2,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "",
+      "difficulty": 3,
+      "thematicDiff": 0,
+      "adversaryDiff": 3,
+      "scenarioDiff": 0,
+      "invaderCardsInDeck": 4,
+      "invaderCardsNotInDeck": null,
+      "dahan": 25,
+      "blight": 4,
+      "fearCardsLeft": 5,
+      "lossCondition": "",
+      "score": 38.25,
+      "playerCount": 4,
+      "notes": ""
+    },
+    {
+      "id": 35,
+      "date": "2026-11-07",
+      "victory": true,
+      "players": [
+        {
+          "spirit": "Ocean's Hungry Grasp",
+          "aspect": "",
+          "player": "Benjamin"
+        },
+        {
+          "spirit": "Lightning's Swift Strike",
+          "aspect": "Wind",
+          "player": "Osvald"
+        },
+        {
+          "spirit": "Keeper of the Forbidden Wilds",
+          "aspect": "",
+          "player": "Elias"
+        },
+        {
+          "spirit": "Sharp Fangs Behind the Leaves",
+          "aspect": "",
+          "player": "Ludvig"
+        }
+      ],
+      "thematicMap": false,
+      "adversary1": "The Kingdom of Sweden",
+      "adversary1Level": 3,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "",
+      "difficulty": 5,
+      "thematicDiff": 0,
+      "adversaryDiff": 5,
+      "scenarioDiff": 0,
+      "invaderCardsInDeck": 6,
+      "invaderCardsNotInDeck": null,
+      "dahan": 24,
+      "blight": 8,
+      "fearCardsLeft": 7,
+      "lossCondition": "",
+      "score": 51,
+      "playerCount": 4,
+      "notes": ""
+    },
+    {
+      "id": 36,
+      "date": "2026-11-08",
+      "victory": true,
+      "players": [
+        {
+          "spirit": "Wandering Voice Keens Delirium",
+          "aspect": "",
+          "player": "Benjamin"
+        }
+      ],
+      "thematicMap": false,
+      "adversary1": "The Habsburg Monarchy",
+      "adversary1Level": 1,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "",
+      "difficulty": 3,
+      "thematicDiff": 0,
+      "adversaryDiff": 3,
+      "scenarioDiff": 0,
+      "invaderCardsInDeck": 4,
+      "invaderCardsNotInDeck": null,
+      "dahan": 7,
+      "blight": 1,
+      "fearCardsLeft": 2,
+      "lossCondition": "",
+      "score": 39,
+      "playerCount": 1,
+      "notes": ""
+    },
+    {
+      "id": 37,
+      "date": "2026-11-09",
+      "victory": false,
+      "players": [
+        {
+          "spirit": "Shifting Memory of Ages",
+          "aspect": "",
+          "player": "Benjamin"
+        },
+        {
+          "spirit": "Many Minds Move as One",
+          "aspect": "",
+          "player": "Victor"
+        }
+      ],
+      "thematicMap": false,
+      "adversary1": "The Habsburg Monarchy",
+      "adversary1Level": 3,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "",
+      "difficulty": 6,
+      "thematicDiff": 0,
+      "adversaryDiff": 6,
+      "scenarioDiff": 0,
+      "invaderCardsInDeck": null,
+      "invaderCardsNotInDeck": 5,
+      "dahan": 10,
+      "blight": 9,
+      "fearCardsLeft": 6,
+      "lossCondition": "Blight Overrun",
+      "score": 17.5,
+      "playerCount": 2,
+      "notes": ""
+    },
+    {
+      "id": 38,
+      "date": "2026-11-10",
+      "victory": true,
+      "players": [
+        {
+          "spirit": "Shifting Memory of Ages",
+          "aspect": "",
+          "player": "Benjamin"
+        },
+        {
+          "spirit": "Many Minds Move as One",
+          "aspect": "",
+          "player": "Victor"
+        }
+      ],
+      "thematicMap": false,
+      "adversary1": "The Tsardom of Russia",
+      "adversary1Level": 1,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "",
+      "difficulty": 3,
+      "thematicDiff": 0,
+      "adversaryDiff": 3,
+      "scenarioDiff": 0,
+      "invaderCardsInDeck": 2,
+      "invaderCardsNotInDeck": null,
+      "dahan": 9,
+      "blight": 8,
+      "fearCardsLeft": 1,
+      "lossCondition": "",
+      "score": 29.5,
+      "playerCount": 2,
+      "notes": "EPIC GAME. Combo with Irresistable Call and The Jungle Hungers. Then finishing off with Consuming Void."
+    },
+    {
+      "id": 39,
+      "date": "2026-11-11",
+      "victory": true,
+      "players": [
+        {
+          "spirit": "Volcano Looming High",
+          "aspect": "",
+          "player": "Benjamin"
+        }
+      ],
+      "thematicMap": false,
+      "adversary1": "",
+      "adversary1Level": null,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "",
+      "difficulty": 0,
+      "thematicDiff": 0,
+      "adversaryDiff": 0,
+      "scenarioDiff": 0,
+      "invaderCardsInDeck": 6,
+      "invaderCardsNotInDeck": null,
+      "dahan": 4,
+      "blight": 5,
+      "fearCardsLeft": 7,
+      "lossCondition": "",
+      "score": 21,
+      "playerCount": 1,
+      "notes": ""
+    },
+    {
+      "id": 40,
+      "date": "2026-11-13",
+      "victory": true,
+      "players": [
+        {
+          "spirit": "Fractured Days Split the Sky",
+          "aspect": "",
+          "player": "Benjamin"
+        },
+        {
+          "spirit": "Starlight Seeks Its Form",
+          "aspect": "",
+          "player": "Victor"
+        }
+      ],
+      "thematicMap": false,
+      "adversary1": "The Kingdom of Brandenburg-Prussia",
+      "adversary1Level": 3,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "",
+      "difficulty": 6,
+      "difficultyOverride": null,
+      "thematicDiff": 0,
+      "adversaryDiff": 6,
+      "scenarioDiff": 0,
+      "invaderCardsInDeck": 2,
+      "invaderCardsNotInDeck": null,
+      "dahan": 18,
+      "blight": 7,
+      "fearCardsLeft": 3,
+      "lossCondition": "",
+      "score": 49.5,
+      "playerCount": 2,
+      "notes": ""
+    },
+    {
+      "id": 41,
+      "date": "2026-11-14",
+      "victory": false,
+      "players": [
+        {
+          "spirit": "Shroud of Silent Mist",
+          "aspect": "",
+          "player": "Benjamin"
+        },
+        {
+          "spirit": "Stone's Unyielding Defiance",
+          "aspect": "",
+          "player": "Victor"
+        },
+        {
+          "spirit": "Keeper of the Forbidden Wilds",
+          "aspect": "",
+          "player": "Roger"
+        }
+      ],
+      "thematicMap": false,
+      "adversary1": "The Kingdom of Brandenburg-Prussia",
+      "adversary1Level": 3,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "",
+      "difficulty": 6,
+      "difficultyOverride": null,
+      "thematicDiff": 0,
+      "adversaryDiff": 6,
+      "scenarioDiff": 0,
+      "invaderCardsInDeck": null,
+      "invaderCardsNotInDeck": 5,
+      "dahan": 15,
+      "blight": 17,
+      "fearCardsLeft": 7,
+      "lossCondition": "Blight Overrun",
+      "score": 16.33,
+      "playerCount": 3,
+      "notes": ""
+    },
+    {
+      "id": 42,
+      "date": "2026-11-14",
+      "victory": false,
+      "players": [
+        {
+          "spirit": "Wandering Voice Keens Delirium",
+          "aspect": "",
+          "player": "Benjamin"
+        },
+        {
+          "spirit": "Towering Roots of the Jungle",
+          "aspect": "",
+          "player": "Victor"
+        }
+      ],
+      "thematicMap": true,
+      "adversary1": "The Kingdom of Sweden",
+      "adversary1Level": 3,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "",
+      "difficulty": 6,
+      "difficultyOverride": null,
+      "thematicDiff": 1,
+      "adversaryDiff": 5,
+      "scenarioDiff": 0,
+      "invaderCardsInDeck": null,
+      "invaderCardsNotInDeck": 6,
+      "dahan": 18,
+      "blight": 11,
+      "fearCardsLeft": 7,
+      "lossCondition": "Blight Overrun",
+      "score": 21.5,
+      "playerCount": 2,
+      "notes": ""
+    },
+    {
+      "id": 43,
+      "date": "2026-11-14",
+      "victory": true,
+      "players": [
+        {
+          "spirit": "Bringer of Dreams and Nightmares",
+          "aspect": "Violence",
+          "player": "Benjamin"
+        },
+        {
+          "spirit": "Ocean's Hungry Grasp",
+          "aspect": "Deeps",
+          "player": "Victor"
+        }
+      ],
+      "thematicMap": false,
+      "adversary1": "The Kingdom of Sweden",
+      "adversary1Level": 3,
+      "adversary2": "",
+      "adversary2Level": null,
+      "scenario": "",
+      "difficulty": 5,
+      "difficultyOverride": null,
+      "thematicDiff": 0,
+      "adversaryDiff": 5,
+      "scenarioDiff": 0,
+      "invaderCardsInDeck": 6,
+      "invaderCardsNotInDeck": null,
+      "dahan": 5,
+      "blight": 5,
+      "fearCardsLeft": 0,
+      "lossCondition": "",
+      "score": 47,
+      "playerCount": 2,
+      "notes": "Into the Briny Deep they go together with half the island!"
+    }
+  ],
+  "powers": [
+    {
+      "id": 1,
+      "set": "Basegame",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "The Trees and Stones Speak of War",
+      "cost": 2,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Dahan",
+      "elements": [
+        "Sun",
+        "Earth",
+        "Plant"
+      ],
+      "description": "1 Damage and Defend 2 per Dahan in target land. -If you have- 2 Sun, 2 Earth, 2 Plant: You may Push up to 2 Dahan, moving the Defend effect with them",
+      "effects": []
+    },
+    {
+      "id": 2,
+      "set": "Basegame",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Entwined Power",
+      "cost": 2,
+      "speed": "Fast",
+      "range": "N/A",
+      "target": "Another Spirit",
+      "elements": [
+        "Moon",
+        "Water",
+        "Plant"
+      ],
+      "description": "You and target Spirit may use each other's Presence to target Powers. Target Spirit gains a Power Card. You take one of the power Cards they did not keep. -If you have- 2 Water, 4 Plant: You and target Spirit each gain 3 Energy and may gift each other 1 Power from hand.",
+      "effects": []
+    },
+    {
+      "id": 3,
+      "set": "Basegame",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Poisoned Land",
+      "cost": 3,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Earth",
+        "Plant",
+        "Animal"
+      ],
+      "description": "1 Fear. 7 Damage. Add 1 Blight and destroy all Dahan. -If you have- 3 Earth, 2 Plant, 2 Animal: Per Blight, +1 Fear and +4 Damage.",
+      "effects": []
+    },
+    {
+      "id": 4,
+      "set": "Basegame",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Powerstorm",
+      "cost": 3,
+      "speed": "Fast",
+      "range": "N/A",
+      "target": "Any Spirit",
+      "elements": [
+        "Sun",
+        "Fire",
+        "Air"
+      ],
+      "description": "Target Spirit gains 3 Energy. Once this turn, target may Repeat a Power Card by paying its cost again. -If you have- 2 Sun, 2 Fire, 3 Air: Target may repeat up to 3 total Power Cards by paying their costs.",
+      "effects": []
+    },
+    {
+      "id": 5,
+      "set": "Basegame",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "The Jungle Hungers",
+      "cost": 3,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Moon",
+        "Plant"
+      ],
+      "description": "Destroy all Explorer and all Town. Destroy all Dahan. -If you have- 2 Moon, 3 Plant: Destroy 1 City. Do not destroy any Dahan.",
+      "effects": []
+    },
+    {
+      "id": 6,
+      "set": "Basegame",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Vigor of the Breaking Dawn",
+      "cost": 3,
+      "speed": "Fast",
+      "range": "2",
+      "target": "Dahan",
+      "elements": [
+        "Sun",
+        "Animal"
+      ],
+      "description": "2 Damage per Dahan in target land. -If you have- 3 Sun, 2 Animal: You may Push up to 2 Dahan. In lands you Pushed Dahan to, 2 Damage per Dahan.",
+      "effects": []
+    },
+    {
+      "id": 7,
+      "set": "Basegame",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Vengeance of the Dead",
+      "cost": 3,
+      "speed": "Fast",
+      "range": "3",
+      "target": "Any",
+      "elements": [
+        "Moon",
+        "Fire",
+        "Animal"
+      ],
+      "description": "3 Fear. After each effect that destroys Town / City / Dahan in target land, 1 Damage per Town / City / Dahan destroyed. -If you have- 3 Animal: Damage from this Power may be dealt into adjacent lands.",
+      "effects": []
+    },
+    {
+      "id": 8,
+      "set": "Basegame",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Wrap in Wings of Sunlight",
+      "cost": 3,
+      "speed": "Fast",
+      "range": "0",
+      "target": "Any",
+      "elements": [
+        "Sun",
+        "Air",
+        "Animal"
+      ],
+      "description": "Move up to 5 Dahan from target land to any land. Defend 5 in that land. -If you have- 2 Sun, 2 Air, 2 Animal: First, Gather up to 3 Dahan.",
+      "effects": []
+    },
+    {
+      "id": 9,
+      "set": "Basegame",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Winds of Rust and Atrophy",
+      "cost": 3,
+      "speed": "Fast",
+      "range": "3",
+      "target": "Any",
+      "elements": [
+        "Air",
+        "Water",
+        "Animal"
+      ],
+      "description": "1 Fear and Defend 6. Replace 1 City with 1 Town or 1 Town with 1 Explorer. -If you have- 3 Air, 3 Water, 2 Animal: Repeat this Power.",
+      "effects": []
+    },
+    {
+      "id": 10,
+      "set": "Basegame",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Infinite Vitality",
+      "cost": 3,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Earth",
+        "Plant",
+        "Animal"
+      ],
+      "description": "Dahan have +4 Health while in target land. Whenever Blight would be added to target land, instead leave it on the card. -If you have- 4 Earth: Dahan ignore Damage and Destruction effects. Remove 1 Blight from target or adjacent land.",
+      "effects": []
+    },
+    {
+      "id": 11,
+      "set": "Basegame",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Accelerated Rot",
+      "cost": 4,
+      "speed": "Slow",
+      "range": "2",
+      "target": "Jungle, Wetland",
+      "elements": [
+        "Sun",
+        "Water",
+        "Plant"
+      ],
+      "description": "2 Fear. 4 Damage. -If you have- 3 Sun, 2 Water, 3 Plant: +5 Damage. Remove 1 Blight.",
+      "effects": []
+    },
+    {
+      "id": 12,
+      "set": "Basegame",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Terrifying Nightmares",
+      "cost": 4,
+      "speed": "Fast",
+      "range": "2",
+      "target": "Any",
+      "elements": [
+        "Moon",
+        "Air"
+      ],
+      "description": "2 Fear. Push up to 4 Explorer / Town. -If you have- 4 Moon: +4 Fear.",
+      "effects": []
+    },
+    {
+      "id": 13,
+      "set": "Basegame",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Paralyzing Fright",
+      "cost": 4,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Air",
+        "Earth"
+      ],
+      "description": "4 Fear. Invaders skip all Actions in target land this turn. -If you have- 2 Air, 3 Earth: +4 Fear.",
+      "effects": []
+    },
+    {
+      "id": 14,
+      "set": "Basegame",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "The Land Thrashes in Furious Pain",
+      "cost": 4,
+      "speed": "Slow",
+      "range": "2",
+      "target": "Blight",
+      "elements": [
+        "Moon",
+        "Fire",
+        "Earth"
+      ],
+      "description": "2 Damage per Blight in target land. +1 Damage per Blight in adjacent lands. -If you have- 3 Moon, 3 Earth: Repeat on an adjacent land.",
+      "effects": []
+    },
+    {
+      "id": 15,
+      "set": "Basegame",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Indomitable Claim",
+      "cost": 4,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Sun",
+        "Earth"
+      ],
+      "description": "Add 1 Presence in target land even if you normally could not due to land type. Defend 20. -If you have- 2 Sun, 3 Earth: 3 Fear if Invaders are present. Invaders skip all Actions in target land this turn.",
+      "effects": []
+    },
+    {
+      "id": 16,
+      "set": "Basegame",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Mists of Oblivion",
+      "cost": 4,
+      "speed": "Slow",
+      "range": "3",
+      "target": "Any",
+      "elements": [
+        "Moon",
+        "Air",
+        "Water"
+      ],
+      "description": "1 Damage to each Invader in target land. 1 Fear per Town / City destroyed by this Power, to a maximum of 4. -If you have- 2 Moon, 3 Air, 2 Water: +3 Damage.",
+      "effects": []
+    },
+    {
+      "id": 17,
+      "set": "Basegame",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Dissolve the Bonds of Kinship",
+      "cost": 4,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Fire",
+        "Water",
+        "Animal"
+      ],
+      "description": "Replace 1 City with 2 Explorer. Replace 1 Town with 1 Explorer. Replace 1 Dahan with 1 Explorer. Push all Explorer from target land to as many different lands as possible. -If you have- 2 Fire, 2 Water, 3 Animal: Before Pushing, Explorer and Town / City do Damage to each other.",
+      "effects": []
+    },
+    {
+      "id": 18,
+      "set": "Basegame",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Cleansing Floods",
+      "cost": 5,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Sun",
+        "Water"
+      ],
+      "description": "4 Damage. Remove 1 Blight. -If you have- 4 Water: +10 Damage.",
+      "effects": []
+    },
+    {
+      "id": 19,
+      "set": "Basegame",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Pillar of Living Flame",
+      "cost": 5,
+      "speed": "Slow",
+      "range": "2",
+      "target": "Any",
+      "elements": [
+        "Fire"
+      ],
+      "description": "3 Fear. 5 Damage. If target land is J/W, add 1 Blight. -If you have- 4 Fire: +2 Fear and +5 Damage.",
+      "effects": []
+    },
+    {
+      "id": 20,
+      "set": "Basegame",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Blazing Renewal",
+      "cost": 5,
+      "speed": "Fast",
+      "range": "N/A",
+      "target": "Any Spirit",
+      "elements": [
+        "Fire",
+        "Earth",
+        "Plant"
+      ],
+      "description": "Target Spirit places 2 of their destroyed Presence into a single land, up to 2 Range from your Presence. If any Presence was returned, 2 damage to each Town / City in that land. -If you have- 3 Fire, 3 Earth, 2 Plant: 4 Damage.",
+      "effects": []
+    },
+    {
+      "id": 21,
+      "set": "Basegame",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Talons of Lightning",
+      "cost": 6,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Mountain, Wetland",
+      "elements": [
+        "Fire",
+        "Air"
+      ],
+      "description": "3 Fear. 5 Damage. -If you have- 3 Fire, 3 Air: Destroy 1 Town in each adjacent land. Increase this power's Range to 3 Range.",
+      "effects": []
+    },
+    {
+      "id": 22,
+      "set": "Basegame",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Tsunami",
+      "cost": 6,
+      "speed": "Slow",
+      "range": "2",
+      "target": "Coastal",
+      "elements": [
+        "Water",
+        "Earth"
+      ],
+      "description": "2 Fear. 8 Damage. Destroy 2 Dahan. -If you have- 3 Water, 2 Earth: +1 Fear, 4 Damage and Destroy 1 Dahan in each other Coastal land on the same board.",
+      "effects": []
+    },
+    {
+      "id": 23,
+      "set": "Branch & Claw",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Flow like Water, Reach like Air",
+      "cost": 2,
+      "speed": "Fast",
+      "range": "N/A",
+      "target": "Any Spirit",
+      "elements": [
+        "Air",
+        "Water"
+      ],
+      "description": "Target Spirit gets +2 Range with all Powers. Target Spirit may Push 1 of their Presence to an adjacent land, bringing up to 2 Explorer, 2 Town and 2 Dahan along with it. -If you have- 2 Air, 2 Water: The moved Presence may also bring along up to 2 City and up to 2 Blight.",
+      "effects": []
+    },
+    {
+      "id": 24,
+      "set": "Branch & Claw",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Savage Transformation",
+      "cost": 2,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Moon",
+        "Animal"
+      ],
+      "description": "2 Fear. Replace 1 Explorer with 1 Beasts. -If you have- 3 Animal, 2 Moon: Replace 1 additional Explorer with 1 Beasts in either target or adjacent land.",
+      "effects": []
+    },
+    {
+      "id": 25,
+      "set": "Branch & Claw",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Tigers Hunting",
+      "cost": 2,
+      "speed": "Fast",
+      "range": "1",
+      "target": "No Blight",
+      "elements": [
+        "Sun",
+        "Moon",
+        "Animal"
+      ],
+      "description": "2 Fear. Add 1 Beasts. Gather up to 1 Beasts. 1 Damage per Beasts. Push up to 2 Beasts. -If you have- 2 Sun, 2 Moon, 3 Animal: 1 Damage in an adjacent land without Blight, and +1 Damage per Beasts there.",
+      "effects": []
+    },
+    {
+      "id": 26,
+      "set": "Branch & Claw",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Pent-Up Calamity",
+      "cost": 3,
+      "speed": "Fast",
+      "range": "2",
+      "target": "Any",
+      "elements": [
+        "Moon",
+        "Fire",
+        "Earth",
+        "Plant",
+        "Animal"
+      ],
+      "description": "Add 1 Disease and 1 Strife. -or- Remove any number of Beasts / Disease / Strife / Wilds. For each token removed, 1 Fear and 3 Damage. -If you have- 2 Moon, 3 Fire: If you have removed tokens, return up to 2 of them. Otherwise, add 2 Strife.",
+      "effects": []
+    },
+    {
+      "id": 27,
+      "set": "Branch & Claw",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Pyroclastic Flow",
+      "cost": 3,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Fire",
+        "Air",
+        "Earth"
+      ],
+      "description": "2 Damage. Destroy all Explorer. If target land is J/W, add 1 Blight. -If you have- 3 Air, 2 Fire, 2 Earth: +4 Damage. Add 1 Wilds.",
+      "effects": []
+    },
+    {
+      "id": 28,
+      "set": "Branch & Claw",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Smothering Infestation",
+      "cost": 3,
+      "speed": "Slow",
+      "range": "0",
+      "target": "Any",
+      "elements": [
+        "Water",
+        "Plant"
+      ],
+      "description": "Add 1 Disease. If target land is J/W, 2 Fear and 3 Damage. -If you have- 2 Plant, 2 Water: 1 Damage to each Invader.",
+      "effects": []
+    },
+    {
+      "id": 29,
+      "set": "Branch & Claw",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Strangling Firevine",
+      "cost": 4,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Fire",
+        "Plant"
+      ],
+      "description": "Destroy all Explorer. Add 1 Wilds. Add 1 Wilds in the originating Sands. 1 Damage per Wilds in / adjacent to target land. -If you have- 2 Fire, 3 Plant: +1 Damage per Wilds in / adjacent to target land.",
+      "effects": []
+    },
+    {
+      "id": 30,
+      "set": "Branch & Claw",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Bloodwrack Plague",
+      "cost": 4,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Water",
+        "Earth",
+        "Animal"
+      ],
+      "description": "Add 2 Disease. For each Disease in target land, Defend 1 in target and all adjacent lands. -If you have- 2 Earth, 4 Animal: 2 Fear. For each Disease in target land do 1 Damage in target or an adjacent land.",
+      "effects": []
+    },
+    {
+      "id": 31,
+      "set": "Branch & Claw",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Death Falls Gently from Open Blossoms",
+      "cost": 4,
+      "speed": "Slow",
+      "range": "3",
+      "target": "Jungle, Sand",
+      "elements": [
+        "Moon",
+        "Air",
+        "Plant"
+      ],
+      "description": "4 Damage. If any Invaders remain, add 1 Disease. -If you have- 3 Air, 3 Plant: 3 Fear. Add 1 Disease to 2 adjacent lands with Invaders.",
+      "effects": []
+    },
+    {
+      "id": 32,
+      "set": "Branch & Claw",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Grant Hatred a Ravenous Form",
+      "cost": 4,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Moon",
+        "Fire"
+      ],
+      "description": "For each Strife / Blight in target land, 1 Fear and 2 Damage. If this destroys all invaders in target land, add 1 Beasts. -If you have- 4 Moon, 2 Fire: Add 1 Strife in up to 3 adjacent lands.",
+      "effects": []
+    },
+    {
+      "id": 33,
+      "set": "Branch & Claw",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Insatiable Hunger of the Swarm",
+      "cost": 4,
+      "speed": "Fast",
+      "range": "2",
+      "target": "Any",
+      "elements": [
+        "Air",
+        "Plant",
+        "Animal"
+      ],
+      "description": "Add 1 Blight. Add 2 Beasts. Gather up to 2 Beasts. Each Beasts does 1 Fear, 2 Damage to Invaders and 2 Damage to Dahan. Destroy 1 Beasts. -If you have- 2 Air, 4 Animal: Repeat this Power on an adjacent land.",
+      "effects": []
+    },
+    {
+      "id": 34,
+      "set": "Branch & Claw",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Instruments of their own Ruin",
+      "cost": 4,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Sun",
+        "Fire",
+        "Air",
+        "Animal"
+      ],
+      "description": "Add 1 Strife. Each Invader with Strife deals Damage to other Invaders in target land. -If you have- 4 Sun, 2 Fire, 2 Animal: Instead, if Invaders Ravage in target land, they damage Invaders in adjacent lands instead of Dahan and the land. Dahan in target land do not fight back.",
+      "effects": []
+    },
+    {
+      "id": 35,
+      "set": "Branch & Claw",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Unrelenting Growth",
+      "cost": 4,
+      "speed": "Slow",
+      "range": "N/A",
+      "target": "Any Spirit",
+      "elements": [
+        "Sun",
+        "Fire",
+        "Water",
+        "Plant"
+      ],
+      "description": "Target Spirit adds 2 Presence and 1 Wilds to a land at 1 Range. -If you have- 3 Sun, 3 Plant: In that land, add 1 additional Wilds and remove 1 Blight. Target Spirit gains a Power Card.",
+      "effects": []
+    },
+    {
+      "id": 36,
+      "set": "Branch & Claw",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Sweep into the Sea",
+      "cost": 4,
+      "speed": "Slow",
+      "range": "2",
+      "target": "Any",
+      "elements": [
+        "Sun",
+        "Air",
+        "Water"
+      ],
+      "description": "Push all Explorer and Town one land towards the nearest Ocean. -or- If target land is Coastal, destroy all Explorer and Town. -If you have- 3 Sun, 2 Water: Repeat on an adjacent land.",
+      "effects": []
+    },
+    {
+      "id": 37,
+      "set": "Branch & Claw",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Unlock the Gates of Deepest Power",
+      "cost": 4,
+      "speed": "Fast",
+      "range": "N/A",
+      "target": "Any Spirit",
+      "elements": [
+        "Sun",
+        "Moon",
+        "Fire",
+        "Air",
+        "Water",
+        "Earth",
+        "Plant",
+        "Animal"
+      ],
+      "description": "Target Spirit gains a Major Power by drawing 2 and keeping 1, without having to Forget another Power Card. -If you have- 2 of each Element: Play it for half cost or by Forgetting it at end of turn with all thresholds.",
+      "effects": []
+    },
+    {
+      "id": 38,
+      "set": "Branch & Claw",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Sea Monsters",
+      "cost": 5,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Coastal, Wetland",
+      "elements": [
+        "Water",
+        "Animal"
+      ],
+      "description": "Add 1 Beasts. Per Beasts, 2 Fear and 3 Damage. Per Blight, 1 Damage. -If you have- 3 Water, 3 Animal: Repeat this power.",
+      "effects": []
+    },
+    {
+      "id": 39,
+      "set": "Branch & Claw",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Twisted Flowers Murmur Ultimatums",
+      "cost": 5,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Invaders",
+      "elements": [
+        "Sun",
+        "Moon",
+        "Air",
+        "Earth",
+        "Plant"
+      ],
+      "description": "4 Fear. Add 1 Strife. If the Terror Level is 2 or higher, remove 2 Invaders. -If you have- 3 Moon, 2 Air, 3 Plant: +3 Fear, before the Terror Level check. 3 Damage.",
+      "effects": []
+    },
+    {
+      "id": 40,
+      "set": "Branch & Claw",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Manifest Incarnation",
+      "cost": 6,
+      "speed": "Slow",
+      "range": "0",
+      "target": "City",
+      "elements": [
+        "Sun",
+        "Moon",
+        "Earth",
+        "Animal"
+      ],
+      "description": "6 Fear. +1 Fear for each Town / City and for each of your Presence in target land. Remove 1 City, 1 Town and 1 Explorer. Then Invaders in target land Ravage. -If you have- 3 Sun, 3 Moon: +3 Fear. Invaders do -6 Damage on their Ravage.",
+      "effects": []
+    },
+    {
+      "id": 41,
+      "set": "Branch & Claw",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Fire and Flood",
+      "cost": 7,
+      "speed": "Slow",
+      "range": "2",
+      "target": "Any",
+      "elements": [
+        "Sun",
+        "Fire",
+        "Water"
+      ],
+      "description": "4 Damage in each target land. (Range must be measured from the same SacredSite.) -If you have- 3 Fire: +4 Damage in either target land. 3 Water: +4 Damage in either target land.",
+      "effects": []
+    },
+    {
+      "id": 42,
+      "set": "Branch & Claw",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Volcanic Eruption",
+      "cost": 8,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Fire",
+        "Earth"
+      ],
+      "description": "6 Fear. 20 Damage. Destroy all Dahan and Beasts. Add 1 Blight. -If you have- 4 Fire, 3 Earth: Destroy all Invaders. Add 1 Wilds. In each adjacent land: 10 Damage. Destroy all Dahan and Beasts. If there are no Blight, add 1 Blight.",
+      "effects": []
+    },
+    {
+      "id": 43,
+      "set": "Branch & Claw",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Cast Down into the Briny Deep",
+      "cost": 9,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Coastal",
+      "elements": [
+        "Sun",
+        "Moon",
+        "Water",
+        "Earth"
+      ],
+      "description": "6 Fear. Destroy all Invaders. -If you have- 2 Sun, 2 Moon, 4 Water, 4 Earth: Destroy the board containing target land and everything on that board. All destroyed Blight is removed from the game.",
+      "effects": []
+    },
+    {
+      "id": 44,
+      "set": "Basegame",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Savage Mawbeasts",
+      "cost": 0,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Fire",
+        "Animal"
+      ],
+      "description": "If target land is J/W, 1 Fear and 1 Damage. -If you have- 3 Animal: 1 Damage.",
+      "effects": [
+        "Fear",
+        "Damage"
+      ]
+    },
+    {
+      "id": 45,
+      "set": "Basegame",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Shadows of the Burning Forest",
+      "cost": 0,
+      "speed": "Slow",
+      "range": "0",
+      "target": "Invaders",
+      "elements": [
+        "Moon",
+        "Fire",
+        "Plant"
+      ],
+      "description": "2 Fear. If target land is M/J, Push 1 Explorer and 1 Town.",
+      "effects": [
+        "Fear",
+        "Move Explorers",
+        "Move Towns"
+      ]
+    },
+    {
+      "id": 46,
+      "set": "Basegame",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Sap the Strength of Multitudes",
+      "cost": 0,
+      "speed": "Fast",
+      "range": "0",
+      "target": "Any",
+      "elements": [
+        "Water",
+        "Animal"
+      ],
+      "description": "Defend 5. -If you have- 1 Air: Increase this Power's Range by 1",
+      "effects": [
+        "Defend"
+      ]
+    },
+    {
+      "id": 47,
+      "set": "Basegame",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Drift down into Slumber",
+      "cost": 0,
+      "speed": "Fast",
+      "range": "2",
+      "target": "Any",
+      "elements": [
+        "Air",
+        "Earth",
+        "Plant"
+      ],
+      "description": "Defend 1. If target land is J/S, instead, Defend 4.",
+      "effects": [
+        "Defend"
+      ]
+    },
+    {
+      "id": 48,
+      "set": "Basegame",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Land of Haunts and Embers",
+      "cost": 0,
+      "speed": "Fast",
+      "range": "2",
+      "target": "Any",
+      "elements": [
+        "Moon",
+        "Fire",
+        "Air"
+      ],
+      "description": "2 Fear. Push up to 2 Explorer / Town. If target land has Blight, +2 Fear. Push up to 2 more Explorer / Town. Add 1 Blight.",
+      "effects": [
+        "Fear",
+        "Move Explorers",
+        "Move Towns"
+      ]
+    },
+    {
+      "id": 49,
+      "set": "Basegame",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Call to Isolation",
+      "cost": 0,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Dahan",
+      "elements": [
+        "Sun",
+        "Air",
+        "Animal"
+      ],
+      "description": "Push 1 Explorer / Town per Dahan. -or- Push 1 Dahan.",
+      "effects": [
+        "Move Explorers",
+        "Move Towns",
+        "Move Dahan"
+      ]
+    },
+    {
+      "id": 50,
+      "set": "Basegame",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Gift of Constancy",
+      "cost": 0,
+      "speed": "Fast",
+      "range": "N/A",
+      "target": "Any Spirit",
+      "elements": [
+        "Sun",
+        "Earth"
+      ],
+      "description": "Target Spirit gains 2 Energy. At end of turn, target Spirit may Reclaim 1 Power Card instead of discarding it. If you target another Spirit, you may also Reclaim 1 Power Card.",
+      "effects": [
+        "Energy Support"
+      ]
+    },
+    {
+      "id": 51,
+      "set": "Basegame",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Enticing Splendor",
+      "cost": 0,
+      "speed": "Fast",
+      "range": "0",
+      "target": "No Blight",
+      "elements": [
+        "Sun",
+        "Air",
+        "Plant"
+      ],
+      "description": "Gather 1 Explorer / Town. -or- Gather up to 2 Dahan.",
+      "effects": [
+        "Move Explorers",
+        "Move Towns",
+        "Move Dahan"
+      ]
+    },
+    {
+      "id": 52,
+      "set": "Basegame",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Gift of Living Energy",
+      "cost": 0,
+      "speed": "Fast",
+      "range": "N/A",
+      "target": "Any Spirit",
+      "elements": [
+        "Sun",
+        "Fire",
+        "Plant"
+      ],
+      "description": "Target Spirit gains 1 Energy, +1 Energy if target Spirit is not yourself. If you have at least 2 SacredSite, target Spirit gains +1 Energy.",
+      "effects": [
+        "Energy Support"
+      ]
+    },
+    {
+      "id": 53,
+      "set": "Basegame",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Gift of Power",
+      "cost": 0,
+      "speed": "Slow",
+      "range": "N/A",
+      "target": "Any Spirit",
+      "elements": [
+        "Moon",
+        "Water",
+        "Earth",
+        "Plant"
+      ],
+      "description": "Target Spirit gains a Minor Power.",
+      "effects": [
+        "Gain Power"
+      ]
+    },
+    {
+      "id": 54,
+      "set": "Basegame",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Gnawing Rootbiters",
+      "cost": 0,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Earth",
+        "Animal"
+      ],
+      "description": "Push up to 2 Town.",
+      "effects": [
+        "Move Towns"
+      ]
+    },
+    {
+      "id": 55,
+      "set": "Basegame",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Lure of the Unknown",
+      "cost": 0,
+      "speed": "Fast",
+      "range": "2",
+      "target": "No Invaders",
+      "elements": [
+        "Moon",
+        "Fire",
+        "Air",
+        "Plant"
+      ],
+      "description": "Gather 1 Explorer / Town",
+      "effects": [
+        "Move Explorers",
+        "Move Towns"
+      ]
+    },
+    {
+      "id": 56,
+      "set": "Basegame",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Rain of Blood",
+      "cost": 0,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Invaders",
+      "elements": [
+        "Air",
+        "Water",
+        "Animal"
+      ],
+      "description": "2 Fear. If target land has at least 2 Town / City, +1 Fear.",
+      "effects": [
+        "Fear"
+      ]
+    },
+    {
+      "id": 57,
+      "set": "Basegame",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Reaching Grasp",
+      "cost": 0,
+      "speed": "Fast",
+      "range": "N/A",
+      "target": "Any Spirit",
+      "elements": [
+        "Sun",
+        "Air",
+        "Water"
+      ],
+      "description": "Target Spirit gets +2 Range with all their Powers.",
+      "effects": [
+        "Range Support"
+      ]
+    },
+    {
+      "id": 58,
+      "set": "Basegame",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Voracious Growth",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Jungle, Wetland",
+      "elements": [
+        "Water",
+        "Plant"
+      ],
+      "description": "2 Damage. -or- Remove 1 Blight.",
+      "effects": [
+        "Damage",
+        "Remove Blight"
+      ]
+    },
+    {
+      "id": 59,
+      "set": "Basegame",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Rouse the Trees and Stones",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1",
+      "target": "No Blight",
+      "elements": [
+        "Fire",
+        "Earth",
+        "Plant"
+      ],
+      "description": "2 Damage. Push 1 Explorer.",
+      "effects": [
+        "Damage",
+        "Move Explorers"
+      ]
+    },
+    {
+      "id": 60,
+      "set": "Basegame",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Encompassing Ward",
+      "cost": 1,
+      "speed": "Fast",
+      "range": "N/A",
+      "target": "Any Spirit",
+      "elements": [
+        "Sun",
+        "Water",
+        "Earth"
+      ],
+      "description": "Defend 2 in every land where target Spirit has Presence.",
+      "effects": [
+        "Defend"
+      ]
+    },
+    {
+      "id": 61,
+      "set": "Basegame",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Song of Sanctity",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Mountain, Jungle",
+      "elements": [
+        "Sun",
+        "Water",
+        "Plant"
+      ],
+      "description": "If target land has 1 Explorer, Push all Explorer. Otherwise, remove 1 Blight.",
+      "effects": [
+        "Move Explorers",
+        "Remove Blight"
+      ]
+    },
+    {
+      "id": 62,
+      "set": "Basegame",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Uncanny Melting",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Sun",
+        "Moon",
+        "Water"
+      ],
+      "description": "If Invaders are present, 1 Fear. If target land is S/W, remove 1 Blight",
+      "effects": [
+        "Fear",
+        "Remove Blight"
+      ]
+    },
+    {
+      "id": 63,
+      "set": "Basegame",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Steam Vents",
+      "cost": 1,
+      "speed": "Fast",
+      "range": "0",
+      "target": "Any",
+      "elements": [
+        "Fire",
+        "Air",
+        "Water",
+        "Earth"
+      ],
+      "description": "Destroy 1 Explorer. -If you have- 3 Earth: You may instead destroy 1 Town.",
+      "effects": [
+        "Destroy Explorer",
+        "Destroy Town"
+      ]
+    },
+    {
+      "id": 64,
+      "set": "Basegame",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Veil the Night's Hunt",
+      "cost": 1,
+      "speed": "Fast",
+      "range": "2",
+      "target": "Dahan",
+      "elements": [
+        "Moon",
+        "Air",
+        "Animal"
+      ],
+      "description": "Each Dahan deals 1 Damage to a different Invader. -or- Push up to 3 Dahan.",
+      "effects": [
+        "Damage",
+        "Move Dahan"
+      ]
+    },
+    {
+      "id": 65,
+      "set": "Basegame",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Elemental Boon",
+      "cost": 1,
+      "speed": "Fast",
+      "range": "N/A",
+      "target": "Any Spirit",
+      "elements": [],
+      "description": "Target Spirit gains 3 different Elements of their choice. If you target another Spirit, you also gain the chosen Elements.",
+      "effects": [
+        "Element Support"
+      ]
+    },
+    {
+      "id": 66,
+      "set": "Basegame",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Devouring Ants",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Sun",
+        "Earth",
+        "Animal"
+      ],
+      "description": "1 Fear. 1 Damage. Destroy 1 Dahan. If target land is J/S, +1 Damage.",
+      "effects": [
+        "Fear",
+        "Damage"
+      ]
+    },
+    {
+      "id": 67,
+      "set": "Basegame",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Dark and Tangled Woods",
+      "cost": 1,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Moon",
+        "Earth",
+        "Plant"
+      ],
+      "description": "2 Fear. If target land is M/J, Defend 3.",
+      "effects": [
+        "Fear",
+        "Defend"
+      ]
+    },
+    {
+      "id": 68,
+      "set": "Basegame",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Nature's Resilience",
+      "cost": 1,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Earth",
+        "Plant",
+        "Animal"
+      ],
+      "description": "Defend 6. -If you have- 2 Water: You may instead remove 1 Blight.",
+      "effects": [
+        "Defend",
+        "Remove Blight"
+      ]
+    },
+    {
+      "id": 69,
+      "set": "Basegame",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Visions of Fiery Doom",
+      "cost": 1,
+      "speed": "Fast",
+      "range": "0",
+      "target": "Any",
+      "elements": [
+        "Moon",
+        "Fire"
+      ],
+      "description": "1 Fear. Push 1 Explorer / Town. -If you have- 2 Fire: +1 Fear.",
+      "effects": [
+        "Fear",
+        "Move Explorers",
+        "Move Towns"
+      ]
+    },
+    {
+      "id": 70,
+      "set": "Basegame",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Pull Beneath the Hungry Earth",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Moon",
+        "Water",
+        "Earth"
+      ],
+      "description": "If target land has your Presence, 1 Fear and 1 Damage. If target land is S/W, 1 Damage.",
+      "effects": [
+        "Fear",
+        "Damage"
+      ]
+    },
+    {
+      "id": 71,
+      "set": "Basegame",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Call of the Dahan Ways",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Dahan",
+      "elements": [
+        "Moon",
+        "Water",
+        "Animal"
+      ],
+      "description": "Replace 1 Explorer with 1 Dahan. -If you have- 2 Moon: You may instead replace 1 Town with 1 Dahan.",
+      "effects": [
+        "Create Dahan"
+      ]
+    },
+    {
+      "id": 72,
+      "set": "Basegame",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Call to Bloodshed",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Dahan",
+      "elements": [
+        "Sun",
+        "Fire",
+        "Animal"
+      ],
+      "description": "1 Damage per Dahan. -or- Gather up to 3 Dahan.",
+      "effects": [
+        "Damage",
+        "Move Dahan"
+      ]
+    },
+    {
+      "id": 73,
+      "set": "Basegame",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Call to Migrate",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Fire",
+        "Air",
+        "Animal"
+      ],
+      "description": "Gather up to 3 Dahan. Push up to 3 Dahan.",
+      "effects": [
+        "Move Dahan"
+      ]
+    },
+    {
+      "id": 74,
+      "set": "Basegame",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Call to Tend",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Dahan",
+      "elements": [
+        "Water",
+        "Plant",
+        "Animal"
+      ],
+      "description": "Remove 1 Blight. -or- Push up to 3 Dahan.",
+      "effects": [
+        "Remove Blight",
+        "Move Dahan"
+      ]
+    },
+    {
+      "id": 75,
+      "set": "Basegame",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Quicken the Earth's Struggles",
+      "cost": 1,
+      "speed": "Fast",
+      "range": "0",
+      "target": "Any",
+      "elements": [
+        "Moon",
+        "Fire",
+        "Earth",
+        "Animal"
+      ],
+      "description": "1 Damage to each Town / City. -or- Defend 10.",
+      "effects": [
+        "Damage",
+        "Defend"
+      ]
+    },
+    {
+      "id": 76,
+      "set": "Basegame",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Delusions of Danger",
+      "cost": 1,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Sun",
+        "Moon",
+        "Air"
+      ],
+      "description": "Push 1 Explorer. -or- 2 Fear.",
+      "effects": [
+        "Move Explorers",
+        "Fear"
+      ]
+    },
+    {
+      "id": 77,
+      "set": "Basegame",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Drought",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Sun",
+        "Fire",
+        "Earth"
+      ],
+      "description": "Destroy 3 Town. 1 Damage to each Town / City. Add 1 Blight. -If you have- 3 Sun: Destroy 1 City.",
+      "effects": [
+        "Destroy Towns",
+        "Damage"
+      ]
+    },
+    {
+      "id": 78,
+      "set": "Basegame",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Entrancing Apparitions",
+      "cost": 1,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Moon",
+        "Air",
+        "Water"
+      ],
+      "description": "Defend 2. If no Invaders are present, gather up to 2 Explorer.",
+      "effects": [
+        "Defend",
+        "Move Explorers"
+      ]
+    },
+    {
+      "id": 79,
+      "set": "Basegame",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Purifying Flame",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Sun",
+        "Fire",
+        "Air",
+        "Plant"
+      ],
+      "description": "1 Damage per Blight. If target land is M/S, you may instead remove 1 Blight.",
+      "effects": [
+        "Damage",
+        "Remove Blight"
+      ]
+    },
+    {
+      "id": 80,
+      "set": "Branch & Claw",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Gold's Allure",
+      "cost": 0,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Mountain",
+      "elements": [
+        "Fire",
+        "Earth",
+        "Animal"
+      ],
+      "description": "Gather 1 Explorer and 1 Town. Add 1 Strife.",
+      "effects": [
+        "Move Explorers",
+        "Move Towns",
+        "Add Strife"
+      ]
+    },
+    {
+      "id": 81,
+      "set": "Branch & Claw",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Here there be Monsters",
+      "cost": 0,
+      "speed": "Slow",
+      "range": "0",
+      "target": "Inland",
+      "elements": [
+        "Moon",
+        "Air",
+        "Animal"
+      ],
+      "description": "You may Push 1 Explorer / Town / Dahan. 2 Fear. If target land has any Beasts, 1 Fear.",
+      "effects": [
+        "Move Explorers",
+        "Move Towns",
+        "Move Dahan"
+      ]
+    },
+    {
+      "id": 82,
+      "set": "Branch & Claw",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Portents of Disaster",
+      "cost": 0,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Invaders",
+      "elements": [
+        "Sun",
+        "Moon",
+        "Air"
+      ],
+      "description": "2 Fear. The next time an Invader is destroyed in target land this turn, 1 Fear.",
+      "effects": [
+        "Fear"
+      ]
+    },
+    {
+      "id": 83,
+      "set": "Branch & Claw",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Growth through Sacrifice",
+      "cost": 0,
+      "speed": "Fast",
+      "range": "N/A",
+      "target": "Any Spirit",
+      "elements": [
+        "Moon",
+        "Fire",
+        "Water",
+        "Plant"
+      ],
+      "description": "Destroy 1 of your Presence. Target Spirit removes 1 Blight from one of their lands. -or- Adds 1 Presence to one of their lands. -If you have- 2 Sun: They may do both, in the same land.",
+      "effects": [
+        "Add Presence",
+        "Remove Blight"
+      ]
+    },
+    {
+      "id": 84,
+      "set": "Branch & Claw",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Swarming Wasps",
+      "cost": 0,
+      "speed": "Fast",
+      "range": "1",
+      "target": "No Blight",
+      "elements": [
+        "Fire",
+        "Air",
+        "Animal"
+      ],
+      "description": "Add 1 Beasts. -or- If target land has Beasts, Push up to 2 Explorer.",
+      "effects": [
+        "Add Beasts",
+        "Move Explorers"
+      ]
+    },
+    {
+      "id": 85,
+      "set": "Branch & Claw",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Animated Wrackroot",
+      "cost": 0,
+      "speed": "Slow",
+      "range": "0",
+      "target": "Any",
+      "elements": [
+        "Moon",
+        "Fire",
+        "Plant"
+      ],
+      "description": "1 Fear. Destroy 1 Explorer. -or- Add 1 Wilds.",
+      "effects": [
+        "Fear",
+        "Destroy Explorers",
+        "Add Wilds"
+      ]
+    },
+    {
+      "id": 86,
+      "set": "Branch & Claw",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Promises of Protection",
+      "cost": 0,
+      "speed": "Fast",
+      "range": "2",
+      "target": "Any",
+      "elements": [
+        "Sun",
+        "Earth",
+        "Animal"
+      ],
+      "description": "Gather up to 2 Dahan. Dahan have +2 Health while in target land.",
+      "effects": [
+        "Move Dahan",
+        "Defend Dahan"
+      ]
+    },
+    {
+      "id": 87,
+      "set": "Branch & Claw",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Call to Ferocity",
+      "cost": 0,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Invaders",
+      "elements": [
+        "Sun",
+        "Fire",
+        "Earth"
+      ],
+      "description": "Gather up to 3 Dahan. -or- If target land has Dahan, 1 Fear and Push 1 Explorer and 1 Town.",
+      "effects": [
+        "Move Dahan",
+        "Move Explorers",
+        "Move Towns"
+      ]
+    },
+    {
+      "id": 88,
+      "set": "Branch & Claw",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Twilight Fog brings Madness",
+      "cost": 0,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Sun",
+        "Moon",
+        "Air",
+        "Water"
+      ],
+      "description": "Add 1 Strife. Push 1 Dahan. Each remaining Dahan takes 1 Damage.",
+      "effects": [
+        "Add Strife",
+        "Move Dahan"
+      ]
+    },
+    {
+      "id": 89,
+      "set": "Branch & Claw",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Inflame the Fires of Life",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Moon",
+        "Fire",
+        "Plant",
+        "Animal"
+      ],
+      "description": "Add 1 Disease. -or- 1 Fear. Add 1 Strife. -If you have- 3 Animal: You may do both.",
+      "effects": [
+        "Add Disease",
+        "Add Strife",
+        "Fear"
+      ]
+    },
+    {
+      "id": 90,
+      "set": "Branch & Claw",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Fire in the Sky",
+      "cost": 1,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Sun",
+        "Fire",
+        "Air"
+      ],
+      "description": "2 Fear. Add 1 Strife",
+      "effects": [
+        "Fear",
+        "Add Strife"
+      ]
+    },
+    {
+      "id": 91,
+      "set": "Branch & Claw",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Fleshrot Fever",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Jungle, Sand",
+      "elements": [
+        "Fire",
+        "Air",
+        "Water",
+        "Animal"
+      ],
+      "description": "1 Fear. Add 1 Disease.",
+      "effects": [
+        "Fear",
+        "Add Disease"
+      ]
+    },
+    {
+      "id": 92,
+      "set": "Branch & Claw",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Guardian Serpents",
+      "cost": 1,
+      "speed": "Fast",
+      "range": "N/A",
+      "target": "Any Spirit",
+      "elements": [
+        "Sun",
+        "Moon",
+        "Earth",
+        "Animal"
+      ],
+      "description": "Add 1 Beasts in one of target Spirit's lands. If target Spirit has a SacredSite in that land: Defend 4 there.",
+      "effects": [
+        "Add Beasts",
+        "Defend"
+      ]
+    },
+    {
+      "id": 93,
+      "set": "Branch & Claw",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Infested Aquifers",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "0",
+      "target": "Any",
+      "elements": [
+        "Moon",
+        "Water",
+        "Earth",
+        "Animal"
+      ],
+      "description": "If target land has any Disease, 1 Damage to each Invader there. -or- If target land is M/W, 1 Fear and add 1 Disease.",
+      "effects": [
+        "Damage",
+        "Fear",
+        "Add Disease"
+      ]
+    },
+    {
+      "id": 94,
+      "set": "Branch & Claw",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Poisoned Dew",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Fire",
+        "Water",
+        "Plant"
+      ],
+      "description": "Destroy 1 Explorer. If target land is J/W, destroy all Explorer.",
+      "effects": [
+        "Destroy Explorers"
+      ]
+    },
+    {
+      "id": 95,
+      "set": "Branch & Claw",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Prowling Panthers",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Mountain, Jungle",
+      "elements": [
+        "Moon",
+        "Fire",
+        "Animal"
+      ],
+      "description": "1 Fear. Add 1 Beasts. -or- If target land has Beasts, destroy 1 Explorer / Town.",
+      "effects": [
+        "Fear",
+        "Add Beasts",
+        "Destroy Explorers",
+        "Destroy Towns"
+      ]
+    },
+    {
+      "id": 96,
+      "set": "Branch & Claw",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Renewing Rain",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Water",
+        "Earth",
+        "Plant"
+      ],
+      "description": "If target land is J/S, remove 1 Blight. -If you have- 3 Plant: Add 1 Wilds.",
+      "effects": [
+        "Remove Blight",
+        "Add Wilds"
+      ]
+    },
+    {
+      "id": 97,
+      "set": "Branch & Claw",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Rites of the Land's Rejection",
+      "cost": 1,
+      "speed": "Fast",
+      "range": "2",
+      "target": "Dahan",
+      "elements": [
+        "Moon",
+        "Fire",
+        "Earth"
+      ],
+      "description": "Invaders do not Build in target land this turn. 1 Fear per Town / City or 1 Fear per Dahan, whichever is less. -or- Push up to 3 Dahan from target land.",
+      "effects": [
+        "Prevent Builds",
+        "Fear",
+        "Move Dahan"
+      ]
+    },
+    {
+      "id": 98,
+      "set": "Branch & Claw",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Pact of the Joined Hunt",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "N/A",
+      "target": "Any Spirit",
+      "elements": [
+        "Sun",
+        "Plant",
+        "Animal"
+      ],
+      "description": "Target Spirit Gathers 1 Dahan into one of their lands. 1 Damage in that land per Dahan present.",
+      "effects": [
+        "Move Dahan",
+        "Damage"
+      ]
+    },
+    {
+      "id": 99,
+      "set": "Branch & Claw",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Razor-Sharp Undergrowth",
+      "cost": 1,
+      "speed": "Fast",
+      "range": "0",
+      "target": "No Blight",
+      "elements": [
+        "Moon",
+        "Plant"
+      ],
+      "description": "Destroy 1 Explorer and 1 Dahan. Add 1 Wilds. Defend 2.",
+      "effects": [
+        "Destroy Explorers",
+        "Add Wilds",
+        "Defend"
+      ]
+    },
+    {
+      "id": 100,
+      "set": "Branch & Claw",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Scour the Land",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "2",
+      "target": "Any",
+      "elements": [
+        "Air",
+        "Earth"
+      ],
+      "description": "Destroy 3 Town and all Explorer. Add 1 Blight. -If you have- 3 Air: This power may be Fast.",
+      "effects": [
+        "Destroy Towns",
+        "Destroy Explorers"
+      ]
+    },
+    {
+      "id": 101,
+      "set": "Branch & Claw",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Sky stretches to Shore",
+      "cost": 1,
+      "speed": "Fast",
+      "range": "N/A",
+      "target": "Any Spirit",
+      "elements": [
+        "Sun",
+        "Air",
+        "Water",
+        "Earth"
+      ],
+      "description": "This turn, target Spirit may use 1 Slow Power as if it were Fast, or vice versa. Target Spirit gains +3 Range for targeting Coast lands only.",
+      "effects": [
+        "Speed Support",
+        "Range Support"
+      ]
+    },
+    {
+      "id": 102,
+      "set": "Branch & Claw",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Absorb Corruption",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "0",
+      "target": "Any",
+      "elements": [
+        "Sun",
+        "Earth",
+        "Plant"
+      ],
+      "description": "Gather 1 Blight. -or- Pay 1 Energy to remove 1 Blight. -If you have- 2 Plant: You may do both.",
+      "effects": [
+        "Remove Blight"
+      ]
+    },
+    {
+      "id": 103,
+      "set": "Branch & Claw",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Call to Trade",
+      "cost": 1,
+      "speed": "Fast",
+      "range": "2",
+      "target": "Dahan",
+      "elements": [
+        "Air",
+        "Water",
+        "Earth",
+        "Plant"
+      ],
+      "description": "You may Gather 1 Dahan. If the Terror Level is 2 or lower, Gather 1 Town and the first Ravage in target land this turn becomes a Build there instead.",
+      "effects": [
+        "Move Dahan",
+        "Move Towns"
+      ]
+    },
+    {
+      "id": 104,
+      "set": "Branch & Claw",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Confounding Mists",
+      "cost": 1,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Air",
+        "Water"
+      ],
+      "description": "Defend 4. -or- Each Invader added to target land this turn may be immediately Pushed to any adjacent land.",
+      "effects": [
+        "Defend"
+      ]
+    },
+    {
+      "id": 105,
+      "set": "Branch & Claw",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Cycles of Time and Tide",
+      "cost": 1,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Coastal",
+      "elements": [
+        "Sun",
+        "Moon",
+        "Water"
+      ],
+      "description": "If there are Dahan, add 1 Dahan. If there are no Dahan, remove 1 Blight.",
+      "effects": [
+        "Create Dahan",
+        "Remove Blight"
+      ]
+    },
+    {
+      "id": 106,
+      "set": "Branch & Claw",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Disorienting Landscape",
+      "cost": 1,
+      "speed": "Fast",
+      "range": "2",
+      "target": "Any",
+      "elements": [
+        "Moon",
+        "Air",
+        "Plant"
+      ],
+      "description": "Push 1 Explorer. If target land is M/J, add 1 Wilds.",
+      "effects": [
+        "Move Explorers",
+        "Add Wilds"
+      ]
+    },
+    {
+      "id": 107,
+      "set": "Branch & Claw",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Elusive Ambushes",
+      "cost": 1,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Dahan",
+      "elements": [
+        "Sun",
+        "Fire",
+        "Water"
+      ],
+      "description": "1 Damage. -or- Defend 4.",
+      "effects": [
+        "Damage",
+        "Defend"
+      ]
+    },
+    {
+      "id": 108,
+      "set": "Branch & Claw",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Tormenting Rotflies",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "2",
+      "target": "Sand, Wetland",
+      "elements": [
+        "Air",
+        "Plant",
+        "Animal"
+      ],
+      "description": "Add 1 Disease. -or- If target land has Invaders, 2 Fear. If Disease is present, +1 Fear. If Blight is present, +1 Fear.",
+      "effects": [
+        "Add Disease",
+        "Fear"
+      ]
+    },
+    {
+      "id": 109,
+      "set": "Branch & Claw",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Teeming Rivers",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "2",
+      "target": "Mountain, Wetland",
+      "elements": [
+        "Sun",
+        "Water",
+        "Plant",
+        "Animal"
+      ],
+      "description": "If target land has no Blight, add 1 Beasts. If target land has exactly 1 Blight, remove it.",
+      "effects": [
+        "Add Beasts",
+        "Remove Blight"
+      ]
+    },
+    {
+      "id": 110,
+      "set": "Branch & Claw",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Spur on with Words of Fire",
+      "cost": 1,
+      "speed": "Fast",
+      "range": "N/A",
+      "target": "Any Spirit",
+      "elements": [
+        "Sun",
+        "Fire",
+        "Air"
+      ],
+      "description": "If you target a Spirit other than yourself, they gain +1 Energy. Target Spirit may immediately play another Power Card by paying its cost.",
+      "effects": [
+        "Energy Support",
+        "Card Play Support"
+      ]
+    },
+    {
+      "id": 111,
+      "set": "Basegame",
+      "category": "Unique Power",
+      "spirit": "A Spread of Rampant Green",
+      "name": "Fields Choked with Growth",
+      "cost": 0,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Sun",
+        "Water",
+        "Plant"
+      ],
+      "description": "Push 1 Town. -or- Push 3 Dahan",
+      "effects": [
+        "Move Towns",
+        "Move Dahan"
+      ]
+    },
+    {
+      "id": 112,
+      "set": "Basegame",
+      "category": "Unique Power",
+      "spirit": "A Spread of Rampant Green",
+      "name": "Stem the Flow of Fresh Water",
+      "cost": 0,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Water",
+        "Plant"
+      ],
+      "description": "1 Damage to 1 Town or 1 City. If target land is M/S, instead, 1 Damage to each Town / City.",
+      "effects": [
+        "Damage"
+      ]
+    },
+    {
+      "id": 113,
+      "set": "Basegame",
+      "category": "Unique Power",
+      "spirit": "A Spread of Rampant Green",
+      "name": "Gift of Proliferation",
+      "cost": 1,
+      "speed": "Fast",
+      "range": "N/A",
+      "target": "Another Spirit",
+      "elements": [
+        "Moon",
+        "Plant"
+      ],
+      "description": "Target Spirit adds 1 Presence up to 1 Range from their Presence.",
+      "effects": [
+        "Add Presence"
+      ]
+    },
+    {
+      "id": 114,
+      "set": "Basegame",
+      "category": "Unique Power",
+      "spirit": "A Spread of Rampant Green",
+      "name": "Overgrow in a Night",
+      "cost": 2,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Moon",
+        "Plant"
+      ],
+      "description": "Add 1 Presence. -or- If target land has your Presence and Invaders, 3 Fear.",
+      "effects": [
+        "Add Presence",
+        "Fear"
+      ]
+    },
+    {
+      "id": 115,
+      "set": "Basegame",
+      "category": "Unique Power",
+      "spirit": "Bringer of Dreams and Nightmares",
+      "name": "Call on Midnight's Dreams",
+      "cost": 0,
+      "speed": "Fast",
+      "range": "0",
+      "target": "Any",
+      "elements": [
+        "Moon",
+        "Animal"
+      ],
+      "description": "If target land has Dahan, gain a Major Power. If you Forget this Power, gain Energy equal to Dahan and you may play the Major Power immediately, paying its cost. -or- If Invaders are present, 2 Fear.",
+      "effects": [
+        "Gain Power",
+        "Fear"
+      ]
+    },
+    {
+      "id": 116,
+      "set": "Basegame",
+      "category": "Unique Power",
+      "spirit": "Bringer of Dreams and Nightmares",
+      "name": "Dreams of the Dahan",
+      "cost": 0,
+      "speed": "Fast",
+      "range": "2",
+      "target": "Any",
+      "elements": [
+        "Moon",
+        "Air"
+      ],
+      "description": "Gather up to 2 Dahan. -or- If target land has Town / City, 1 Fear for each Dahan, to a maximum of 3 Fear.",
+      "effects": [
+        "Move Dahan",
+        "Fear"
+      ]
+    },
+    {
+      "id": 117,
+      "set": "Basegame",
+      "category": "Unique Power",
+      "spirit": "Bringer of Dreams and Nightmares",
+      "name": "Predatory Nightmares",
+      "cost": 2,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Invaders",
+      "elements": [
+        "Moon",
+        "Fire",
+        "Earth",
+        "Animal"
+      ],
+      "description": "2 Damage. Push up to 2 Dahan.",
+      "effects": [
+        "Damage",
+        "Move Dahan"
+      ]
+    },
+    {
+      "id": 118,
+      "set": "Basegame",
+      "category": "Unique Power",
+      "spirit": "Bringer of Dreams and Nightmares",
+      "name": "Dread Apparitions",
+      "cost": 2,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Invaders",
+      "elements": [
+        "Moon",
+        "Air"
+      ],
+      "description": "When Powers generate Fear in target land, Defend 1 per Fear. 1 Fear.",
+      "effects": [
+        "Defend",
+        "Fear"
+      ]
+    },
+    {
+      "id": 119,
+      "set": "Promo",
+      "category": "Unique Power",
+      "spirit": "Heart of the Wildfire",
+      "name": "Flame's Fury",
+      "cost": 0,
+      "speed": "Fast",
+      "range": "N/A",
+      "target": "Any Spirit",
+      "elements": [
+        "Sun",
+        "Fire",
+        "Plant"
+      ],
+      "description": "Target Spirit gains 1 Energy. Target Spirit does +1 Damage with each Damage dealing Power they use this turn.",
+      "effects": [
+        "Energy Support",
+        "Damage"
+      ]
+    },
+    {
+      "id": 120,
+      "set": "Promo",
+      "category": "Unique Power",
+      "spirit": "Heart of the Wildfire",
+      "name": "Threatening Flames",
+      "cost": 0,
+      "speed": "Fast",
+      "range": "0",
+      "target": "Blight, Invaders",
+      "elements": [
+        "Fire",
+        "Plant"
+      ],
+      "description": "2 Fear. Push 1 Explorer / Town per Terror Level from target land to adjacent lands without your Presence. If there are no such adjacent lands, +2 Fear.",
+      "effects": [
+        "Fear",
+        "Move Explorers",
+        "Move Towns"
+      ]
+    },
+    {
+      "id": 121,
+      "set": "Promo",
+      "category": "Unique Power",
+      "spirit": "Heart of the Wildfire",
+      "name": "Flash-Fires",
+      "cost": 2,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Fire",
+        "Air"
+      ],
+      "description": "1 Fear. 1 Damage. -If you have- 2 Air: This Power is Fast.",
+      "effects": [
+        "Fear",
+        "Damage"
+      ]
+    },
+    {
+      "id": 122,
+      "set": "Promo",
+      "category": "Unique Power",
+      "spirit": "Heart of the Wildfire",
+      "name": "Asphyxiating Smoke",
+      "cost": 2,
+      "speed": "Slow",
+      "range": "2",
+      "target": "Any",
+      "elements": [
+        "Fire",
+        "Air",
+        "Plant"
+      ],
+      "description": "1 Fear. Destroy 1 Town. Push 1 Dahan.",
+      "effects": [
+        "Fear",
+        "Destroy Towns",
+        "Move Dahan"
+      ]
+    },
+    {
+      "id": 123,
+      "set": "Branch & Claw",
+      "category": "Unique Power",
+      "spirit": "Keeper of the Forbidden Wilds",
+      "name": "Regrow from Roots",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Jungle, Wetland",
+      "elements": [
+        "Water",
+        "Earth",
+        "Plant"
+      ],
+      "description": "If there are 2 Blight or fewer in target land, remove 1 Blight.",
+      "effects": [
+        "Remove Blight"
+      ]
+    },
+    {
+      "id": 124,
+      "set": "Branch & Claw",
+      "category": "Unique Power",
+      "spirit": "Keeper of the Forbidden Wilds",
+      "name": "Boon of Growing Power",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "N/A",
+      "target": "Any Spirit",
+      "elements": [
+        "Sun",
+        "Moon",
+        "Plant"
+      ],
+      "description": "Target Spirit gains a Power Card. If you target another Spirit, they also gain 1 Energy.",
+      "effects": [
+        "Gain Power",
+        "Energy Support"
+      ]
+    },
+    {
+      "id": 125,
+      "set": "Branch & Claw",
+      "category": "Unique Power",
+      "spirit": "Keeper of the Forbidden Wilds",
+      "name": "Sacrosanct Wilderness",
+      "cost": 2,
+      "speed": "Fast",
+      "range": "1",
+      "target": "No Blight",
+      "elements": [
+        "Sun",
+        "Earth",
+        "Plant"
+      ],
+      "description": "Push 2 Dahan. 2 Damage per Wilds in target land. -or- Add 1 Wilds.",
+      "effects": [
+        "Move Dahan",
+        "Damage",
+        "Add Wilds"
+      ]
+    },
+    {
+      "id": 126,
+      "set": "Branch & Claw",
+      "category": "Unique Power",
+      "spirit": "Keeper of the Forbidden Wilds",
+      "name": "Towering Wrath",
+      "cost": 3,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Sun",
+        "Fire",
+        "Plant"
+      ],
+      "description": "2 Fear. 2 Damage per your SacredSite in or adjacent to target land. Destroy all Dahan.",
+      "effects": [
+        "Fear",
+        "Damage"
+      ]
+    },
+    {
+      "id": 127,
+      "set": "Basegame",
+      "category": "Unique Power",
+      "spirit": "Lightning's Swift Strike",
+      "name": "Harbingers of the Lightning",
+      "cost": 0,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Fire",
+        "Air"
+      ],
+      "description": "Push up to 2 Dahan. 1 Fear if you pushed any Dahan into a land with Town / City",
+      "effects": [
+        "Move Dahan",
+        "Fear"
+      ]
+    },
+    {
+      "id": 128,
+      "set": "Basegame",
+      "category": "Unique Power",
+      "spirit": "Lightning's Swift Strike",
+      "name": "Lightning's Boon",
+      "cost": 1,
+      "speed": "Fast",
+      "range": "N/A",
+      "target": "Any Spirit",
+      "elements": [
+        "Fire",
+        "Air"
+      ],
+      "description": "Target Spirit may use up to 2 Slow Powers as if they were Fast Powers this turn",
+      "effects": [
+        "Speed Support"
+      ]
+    },
+    {
+      "id": 129,
+      "set": "Basegame",
+      "category": "Unique Power",
+      "spirit": "Lightning's Swift Strike",
+      "name": "Shatter Homesteads",
+      "cost": 2,
+      "speed": "Slow",
+      "range": "2",
+      "target": "Any",
+      "elements": [
+        "Fire",
+        "Air"
+      ],
+      "description": "1 Fear. Destroy 1 Town.",
+      "effects": [
+        "Fear",
+        "Destroy Towns"
+      ]
+    },
+    {
+      "id": 130,
+      "set": "Basegame",
+      "category": "Unique Power",
+      "spirit": "Lightning's Swift Strike",
+      "name": "Raging Storm",
+      "cost": 3,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Fire",
+        "Air",
+        "Water"
+      ],
+      "description": "1 Damage to each Invader.",
+      "effects": [
+        "Damage"
+      ]
+    },
+    {
+      "id": 131,
+      "set": "Basegame",
+      "category": "Unique Power",
+      "spirit": "Ocean's Hungry Grasp",
+      "name": "Call of the Deeps",
+      "cost": 0,
+      "speed": "Fast",
+      "range": "0",
+      "target": "Coastal",
+      "elements": [
+        "Moon",
+        "Air",
+        "Water"
+      ],
+      "description": "Gather 1 Explorer. If target land is the Ocean, you may Gather another Explorer.",
+      "effects": [
+        "Move Explorers"
+      ]
+    },
+    {
+      "id": 132,
+      "set": "Basegame",
+      "category": "Unique Power",
+      "spirit": "Ocean's Hungry Grasp",
+      "name": "Swallow the Land-Dwellers",
+      "cost": 0,
+      "speed": "Slow",
+      "range": "0",
+      "target": "Coastal",
+      "elements": [
+        "Water",
+        "Earth"
+      ],
+      "description": "Drown 1 Explorer, 1 Town, and 1 Dahan.",
+      "effects": [
+        "Destroy Explorers",
+        "Destroy Towns"
+      ]
+    },
+    {
+      "id": 133,
+      "set": "Basegame",
+      "category": "Unique Power",
+      "spirit": "Ocean's Hungry Grasp",
+      "name": "Grasping Tide",
+      "cost": 1,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Coastal",
+      "elements": [
+        "Moon",
+        "Water"
+      ],
+      "description": "2 Fear. Defend 4.",
+      "effects": [
+        "Fear",
+        "Defend"
+      ]
+    },
+    {
+      "id": 134,
+      "set": "Basegame",
+      "category": "Unique Power",
+      "spirit": "Ocean's Hungry Grasp",
+      "name": "Tidal Boon",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "N/A",
+      "target": "Another Spirit",
+      "elements": [
+        "Moon",
+        "Water",
+        "Earth"
+      ],
+      "description": "Target Spirit gains 2 Energy and may Push 1 Town and up to 2 Dahan from one of their lands.",
+      "effects": [
+        "Energy Support",
+        "Move Towns",
+        "Move Dahan"
+      ]
+    },
+    {
+      "id": 135,
+      "set": "Basegame",
+      "category": "Unique Power",
+      "spirit": "River Surges in Sunlight",
+      "name": "Boon of Vigor",
+      "cost": 0,
+      "speed": "Fast",
+      "range": "N/A",
+      "target": "Any Spirit",
+      "elements": [
+        "Sun",
+        "Water",
+        "Plant"
+      ],
+      "description": "If you target yourself, gain 1 Energy. If you target another Spirit, they gain 1 Energy per Power Card they played this turn.",
+      "effects": [
+        "Energy Support"
+      ]
+    },
+    {
+      "id": 136,
+      "set": "Basegame",
+      "category": "Unique Power",
+      "spirit": "River Surges in Sunlight",
+      "name": "River's Bounty",
+      "cost": 0,
+      "speed": "Slow",
+      "range": "0",
+      "target": "Any",
+      "elements": [
+        "Sun",
+        "Water",
+        "Animal"
+      ],
+      "description": "Gather up to 2 Dahan. If there are now at least 2 Dahan, add 1 Dahan and gain 1 Energy.",
+      "effects": [
+        "Move Dahan",
+        "Create Dahan"
+      ]
+    },
+    {
+      "id": 137,
+      "set": "Basegame",
+      "category": "Unique Power",
+      "spirit": "River Surges in Sunlight",
+      "name": "Wash Away",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Water",
+        "Earth"
+      ],
+      "description": "Push up to 3 Explorer / Town",
+      "effects": [
+        "Move Explorers",
+        "Move Towns"
+      ]
+    },
+    {
+      "id": 138,
+      "set": "Basegame",
+      "category": "Unique Power",
+      "spirit": "River Surges in Sunlight",
+      "name": "Flash Floods",
+      "cost": 2,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Sun",
+        "Water"
+      ],
+      "description": "1 Damage. If target land is Coastal, +1 Damage.",
+      "effects": [
+        "Damage"
+      ]
+    },
+    {
+      "id": 139,
+      "set": "Promo",
+      "category": "Unique Power",
+      "spirit": "Serpent Slumbering Beneath the Island",
+      "name": "Gift of the Primordial Deeps",
+      "cost": 1,
+      "speed": "Fast",
+      "range": "N/A",
+      "target": "Another Spirit",
+      "elements": [
+        "Moon",
+        "Earth"
+      ],
+      "description": "Target Spirit gains a Minor Power. Target Spirit chooses to either: Play it immediately by paying its cost. -or- Gain 1 Moon and 1 Earth.",
+      "effects": [
+        "Gain Power",
+        "Element Support"
+      ]
+    },
+    {
+      "id": 140,
+      "set": "Promo",
+      "category": "Unique Power",
+      "spirit": "Serpent Slumbering Beneath the Island",
+      "name": "Gift of Flowing Power",
+      "cost": 1,
+      "speed": "Fast",
+      "range": "N/A",
+      "target": "Another Spirit",
+      "elements": [
+        "Fire",
+        "Water"
+      ],
+      "description": "Target Spirit gains 1 Energy. Target Spirit chooses to either: Play another Power Card by paying its cost. -or- Gain 1 Fire and 1 Water.",
+      "effects": [
+        "Energy Support",
+        "Element Support"
+      ]
+    },
+    {
+      "id": 141,
+      "set": "Promo",
+      "category": "Unique Power",
+      "spirit": "Serpent Slumbering Beneath the Island",
+      "name": "Elemental Aegis",
+      "cost": 1,
+      "speed": "Fast",
+      "range": "0",
+      "target": "Any",
+      "elements": [
+        "Fire",
+        "Water",
+        "Earth"
+      ],
+      "description": "Defend 2 in target land and all adjacent lands. For every Presence on your Deep Slumber track, Defend 1 in target land and all adjacent lands.",
+      "effects": [
+        "Defend"
+      ]
+    },
+    {
+      "id": 142,
+      "set": "Promo",
+      "category": "Unique Power",
+      "spirit": "Serpent Slumbering Beneath the Island",
+      "name": "Absorb Essence",
+      "cost": 2,
+      "speed": "Fast",
+      "range": "N/A",
+      "target": "Another Spirit",
+      "elements": [
+        "Moon",
+        "Fire",
+        "Water",
+        "Earth"
+      ],
+      "description": "Gain 3 Energy. Move 1 of target Spirit's Presence from the board to your Deep Slumber track. Target Spirit gains 1 Any and 1 Energy.",
+      "effects": [
+        "Energy Support"
+      ]
+    },
+    {
+      "id": 143,
+      "set": "Basegame",
+      "category": "Unique Power",
+      "spirit": "Shadows Flicker like Flame",
+      "name": "Concealing Shadows",
+      "cost": 0,
+      "speed": "Fast",
+      "range": "0",
+      "target": "Any",
+      "elements": [
+        "Moon",
+        "Air"
+      ],
+      "description": "1 Fear. Dahan take no damage from Ravaging Invaders this turn.",
+      "effects": [
+        "Fear",
+        "Defend Dahan"
+      ]
+    },
+    {
+      "id": 144,
+      "set": "Basegame",
+      "category": "Unique Power",
+      "spirit": "Shadows Flicker like Flame",
+      "name": "Favors Called Due",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Moon",
+        "Air",
+        "Animal"
+      ],
+      "description": "Gather up to 4 Dahan. If Invaders are present and Dahan now outnumber them, 3 Fear.",
+      "effects": [
+        "Move Dahan",
+        "Fear"
+      ]
+    },
+    {
+      "id": 145,
+      "set": "Basegame",
+      "category": "Unique Power",
+      "spirit": "Shadows Flicker like Flame",
+      "name": "Mantle of Dread",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "N/A",
+      "target": "Any Spirit",
+      "elements": [
+        "Moon",
+        "Fire",
+        "Air"
+      ],
+      "description": "2 Fear. Target Spirit may Push 1 Explorer and 1 Town from one of their lands.",
+      "effects": [
+        "Fear",
+        "Move Explorers",
+        "Move Towns"
+      ]
+    },
+    {
+      "id": 146,
+      "set": "Basegame",
+      "category": "Unique Power",
+      "spirit": "Shadows Flicker like Flame",
+      "name": "Crops Wither and Fade",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "0",
+      "target": "Any",
+      "elements": [
+        "Moon",
+        "Fire",
+        "Plant"
+      ],
+      "description": "2 Fear. Replace 1 Town with 1 Explorer. -or- Replace 1 City with 1 Town.",
+      "effects": [
+        "Fear"
+      ]
+    },
+    {
+      "id": 147,
+      "set": "Branch & Claw",
+      "category": "Unique Power",
+      "spirit": "Sharp Fangs Behind the Leaves",
+      "name": "Too Near the Jungle",
+      "cost": 0,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Plant",
+        "Animal"
+      ],
+      "description": "1 Fear. Destroy 1 Explorer.",
+      "effects": [
+        "Fear",
+        "Destroy Explorers"
+      ]
+    },
+    {
+      "id": 148,
+      "set": "Branch & Claw",
+      "category": "Unique Power",
+      "spirit": "Sharp Fangs Behind the Leaves",
+      "name": "Prey on the Builders",
+      "cost": 1,
+      "speed": "Fast",
+      "range": "0",
+      "target": "Any",
+      "elements": [
+        "Moon",
+        "Fire",
+        "Animal"
+      ],
+      "description": "You may Gather 1 Beasts. If target land has Beasts, Invaders do not Build there this turn.",
+      "effects": [
+        "Prevent Builds"
+      ]
+    },
+    {
+      "id": 149,
+      "set": "Branch & Claw",
+      "category": "Unique Power",
+      "spirit": "Sharp Fangs Behind the Leaves",
+      "name": "Teeth Gleam from Darkness",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1",
+      "target": "No Blight",
+      "elements": [
+        "Moon",
+        "Plant",
+        "Animal"
+      ],
+      "description": "1 Fear. Add 1 Beasts. -or- If target land has both Beasts and Invaders: 3 Fear.",
+      "effects": [
+        "Fear",
+        "Add Beasts"
+      ]
+    },
+    {
+      "id": 150,
+      "set": "Branch & Claw",
+      "category": "Unique Power",
+      "spirit": "Sharp Fangs Behind the Leaves",
+      "name": "Terrifying Chase",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "0",
+      "target": "Any",
+      "elements": [
+        "Sun",
+        "Animal"
+      ],
+      "description": "Push 2 Explorer / Town / Dahan. Push another 2 Explorer / Town / Dahan per Beasts in target land. If you Pushed any Invaders, 2 Fear.",
+      "effects": [
+        "Move Explorers",
+        "Move Towns",
+        "Fear"
+      ]
+    },
+    {
+      "id": 151,
+      "set": "Basegame",
+      "category": "Unique Power",
+      "spirit": "Thunderspeaker",
+      "name": "Voice of Thunder",
+      "cost": 0,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Sun",
+        "Air"
+      ],
+      "description": "Push up to 4 Dahan. -or- If Invaders are Present, 2 Fear.",
+      "effects": [
+        "Move Dahan",
+        "Fear"
+      ]
+    },
+    {
+      "id": 152,
+      "set": "Basegame",
+      "category": "Unique Power",
+      "spirit": "Thunderspeaker",
+      "name": "Words of Warning",
+      "cost": 1,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Dahan",
+      "elements": [
+        "Sun",
+        "Air",
+        "Animal"
+      ],
+      "description": "Defend 3. During Ravage, Dahan in target land deal damage simultaneously with Invaders.",
+      "effects": [
+        "Defend"
+      ]
+    },
+    {
+      "id": 153,
+      "set": "Basegame",
+      "category": "Unique Power",
+      "spirit": "Thunderspeaker",
+      "name": "Sudden Ambush",
+      "cost": 2,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Fire",
+        "Air",
+        "Animal"
+      ],
+      "description": "You may Gather 1 Dahan. Each Dahan destroys 1 Explorer.",
+      "effects": [
+        "Move Dahan",
+        "Destroy Explorers"
+      ]
+    },
+    {
+      "id": 154,
+      "set": "Basegame",
+      "category": "Unique Power",
+      "spirit": "Thunderspeaker",
+      "name": "Manifestation of Power and Glory",
+      "cost": 3,
+      "speed": "Slow",
+      "range": "0",
+      "target": "Dahan",
+      "elements": [
+        "Sun",
+        "Fire",
+        "Air"
+      ],
+      "description": "1 Fear. Each Dahan deals damage equal to the number of your Presence in target land.",
+      "effects": [
+        "Fear",
+        "Damage"
+      ]
+    },
+    {
+      "id": 155,
+      "set": "Basegame",
+      "category": "Unique Power",
+      "spirit": "Vital Strength of the Earth",
+      "name": "Draw of the Fruitful Earth",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Earth",
+        "Plant",
+        "Animal"
+      ],
+      "description": "Gather up to 2 Explorer. Gather up to 2 Dahan.",
+      "effects": [
+        "Move Explorers",
+        "Move Dahan"
+      ]
+    },
+    {
+      "id": 156,
+      "set": "Basegame",
+      "category": "Unique Power",
+      "spirit": "Vital Strength of the Earth",
+      "name": "Guard the Healing Land",
+      "cost": 3,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Water",
+        "Earth",
+        "Plant"
+      ],
+      "description": "Remove 1 Blight. Defend 4.",
+      "effects": [
+        "Remove Blight",
+        "Defend"
+      ]
+    },
+    {
+      "id": 157,
+      "set": "Basegame",
+      "category": "Unique Power",
+      "spirit": "Vital Strength of the Earth",
+      "name": "A Year of Perfect Stillness",
+      "cost": 3,
+      "speed": "Fast",
+      "range": "1",
+      "target": "Any",
+      "elements": [
+        "Sun",
+        "Earth"
+      ],
+      "description": "Invaders skip all Actions in target land this turn.",
+      "effects": [
+        "Skip Actions"
+      ]
+    },
+    {
+      "id": 158,
+      "set": "Basegame",
+      "category": "Unique Power",
+      "spirit": "Vital Strength of the Earth",
+      "name": "Rituals of Destruction",
+      "cost": 3,
+      "speed": "Slow",
+      "range": "1",
+      "target": "Dahan",
+      "elements": [
+        "Sun",
+        "Moon",
+        "Fire",
+        "Earth",
+        "Plant"
+      ],
+      "description": "2 Damage. If target land has at least 3 Dahan, +3 Damage and 2 Fear.",
+      "effects": [
+        "Damage",
+        "Fear"
+      ]
+    },
+    {
+      "id": 159,
+      "set": "Jagged Earth",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Hazards Spread Across The Island",
+      "cost": 0,
+      "speed": "Fast",
+      "range": "SacredSite: 2",
+      "target": "Any",
+      "elements": [
+        "Fire",
+        "Air",
+        "Earth",
+        "Plant"
+      ],
+      "description": "Choose a type of token from Badlands / Beasts / Disease / Strife / Wilds that exists in an adjacent land; choosing Disease costs 1 energy. Add 1 of that type of token to target land.",
+      "effects": []
+    },
+    {
+      "id": 160,
+      "set": "Jagged Earth",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Carapaced Land",
+      "cost": 0,
+      "speed": "Fast",
+      "range": "Presence: 0",
+      "target": "Any",
+      "elements": [
+        "Earth",
+        "Plant",
+        "Animal"
+      ],
+      "description": "If targeting a land with Beasts, this Power has +1 Range. Defend 3. -If you have- 2 Earth: Defend +3.",
+      "effects": [
+        "Defend"
+      ]
+    },
+    {
+      "id": 161,
+      "set": "Jagged Earth",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Call To Guard",
+      "cost": 0,
+      "speed": "Fast",
+      "range": "Presence: 1",
+      "target": "Any",
+      "elements": [
+        "Sun",
+        "Air",
+        "Earth"
+      ],
+      "description": "Gather up to 1 Dahan. Then, if Dahan are present, either: Defend 1 per Dahan. -or- After Invaders are added or moved to target land, 1 Damage to each added or moved Invader.",
+      "effects": [
+        "Move Dahan",
+        "Defend",
+        "Damage"
+      ]
+    },
+    {
+      "id": 162,
+      "set": "Jagged Earth",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Gift of Nature's Connection",
+      "cost": 0,
+      "speed": "Fast",
+      "range": "N/A",
+      "target": "Any Spirit",
+      "elements": [],
+      "description": "Target Spirit gains either 2 Energy or 2 of a single Element (their choice). If you target another Spirit, you gain an Element of your choice.",
+      "effects": [
+        "Energy Support",
+        "Element Support"
+      ]
+    },
+    {
+      "id": 163,
+      "set": "Jagged Earth",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Mesmerized Tranquility",
+      "cost": 0,
+      "speed": "Fast",
+      "range": "Presence: 0",
+      "target": "Any",
+      "elements": [
+        "Water",
+        "Earth",
+        "Animal"
+      ],
+      "description": "Isolate target land. Each Invader does -1 Damage.",
+      "effects": [
+        "Isolate",
+        "Defend"
+      ]
+    },
+    {
+      "id": 164,
+      "set": "Jagged Earth",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Territorial Strife",
+      "cost": 0,
+      "speed": "Slow",
+      "range": "Presence: 1",
+      "target": "City",
+      "elements": [
+        "Sun",
+        "Fire",
+        "Animal"
+      ],
+      "description": "3 Damage to Explorer / Town. -or- Add 1 Strife.",
+      "effects": [
+        "Damage",
+        "Add Strife"
+      ]
+    },
+    {
+      "id": 165,
+      "set": "Jagged Earth",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Sear Anger Into The Wild Lands",
+      "cost": 0,
+      "speed": "Slow",
+      "range": "Presence: 1",
+      "target": "Any",
+      "elements": [
+        "Sun",
+        "Fire",
+        "Plant"
+      ],
+      "description": "Add 1 Badlands. -or- If Wilds and Invaders are present, 1 Fear and 1 Damage.",
+      "effects": [
+        "Add Badlands",
+        "Fear",
+        "Damage"
+      ]
+    },
+    {
+      "id": 166,
+      "set": "Jagged Earth",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Strong And Constant Currents",
+      "cost": 0,
+      "speed": "Fast",
+      "range": "Presence: 0",
+      "target": "Coastal",
+      "elements": [
+        "Sun",
+        "Water",
+        "Earth"
+      ],
+      "description": "Push 1 Explorer / Town to an adjacent Coastal land. -or- Move up to 2 Dahan between target land and one other Coastal land. -If you have- 2 Water: You may do both.",
+      "effects": [
+        "Move Explorers",
+        "Move Towns",
+        "Move Dahan"
+      ]
+    },
+    {
+      "id": 167,
+      "set": "Jagged Earth",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Sucking Ooze",
+      "cost": 0,
+      "speed": "Fast",
+      "range": "Presence: 1",
+      "target": "Sands, Wetland",
+      "elements": [
+        "Moon",
+        "Water",
+        "Earth"
+      ],
+      "description": "2 Fear if Invaders are present. Isolate target land.",
+      "effects": [
+        "Fear",
+        "Isolate"
+      ]
+    },
+    {
+      "id": 168,
+      "set": "Jagged Earth",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Terror Turns To Madness",
+      "cost": 0,
+      "speed": "Slow",
+      "range": "Presence: 2",
+      "target": "Invaders",
+      "elements": [
+        "Moon",
+        "Air",
+        "Water"
+      ],
+      "description": "If the Terror Level is... Terror Level 1: 3 Fear. Terror Level 2: 2 Fear or add 1 Strife. Terror Level 3: Add 1 Strife.",
+      "effects": [
+        "Fear",
+        "Add Strife"
+      ]
+    },
+    {
+      "id": 169,
+      "set": "Jagged Earth",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Treacherous Waterways",
+      "cost": 0,
+      "speed": "Fast",
+      "range": "Presence: 1",
+      "target": "Mountain, Wetland",
+      "elements": [
+        "Fire",
+        "Water",
+        "Earth"
+      ],
+      "description": "Add 1 Wilds. -or- Push 1 Explorer.",
+      "effects": [
+        "Add Wilds",
+        "Move Explorers"
+      ]
+    },
+    {
+      "id": 170,
+      "set": "Jagged Earth",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Flow Downriver, Blow Downwind",
+      "cost": 0,
+      "speed": "Slow",
+      "range": "SacredSite: 2",
+      "target": "Any",
+      "elements": [
+        "Air",
+        "Water",
+        "Plant"
+      ],
+      "description": "Push up to 1 Blight / Explorer / Town.",
+      "effects": [
+        "Move Explorers",
+        "Move Towns"
+      ]
+    },
+    {
+      "id": 171,
+      "set": "Jagged Earth",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Weep For What Is Lost",
+      "cost": 0,
+      "speed": "Slow",
+      "range": "Presence: 1",
+      "target": "Blight",
+      "elements": [
+        "Fire",
+        "Water",
+        "Animal"
+      ],
+      "description": "1 Fear per type of Invader present. Push up to 1 Explorer / Town per Blight.",
+      "effects": [
+        "Fear",
+        "Move Explorers",
+        "Move Towns"
+      ]
+    },
+    {
+      "id": 172,
+      "set": "Jagged Earth",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Bats Scout For Raids By Darkness",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "Presence: 2",
+      "target": "Any",
+      "elements": [
+        "Moon",
+        "Air",
+        "Animal"
+      ],
+      "description": "For each Dahan, 1 Damage to Town / City. -or- 1 Fear. Gather up to 2 Dahan.",
+      "effects": [
+        "Damage",
+        "Fear",
+        "Move Dahan"
+      ]
+    },
+    {
+      "id": 173,
+      "set": "Jagged Earth",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Birds Cry Warning",
+      "cost": 1,
+      "speed": "Fast",
+      "range": "Presence: 3",
+      "target": "Dahan",
+      "elements": [
+        "Sun",
+        "Air",
+        "Animal"
+      ],
+      "description": "The next time Dahan would be Destroyed in target land, Destroy 2 fewer Dahan. -or- Push up to 3 Dahan.",
+      "effects": [
+        "Defend Dahan",
+        "Move Dahan"
+      ]
+    },
+    {
+      "id": 174,
+      "set": "Jagged Earth",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Blood Draws Predators",
+      "cost": 1,
+      "speed": "Fast",
+      "range": "Presence: 1",
+      "target": "Any",
+      "elements": [
+        "Sun",
+        "Fire",
+        "Water",
+        "Animal"
+      ],
+      "description": "After the next time Invaders are Destroyed in target land: Add 1 Beasts, then 1 Damage per Beasts (max. 3 Damage).",
+      "effects": [
+        "Add Beasts",
+        "Damage"
+      ]
+    },
+    {
+      "id": 175,
+      "set": "Jagged Earth",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Desiccating Winds",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "SacredSite: 1",
+      "target": "Mountain, Sands",
+      "elements": [
+        "Fire",
+        "Air",
+        "Earth"
+      ],
+      "description": "If target land has Badlands, 1 Damage. Add 1 Badlands.",
+      "effects": [
+        "Damage",
+        "Add Badlands"
+      ]
+    },
+    {
+      "id": 176,
+      "set": "Jagged Earth",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Dry Wood Explodes In Smoldering Splinters",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "Presence: 0",
+      "target": "No Wetland",
+      "elements": [
+        "Fire",
+        "Air",
+        "Plant"
+      ],
+      "description": "You may spend 1 Energy to make this Power Fast. 2 Fear. 1 Damage.",
+      "effects": [
+        "Fear",
+        "Damage"
+      ]
+    },
+    {
+      "id": 177,
+      "set": "Jagged Earth",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Entrap The Forces Of Corruption",
+      "cost": 1,
+      "speed": "Fast",
+      "range": "Presence: 1",
+      "target": "Any",
+      "elements": [
+        "Earth",
+        "Plant",
+        "Animal"
+      ],
+      "description": "Gather up to 1 Blight. Isolate target land. When Blight is added to target land, it doesn't cascade.",
+      "effects": [
+        "Isolate"
+      ]
+    },
+    {
+      "id": 178,
+      "set": "Jagged Earth",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Domesticated Animals Go Berserk",
+      "cost": 1,
+      "speed": "Fast",
+      "range": "Presence: 0",
+      "target": "Town, City",
+      "elements": [
+        "Moon",
+        "Fire",
+        "Animal"
+      ],
+      "description": "1 Fear. Defend 5. -If you have- 3 Moon: Add 1 Beasts.",
+      "effects": [
+        "Fear",
+        "Defend",
+        "Add Beasts"
+      ]
+    },
+    {
+      "id": 179,
+      "set": "Jagged Earth",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Dire Metamorphosis",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "Presence: 1",
+      "target": "Any",
+      "elements": [
+        "Moon",
+        "Air",
+        "Earth",
+        "Animal"
+      ],
+      "description": "1 Fear. 1 Damage. 1 Damage to Dahan. Add 1 Badlands, 1 Beasts, 1 Disease, 1 Strife, 1 Wilds, and 1 Blight.",
+      "effects": [
+        "Fear",
+        "Damage"
+      ]
+    },
+    {
+      "id": 180,
+      "set": "Jagged Earth",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Skies Herald The Season Of Return",
+      "cost": 1,
+      "speed": "Fast",
+      "range": "Presence: 1",
+      "target": "Any",
+      "elements": [
+        "Sun",
+        "Moon",
+        "Plant",
+        "Animal"
+      ],
+      "description": "A Spirit with Presence on target board may add 1 of their Destroyed Presence. Gather up to 2 Dahan. Push 1 Blight.",
+      "effects": [
+        "Add Presence",
+        "Move Dahan"
+      ]
+    },
+    {
+      "id": 181,
+      "set": "Jagged Earth",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Gift of Twinned Days",
+      "cost": 1,
+      "speed": "Fast",
+      "range": "N/A",
+      "target": "Another Spirit",
+      "elements": [
+        "Sun",
+        "Moon"
+      ],
+      "description": "Once this turn, target Spirit may Repeat the lowest-cost Power Card they have in play by paying its cost again. You may do likewise.",
+      "effects": [
+        "Card Play Support"
+      ]
+    },
+    {
+      "id": 182,
+      "set": "Jagged Earth",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Haunted By Primal Memories",
+      "cost": 1,
+      "speed": "Fast",
+      "range": "SacredSite: 2",
+      "target": "Invaders",
+      "elements": [
+        "Moon",
+        "Air",
+        "Earth"
+      ],
+      "description": "1 Fear. Defend 3. If Beasts are present, +2 Fear.",
+      "effects": [
+        "Fear",
+        "Defend"
+      ]
+    },
+    {
+      "id": 183,
+      "set": "Jagged Earth",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Like Calls to Like",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "Presence: 1",
+      "target": "Any",
+      "elements": [
+        "Sun",
+        "Water",
+        "Plant"
+      ],
+      "description": "If target land has Explorer, Gather up to 1 Explorer. Do likewise for Town, Dahan, Blight, and Beasts.",
+      "effects": [
+        "Move Explorers",
+        "Move Towns",
+        "Move Dahan"
+      ]
+    },
+    {
+      "id": 184,
+      "set": "Jagged Earth",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Unquenchable Flames",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "SacredSite: 2",
+      "target": "Any",
+      "elements": [
+        "Moon",
+        "Fire",
+        "Earth"
+      ],
+      "description": "1 Fear. 1 Damage to Town / City. Invaders do not heal Damage at end of turn. -If you have- 2 Fire: Add 1 Badlands.",
+      "effects": [
+        "Fear",
+        "Damage",
+        "Add Badlands"
+      ]
+    },
+    {
+      "id": 185,
+      "set": "Jagged Earth",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Renewing Boon",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "N/A",
+      "target": "Another Spirit",
+      "elements": [
+        "Sun",
+        "Earth",
+        "Plant"
+      ],
+      "description": "Choose a land where you and target Spirit both have Presence. In that land: Remove 1 Blight, and target Spirit may add 1 of their Destroyed Presence.",
+      "effects": [
+        "Remove Blight",
+        "Add Presence"
+      ]
+    },
+    {
+      "id": 186,
+      "set": "Jagged Earth",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Scream Disease Into The Wind",
+      "cost": 1,
+      "speed": "Fast",
+      "range": "N/A",
+      "target": "Another Spirit",
+      "elements": [
+        "Air",
+        "Water",
+        "Animal"
+      ],
+      "description": "Target Spirit gets +1 Range with all their Powers. Once this turn, after target Spirit uses a Power targeting a land, they may add 1 Disease to that land.",
+      "effects": [
+        "Range Support",
+        "Add Disease"
+      ]
+    },
+    {
+      "id": 187,
+      "set": "Jagged Earth",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Set Them On An Ever-Twisting Trail",
+      "cost": 1,
+      "speed": "Fast",
+      "range": "SacredSite: 1",
+      "target": "Any",
+      "elements": [
+        "Air",
+        "Plant",
+        "Animal"
+      ],
+      "description": "Gather or Push 1 Explorer. Isolate target land.",
+      "effects": [
+        "Move Explorers",
+        "Isolate"
+      ]
+    },
+    {
+      "id": 188,
+      "set": "Jagged Earth",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Sunset's Fire Flows Across The Land",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "SacredSite: 1",
+      "target": "Any",
+      "elements": [
+        "Sun",
+        "Moon",
+        "Fire",
+        "Water"
+      ],
+      "description": "1 Fear. 1 Damage. You may pay 1 Energy to deal 1 Damage in an adjacent land.",
+      "effects": [
+        "Fear",
+        "Damage"
+      ]
+    },
+    {
+      "id": 189,
+      "set": "Jagged Earth",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "The Shore Seethes With Hatred",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "Presence: 1",
+      "target": "Coastal",
+      "elements": [
+        "Fire",
+        "Water",
+        "Earth",
+        "Plant"
+      ],
+      "description": "1 Fear. Add 1 Badlands and 1 Wilds.",
+      "effects": [
+        "Fear",
+        "Add Badlands",
+        "Add Wilds"
+      ]
+    },
+    {
+      "id": 190,
+      "set": "Jagged Earth",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Thriving Chokefungus",
+      "cost": 1,
+      "speed": "Slow",
+      "range": "SacredSite: 1",
+      "target": "Jungle, Wetland",
+      "elements": [
+        "Moon",
+        "Water",
+        "Plant"
+      ],
+      "description": "Add 1 Disease and 1 Badlands.",
+      "effects": [
+        "Add Disease",
+        "Add Badlands"
+      ]
+    },
+    {
+      "id": 191,
+      "set": "Jagged Earth",
+      "category": "Minor Power",
+      "spirit": "",
+      "name": "Favor Of The Sun And Star-Lit Dark",
+      "cost": 1,
+      "speed": "Fast",
+      "range": "SacredSite: 1",
+      "target": "Any",
+      "elements": [
+        "Sun",
+        "Moon",
+        "Plant"
+      ],
+      "description": "Defend 4. Push up to 1 Blight. -If you have- 2 Sun: 1 Fear",
+      "effects": [
+        "Defend",
+        "Fear"
+      ]
+    },
+    {
+      "id": 192,
+      "set": "Jagged Earth",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Unleash a Torrent of the Self's Own Essence",
+      "cost": 2,
+      "speed": "Fast",
+      "range": "N/A",
+      "target": "Yourself",
+      "elements": [
+        "Sun",
+        "Moon",
+        "Fire",
+        "Water"
+      ],
+      "description": "Gain 4 energy. You may forget a power card to gain 4 more energy. -or- Pay X energy (min. 1) to deal X damage in a land at 0 Range. -If you have- 2 Sun, 3 Fire: You may do both.",
+      "effects": [
+        "Energy Support",
+        "Damage"
+      ]
+    },
+    {
+      "id": 193,
+      "set": "Jagged Earth",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Bargains of Power and Protection",
+      "cost": 2,
+      "speed": "Fast",
+      "range": "Presence: 0",
+      "target": "Dahan",
+      "elements": [
+        "Sun",
+        "Water",
+        "Earth",
+        "Animal"
+      ],
+      "description": "Remove 1 of your Presence on the island from the game. From now on: each Dahan within 1 Range of your Presence provides Defend 1 in its land, and you gain 1 less Energy each turn. -If you have- 3 Sun, 2 Water, 2 Earth: The Presence instead comes from your Presence track.",
+      "effects": [
+        "Defend"
+      ]
+    },
+    {
+      "id": 194,
+      "set": "Jagged Earth",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Angry Bears",
+      "cost": 3,
+      "speed": "Slow",
+      "range": "Presence: 0",
+      "target": "Any",
+      "elements": [
+        "Sun",
+        "Fire",
+        "Animal"
+      ],
+      "description": "2 Fear. 2 Damage. If no Beasts are present, add 1 Beasts. Otherwise, +2 Damage, and Push up to 1 Beasts. -If you have- 2 Fire, 3 Animal: 1 Fear and destroy 1 Explorer / Town in an adjacent land with Beasts.",
+      "effects": [
+        "Fear",
+        "Damage",
+        "Add Beasts"
+      ]
+    },
+    {
+      "id": 195,
+      "set": "Jagged Earth",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Vanish Softly Away, Forgotten by All",
+      "cost": 3,
+      "speed": "Slow",
+      "range": "Presence: 2",
+      "target": "Any",
+      "elements": [
+        "Moon",
+        "Air"
+      ],
+      "description": "Remove 1 Invader and 1 Explorer / Town. -or- Remove all Damaged Invaders. -If you have- 3 Moon, 3 Air: In any 2 lands with 4 or more Invaders: Remove 1 Invader.",
+      "effects": []
+    },
+    {
+      "id": 196,
+      "set": "Jagged Earth",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Settle Into Hunting-Grounds",
+      "cost": 3,
+      "speed": "Fast",
+      "range": "N/A",
+      "target": "Yourself",
+      "elements": [
+        "Moon",
+        "Fire",
+        "Plant",
+        "Animal"
+      ],
+      "description": "Your Presence may count as Badlands and Beasts. Your Presence cannot move. -If you have- 2 Plant, 3 Animal: 2 Fear and 2 Damage in one of your lands.",
+      "effects": [
+        "Fear",
+        "Damage"
+      ]
+    },
+    {
+      "id": 197,
+      "set": "Jagged Earth",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Voice of Command",
+      "cost": 3,
+      "speed": "Fast",
+      "range": "SacredSite: 1",
+      "target": "Dahan",
+      "elements": [
+        "Sun",
+        "Air"
+      ],
+      "description": "1 Damage per Dahan / Explorer, to Town / City only. Defend 2. During Ravage actions, Explorer fight alongside Dahan. -If you have- 3 Sun, 2 Air: First, Gather up to 2 Explorer / Town / Dahan",
+      "effects": [
+        "Damage",
+        "Defend"
+      ]
+    },
+    {
+      "id": 198,
+      "set": "Jagged Earth",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Storm-Swath",
+      "cost": 3,
+      "speed": "Slow",
+      "range": "SacredSite: 1",
+      "target": "Any",
+      "elements": [
+        "Fire",
+        "Air",
+        "Water"
+      ],
+      "description": "2 Fear. In both origin land and target land: 1 Damage to each Invader. -If you have- 2 Fire, 3 Air, 2 Water: +1 Fear. This Power has +1 Range. In a land adjacent to both origin and target, 1 Damage to each Invader. In lands where you did Damage, destroy 1 town.",
+      "effects": [
+        "Fear",
+        "Damage"
+      ]
+    },
+    {
+      "id": 199,
+      "set": "Jagged Earth",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Sleep and Never Waken",
+      "cost": 3,
+      "speed": "Fast",
+      "range": "Presence on Sands: 2",
+      "target": "Any",
+      "elements": [
+        "Moon",
+        "Air",
+        "Earth",
+        "Animal"
+      ],
+      "description": "Invaders skip all Actions in target land. 1 Fear per 2 Explorer this Power removes. Remove up to 2 Explorer. -If you have- 3 Moon, 2 Air, 2 Animal: Remove up to 6 Explorer from among your lands.",
+      "effects": [
+        "Skip Actions",
+        "Fear"
+      ]
+    },
+    {
+      "id": 200,
+      "set": "Jagged Earth",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Trees Radiate Celestial Brilliance",
+      "cost": 3,
+      "speed": "Fast",
+      "range": "Presence: 1",
+      "target": "Jungle, No Blight",
+      "elements": [
+        "Sun",
+        "Moon",
+        "Plant"
+      ],
+      "description": "3 Fear. Defend 6. Invaders skip the next build. -If you have- 3 Sun, 2 Moon, 2 Plant: 1 Damage per Sun you have.",
+      "effects": [
+        "Fear",
+        "Defend"
+      ]
+    },
+    {
+      "id": 201,
+      "set": "Jagged Earth",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Thickets Erupt with Every Touch of Breeze",
+      "cost": 3,
+      "speed": "Fast",
+      "range": "SacredSite: 2",
+      "target": "Inland",
+      "elements": [
+        "Air",
+        "Plant"
+      ],
+      "description": "2 Damage. Then either: Add 3 Wilds. -or- Remove 1 Blight. -If you have- 3 Plant: 1 Fear. +2 Damage.",
+      "effects": [
+        "Damage",
+        "Add Wilds",
+        "Remove Blight"
+      ]
+    },
+    {
+      "id": 202,
+      "set": "Jagged Earth",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Forests of Living Obsidian",
+      "cost": 4,
+      "speed": "Slow",
+      "range": "Presence: 0",
+      "target": "Any",
+      "elements": [
+        "Sun",
+        "Fire",
+        "Earth",
+        "Plant"
+      ],
+      "description": "Add 1 Badlands. Push all Dahan. 1 Damage to each Invader. If the origin land is your Sacred Site, +1 Damage to each Invader. -If you have- 2 Sun, 3 Fire, 3 Earth: Repeat this Power.",
+      "effects": [
+        "Add Badlands",
+        "Damage"
+      ]
+    },
+    {
+      "id": 203,
+      "set": "Jagged Earth",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Infestation of Venomous Spiders",
+      "cost": 4,
+      "speed": "Fast",
+      "range": "SacredSite: 2",
+      "target": "Invaders",
+      "elements": [
+        "Air",
+        "Earth",
+        "Plant",
+        "Animal"
+      ],
+      "description": "Add 1 Beasts. Gather up to 1 Beasts. For each Beasts, 1 Fear (max. 4) and Invaders skip one Action in target land. -If you have- 2 Air, 2 Earth, 3 Animal: After this Power causes Invaders to skip an Action, 4 Damage.",
+      "effects": [
+        "Add Beasts",
+        "Fear",
+        "Skip Actions"
+      ]
+    },
+    {
+      "id": 204,
+      "set": "Jagged Earth",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Walls of Rock and Thorn",
+      "cost": 4,
+      "speed": "Fast",
+      "range": "SacredSite: 2",
+      "target": "Mountain, Jungle",
+      "elements": [
+        "Sun",
+        "Earth",
+        "Plant"
+      ],
+      "description": "2 Damage. Defend 8. Add 1 Wilds. Isolate target land. -If you have- 2 Earth, 2 Plant: +2 Damage. +2 Defend. Add 1 Badlands.",
+      "effects": [
+        "Damage",
+        "Defend",
+        "Isolate"
+      ]
+    },
+    {
+      "id": 205,
+      "set": "Jagged Earth",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "The Wounded Wild Turns on its Assailants",
+      "cost": 4,
+      "speed": "Slow",
+      "range": "Presence: 1",
+      "target": "Blight",
+      "elements": [
+        "Fire",
+        "Plant",
+        "Animal"
+      ],
+      "description": "Add 2 Badlands. Gather up to 2 Beasts. 1 Damage per Blight / Beasts / Wilds. -If you have- 2 Fire, 3 Plant, 2 Animal: 2 Fear per Invader destroyed by the Power (max. 8 Fear).",
+      "effects": [
+        "Add Badlands",
+        "Damage",
+        "Fear"
+      ]
+    },
+    {
+      "id": 206,
+      "set": "Jagged Earth",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Utter a Curse of Dread and Bone",
+      "cost": 4,
+      "speed": "Slow",
+      "range": "SacredSite: 1",
+      "target": "Any",
+      "elements": [
+        "Moon",
+        "Animal"
+      ],
+      "description": "For each Blight in / adjacent to target land, add 1 Badlands, 1 Disease, or 1 Strife. (Max. +3 of each.) Then: 2 Fear. 1 Damage. -If you have- 3 Moon, 2 Animal: For each type of token you added, add 1 more within 1 Range. 1 Damage in an adjacent land.",
+      "effects": [
+        "Fear",
+        "Damage"
+      ]
+    },
+    {
+      "id": 207,
+      "set": "Jagged Earth",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Weave Together the Fabric of Place",
+      "cost": 4,
+      "speed": "Fast",
+      "range": "SacredSite: 1",
+      "target": "Any",
+      "elements": [
+        "Sun",
+        "Moon",
+        "Air",
+        "Water",
+        "Earth"
+      ],
+      "description": "Target land and a land adjacent to it become a single land for this turn. -If you have- 4 Air: Isolate the joined land. If it has Invaders, 2 Fear, and remove up to 2 Invaders.",
+      "effects": [
+        "Isolate",
+        "Fear"
+      ]
+    },
+    {
+      "id": 208,
+      "set": "Jagged Earth",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Melt Earth into Quicksand",
+      "cost": 4,
+      "speed": "Fast",
+      "range": "Presence: 1",
+      "target": "Sands, Wetland",
+      "elements": [
+        "Moon",
+        "Water",
+        "Earth"
+      ],
+      "description": "1 Fear. 2 Damage. Isolate target land. After Invaders / Dahan are Moved into target land, Destroy them. -If you have- 2 Moon, 4 Water, 2 Earth: +4 Damage. Add 1 Badlands. Add 1 Wilds.",
+      "effects": [
+        "Fear",
+        "Damage",
+        "Isolate"
+      ]
+    },
+    {
+      "id": 209,
+      "set": "Jagged Earth",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Focus the Land's Anguish",
+      "cost": 5,
+      "speed": "Slow",
+      "range": "Presence: 1",
+      "target": "Any",
+      "elements": [
+        "Sun"
+      ],
+      "description": "If this Power Destroys any Town / City, 5 Fear. Gather up to 5 Blight. 1 Damage per Blight. -If you have- 3 Sun: +1 Damage per Blight.",
+      "effects": [
+        "Fear",
+        "Damage"
+      ]
+    },
+    {
+      "id": 210,
+      "set": "Jagged Earth",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Spill Bitterness into the Earth",
+      "cost": 5,
+      "speed": "Fast",
+      "range": "Presence: 0",
+      "target": "Any",
+      "elements": [
+        "Fire",
+        "Water",
+        "Earth"
+      ],
+      "description": "6 Damage. Add 2 Badlands / Strife and 1 Blight. In up to 3 adjacent lands with Blight, add 1 Badlands / Strife. -If you have- 3 Fire, 3 Water: In up to 3 adjacent lands, 1 Damage to each Invader.",
+      "effects": [
+        "Damage",
+        "Add Badlands",
+        "Add Strife"
+      ]
+    },
+    {
+      "id": 211,
+      "set": "Jagged Earth",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Dream of the Untouched Land",
+      "cost": 6,
+      "speed": "Fast",
+      "range": "SacredSite: 1",
+      "target": "Any",
+      "elements": [
+        "Moon",
+        "Water",
+        "Earth",
+        "Plant",
+        "Animal"
+      ],
+      "description": "Remove up to 3 Blight and up to 3 Health worth of Invaders. -If you have- 3 Moon, 2 Water, 3 Earth, 2 Plant: (Max. 1x/game) Add a random new Island Board next to target board.",
+      "effects": [
+        "Remove Blight"
+      ]
+    },
+    {
+      "id": 212,
+      "set": "Jagged Earth",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Transform to a Murderous Darkness",
+      "cost": 6,
+      "speed": "Slow",
+      "range": "N/A",
+      "target": "Any Spirit",
+      "elements": [
+        "Moon",
+        "Fire",
+        "Air",
+        "Water",
+        "Plant"
+      ],
+      "description": "Target Spirit may choose one of their Sacred Sites. In that land: Replace all their Presence with Badlands; the replaced Presence leave the game. Push any number of those Badlands. 3 Fear. 3 Damage per Presence replaced.",
+      "effects": [
+        "Fear",
+        "Damage"
+      ]
+    },
+    {
+      "id": 213,
+      "set": "Jagged Earth",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Irresistible Call",
+      "cost": 6,
+      "speed": "Fast",
+      "range": "SacredSite: 2",
+      "target": "Inland",
+      "elements": [
+        "Sun",
+        "Air",
+        "Plant"
+      ],
+      "description": "Gather 5 Town, 5 Dahan, 5 Beasts, and 15 Explorer. -If you have- 2 Sun, 3 Air, 2 Plant: Invaders skip all Actions in target land. Isolate target land.",
+      "effects": [
+        "Skip Actions",
+        "Isolate"
+      ]
+    },
+    {
+      "id": 214,
+      "set": "Jagged Earth",
+      "category": "Major Power",
+      "spirit": "",
+      "name": "Draw Towards a Consuming Void",
+      "cost": 8,
+      "speed": "Slow",
+      "range": "Presence: 0",
+      "target": "Any",
+      "elements": [],
+      "description": "Gather 1 Explorer, Town, City, Dahan, Presence, and Beasts from each adjacent land. 4 Fear. 15 Damage. 5 Damage to Dahan. Destroy 1 Presence from each Spirit. Remove 2 Beasts. -If you have no other power cards in play: Forget a Minor, Major, and Unique Power to repeat.",
+      "effects": [
+        "Fear",
+        "Damage"
+      ]
+    }
+  ],
+  "boardSetupRules": {
+    "regularBoards": [
+      "Put 1 City in the lowest-numbered land with no setup icons on each board.",
+      "Put 1 Blight in land #2 on each board (from the Blight card)."
+    ],
+    "thematicBoards": [
+      "NW board: Put 1 extra City in land #7.",
+      "W board: Put 1 extra Town in land #9.",
+      "E board: Put 1 extra Town in land #6."
+    ]
+  }
+};

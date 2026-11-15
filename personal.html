@@ -93,6 +93,7 @@
 
      Within a year, entries appear in the order they are listed, so put the
      newest first.
+     - A link is { href: "page.html", label: "Link text" } and can sit anywhere in body.
      - Several entries can share a year.
      - body mixes paragraphs (text in quotes) and pictures (the { img: ... } part)
        in the order you want them to appear.
@@ -128,7 +129,19 @@
 
     {
       year: 2026,
-      title: "Book review: Nudge",
+      title: "Spirit Island memoir",
+      tag: "games",
+      when: "November 2026",
+      body: [
+        "A campaign tracker for Spirit Island that replaces our Google Sheets file. It logs every game and turns the log into win rates, scores, adversary progress and spirit records.",
+        "Everything is saved in the browser, with a JSON backup after each game night.",
+        { href: "spirit-island/tracker/index.html", label: "Open the tracker" }
+      ]
+    },
+
+    {
+      year: 2026,
+      title: "Nudge",
       tag: "books",
       when: "October 7, 2026",
       rating: 4,
@@ -146,7 +159,7 @@
 
     {
       year: 2026,
-      title: "Book review: All Systems Red",
+      title: "All Systems Red",
       tag: "books",
       when: "September 28, 2026",
       rating: 3.5,
@@ -163,7 +176,7 @@
 
     {
       year: 2026,
-      title: "Book review: Compulsory",
+      title: "Compulsory",
       tag: "books",
       when: "September 28, 2026",
       rating: 2,
@@ -179,7 +192,7 @@
 
     {
       year: 2026,
-      title: "Book review: You Like It Darker",
+      title: "You Like It Darker",
       tag: "books",
       when: "September 11, 2026",
       rating: 5,
@@ -192,7 +205,7 @@
 
     {
       year: 2026,
-      title: "Book review: Dungeon Crawler Carl",
+      title: "Dungeon Crawler Carl",
       tag: "books",
       when: "February 27, 2026",
       rating: 5,
@@ -210,7 +223,7 @@
 
     {
       year: 2025,
-      title: "Book review: The Art of Spending Money",
+      title: "The Art of Spending Money",
       tag: "books",
       rating: 5,
       body: [
@@ -225,7 +238,7 @@
 
     {
       year: 2025,
-      title: "Book review: Freakonomics",
+      title: "Freakonomics",
       tag: "books",
       rating: 5,
       body: [
@@ -238,10 +251,10 @@
 
     {
       year: 2023,
-      title: "Book review: And Then There Were None",
+      title: "And Then There Were None",
       tag: "books",
       when: "September 23, 2023",
-      rating: 2,
+      rating: 5,
 	  body: [
         "Review of And Then There Were None by Agatha Christie.",
         { img: "images/and-then-there-were-none.jpg", alt: "Cover of And Then There Were None by Agatha Christie", caption: "" },
@@ -330,22 +343,23 @@
         var id = 'p-' + (n++);
         var item = document.createElement('li');
 
+        var itemTag = tagEl(e.tag);
+        if (itemTag) { itemTag.classList.add('tag-block'); item.appendChild(itemTag); }
+
         var btn = document.createElement('button');
         btn.className = 'item';
         btn.setAttribute('aria-expanded', 'false');
         btn.setAttribute('aria-controls', id);
         btn.textContent = e.title;
         item.appendChild(btn);
-        var meta = document.createElement('div');
-        meta.className = 'item-meta';
-        if (typeof e.rating === 'number') meta.appendChild(stars(e.rating, true));
-        var itemTag = tagEl(e.tag);
-        if (itemTag) meta.appendChild(itemTag);
-        if (meta.childNodes.length) item.appendChild(meta);
+        if (typeof e.rating === 'number') item.appendChild(stars(e.rating, true));
 
         var detail = document.createElement('div');
         detail.className = 'detail';
         detail.id = id;
+
+        var detailTag = tagEl(e.tag);
+        if (detailTag) { detailTag.classList.add('tag-block'); detail.appendChild(detailTag); }
 
         var h3 = document.createElement('h3');
         h3.textContent = e.title;
@@ -358,14 +372,20 @@
           detail.appendChild(where);
         }
         if (typeof e.rating === 'number') detail.appendChild(stars(e.rating, false));
-        var detailTag = tagEl(e.tag);
-        if (detailTag) detail.appendChild(detailTag);
 
         (e.body || []).forEach(function (part) {
           if (typeof part === 'string') {
             var p = document.createElement('p');
             p.textContent = part;
             detail.appendChild(p);
+          } else if (part.href) {
+            var lp = document.createElement('p');
+            var la = document.createElement('a');
+            la.href = part.href;
+            la.className = 'nd-link';
+            la.textContent = part.label || part.href;
+            lp.appendChild(la);
+            detail.appendChild(lp);
           } else {
             var fig = document.createElement('figure');
             if (part.img) {

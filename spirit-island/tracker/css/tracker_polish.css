@@ -1,0 +1,754 @@
+/* ==========================================================================
+   Spirit Island tracker: shared polish layer (loaded last, works with every theme)
+   Phone layout, focus states, touch targets, status bar, backup status.
+   Uses only the shared theme variables (--text-*, --accent-*, --border-*, --bg-*).
+   ========================================================================== */
+
+/* --- Never let one wide element scroll the whole page sideways --- */
+html, body { max-width: 100%; overflow-x: clip; }
+img { max-width: 100%; }
+.table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+/* Grid children may shrink below their content width (stops cards blowing out the grid) */
+.zen-grid-2 > *, .zen-card, .pantheon-strip > *, .zen-gauntlet-row > * { min-width: 0; }
+@media (max-width: 900px) { .zen-grid-2 { grid-template-columns: minmax(0, 1fr); } }
+
+/* --- Utilities --- */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0; border: 0;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+.skip-link {
+  position: absolute; left: 0.75rem; top: -4rem; z-index: 1000000;
+  background: var(--btn-bg, #14221A); color: var(--btn-text, #fff);
+  padding: 0.6rem 1rem; border-radius: 4px; font-size: 13px; text-decoration: none;
+}
+.skip-link:focus { top: 0.75rem; }
+
+/* --- Visible keyboard focus everywhere --- */
+:focus-visible {
+  outline: 2px solid var(--accent-emerald, #2C5E43);
+  outline-offset: 2px;
+}
+.import-label:has(+ input:focus-visible) {
+  outline: 2px solid var(--accent-emerald, #2C5E43);
+  outline-offset: 2px;
+}
+
+/* --- Status bar (replaces the mockup switcher) --- */
+.status-bar {
+  position: relative; z-index: 1;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 0.5rem 1rem; flex-wrap: wrap;
+  padding: 0.45rem 1.25rem;
+  font-size: 12px;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.status-bar-themes { display: flex; gap: 0.35rem 0.9rem; flex-wrap: wrap; align-items: center; }
+.status-bar a { color: var(--text-secondary); text-underline-offset: 3px; }
+.status-bar a:hover { color: var(--text-primary); }
+.status-bar .sync-pill { color: var(--text-secondary); }
+.status-bar #syncStatusText { color: inherit; }
+
+.player-filter-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+.player-filter-bar label {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+.player-filter-bar .select-input {
+  font-size: 12px;
+  padding: 0.22rem 0.65rem;
+  min-height: 28px;
+  border-radius: 999px;
+}
+
+/* --- 3-way Theme Switcher in Status Bar --- */
+.theme-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+.theme-pill {
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 11.5px;
+  font-weight: 500;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.theme-pill:hover {
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+}
+.theme-pill.active {
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  border-color: var(--btn-bg);
+  font-weight: 600;
+}
+
+/* --- Adversary pillars are real buttons now --- */
+button.zen-pillar {
+  font-family: inherit;
+  line-height: 1.3;
+  cursor: pointer;
+  min-height: 32px;
+  width: 100%;
+}
+.zen-gauntlet-rate { font-size: 12.5px; white-space: nowrap; }
+
+/* --- Backup status line in Settings --- */
+.backup-status {
+  font-size: 12.5px;
+  margin: 0 0 1rem;
+  padding: 0.55rem 0.75rem;
+  border-left: 3px solid var(--border-subtle);
+  color: var(--text-secondary);
+}
+.backup-status[data-state="warn"] { border-left-color: var(--accent-gold); color: var(--text-primary); }
+.backup-status[data-state="ok"] { border-left-color: var(--accent-emerald); }
+.import-label { cursor: pointer; }
+
+/* --- Tabular figures wherever numbers are compared --- */
+.zen-table td, .zen-pillar, .zen-spirit-stat, .zf-num { font-variant-numeric: tabular-nums; }
+
+/* ==========================================================================
+   Phones and small tablets
+   ========================================================================== */
+@media (max-width: 720px) {
+  .zen-wrap, .zen-container { padding: 1.5rem 1rem 4rem; }
+
+  .zen-header { margin-bottom: 2rem; }
+  .zen-header h1 { font-size: 30px; }
+
+  /* Tabs: one swipeable row instead of a pill wider than the screen */
+  .zen-nav, .zen-nav-bar {
+    display: flex;
+    max-width: 100%;
+    gap: 0.25rem;
+    padding: 0.35rem 0.5rem;
+    border-radius: 10px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+  }
+  .zen-nav::-webkit-scrollbar, .zen-nav-bar::-webkit-scrollbar { display: none; }
+  .zen-nav-btn {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    min-height: 44px;
+    padding: 0.5rem 0.75rem;
+    font-size: 13px;
+    scroll-snap-align: center;
+  }
+  .zen-nav-btn.active::after { bottom: 0.2rem; left: 0.75rem; right: 0.75rem; }
+
+  .zen-header-actions { flex-wrap: wrap; }
+  .zen-header-actions .btn, .zen-header-actions .btn-zen, .btn-zen, .btn-motes-toggle { min-height: 44px; }
+
+  .zen-figures { gap: 1.25rem 0.75rem; margin-bottom: 2.5rem; }
+  .zf-num { font-size: 38px; }
+
+  .zen-section-label { flex-wrap: wrap; gap: 0.2rem 1rem; letter-spacing: 0.12em; }
+
+  .pantheon-strip { gap: 0.75rem; margin-bottom: 2.5rem; }
+  .zen-spirit-card { padding: 0.9rem; }
+  .zen-spirit-stat { flex-direction: column; gap: 0.15rem; }
+
+  /* Adversary rows: name and win rate on one line, the seven levels below at full width */
+  .zen-gauntlet-row {
+    grid-template-columns: 1fr auto;
+    gap: 0.5rem 0.75rem;
+    padding: 0.85rem 0;
+  }
+  .zen-gauntlet-name { font-size: 16px; }
+  .zen-pillars { grid-column: 1 / -1; gap: 0.3rem; }
+  button.zen-pillar { min-height: 44px; padding: 0.3rem 0.1rem; font-size: 11px; }
+
+  .zen-card { padding: 1.1rem; margin-bottom: 1.75rem; }
+  .dossier-hero { grid-template-columns: minmax(0, 1fr); gap: 0.85rem; }
+  .dossier-hero .spirit-portrait-frame { max-width: 140px; }
+  #view-matches .select-input { flex: 1 1 calc(50% - 0.5rem); min-width: 0; min-height: 44px; }
+  #view-matches .text-input { min-width: 0 !important; flex: 1 1 100%; min-height: 44px; }
+  .filter-outcome-pill { min-height: 40px; }
+
+  /* Game log as stacked cards on phones (no sideways table scroll) */
+  #view-matches .table-wrap { overflow-x: visible; }
+  #view-matches .zen-table,
+  #view-matches .zen-table tbody { display: block; width: 100%; }
+  #view-matches .zen-table thead { display: none; }
+  #view-matches .zen-table tbody { display: flex; flex-direction: column; gap: 0.75rem; }
+  #view-matches .zen-table tr.reckoning-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.45rem 0.6rem;
+    padding: 0.9rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+  }
+  #view-matches .zen-table tr.reckoning-row td {
+    display: block;
+    padding: 0;
+    border-bottom: none;
+    white-space: normal !important;
+    max-width: none !important;
+  }
+  #view-matches .zen-table tr.reckoning-row td:nth-child(1) { order: 1; font-size: 0.8rem; }
+  #view-matches .zen-table tr.reckoning-row td:nth-child(2) { order: 2; font-size: 0.8rem; color: var(--text-secondary); }
+  #view-matches .zen-table tr.reckoning-row td:nth-child(3) { order: 3; }
+  #view-matches .zen-table tr.reckoning-row td:nth-child(6) { order: 4; }
+  #view-matches .zen-table tr.reckoning-row td:nth-child(8) { order: 5; margin-left: auto; font-size: 1.05rem !important; }
+  #view-matches .zen-table tr.reckoning-row td:nth-child(4) { order: 6; flex: 1 0 100%; display: flex; flex-wrap: wrap; gap: 0.35rem; padding-top: 0.2rem; }
+  #view-matches .zen-table tr.reckoning-row td:nth-child(5) { order: 7; flex: 1 0 100%; }
+  #view-matches .zen-table tr.reckoning-row td:nth-child(7) { order: 8; flex: 1 0 100%; }
+  #view-matches .zen-table tr.reckoning-row td:nth-child(9) { order: 9; flex: 1 0 100%; font-style: italic; }
+  #view-matches .zen-table tr.reckoning-row td:nth-child(9):empty { display: none; }
+  #view-matches .zen-table tr.reckoning-row td:nth-child(10) {
+    order: 10;
+    flex: 1 0 100%;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    padding-top: 0.45rem;
+    margin-top: 0.15rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+  #view-matches .zen-table tr.reckoning-row td:nth-child(10) .btn { min-height: 38px; min-width: 44px; }
+  #view-settings button { white-space: nowrap; }
+  .dossier-combobox-wrapper { min-width: 0; max-width: none; }
+  .zen-grid-2 { gap: 1.25rem; margin-bottom: 1.75rem; }
+
+  .modal-backdrop { padding: 0; align-items: flex-end; }
+  .modal-zen {
+    max-height: 94vh; max-height: 94dvh;
+    padding: 1.25rem 1rem;
+    border-radius: 12px 12px 0 0;
+    border-left: 0; border-right: 0; border-bottom: 0;
+  }
+  /* 16px inputs stop iOS from zooming the page when a field gets focus */
+  .modal-zen input, .modal-zen select, .modal-zen textarea,
+  .zen-wrap input, .zen-wrap select, .zen-container input, .zen-container select { font-size: 16px; }
+
+  .status-bar { padding: 0.45rem 1rem; }
+  .theme-pill { min-height: 36px; padding: 0.3rem 0.75rem; font-size: 12px; }
+}
+
+@media (hover: none) {
+  /* No sticky hover lift on touch screens */
+  .zen-spirit-card:hover, .zen-pillar:hover, .spirit-card:hover, .reckoning-row:hover { transform: none; }
+}
+
+/* Spirit thumbnails in Achievements / Mastery Seals matrix */
+.matrix-table th.rotate-header {
+  max-height: 230px;
+  font-size: 0.72rem;
+}
+/* Frozen first column so row labels stay visible while the grid scrolls sideways */
+.matrix-table th:first-child,
+.matrix-table td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: var(--bg-deep);
+  box-shadow: 1px 0 0 var(--border-subtle);
+}
+.ach-header-inner {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.ach-spirit-thumb {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  border-radius: 5px;
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+.matrix-table th.rotate-header .ach-spirit-thumb {
+  transform: rotate(180deg);
+}
+.ach-spirit-thumb img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+
+/* ==========================================================================
+   Achievements: spirit cards (General and Adversary tabs)
+   ========================================================================== */
+#achievementsMatrixContainer.ach-flat {
+  border: 0 !important;
+  background: none !important;
+  padding: 0 !important;
+}
+.ach-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 0.85rem;
+  margin-bottom: 1.25rem;
+}
+.ach-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 36px;
+  padding: 0.35rem 0.85rem;
+  font-size: 13px;
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 999px;
+  cursor: pointer;
+}
+.ach-check input { accent-color: var(--accent-emerald); }
+.ach-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+.ach-controls .btn-zen { margin-left: auto; }
+.ach-controls [hidden] { display: none !important; }
+.ach-count { font-size: 12.5px; color: var(--text-secondary); margin: 0 0 0.85rem; }
+.ach-empty { padding: 2rem 0; color: var(--text-secondary); text-align: center; }
+
+.ach-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1rem;
+  align-items: start;
+}
+.ach-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  min-width: 0;
+  padding: 1rem;
+  border: 1.5px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+}
+.ach-name {
+  margin: 0;
+  font-family: 'Newsreader', Georgia, serif;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--text-primary);
+  overflow-wrap: anywhere;
+}
+.ach-sub { margin-top: 0.15rem; font-size: 12px; color: var(--text-secondary); }
+
+/* Overall spirit mastery ring (same component on both tabs) */
+.ach-ring-wrap { display: flex; flex-direction: column; align-items: center; gap: 0.25rem; }
+.ach-ring {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: conic-gradient(var(--accent-emerald) calc(var(--p) * 1%), var(--border-subtle) 0);
+}
+.ach-ring::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border-radius: 50%;
+  background: var(--bg-deep);
+}
+.ach-ring span {
+  position: relative;
+  font: 600 13px/1 'JetBrains Mono', monospace;
+  color: var(--text-primary);
+}
+.ach-ring-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+}
+
+.ach-summary { display: flex; flex-direction: column; gap: 0.5rem; }
+.ach-summary-label {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 12.5px;
+  color: var(--text-secondary);
+}
+.ach-summary-label strong { color: var(--text-primary); font-variant-numeric: tabular-nums; }
+.ach-pips { display: grid; grid-template-columns: repeat(12, 1fr); gap: 4px; }
+.ach-pip { height: 10px; border-radius: 3px; background: var(--border-subtle); }
+.ach-pip.on { background: var(--accent-emerald); }
+
+.ach-adv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem 0.9rem; }
+.ach-adv {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-width: 0;
+  font-size: 12.5px;
+  color: var(--text-secondary);
+}
+.ach-adv .nm { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ach-adv b { font-variant-numeric: tabular-nums; color: var(--text-muted); font-weight: 600; }
+.ach-adv.on { color: var(--text-primary); }
+.ach-adv.on b { color: var(--accent-emerald); font-weight: 700; }
+
+.ach-details { border-top: 1px solid var(--border-subtle); padding-top: 0.25rem; }
+.ach-details > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 36px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  cursor: pointer;
+  list-style: none;
+}
+.ach-details > summary::-webkit-details-marker { display: none; }
+.ach-details > summary::after { content: "▾"; color: var(--text-secondary); transition: transform 0.15s ease; }
+.ach-details[open] > summary::after { transform: rotate(180deg); }
+.ach-detail { display: flex; flex-direction: column; gap: 0.9rem; padding: 0.5rem 0 0.25rem; }
+.ach-row { display: flex; justify-content: space-between; gap: 0.75rem; font-size: 13px; color: var(--text-primary); }
+.ach-status { color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+.ach-status.on { color: var(--accent-emerald); font-weight: 600; }
+.ach-block-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+  font-size: 12.5px;
+  color: var(--text-secondary);
+}
+.ach-block-label strong { color: var(--text-primary); }
+.ach-block-name { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--text-primary); font-weight: 600; }
+.ach-levels { display: grid; gap: 4px; }
+.ach-levels.l5 { grid-template-columns: repeat(5, 1fr); }
+.ach-levels.l7 { grid-template-columns: repeat(7, 1fr); }
+.ach-lvl {
+  display: grid;
+  place-items: center;
+  min-height: 30px;
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+  border: 1px dashed var(--border-subtle);
+  border-radius: 4px;
+}
+.ach-lvl.on { background: var(--accent-emerald); border: 1px solid var(--accent-emerald); color: #FFFFFF; }
+[data-theme="dark"] .ach-lvl.on { color: #0C1411; }
+
+@media (max-width: 720px) {
+  .ach-controls { gap: 0.5rem; }
+  .ach-check { min-height: 44px; }
+  .ach-controls .btn-zen { margin-left: 0; }
+  /* Tabs become one swipeable row; sort and Expand all share a line */
+  #achSubNav { display: flex; flex-wrap: nowrap; max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+  #achSubNav::-webkit-scrollbar { display: none; }
+  #achSubNav .sub-nav-btn { flex: 0 0 auto; white-space: nowrap; min-height: 44px; }
+  .ach-sort { flex: 1 1 60%; min-width: 0; }
+  .ach-sort select { flex: 1; min-width: 0; min-height: 44px; }
+  .ach-controls .btn-zen { min-height: 44px; }
+  .ach-grid { grid-template-columns: minmax(0, 1fr); }
+  .ach-details > summary { min-height: 44px; }
+}
+
+/* Dark scheme: filled green marks in the Synergy and Scenario grids need dark text */
+[data-theme="dark"] .ach-done { color: #0C1411; }
+
+/* ==========================================================================
+   Achievements: spirit cards with art, all four sub-tabs
+   ========================================================================== */
+.ach-card { position: relative; overflow: hidden; background: var(--bg-card); }
+.ach-hero {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  align-items: center;
+  min-height: 132px;
+  margin: -1rem -1rem 0;
+  padding: 1rem;
+  overflow: hidden;
+}
+.ach-art {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 22%;
+  pointer-events: none;
+  transform: translate3d(calc(var(--mx, 0) * 1px), calc(var(--my, 0) * 1px), 0) scale(1.07);
+  transition: transform 0.35s ease-out, filter 1.2s ease, opacity 1.2s ease;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 34%, rgba(0, 0, 0, 0.96) 100%);
+          mask-image: linear-gradient(to right, transparent 0%, transparent 34%, rgba(0, 0, 0, 0.96) 100%);
+}
+.ach-hero-text { min-width: 0; max-width: 62%; }
+.ach-name {
+  margin: 0;
+  font-family: 'Newsreader', Georgia, serif;
+  font-size: 19px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--text-primary);
+  overflow-wrap: anywhere;
+}
+.ach-hero .ach-ring-wrap {
+  padding: 0.4rem 0.5rem 0.3rem;
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--bg-card) 82%, transparent);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+}
+.ach-card.asleep .ach-art { filter: grayscale(1); opacity: 0.5; }
+.ach-card.asleep .ach-name { color: var(--text-secondary); }
+.ach-newline {
+  margin: -0.2rem 0 0;
+  padding: 0.4rem 0.6rem;
+  font-size: 12.5px;
+  line-height: 1.35;
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--accent-gold) 16%, var(--bg-card));
+  border: 1px solid color-mix(in srgb, var(--accent-gold) 55%, transparent);
+  border-radius: var(--radius-md, 6px);
+}
+.ach-newline[hidden] { display: none; }
+
+/* meter, synergy teammates, scenario icons */
+.ach-meter { height: 8px; border-radius: 999px; background: var(--border-subtle); overflow: hidden; }
+.ach-meter span { display: block; height: 100%; background: var(--accent-emerald); border-radius: 999px; }
+.ach-mates { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.35rem 0.7rem; }
+.ach-mate { display: flex; align-items: center; gap: 0.45rem; min-width: 0; font-size: 12.5px; color: var(--text-secondary); opacity: 0.72; }
+.ach-mate.on { color: var(--text-primary); opacity: 1; }
+.ach-mate span { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ach-mate b { font-weight: 700; color: var(--text-muted); }
+.ach-mate.on b { color: var(--accent-emerald); }
+.ach-mate-img { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border-subtle); flex-shrink: 0; }
+.ach-mate:not(.on) .ach-mate-img { filter: grayscale(1); }
+.ach-scn-strip { display: flex; flex-wrap: wrap; gap: 6px; }
+.ach-scn { display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border-subtle); opacity: 0.4; filter: grayscale(1); }
+.ach-scn.on { opacity: 1; filter: none; border-color: var(--accent-emerald); }
+.ach-detail small { color: var(--text-secondary); }
+
+/* motion (everything below is skipped with reduced motion) */
+@media (prefers-reduced-motion: no-preference) {
+  .ach-card { transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease; }
+  .ach-card.waking .ach-art { animation: ach-wake 1.9s ease-out; }
+  .ach-card.waking .ach-hero::after {
+    content: ""; position: absolute; inset: -25%; z-index: 0; pointer-events: none;
+    background: radial-gradient(ellipse at 30% 50%, rgba(255, 255, 255, 0.9), transparent 55%), radial-gradient(ellipse at 75% 45%, rgba(255, 255, 255, 0.7), transparent 52%);
+    animation: ach-mist 1.9s ease-out forwards;
+  }
+  .ach-card.fx-new { animation: ach-glow 2.4s ease-out; }
+  .ach-card .fx-pop { animation: ach-pop 0.6s cubic-bezier(0.3, 1.7, 0.5, 1); }
+  .ach-card .fx-pop::after {
+    content: ""; position: absolute; inset: -3px; border-radius: inherit; pointer-events: none;
+    border: 2px solid var(--accent-gold); box-shadow: 0 0 10px var(--accent-gold);
+    animation: ach-ring 1s ease-out forwards;
+  }
+  .ach-pip, .ach-lvl, .ach-adv, .ach-mate, .ach-scn { position: relative; }
+  .ach-card:hover { box-shadow: 0 8px 22px rgba(20, 34, 26, 0.14); }
+}
+@keyframes ach-wake { 0% { filter: grayscale(1) brightness(0.8); opacity: 0.35; } 55% { filter: grayscale(0) brightness(1.15); opacity: 1; } 100% { filter: none; opacity: 1; } }
+@keyframes ach-mist { 0% { opacity: 0.95; transform: none; } 100% { opacity: 0; transform: translateX(14%) scale(1.25); } }
+@keyframes ach-glow { 0% { box-shadow: 0 0 0 3px var(--accent-gold), 0 0 26px var(--accent-gold); } 100% { box-shadow: 0 0 0 0 transparent, 0 0 0 transparent; } }
+@keyframes ach-pop { from { transform: scale(0.5); } }
+@keyframes ach-ring { 0% { opacity: 1; transform: scale(0.85); } 100% { opacity: 0; transform: scale(2.6); } }
+
+@media (max-width: 720px) {
+  .ach-hero { min-height: 118px; }
+  .ach-hero-text { max-width: 66%; }
+  .ach-art {
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 46%, rgba(0, 0, 0, 0.96) 100%);
+            mask-image: linear-gradient(to right, transparent 0%, transparent 46%, rgba(0, 0, 0, 0.96) 100%);
+  }
+  .ach-mates { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+}
+
+/* toast with an action button (undo) */
+.toast { display: flex; align-items: center; gap: 0.6rem; pointer-events: auto; }
+.toast-action {
+  margin-left: 0.4rem;
+  min-height: 32px;
+  padding: 0.25rem 0.8rem;
+  font: inherit;
+  font-weight: 700;
+  color: var(--text-primary);
+  background: transparent;
+  border: 1.5px solid var(--accent-emerald);
+  border-radius: 999px;
+  cursor: pointer;
+}
+.toast-action:hover { background: color-mix(in srgb, var(--accent-emerald) 14%, transparent); }
+
+/* ==========================================================================
+   Print summary (1 to 2 A4 pages). Built by js/views/print.js.
+   ========================================================================== */
+#printSheet { display: none; }
+@media print {
+  @page { size: A4; margin: 12mm; }
+  html, body { background: #fff !important; color: #111 !important; }
+  body > *:not(#printSheet) { display: none !important; }
+  #printSheet {
+    display: block;
+    font: 9.5pt/1.35 'Hanken Grotesk', 'Segoe UI', Arial, sans-serif;
+    color: #111;
+  }
+  #printSheet h1 { margin: 0; font: 600 18pt 'Newsreader', Georgia, serif; }
+  #printSheet h2 { margin: 10pt 0 3pt; font: 600 11pt 'Newsreader', Georgia, serif; border-bottom: 0.75pt solid #999; padding-bottom: 1.5pt; }
+  #printSheet .ps-head p { margin: 2pt 0 8pt; color: #444; }
+  #printSheet .ps-kpis { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6pt; margin-bottom: 4pt; }
+  #printSheet .ps-kpis div { border: 0.75pt solid #999; border-radius: 3pt; padding: 4pt 5pt; }
+  #printSheet .ps-kpis b { display: block; font-size: 13pt; font-variant-numeric: tabular-nums; }
+  #printSheet .ps-kpis span { font-size: 7.5pt; color: #444; }
+  #printSheet table { width: 100%; border-collapse: collapse; font-size: 8.5pt; }
+  #printSheet th { text-align: left; font-weight: 600; color: #333; border-bottom: 0.75pt solid #666; padding: 1.5pt 3pt; }
+  #printSheet td { padding: 1.5pt 3pt; border-bottom: 0.5pt solid #ddd; vertical-align: top; }
+  #printSheet th.n, #printSheet td.n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  #printSheet .ps-cols { display: grid; grid-template-columns: 1.15fr 1fr; gap: 14pt; align-items: start; }
+  #printSheet section { break-inside: avoid; }
+  #printSheet tr { break-inside: avoid; }
+  #printSheet td.nw, #printSheet th.nw { white-space: nowrap; }
+  #printSheet .ps-note, #printSheet .ps-foot { font-size: 7.5pt; color: #555; margin-top: 3pt; }
+  #printSheet .ps-foot { margin-top: 10pt; border-top: 0.5pt solid #bbb; padding-top: 3pt; }
+}
+
+/* ==========================================================================
+   Round 2 layout fixes
+   ========================================================================== */
+
+/* Achievements: wider cards so more of the picture shows */
+.ach-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 460px), 1fr)); gap: 1.1rem; }
+.ach-hero { min-height: 156px; }
+.ach-hero-text { max-width: 52%; }
+.ach-name { font-size: 21px; }
+.ach-art {
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 18%, rgba(0, 0, 0, 0.96) 62%);
+          mask-image: linear-gradient(to right, transparent 0%, transparent 18%, rgba(0, 0, 0, 0.96) 62%);
+}
+.ach-adv-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.ach-adv { flex-direction: column; align-items: flex-start; gap: 0.15rem; }
+.ach-adv .nm { max-width: 100%; }
+.ach-asp-strip { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.ach-asp { padding: 0.15rem 0.6rem; font-size: 12.5px; color: var(--text-secondary); border: 1px solid var(--border-subtle); border-radius: 999px; }
+.ach-asp.on { color: var(--text-primary); border-color: var(--accent-emerald); }
+.ach-card { gap: 0.75rem; }
+.ach-detail-group { display: flex; flex-direction: column; gap: 0.6rem; }
+.ach-detail-group + .ach-detail-group { border-top: 1px dashed var(--border-subtle); padding-top: 0.75rem; }
+.ach-detail-h { margin: 0; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-secondary); }
+@media (max-width: 720px) {
+  .ach-grid { grid-template-columns: minmax(0, 1fr); }
+  .ach-hero { min-height: 132px; }
+  .ach-hero-text { max-width: 60%; }
+  .ach-adv-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ach-art {
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 34%, rgba(0, 0, 0, 0.96) 90%);
+            mask-image: linear-gradient(to right, transparent 0%, transparent 34%, rgba(0, 0, 0, 0.96) 90%);
+  }
+}
+
+/* Adversaries: the threat matrix gets the full width, so nothing scrolls sideways */
+.adv-single { display: block; }
+.adv-single .zen-table { width: 100%; table-layout: auto; }
+.adv-single .zen-table td, .adv-single .zen-table th { white-space: normal; }
+.adv-single .table-wrap { overflow-x: visible; }
+@media (max-width: 720px) { .adv-single .table-wrap { overflow-x: auto; } }
+
+/* Loss autopsy as a collapsed panel in the Games tab */
+.autopsy-panel { margin-bottom: 1.25rem; }
+.autopsy-panel > summary { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.25rem 1rem; cursor: pointer; list-style: none; min-height: 44px; align-content: center; }
+.autopsy-panel > summary::-webkit-details-marker { display: none; }
+.autopsy-panel > summary::after { content: "▾"; margin-left: auto; color: var(--text-secondary); transition: transform 0.15s ease; }
+.autopsy-panel[open] > summary::after { transform: rotate(180deg); }
+.autopsy-panel .zen-card-title { margin: 0; }
+.autopsy-hint { font-size: 12.5px; color: var(--text-secondary); }
+.autopsy-panel .table-wrap { margin-top: 0.9rem; overflow-x: visible; }
+
+/* Games log: each game is a compact two-line row on wide screens, so the table never scrolls sideways */
+@media (min-width: 721px) {
+  #view-matches .table-wrap { overflow-x: visible; }
+  #view-matches .zen-table, #view-matches .zen-table tbody { display: block; width: 100%; }
+  #view-matches .zen-table thead { display: none; }
+  #view-matches .zen-table tr.reckoning-row {
+    display: grid;
+    grid-template-columns: 2.6rem 6.2rem 6.6rem minmax(0, 1.5fr) minmax(0, 1fr) 5.6rem 4.8rem;
+    grid-template-areas:
+      "id date out players adv diff act"
+      "id date out players adv score act"
+      ".  .    .   isl     notes notes notes";
+    gap: 0.3rem 0.85rem;
+    align-items: start;
+    padding: 0.85rem 0.4rem;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  #view-matches .zen-table tr.reckoning-row > td { display: block; padding: 0; border: 0; max-width: none !important; min-width: 0; white-space: normal !important; }
+  #view-matches .zen-table tr.reckoning-row > td:nth-child(1) { grid-area: id; }
+  #view-matches .zen-table tr.reckoning-row > td:nth-child(2) { grid-area: date; white-space: nowrap !important; }
+  #view-matches .zen-table tr.reckoning-row > td:nth-child(3) { grid-area: out; }
+  #view-matches .zen-table tr.reckoning-row > td:nth-child(4) { grid-area: players; }
+  #view-matches .zen-table tr.reckoning-row > td:nth-child(5) { grid-area: adv; }
+  #view-matches .zen-table tr.reckoning-row > td:nth-child(6) { grid-area: diff; justify-self: end; }
+  #view-matches .zen-table tr.reckoning-row > td:nth-child(7) { grid-area: isl; font-size: 0.74rem; }
+  #view-matches .zen-table tr.reckoning-row > td:nth-child(8) { grid-area: score; justify-self: end; }
+  #view-matches .zen-table tr.reckoning-row > td:nth-child(9) { grid-area: notes; font-size: 0.76rem; }
+  #view-matches .zen-table tr.reckoning-row > td:nth-child(9):empty { display: none; }
+  #view-matches .zen-table tr.reckoning-row > td:nth-child(10) { grid-area: act; justify-self: end; display: flex; gap: 0.25rem; }
+  #view-matches .zen-table tr.reckoning-row > td:nth-child(7) div { white-space: normal; }
+  #view-matches .spirit-player-chip { max-width: 100%; flex-wrap: wrap; }
+}
+@media (min-width: 721px) {
+  /* a hairline label row so the layout still reads like a log */
+  #view-matches .zen-card .table-wrap::before {
+    content: "Game · date · result · spirits (players) · adversary and scenario · difficulty and score";
+    display: block; padding: 0 0.4rem 0.5rem; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-secondary); border-bottom: 1px solid var(--border-strong, var(--border-subtle));
+  }
+}
+
+/* Council table (Overview) fills the width instead of scrolling */
+#view-dashboard .table-wrap { overflow-x: auto; }
+
+
+/* ==========================================================================
+   Spirits tab: compact spirit cards (round 3)
+   ========================================================================== */
+.spirits-gallery { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 0.7rem; }
+.spirit-card.compact {
+  flex-direction: row; align-items: center; gap: 0.75rem;
+  padding: 0.6rem 0.75rem;
+}
+.spirit-card.compact .spirit-card-avatar-box { width: 52px; height: 52px; min-width: 52px; }
+.spirit-compact-body { flex: 1; min-width: 0; display: grid; gap: 0.2rem; }
+.spirit-compact-name { font-size: 0.92rem; line-height: 1.2; margin: 0; }
+.spirit-compact-meta { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
+.spirit-compact-exp { font-size: 0.72rem; color: var(--text-secondary); }
+.spirit-compact-stat { font-size: 0.74rem; color: var(--text-secondary); }
+.spirit-compact-stat strong { color: var(--accent-emerald-light); }
+.spirit-card.compact .inspect-dossier-btn { flex-shrink: 0; min-height: 36px; white-space: nowrap; }

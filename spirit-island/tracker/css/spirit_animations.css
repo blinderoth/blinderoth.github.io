@@ -1,0 +1,492 @@
+/* ==========================================================================
+   SPIRIT ISLAND: THEMATIC ELEMENTAL ANIMATION ENGINE
+   Faithfully reflects the spirits, powers, and natural forces of Spirit Island
+   ========================================================================== */
+
+/* 1. Canvas Background for Ambient Spirit Motes */
+#spiritMotesCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.65;
+  transition: opacity 0.5s ease;
+}
+
+/* Ensure interactive content sits above motes */
+.zen-wrap, .main-container, .navbar, .mockup-bar, .modal-backdrop {
+  position: relative;
+  z-index: 1;
+}
+
+/* 2. Keyframe Animations for the 8 Canonical Elements */
+
+/* 🔥 Fire: Flickering ember & solar heat pulse */
+@keyframes elemFirePulse {
+  0%, 100% {
+    box-shadow: 0 0 4px rgba(229, 83, 27, 0.4), inset 0 0 2px rgba(245, 158, 11, 0.3);
+    border-color: #E5531B;
+  }
+  50% {
+    box-shadow: 0 0 14px rgba(245, 158, 11, 0.7), inset 0 0 6px rgba(229, 83, 27, 0.5);
+    border-color: #F59E0B;
+  }
+}
+
+/* 💧 Water: Fluid oceanic undulation */
+@keyframes elemWaterSurge {
+  0%, 100% {
+    box-shadow: 0 0 4px rgba(34, 139, 230, 0.35);
+    transform: translateY(0);
+    border-color: #1971C2;
+  }
+  50% {
+    box-shadow: 0 4px 16px rgba(34, 139, 230, 0.65);
+    transform: translateY(-2px);
+    border-color: #4DABF7;
+  }
+}
+
+/* 🌿 Plant: Organic verdant blooming pulse */
+@keyframes elemPlantBloom {
+  0%, 100% {
+    box-shadow: 0 0 3px rgba(43, 138, 62, 0.35);
+    border-color: #2F9E44;
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(81, 207, 102, 0.65);
+    border-color: #51CF66;
+  }
+}
+
+/* 💨 Air: Whistling gale & swift lightning spark */
+@keyframes elemAirSwirl {
+  0%, 100% {
+    box-shadow: 0 0 4px rgba(116, 143, 252, 0.3);
+    border-color: #4C6EF5;
+  }
+  48% {
+    box-shadow: 0 0 4px rgba(116, 143, 252, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 236, 153, 0.9), 0 0 8px rgba(116, 143, 252, 0.8);
+    border-color: #FFF3BF;
+  }
+  52% {
+    box-shadow: 0 0 4px rgba(116, 143, 252, 0.3);
+  }
+}
+
+/* ⛰️ Earth: Tectonic grounding & bedrock crystallization */
+@keyframes elemEarthTremor {
+  0%, 100% {
+    box-shadow: 0 0 3px rgba(151, 117, 85, 0.4);
+    border-color: #8D6E63;
+  }
+  50% {
+    box-shadow: 0 0 12px rgba(141, 110, 99, 0.7);
+    border-color: #A1887F;
+  }
+}
+
+/* ☀️ Sun: Radiant golden corona flare */
+@keyframes elemSunRadiance {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(245, 158, 11, 0.4);
+    border-color: #D97706;
+  }
+  50% {
+    box-shadow: 0 0 18px rgba(251, 191, 36, 0.8), 0 0 30px rgba(245, 158, 11, 0.3);
+    border-color: #FCD34D;
+  }
+}
+
+/* 🌙 Moon: Eerie creeping shadow veil */
+@keyframes elemMoonVeil {
+  0%, 100% {
+    box-shadow: 0 0 4px rgba(121, 80, 242, 0.35);
+    border-color: #7048E8;
+  }
+  50% {
+    box-shadow: 0 0 16px rgba(151, 117, 250, 0.7), 0 0 24px rgba(92, 95, 137, 0.4);
+    border-color: #B197FC;
+  }
+}
+
+/* 🐾 Animal: Feral predatory heartbeat */
+@keyframes elemAnimalFeral {
+  0%, 100% {
+    box-shadow: 0 0 4px rgba(217, 72, 15, 0.35);
+    border-color: #E8590C;
+    transform: scale(1);
+  }
+  25% {
+    box-shadow: 0 0 12px rgba(247, 103, 7, 0.65);
+    border-color: #FF922B;
+    transform: scale(1.02);
+  }
+  35% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.015);
+  }
+}
+
+/* 3. Spirit Presence Invocation Glow on Hover */
+.zen-spirit-card,
+.spirit-player-chip,
+.spirit-card {
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.zen-spirit-card::before,
+.spirit-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(44, 94, 67, 0.08) 0%, transparent 65%);
+  opacity: 0;
+  transition: opacity 0.35s ease, transform 0.6s ease;
+  transform: scale(0.6);
+  pointer-events: none;
+}
+
+.zen-spirit-card:hover::before,
+.spirit-card:hover::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.zen-spirit-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--fern-accent, #2C5E43) !important;
+  box-shadow: 0 6px 20px rgba(44, 94, 67, 0.16);
+}
+
+.zen-spirit-top img {
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.zen-spirit-card:hover .zen-spirit-top img {
+  transform: scale(1.1) rotate(2deg);
+}
+
+/* 4. Adversary Clearance Pillars Animation & Spring Hover */
+.zen-pillar {
+  transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  position: relative;
+  user-select: none;
+}
+
+.zen-pillar:hover {
+  transform: translateY(-2.5px) scale(1.05);
+  box-shadow: 0 4px 12px rgba(20, 34, 26, 0.12);
+  z-index: 2;
+}
+
+.zen-pillar:active {
+  transform: scale(0.96);
+}
+
+.zp-win:hover {
+  box-shadow: 0 0 12px rgba(44, 94, 67, 0.4);
+}
+
+.zp-loss:hover {
+  box-shadow: 0 0 12px rgba(168, 74, 53, 0.35);
+}
+
+/* 5. Victory Cleansing & Defeat Blight Sweeps */
+@keyframes victoryCleansingSweep {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.reckoning-row {
+  transition: all 0.2s ease;
+}
+
+.reckoning-row:hover {
+  background: rgba(44, 94, 67, 0.05) !important;
+  transform: translateX(4px);
+}
+
+/* 6. Sacred Scroll Unfurl for Modals */
+@keyframes scrollUnfurl {
+  0% {
+    opacity: 0;
+    transform: scale(0.92) translateY(12px);
+  }
+  70% {
+    transform: scale(1.01) translateY(-2px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modal-card,
+.modal-zen {
+  animation: scrollUnfurl 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* 7. Animated Hero KPI Counter Numbers */
+.zf-num, .kpi-value {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+  transition: color 0.25s ease;
+}
+
+.zen-figures > div {
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  border-radius: 6px;
+  padding: 0.5rem;
+}
+
+.zen-figures > div:hover {
+  transform: translateY(-2px);
+  background: rgba(44, 94, 67, 0.03);
+}
+
+/* 8. Active Elemental Aura Classes */
+.aura-fire { animation: elemFirePulse 3s infinite ease-in-out; }
+.aura-water { animation: elemWaterSurge 3.5s infinite ease-in-out; }
+.aura-plant { animation: elemPlantBloom 4s infinite ease-in-out; }
+.aura-air { animation: elemAirSwirl 3.2s infinite ease-in-out; }
+.aura-earth { animation: elemEarthTremor 4.5s infinite ease-in-out; }
+.aura-sun { animation: elemSunRadiance 3.6s infinite ease-in-out; }
+.aura-moon { animation: elemMoonVeil 4.2s infinite ease-in-out; }
+.aura-animal { animation: elemAnimalFeral 3s infinite ease-in-out; }
+
+
+/* Quick Outcome Filter Pills */
+.filter-outcome-pill {
+  background: transparent !important;
+  border: 1.5px solid var(--border-subtle, #CDD5C8) !important;
+  color: var(--text-primary, #14221A) !important;
+  font-size: 11.5px;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.filter-outcome-pill:hover {
+  transform: translateY(-1.5px);
+  border-color: var(--fern-accent, #2C5E43) !important;
+  box-shadow: 0 3px 8px rgba(44, 94, 67, 0.12);
+}
+
+.filter-outcome-pill.active {
+  border-color: var(--fern-accent, #2C5E43) !important;
+  color: var(--fern-accent, #2C5E43) !important;
+  font-weight: 700 !important;
+  box-shadow: 0 0 10px rgba(44, 94, 67, 0.2);
+}
+
+
+/* ==========================================================================
+   CODEX SPIRIT & ASPECT ANIMATIONS
+   ========================================================================== */
+
+.spirit-card {
+  transition: all 0.28s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.spirit-card:hover {
+  transform: translateY(-4px) scale(1.015);
+  box-shadow: 0 8px 24px rgba(20, 34, 26, 0.14);
+}
+
+.spirit-card img {
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.spirit-card:hover img {
+  transform: scale(1.08) rotate(1.5deg);
+}
+
+/* Aspect Mastery Card Hover Animations in Codex */
+.aspect-mastery-card {
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  position: relative;
+}
+
+.aspect-mastery-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(44, 94, 67, 0.12);
+  border-color: var(--fern-accent, #2C5E43) !important;
+}
+
+/* Adversary Card Invasion Alert Glow on Hover */
+.animated-adversary-card {
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+}
+
+.animated-adversary-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--rust-blight, #A84A35) !important;
+  box-shadow: 0 6px 20px rgba(168, 74, 53, 0.15);
+}
+
+.animated-adversary-card:hover img {
+  transform: scale(1.1) rotate(-2deg);
+  transition: transform 0.35s ease;
+}
+
+
+/* ==========================================================================
+   NEW MILESTONE UNLOCKED CELEBRATION ANIMATION
+   ========================================================================== */
+@keyframes milestoneCardIn {
+  0% { opacity: 0; transform: translateY(20px) scale(0.9); }
+  65% { opacity: 1; transform: translateY(-4px) scale(1.02); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes milestoneSealPulse {
+  0% { box-shadow: 0 0 0 0 rgba(212, 164, 78, 0.55); transform: scale(0.85) rotate(-8deg); }
+  55% { box-shadow: 0 0 0 16px rgba(212, 164, 78, 0); transform: scale(1.08) rotate(3deg); }
+  100% { box-shadow: 0 0 0 0 rgba(212, 164, 78, 0); transform: scale(1) rotate(0deg); }
+}
+
+@keyframes milestoneMoteBurst {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.4) rotate(0deg);
+  }
+  70% {
+    opacity: 0.95;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1.15) rotate(var(--rot));
+  }
+}
+
+.milestone-celebration-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(12, 20, 17, 0.42);
+  backdrop-filter: blur(3px);
+  animation: fadeSlideIn 0.25s ease forwards;
+}
+
+.milestone-celebration-card {
+  position: relative;
+  width: min(460px, 100%);
+  max-height: 85vh;
+  overflow-y: auto;
+  background: var(--bg-card, #FBFCF9);
+  color: var(--text-primary, #14221A);
+  border: 2px solid var(--accent-gold, #9C7834);
+  border-radius: var(--radius-xl, 12px);
+  padding: 1.4rem 1.35rem 1.2rem;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28), 0 0 28px rgba(212, 164, 78, 0.22);
+  animation: milestoneCardIn 0.48s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.milestone-seal-badge {
+  width: 54px;
+  height: 54px;
+  margin: 0 auto 0.65rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.65rem;
+  background: radial-gradient(circle, rgba(212, 164, 78, 0.22), rgba(44, 94, 67, 0.14));
+  border: 2px solid var(--accent-gold, #9C7834);
+  animation: milestoneSealPulse 0.95s ease-out forwards;
+}
+
+.milestone-spirit-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  padding: 0.6rem 0.7rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-deep, rgba(0, 0, 0, 0.03));
+  margin-bottom: 0.5rem;
+}
+
+.milestone-spirit-group img {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid var(--border-subtle);
+}
+
+.milestone-pill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.3rem;
+}
+
+.milestone-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 0.18rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(44, 94, 67, 0.14);
+  color: var(--accent-emerald, #2C5E43);
+  border: 1px solid var(--accent-emerald, #2C5E43);
+}
+
+.milestone-motes-burst {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 100000;
+}
+
+.milestone-mote {
+  position: absolute;
+  width: var(--sz, 8px);
+  height: var(--sz, 8px);
+  border-radius: 50%;
+  background: var(--mote-color, #D4A44E);
+  box-shadow: 0 0 8px var(--mote-color, #D4A44E);
+  animation: milestoneMoteBurst var(--dur, 1.05s) cubic-bezier(0.16, 1, 0.3, 1) var(--delay, 0s) forwards;
+}
+
+/* Respect the OS "reduce motion" setting: no looping auras, lifts or unfurls. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  #spiritMotesCanvas, .milestone-motes-burst { display: none; }
+}

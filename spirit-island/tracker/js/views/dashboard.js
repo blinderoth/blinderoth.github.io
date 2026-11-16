@@ -17,7 +17,7 @@
         </div>
         <div class="zen-spirit-stat">
           <span>${s.gamesPlayed} Sessions</span>
-          <strong style="color:var(--accent-emerald);">${SIAnalytics.formatNum(s.winRate, 0)}% Win · ${SIAnalytics.formatNum(s.highScore || 0, 0)} pts</strong>
+          <strong style="color:var(--accent-emerald);">${SIAnalytics.formatNum(s.winRate, 0)}% Win · Best ${SIAnalytics.formatNum(s.recordScore || 0, 0)}</strong>
         </div>
       </div>
     `).join("");
@@ -31,7 +31,7 @@
       if (isZenPage) {
         kpiGrid.className = "zen-figures";
         kpiGrid.innerHTML = `
-          <div onclick="switchTab('matches')" style="cursor:pointer;" title="Click to view Annals of Recorded Reckonings">
+          <div onclick="switchTab('matches')" style="cursor:pointer;" title="Open Games">
             <div class="zf-num">${kpis.totalMatches}</div>
             <div class="zf-label" style="text-decoration:underline;text-underline-offset:3px;">Sessions Played ↗</div>
           </div>
@@ -50,8 +50,8 @@
         `;
       } else {
         kpiGrid.innerHTML = `
-          <div class="kpi-card" onclick="switchTab('matches')" style="cursor:pointer;" title="Click to view Annals of Recorded Reckonings">
-            <div class="kpi-label"><span>Recorded Reckonings ↗</span> <span>I</span></div>
+          <div class="kpi-card" onclick="switchTab('matches')" style="cursor:pointer;" title="Open Games">
+            <div class="kpi-label"><span>Recorded Reckonings</span></div>
             <div class="kpi-value">${kpis.totalMatches}</div>
             <div class="kpi-sub">
               <span>${kpis.wins} Victories</span>
@@ -60,24 +60,23 @@
             </div>
           </div>
           <div class="kpi-card">
-            <div class="kpi-label"><span>Invaders Repelled</span> <span>II</span></div>
+            <div class="kpi-label"><span>Invaders Repelled</span></div>
             <div class="kpi-value" style="color: var(--accent-emerald);">${SIAnalytics.formatNum(kpis.winRate, 1)}%</div>
             <div class="kpi-sub">
               <span>${kpis.invaderCardsCleared} Invader Cards Cleared</span>
             </div>
           </div>
           <div class="kpi-card">
-            <div class="kpi-label"><span>Peak Threat Survived</span> <span>III</span></div>
+            <div class="kpi-label"><span>Peak Threat Survived</span></div>
             <div class="kpi-value" style="color: var(--accent-gold);">Level ${kpis.highestDiffBeaten}</div>
-            <div class="kpi-sub">Highest Difficulty Beaten</div>
           </div>
           <div class="kpi-card">
-            <div class="kpi-label"><span>Highest Renown</span> <span>IV</span></div>
+            <div class="kpi-label"><span>Highest Renown</span></div>
             <div class="kpi-value">${SIAnalytics.formatNum(kpis.highScore, 1)}</div>
             <div class="kpi-sub">Mean Score: <strong>${SIAnalytics.formatNum(kpis.avgScore, 1)} pts</strong></div>
           </div>
           <div class="kpi-card">
-            <div class="kpi-label"><span>Island Balance</span> <span>V</span></div>
+            <div class="kpi-label"><span>Island Balance</span></div>
             <div class="kpi-value">${SIAnalytics.formatNum(kpis.avgDahanWin, 1)} <span style="font-size:1rem;color:var(--text-secondary);">Dahan</span></div>
             <div class="kpi-sub">Avg Blight on Island: ${SIAnalytics.formatNum(kpis.avgBlightWin, 1)}</div>
           </div>

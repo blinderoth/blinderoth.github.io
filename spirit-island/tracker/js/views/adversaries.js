@@ -5,7 +5,6 @@
     const council = SIAnalytics.computePlayerStats(getStatsData());
     const tbody = document.getElementById("councilTbody");
     const tfoot = document.getElementById("councilTfoot");
-    const notesEl = document.getElementById("councilNotes");
     if (!tbody) return;
 
     tbody.innerHTML = council.guardians.map(g => `
@@ -55,11 +54,6 @@
       `;
     }
 
-    if (notesEl && council.guardians.length > 0) {
-      const topG = [...council.guardians].sort((a, b) => b.deployments - a.deployments)[0];
-      const kpis = SIAnalytics.computeGlobalKPIs(getStatsData());
-      notesEl.innerHTML = `Most experienced guardian: <strong>${escapeHtml(topG.name)}</strong> (${topG.deployments} spirit deployments across ${topG.uniqueMatches} sessions) • Overall Campaign Win Rate: <strong>${SIAnalytics.formatNum(kpis.winRate, 1)}%</strong> across all ${kpis.totalMatches} logged matches.`;
-    }
   }
 
   function renderAdversaryGauntlet() {
@@ -163,7 +157,6 @@
           <td style="font-weight:700;">${escapeHtml(item.type)}</td>
           <td class="mono" style="font-weight:700;">${item.count} <span style="color:var(--text-secondary);font-size:0.74rem;">(${pct}%)</span></td>
           <td><span class="badge ${badgeCls}">${escapeHtml(item.riskTier)}</span></td>
-          <td style="font-size:0.79rem;color:var(--text-secondary);">${escapeHtml(item.countermeasure)}</td>
         </tr>
       `;
     }).join("");

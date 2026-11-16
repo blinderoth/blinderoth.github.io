@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="css/styles.css?v=8" />
   <link rel="stylesheet" href="css/botanical_zen.css?v=8" />
   <link rel="stylesheet" href="css/spirit_animations.css?v=9" />
-  <link rel="stylesheet" href="css/tracker_polish.css?v=22" />
+  <link rel="stylesheet" href="css/tracker_polish.css?v=23" />
 </head>
 <body data-theme="zen">
   <script>
@@ -88,13 +88,11 @@
       <!-- Adversary Clearance Progression (Authentic Mockup V Style) -->
       <div class="zen-section-label">
         <span>Adversary Clearance Progression</span>
-        <span>Levels 0 to 6</span>
       </div>
       <div id="zenGauntletContainer" style="margin-bottom:3.5rem;"></div>
 
       <div class="zen-section-label" style="margin-top:2rem;"><span>Guardians</span></div>
       <div class="zen-card">
-          <div class="zen-card-subtitle">Guardian leaderboards and signature deployments</div>
           <div class="table-wrap">
             <table class="zen-table">
               <thead>
@@ -111,7 +109,6 @@
               <tfoot id="councilTfoot"></tfoot>
             </table>
           </div>
-          <div id="councilNotes" style="margin-top:0.85rem;padding:0.6rem 0.85rem;background:var(--sage-paper);border:1px solid var(--sage-rule);border-radius:4px;font-size:0.8rem;color:var(--pine-muted);"></div>
         </div>
     </section>
 
@@ -147,16 +144,15 @@
         </div>
 
 <details class="zen-card autopsy-panel" id="lossAutopsyPanel">
-        <summary><span class="zen-card-title">Why we lose: loss autopsy</span><span class="autopsy-hint">Failure vectors and tactical mitigations</span></summary>
+        <summary><span class="zen-card-title">Loss Autopsy</span></summary>
         
           <div class="table-wrap">
             <table class="zen-table">
               <thead>
                 <tr>
-                  <th>Vector</th>
+                  <th>Loss type</th>
                   <th>Losses</th>
                   <th>Risk Tier</th>
-                  <th>Mitigation Protocol</th>
                 </tr>
               </thead>
               <tbody id="lossAutopsyTbody"></tbody>
@@ -166,7 +162,7 @@
 
       <div class="zen-card">
         <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:1rem;">
-          <div class="zen-card-title">Annals of Recorded Reckonings</div>
+          <div class="zen-card-title">Games</div>
           <div id="matchesFilteredCount" style="font-size:12px;color:var(--pine-muted);"></div>
         </div>
         <div class="table-wrap">
@@ -286,7 +282,6 @@
           <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:0.5rem;">
             <div>
               <div class="zen-card-title">Pantheon Dossier</div>
-              <div class="zen-card-subtitle" style="margin-bottom:0;">Elemental affinity, tracks & aspect comparison</div>
             </div>
             <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
                           <div class="dossier-combobox-wrapper" id="dossierCombobox">
@@ -331,7 +326,6 @@
       <div class="zen-grid-2">
         <div class="zen-card">
           <div class="zen-card-title">Guardians Roster</div>
-          <div class="zen-card-subtitle">Manage the guardians logging sessions</div>
           <div style="display:flex;gap:0.5rem;margin-bottom:1rem;">
             <input type="text" id="newGuardianNameInput" class="text-input" placeholder="New player name..." style="flex:1;" />
             <button type="button" class="btn-zen btn-zen-primary" id="addNewGuardianBtn">+ Add</button>
@@ -341,14 +335,13 @@
 
         <div class="zen-card">
           <div class="zen-card-title">Expansions Owned</div>
-          <div class="zen-card-subtitle">Used for recommendations and filters</div>
           <div id="settingsExpansionsList" style="display:flex;flex-direction:column;gap:0.5rem;"></div>
         </div>
       </div>
 
       <div class="zen-card" id="syncCard">
         <div class="zen-card-title">Sync to GitHub</div>
-        <div class="zen-card-subtitle">Save the campaign in your site's repository so every device shows the same data. Visitors without a token can look but not change anything.</div>
+        <div class="zen-card-subtitle">Saves the campaign to your site's repository. Visitors can view it but not edit.</div>
         <p id="syncStatusLine" class="backup-status" role="status"></p>
         <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center;margin-top:0.5rem;">
           <input type="password" id="ghTokenInput" class="text-input" placeholder="Paste a GitHub token" autocomplete="off" spellcheck="false" aria-label="GitHub token" style="flex:1;min-width:220px;" />
@@ -399,7 +392,6 @@
       <div style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--sage-rule);padding-bottom:0.75rem;margin-bottom:1.25rem;">
         <div>
           <div style="font-family:'Newsreader',serif;font-size:22px;font-weight:600;" id="matchModalTitle">Record Spirit Island Reckoning</div>
-          <div style="font-size:12px;color:var(--pine-muted);">Official scoring calculation engine</div>
         </div>
         <button type="button" class="btn-zen btn-zen-secondary" id="closeMatchModalBtn">✖ Close</button>
       </div>
@@ -413,8 +405,8 @@
           <div class="form-group">
             <label for="modalVictory">Match Outcome</label>
             <select id="modalVictory" class="select-input">
-              <option value="true">✔ Victory (Invaders Repelled)</option>
-              <option value="false">✖ Defeat (Island Overrun)</option>
+              <option value="true">✔ Victory</option>
+              <option value="false">✖ Defeat</option>
             </select>
           </div>
           <div class="form-group" id="groupLossCondition" style="display:none;">
@@ -438,7 +430,7 @@
         <!-- Guardians & Spirits Slots -->
         <div style="display:flex;align-items:center;justify-content:space-between;margin:0.8rem 0 0.45rem;">
           <label style="font-size:0.76rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--pine-muted);">
-            Guardians, Spirits & Aspects (1–6 Players)
+            Guardians, Spirits & Aspects
           </label>
           <button type="button" class="btn-zen btn-zen-secondary" id="addPlayerSlotBtn" style="font-size:11.5px;padding:0.25rem 0.65rem;">+ Add Guardian</button>
         </div>
@@ -509,7 +501,7 @@
 
         <div style="background:var(--sage-paper);border:1px solid var(--sage-rule);border-radius:6px;padding:0.85rem 1.15rem;display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;">
           <div>
-            <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.1em;color:var(--pine-muted);font-weight:600;">Scoring Engine Preview</div>
+            <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.1em;color:var(--pine-muted);font-weight:600;">Score preview</div>
             <div id="liveDifficultyPreview" style="font-size:13px;color:var(--pine-ink);margin-top:0.2rem;">Difficulty 0</div>
           </div>
           <div style="text-align:right;">
@@ -667,10 +659,10 @@
   <script src="js/core/data.js?v=21"></script>
   <script src="js/core/cloud.js?v=21"></script>
   <script src="js/core/nav.js?v=21"></script>
-  <script src="js/views/dashboard.js?v=21"></script>
+  <script src="js/views/dashboard.js?v=23"></script>
   <script src="js/views/spirit_dossier.js?v=21"></script>
-  <script src="js/views/adversaries.js?v=21"></script>
-  <script src="js/views/matches.js?v=22"></script>
+  <script src="js/views/adversaries.js?v=23"></script>
+  <script src="js/views/matches.js?v=23"></script>
   <script src="js/views/achievements.js?v=21"></script>
   <script src="js/views/achievements_cards.js?v=21"></script>
   <script src="js/views/print.js?v=21"></script>

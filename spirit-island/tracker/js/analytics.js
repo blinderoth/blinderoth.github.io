@@ -429,26 +429,22 @@ window.SIAnalytics = (function () {
         {
           type: "Blight Overrun",
           count: counts["Blight Overrun"],
-          riskTier: counts["Blight Overrun"] >= 3 ? "CRITICAL" : "MONITORED",
-          countermeasure: "Ravage Cascades: Prioritize Defend powers & Dahan counter-attacks before lands reach 2 Blight."
+          riskTier: counts["Blight Overrun"] >= 3 ? "CRITICAL" : "MONITORED"
         },
         {
           type: "Adversary Special Rule",
           count: counts["Adversary Special Rule"],
-          riskTier: counts["Adversary Special Rule"] >= 2 ? "HIGH" : "MONITORED",
-          countermeasure: "Rule Watch: Monitor adversary-specific loss triggers (England 7 buildings, France Town pool, Russia Beasts)."
+          riskTier: counts["Adversary Special Rule"] >= 2 ? "HIGH" : "MONITORED"
         },
         {
           type: "Invader Deck Depleted",
           count: counts["Invader Deck Depleted"],
-          riskTier: counts["Invader Deck Depleted"] >= 2 ? "ELEVATED" : "MONITORED",
-          countermeasure: "Pacing Threat: Generate at least 1 Fear card per 2 rounds to accelerate Terror Level victory."
+          riskTier: counts["Invader Deck Depleted"] >= 2 ? "ELEVATED" : "MONITORED"
         },
         {
           type: "Presence Destroyed",
           count: counts["Presence Destroyed"],
-          riskTier: "MONITORED",
-          countermeasure: "Presence Preservation: Keep dispersed presence clusters; protect inland Sacred Sites."
+          riskTier: "MONITORED"
         }
       ]
     };

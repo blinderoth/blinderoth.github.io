@@ -143,8 +143,7 @@
       <div class="panel-card" style="margin-bottom:1.25rem;">
         <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:0.65rem;">
           <div>
-            <h3 class="serif-title" style="color:var(--accent-gold-light);font-size:1.1rem;">Island Mastery & Achievement Matrix</h3>
-            <p style="font-size:0.82rem;color:var(--text-secondary);">Tracks general milestones, adversary levels, scenarios and aspects for each spirit, plus the teammates you have won with.</p>
+            <h3 class="serif-title" style="color:var(--accent-gold-light);font-size:1.1rem;">Mastery</h3>
           </div>
           <div style="text-align:right;">
             <div class="mono" style="font-size:1.5rem;font-weight:800;color:var(--accent-emerald-light);">${SIAnalytics.formatNum(ach.overallPct, 1)}%</div>

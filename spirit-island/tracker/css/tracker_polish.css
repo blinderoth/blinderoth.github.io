@@ -699,7 +699,7 @@ button.zen-pillar {
   #view-matches .zen-table thead { display: none; }
   #view-matches .zen-table tr.reckoning-row {
     display: grid;
-    grid-template-columns: 2.6rem 6.2rem 6.6rem minmax(0, 1.5fr) minmax(0, 1fr) 5.6rem 4.8rem;
+    grid-template-columns: 2.6rem 6.2rem 6.6rem minmax(0, 1.5fr) minmax(0, 1fr) 5.6rem 5.2rem;
     grid-template-areas:
       "id date out players adv diff act"
       "id date out players adv score act"
@@ -720,16 +720,9 @@ button.zen-pillar {
   #view-matches .zen-table tr.reckoning-row > td:nth-child(8) { grid-area: score; justify-self: end; }
   #view-matches .zen-table tr.reckoning-row > td:nth-child(9) { grid-area: notes; font-size: 0.76rem; }
   #view-matches .zen-table tr.reckoning-row > td:nth-child(9):empty { display: none; }
-  #view-matches .zen-table tr.reckoning-row > td:nth-child(10) { grid-area: act; justify-self: end; display: flex; gap: 0.25rem; }
+  #view-matches .zen-table tr.reckoning-row > td:nth-child(10) { grid-area: act; justify-self: stretch; display: flex; flex-direction: column; gap: 0.3rem; }
   #view-matches .zen-table tr.reckoning-row > td:nth-child(7) div { white-space: normal; }
   #view-matches .spirit-player-chip { max-width: 100%; flex-wrap: wrap; }
-}
-@media (min-width: 721px) {
-  /* a hairline label row so the layout still reads like a log */
-  #view-matches .zen-card .table-wrap::before {
-    content: "Game · date · result · spirits (players) · adversary and scenario · difficulty and score";
-    display: block; padding: 0 0.4rem 0.5rem; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-secondary); border-bottom: 1px solid var(--border-strong, var(--border-subtle));
-  }
 }
 
 /* Council table (Overview) fills the width instead of scrolling */
@@ -881,3 +874,6 @@ body.si-viewer .log-match-btn { display: none !important; }
 .play-heat-legend { display: flex; align-items: center; gap: 4px; margin-top: 0.7rem; font-size: 0.7rem; color: var(--text-secondary); flex-wrap: wrap; }
 .play-heat-legend .play-heat-note { margin-left: auto; }
 @media (max-width: 720px) { .play-heat { --ph-size: 12px; } }
+
+#view-matches .zen-table tr.reckoning-row > td:nth-child(10) .btn { width: 100%; }
+@media (max-width: 720px) { #view-matches .zen-table tr.reckoning-row td:nth-child(10) .btn { width: auto; } }

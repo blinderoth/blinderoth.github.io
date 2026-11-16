@@ -231,7 +231,7 @@
   });
 
   /* Durations under the date line of each Projects/Experience entry, and a link name for each. */
-  var usedSlugs = { overview: 1, projects: 1, experience: 1, interests: 1, top: 1 };
+  var usedSlugs = { overview: 1, projects: 1, experience: 1, interests: 1, tools: 1, top: 1 };
   var slugToBtn = {};
   document.querySelectorAll('.tl-wrap .item[data-start]').forEach(function (b) {
     var detail = document.getElementById(b.getAttribute('aria-controls'));
@@ -243,6 +243,14 @@
       var where = detail.querySelector('.where');
       if (where) where.insertAdjacentElement('afterend', span);
       else detail.insertBefore(span, detail.querySelector('h3') ? detail.querySelector('h3').nextSibling : detail.firstChild);
+    }
+    /* Organization and dates next to the title, so the list reads without clicking. */
+    var wh = detail && detail.querySelector('.where'), ty = b.parentNode.querySelector('.nd-type');
+    if (wh && ty && !b.parentNode.querySelector('.nd-org')) {
+      var org = document.createElement('span');
+      org.className = 'nd-org';
+      org.textContent = wh.textContent;
+      ty.insertAdjacentElement('afterend', org);
     }
     var slug = slugify(b.textContent), n = 2, base = slug;
     while (usedSlugs[slug]) slug = base + '-' + (n++);

@@ -6,6 +6,22 @@
 <title>Benjamin Linderoth</title>
 <meta name="description" content="Benjamin Linderoth. Business Administration graduate working with processes, costing and automation.">
 
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://blinderoth.github.io/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Benjamin Linderoth">
+<meta property="og:title" content="Benjamin Linderoth: I like fixing what slows a process down">
+<meta property="og:description" content="Business Administration graduate in Lund, Sweden. Supply network quality, costing and automation, with projects and small tools to show for it.">
+<meta property="og:url" content="https://blinderoth.github.io/">
+<meta property="og:image" content="https://blinderoth.github.io/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Benjamin Linderoth. I like fixing what slows a process down.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Benjamin Linderoth: I like fixing what slows a process down">
+<meta name="twitter:description" content="Business Administration graduate in Lund, Sweden. Supply network quality, costing and automation, with projects and small tools to show for it.">
+<meta name="twitter:image" content="https://blinderoth.github.io/og-image.png">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&display=swap" rel="stylesheet">
@@ -21,6 +37,7 @@
     <nav aria-label="Main">
       <!-- <a href="#overview">Overview</a> (hidden while the Overview is a work in progress) -->
       <a href="#projects">Projects</a>
+      <a href="#tools">Tools</a>
       <a href="#experience">Experience</a>
       <a href="#interests">Interests</a>
     </nav>
@@ -33,10 +50,15 @@
   <div class="nd-masthead">
     <p class="nd-print-name">Benjamin Linderoth</p>
     <div class="nd-masthead-top">
-      <span>Portfolio and case notes</span>
+      <span>Curriculum vitae</span>
       <span>Lund, Sweden</span>
     </div>
-    <h1 class="nd-quote">Curriculum vitae</h1>
+    <h1 class="nd-quote">I like fixing what slows a process down</h1>
+    <p class="nd-lede">I hold a BSc in Business Administration from Lund University and started in Tetra Pak's warehouse before moving into supply network quality. I map how work flows, find where it slows down and build the fix, like a script that saves colleagues about 40 minutes a day.</p>
+    <p class="nd-actions">
+      <a class="nd-cta" href="mailto:benjamin.linderoth@gmail.com?subject=Hello%20Benjamin">Get in touch about a role or project</a>
+      <a class="nd-cta nd-cta-quiet" href="cv.pdf" download>Download CV (PDF)</a>
+    </p>
     <div class="nd-masthead-foot">
       <div class="nd-contact">
         <a href="mailto:benjamin.linderoth@gmail.com">benjamin.linderoth@gmail.com</a>
@@ -66,7 +88,7 @@
       <div class="nd-sticky">
         <span class="nd-label">I. Selected work</span><!-- II. when the Overview is back -->
         <h2>Projects</h2>
-        <p class="nd-side-note">Professional, engagement and personal.</p>
+        <p class="nd-side-note">Professional and engagement work.</p>
       </div>
     </div>
     <div class="nd-body">
@@ -78,6 +100,11 @@
         <h4>Automating a quality workflow</h4>
         <p>Managing a quality inspection required jumping through five SAP transactions and repeatedly re-entering part and supplier numbers for each part number. On my own initiative, while managing the daily operational work, I built a script in Python and SAP GUI that unified the procedure into a single prompt.</p>
         <p>I tested it through several iterations before my colleagues started using it daily. It saves them on average 40 minutes of administrative work per day.</p>
+        <div class="nd-figures nd-figures-3">
+          <div><strong>5 to 1</strong><span>Manual inputs per part number</span></div>
+          <div><strong>40 min</strong><span>Saved per day, on average</span></div>
+          <div><strong>Daily</strong><span>Use by colleagues after several test rounds</span></div>
+        </div>
 
         <!-- Process flow: hidden until asked for. Generic labels on purpose (NDA). -->
         <details class="fc-toggle">
@@ -247,14 +274,26 @@
       <article class="nd-case" id="running-a-student-unions-treasury">
         <div class="nd-meta"><span>LundaEkonomerna, the Treasury</span><span>Jun 2024 to Jun 2025</span></div>
         <h4>Internationalizing a student union's committee</h4>
-        <p>I started as Vice Project Leader in June 2024 and took over as Project Leader in January 2025.</p>
+        <p>I started as Vice Project Leader in June 2024 and took over as Project Leader in January 2025, leading a team of five in a student union with SEK 10 million in annual revenue.</p>
         <p>The Treasury was the only committee in LundaEkonomerna that required Swedish, because its documents and work instructions existed only in Swedish. That clashed with the union's English-first rule at a school where up to a quarter of the students are international. Many of them applied to the Treasury, and their applications could never lead anywhere.</p>
         <p>When I took over as Project Leader, I started translating the internal documents into English. The committee handles sensitive information, so I translated them by hand rather than with a tool, to make sure nothing would mislead a future reader.</p>
       </article>
+    </div>
+  </section>
 
-      <h3 class="nd-group">Personal</h3>
+  <!-- II. Tools: standalone web apps -->
+  <section class="nd-sec" id="tools">
+    <div class="nd-side">
+      <div class="nd-sticky">
+        <span class="nd-label">II. Tools</span><!-- III. when the Overview is back -->
+        <h2>Tools I've built</h2>
+        <p class="nd-side-note">Small web apps that make an idea tangible.</p>
+      </div>
+    </div>
+    <div class="nd-body">
 
-      <article class="nd-case" id="opportunity-costs-made-simple">
+      <article class="nd-case nd-tool" id="opportunity-costs-made-simple">
+        <a class="nd-shot" href="opportunity-costs.html" tabindex="-1" aria-hidden="true"><img src="images/app-opportunity-costs.jpg" alt="" width="1280" height="800" loading="lazy"></a>
         <div class="nd-meta"><span>Personal project</span><span>Oct 2026</span></div>
         <h4>Opportunity costs made simple</h4>
         <p>An interactive calculator that shows the basic concept of opportunity costs.</p>
@@ -262,12 +301,13 @@
         <p><a class="nd-link" href="opportunity-costs.html">Open the calculator</a></p>
       </article>
 
-      <article class="nd-case" id="boardgame-inserts-made-simple">
+      <article class="nd-case nd-tool" id="boardgame-inserts-made-simple">
+        <a class="nd-shot" href="insert-planner.html" tabindex="-1" aria-hidden="true"><img src="images/app-insert-planner.jpg" alt="" width="1280" height="800" loading="lazy"></a>
         <div class="nd-meta"><span>Personal project</span><span>Oct 2026</span></div>
         <div class="tags"><span class="tag tag-games">Board games</span></div>
         <h4>Board game inserts made simple</h4>
         <p>A browser-based tool for test-fitting 3D-printable inserts in a virtual board game box before printing them.</p>
-        <p>Most printable inserts are made either for the base game alone or for the base game with every expansion. I only owned the base game but might buy expansions later. Printing a base-game insert now would mean reprinting later, so I wanted to print just the parts of the full insert that the base game needs.</p>
+        <p class="nd-hide-print">Most printable inserts are made either for the base game alone or for the base game with every expansion. I only owned the base game but might buy expansions later. Printing a base-game insert now would mean reprinting later, so I wanted to print just the parts of the full insert that the base game needs.</p>
         <p>To find out which parts those were, I needed to test-fit the pieces in the box. The only tools for that were advanced CAD programs, so I built a simpler one.</p>
         <p><a class="nd-link" href="insert-planner.html">Open the application</a></p>
       </article>
@@ -278,7 +318,7 @@
   <section class="nd-sec" id="experience">
     <div class="nd-side">
       <div class="nd-sticky">
-        <span class="nd-label">II. Chronology</span><!-- III. when the Overview is back -->
+        <span class="nd-label">III. Chronology</span><!-- IV. when the Overview is back -->
         <h2>Experience</h2>
         <p class="nd-side-note">My curriculum vitae.</p>
         <ul class="nd-legend" aria-label="Types">
@@ -300,7 +340,8 @@
                   <div class="detail" id="e-qutip">
                     <h3>QuTI-P &amp; Process Coordinator</h3>
                     <p class="where">Tetra Pak, Lund, Oct 2026 to present, consultant</p>
-                    <!-- TODO: add a sentence about the role when you are ready. -->
+                    <p>The same work as in my previous role, now as an on-demand consultant.</p>
+                    <p>QuTI-P is Tetra Pak's internal ERP system for quality management, connected to SAP.</p>
                   </div>
                 </li>
 				<li>
@@ -327,8 +368,8 @@
                   <div class="detail" id="e-snqs26">
                     <h3>Supply Network Quality Specialist / Analyst</h3>
                     <p class="where">Tetra Pak, Lund, Jun to Sep 2026</p>
-                    <p>Built an automation in Python and SAP GUI that removed a manual step with recurring input errors. It saves about 40 minutes a day.</p>
-                    <p>Mapped the process flow and proposed a new KPI, grounded in behavioral economics, to raise quality awareness among operators.</p>
+                    <p>Automated a recurring SAP workflow and proposed a new KPI for operators.</p>
+                    <p class="nd-see">See <a class="nd-link" href="#automating-a-quality-workflow">the automation</a> and <a class="nd-link" href="#a-kpi-meant-to-change-behavior">the KPI</a>.</p>
                   </div>
                 </li>
                 <li>
@@ -371,8 +412,8 @@
                   <div class="detail" id="e-cm">
                     <h3>Cost &amp; Manufacturing Lead</h3>
                     <p class="where">Lund Formula Student, Dec 2024 to Jul 2025</p>
-                    <p>Part of a team of three responsible for the cost and GWP calculations of the 2025 car, which count for 10% of the total competition points. I was mainly responsible for the financial cost models.</p>
-                    <p>The team's average Cost &amp; Manufacturing score rose 20% from the year before.</p>
+                    <p>Part of a team of three responsible for the cost and GWP calculations of the 2025 car, which count for 10% of the total competition points.</p>
+                    <p class="nd-see">See <a class="nd-link" href="#costing-a-formula-student-car">the project</a>.</p>
                   </div>
                 </li>
                 <li>
@@ -381,8 +422,8 @@
                   <div class="detail" id="e-treasury">
                     <h3>Project Leader of the Treasury</h3>
                     <p class="where">LundaEkonomerna, Jan to Jun 2025</p>
-                    <p>Led a team of five handling daily finances, budget tracking and internal controls in Fortnox, for a student union with SEK 10 million in annual revenue.</p>
-                    <p>Started moving the internal documents from Swedish to English to open the committee to international students.</p>
+                    <p>Led a team of five handling daily finances, budget tracking and internal controls in Fortnox.</p>
+                    <p class="nd-see">See <a class="nd-link" href="#running-a-student-unions-treasury">the project</a>.</p>
                   </div>
                 </li>
                 <li>
@@ -426,36 +467,7 @@
                 </li>
           </ul>
         </li>
-        <li class="tl-year" data-year="2020">
-          <p class="tl-label">2020</p>
-          <ul class="items">
-                <li>
-                  <button class="item" aria-expanded="false" aria-controls="e-summer" data-start="2020-07" data-end="2020-08" data-type="work">Summer Job</button>
-                  <span class="nd-type t-work">Work</span>
-                  <div class="detail" id="e-summer">
-                    <h3>Summer Job</h3>
-                    <p class="where">Tetra Pak, Lund, Jul to Aug 2020</p>
-                    <!-- TODO: add what you did, if you want to. -->
-                    <p>Summer job at Tetra Pak in Lund.</p>
-                  </div>
-                </li>
-          </ul>
-        </li>
-        <li class="tl-year" data-year="2018">
-          <p class="tl-label">2018</p>
-          <ul class="items">
-                <li>
-                  <button class="item" aria-expanded="false" aria-controls="e-reklam" data-start="2017-06" data-end="2018-06" data-type="work">Reklamutdelare</button>
-                  <span class="nd-type t-work">Work</span>
-                  <div class="detail" id="e-reklam">
-                    <h3>Reklamutdelare</h3>
-                    <p class="where">Svensk Direktreklam AB, Jun 2017 to Jun 2018</p>
-                    <!-- TODO: add a sentence about what you did, if you want one. -->
-                    <p>Distributing advertising material.</p>
-                  </div>
-                </li>
-          </ul>
-        </li>
+
       </ol>
       </div>
     </div>
@@ -464,7 +476,7 @@
   <!-- IV. Interests -->
   <section class="nd-sec nd-last" id="interests">
     <div class="nd-side">
-      <span class="nd-label">III. Interests</span><!-- IV. when the Overview is back -->
+      <span class="nd-label">IV. Interests</span><!-- V. when the Overview is back -->
       <h2>What piques my interest</h2>
     </div>
     <div class="nd-body">
@@ -479,9 +491,7 @@
       <span class="nd-foot-name">Benjamin Linderoth</span>
       <a href="mailto:benjamin.linderoth@gmail.com">benjamin.linderoth@gmail.com</a>
       <a href="https://www.linkedin.com/in/benjamin-linderoth/" rel="noopener">LinkedIn</a>
-      <!-- TODO: When cv.pdf is uploaded next to index.html, remove the comment markers around the next line.
-      <a href="cv.pdf">CV (PDF)</a>
-      -->
+      <a href="cv.pdf" download>CV (PDF)</a>
       <button type="button" class="print-link" data-print>Print or save as PDF</button>
     </div>
     <a class="personal" href="personal.html">Personal</a>

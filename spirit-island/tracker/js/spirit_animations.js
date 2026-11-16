@@ -163,8 +163,10 @@
     if (!el) return;
     const startTime = performance.now();
     const startVal = 0;
+    const runId = (el._countRun = (el._countRun || 0) + 1);   // a newer run cancels this one
 
     function frame(now) {
+      if (el._countRun !== runId) return;
       const elapsed = now - startTime;
       const progress = Math.min(elapsed / durationMs, 1);
       const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
@@ -189,7 +191,9 @@
 
     zfNums.forEach(numEl => {
       if (numEl.children.length > 0) return;
-      const text = numEl.textContent.trim();
+      // Read the real value once and keep it. Reading textContent mid-animation would pick up a half-counted number.
+      if (!numEl.dataset.target) numEl.dataset.target = numEl.textContent.trim();
+      const text = numEl.dataset.target;
       if (!text || numEl.dataset.animated === "1" || !/^\d+(?:\.\d+)?%?$/.test(text)) return;
 
       const isPercent = text.endsWith("%");

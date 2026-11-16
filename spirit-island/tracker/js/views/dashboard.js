@@ -51,7 +51,7 @@
       } else {
         kpiGrid.innerHTML = `
           <div class="kpi-card" onclick="switchTab('matches')" style="cursor:pointer;" title="Open Games">
-            <div class="kpi-label"><span>Recorded Reckonings</span></div>
+            <div class="kpi-label"><span>Games Played</span></div>
             <div class="kpi-value">${kpis.totalMatches}</div>
             <div class="kpi-sub">
               <span>${kpis.wins} Victories</span>

@@ -100,7 +100,7 @@
           ${totalCount === 1 ? "New Milestone Unlocked!" : `${totalCount} New Milestones Unlocked!`}
         </h3>
         <p style="text-align:center;font-size:0.82rem;color:var(--text-secondary);margin:0 0 1rem;">
-          Your latest reckoning carved new mastery into the island's memory.
+          Your latest game carved new mastery into the island's memory.
         </p>
         ${groupsHtml}
         <div style="display:flex;justify-content:center;gap:0.6rem;margin-top:1rem;">
@@ -143,11 +143,11 @@
       <div class="panel-card" style="margin-bottom:1.25rem;">
         <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:0.65rem;">
           <div>
-            <h3 class="serif-title" style="color:var(--accent-gold-light);font-size:1.1rem;">Mastery</h3>
+            <h3 class="serif-title" style="color:var(--accent-gold-light);font-size:1.75rem;line-height:1.15;">Mastery</h3>
           </div>
           <div style="text-align:right;">
-            <div class="mono" style="font-size:1.5rem;font-weight:800;color:var(--accent-emerald-light);">${SIAnalytics.formatNum(ach.overallPct, 1)}%</div>
-            <div style="font-size:0.75rem;color:var(--text-secondary);">${ach.totalUnlocked} / ${ach.totalPossible} Milestones Unlocked</div>
+            <div class="mono" style="font-size:2.4rem;line-height:1;font-weight:800;color:var(--accent-emerald-light);">${SIAnalytics.formatNum(ach.overallPct, 1)}%</div>
+            <div style="font-size:0.85rem;color:var(--text-secondary);margin-top:0.3rem;">${ach.totalUnlocked} / ${ach.totalPossible} Milestones Unlocked</div>
             <div style="font-size:0.75rem;color:var(--text-secondary);">${aspectLine}</div>
           </div>
         </div>

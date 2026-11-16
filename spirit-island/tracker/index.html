@@ -12,8 +12,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css?v=8" />
   <link rel="stylesheet" href="css/botanical_zen.css?v=8" />
-  <link rel="stylesheet" href="css/spirit_animations.css?v=9" />
-  <link rel="stylesheet" href="css/tracker_polish.css?v=23" />
+  <link rel="stylesheet" href="css/spirit_animations.css?v=10" />
+  <link rel="stylesheet" href="css/tracker_polish.css?v=24" />
 </head>
 <body data-theme="zen">
   <script>
@@ -53,7 +53,6 @@
   <div class="zen-wrap" id="main">
     <!-- Header -->
     <header class="zen-header">
-      <div class="zen-eyebrow">Spirit Island · Campaign Sanctuary</div>
       <h1>Spirit Island Memoir</h1>
 
       <nav class="zen-nav" aria-label="Tracker sections">
@@ -66,7 +65,7 @@
 
       <div class="zen-header-actions">
       <button type="button" class="btn-zen btn-zen-primary" id="openLogMatchBtn">
-          <span>+ Record Reckoning</span>
+          <span>+ Record Invasion</span>
         </button>
       </div>
     </header>
@@ -138,7 +137,7 @@
               <!-- Quick Outcome Filter Pills -->
         <div style="display:flex;gap:0.5rem;margin-bottom:1rem;flex-wrap:wrap;align-items:center;">
           <span style="font-size:11px;text-transform:uppercase;letter-spacing:0.12em;font-weight:700;color:var(--text-secondary);margin-right:0.25rem;">Filter:</span>
-          <button type="button" class="btn-zen btn-zen-secondary filter-outcome-pill active" data-outcome="" onclick="if(window.setOutcomeFilter) window.setOutcomeFilter('')">All Reckonings</button>
+          <button type="button" class="btn-zen btn-zen-secondary filter-outcome-pill active" data-outcome="" onclick="if(window.setOutcomeFilter) window.setOutcomeFilter('')">All Games</button>
           <button type="button" class="btn-zen btn-zen-secondary filter-outcome-pill" data-outcome="win" onclick="if(window.setOutcomeFilter) window.setOutcomeFilter('win')">Victories Only</button>
           <button type="button" class="btn-zen btn-zen-secondary filter-outcome-pill" data-outcome="loss" onclick="if(window.setOutcomeFilter) window.setOutcomeFilter('loss')">Defeats Only</button>
         </div>
@@ -391,7 +390,7 @@
     <div class="modal-zen">
       <div style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--sage-rule);padding-bottom:0.75rem;margin-bottom:1.25rem;">
         <div>
-          <div style="font-family:'Newsreader',serif;font-size:22px;font-weight:600;" id="matchModalTitle">Record Spirit Island Reckoning</div>
+          <div style="font-family:'Newsreader',serif;font-size:22px;font-weight:600;" id="matchModalTitle">Record Invasion</div>
         </div>
         <button type="button" class="btn-zen btn-zen-secondary" id="closeMatchModalBtn">✖ Close</button>
       </div>
@@ -659,17 +658,17 @@
   <script src="js/core/data.js?v=21"></script>
   <script src="js/core/cloud.js?v=21"></script>
   <script src="js/core/nav.js?v=21"></script>
-  <script src="js/views/dashboard.js?v=23"></script>
+  <script src="js/views/dashboard.js?v=24"></script>
   <script src="js/views/spirit_dossier.js?v=21"></script>
   <script src="js/views/adversaries.js?v=23"></script>
-  <script src="js/views/matches.js?v=23"></script>
-  <script src="js/views/achievements.js?v=21"></script>
+  <script src="js/views/matches.js?v=24"></script>
+  <script src="js/views/achievements.js?v=22"></script>
   <script src="js/views/achievements_cards.js?v=21"></script>
   <script src="js/views/print.js?v=21"></script>
   <script src="js/views/codex.js?v=21"></script>
   <script src="js/views/settings.js?v=21"></script>
   <script src="js/main.js?v=21"></script>
 
-  <script src="js/spirit_animations.js?v=9"></script>
+  <script src="js/spirit_animations.js?v=10"></script>
 </body>
 </html>

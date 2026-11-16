@@ -215,11 +215,11 @@
   }
 }
 
-.reckoning-row {
+.game-row {
   transition: all 0.2s ease;
 }
 
-.reckoning-row:hover {
+.game-row:hover {
   background: rgba(44, 94, 67, 0.05) !important;
   transform: translateX(4px);
 }

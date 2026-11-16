@@ -200,7 +200,7 @@
         : (m.invaderCardsNotInDeck !== null && m.invaderCardsNotInDeck !== "" ? `${m.invaderCardsNotInDeck} Cards Out` : "");
 
       return `
-        <tr class="reckoning-row${collapse && rowIdx >= GAMES_COLLAPSED_COUNT ? " game-extra" : ""}" style="cursor:pointer;" onclick="if(window.inspectReckoning) window.inspectReckoning(${m.id})">
+        <tr class="game-row${collapse && rowIdx >= GAMES_COLLAPSED_COUNT ? " game-extra" : ""}" style="cursor:pointer;" onclick="if(window.inspectGame) window.inspectGame(${m.id})">
           <td class="mono" style="color:var(--text-secondary);font-weight:700;">#${m.id}</td>
           <td class="mono" style="white-space:nowrap;">${escapeHtml(m.date || "—")}</td>
           <td>

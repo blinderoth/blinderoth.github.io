@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="css/styles.css?v=8" />
   <link rel="stylesheet" href="css/botanical_zen.css?v=8" />
   <link rel="stylesheet" href="css/spirit_animations.css?v=10" />
-  <link rel="stylesheet" href="css/tracker_polish.css?v=24" />
+  <link rel="stylesheet" href="css/tracker_polish.css?v=25" />
 </head>
 <body data-theme="zen">
   <script>
@@ -195,7 +195,7 @@
           <select id="playHeatRange" class="select-input" aria-label="Calendar range"></select>
         </div>
         <div class="play-heat-scroll"><div id="playHeatGrid" class="play-heat-grid" role="img" aria-label="Calendar heatmap of games played"></div></div>
-        <div class="play-heat-legend" aria-hidden="true"><span>Less</span><i class="ph-l0"></i><i class="ph-l1"></i><i class="ph-l2"></i><i class="ph-l3"></i><i class="ph-l4"></i><span>More</span><span class="play-heat-note">Heat = games × players</span></div>
+        <div class="play-heat-legend" aria-hidden="true"><span>Less</span><i class="ph-l0"></i><i class="ph-l1"></i><i class="ph-l2"></i><i class="ph-l3"></i><i class="ph-l4"></i><i class="ph-l5"></i><i class="ph-l6"></i><i class="ph-l7"></i><i class="ph-l8"></i><span>More</span><span class="play-heat-note">Heat = games × players</span></div>
       </div>
     </section>
 
@@ -242,7 +242,7 @@
     <section id="view-codex" class="view-section">
       <div class="sub-nav" id="codexSubNav" style="margin-bottom:1.5rem;">
         <button type="button" class="sub-nav-btn active" data-codex="spirits">Spirits (39)</button>
-        <button type="button" class="sub-nav-btn" data-codex="dossier">Pantheon Dossier</button>
+        <button type="button" class="sub-nav-btn" data-codex="dossier">Spirit Dossier</button>
         <button type="button" class="sub-nav-btn" data-codex="invaders">Adversaries & Scenarios</button>
       </div>
 
@@ -275,12 +275,12 @@
         <div id="codexSpiritsGallery" class="spirits-gallery"></div>
       </div>
 
-      <!-- Subview: Pantheon Dossier -->
+      <!-- Subview: Spirit Dossier -->
       <div id="codex-dossier" class="codex-subview" style="display:none;">
         <div class="zen-card" id="dossierCard">
           <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:0.5rem;">
             <div>
-              <div class="zen-card-title">Pantheon Dossier</div>
+              <div class="zen-card-title">Spirit Dossier</div>
             </div>
             <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
                           <div class="dossier-combobox-wrapper" id="dossierCombobox">
@@ -571,7 +571,7 @@
             <div style="width:96px;height:96px;border-radius:10px;overflow:hidden;border:1px solid var(--border-strong);background:var(--bg-deep,#0b0f19);margin:0 auto 0.2rem;position:relative;">
               <img id="cropMicroDossier" style="width:100%;height:100%;display:block;" src="" alt="" />
             </div>
-            <span style="font-size:0.65rem;color:var(--text-secondary);">Pantheon Dossier</span>
+            <span style="font-size:0.65rem;color:var(--text-secondary);">Spirit Dossier</span>
           </div>
           <div style="text-align:center;">
             <div style="width:52px;height:52px;border-radius:6px;overflow:hidden;border:1px solid var(--border-subtle);background:var(--bg-deep,#0b0f19);margin:0 auto 0.2rem;position:relative;">
@@ -655,13 +655,13 @@
   <script src="js/analytics.js?v=9"></script>
   <script src="js/campaign.js?v=2"></script>
   <script src="js/core/state.js?v=21"></script>
-  <script src="js/core/data.js?v=21"></script>
+  <script src="js/core/data.js?v=24"></script>
   <script src="js/core/cloud.js?v=21"></script>
   <script src="js/core/nav.js?v=21"></script>
   <script src="js/views/dashboard.js?v=24"></script>
-  <script src="js/views/spirit_dossier.js?v=21"></script>
+  <script src="js/views/spirit_dossier.js?v=24"></script>
   <script src="js/views/adversaries.js?v=23"></script>
-  <script src="js/views/matches.js?v=24"></script>
+  <script src="js/views/matches.js?v=25"></script>
   <script src="js/views/achievements.js?v=22"></script>
   <script src="js/views/achievements_cards.js?v=21"></script>
   <script src="js/views/print.js?v=21"></script>

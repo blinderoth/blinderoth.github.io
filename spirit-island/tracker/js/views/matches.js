@@ -85,7 +85,7 @@
         const t = gridStart + (w * 7 + d) * DAY;
         if (t < start || t > end) { cells += `<i class="ph-cell ph-out" style="grid-column:${w + 2};grid-row:${d + 2}"></i>`; continue; }
         const key = iso(t), h = heat.get(key) || 0;
-        const lvl = h ? Math.max(1, Math.ceil(4 * h / max)) : 0;
+        const lvl = h ? Math.max(1, Math.ceil(8 * h / max)) : 0;
         const g = games.get(key) || 0;
         const label = h ? `${key}: ${g} game${g === 1 ? "" : "s"}, heat ${h}` : `${key}: no games`;
         cells += `<i class="ph-cell ph-l${lvl}" style="grid-column:${w + 2};grid-row:${d + 2}" title="${label}" aria-label="${label}"></i>`;

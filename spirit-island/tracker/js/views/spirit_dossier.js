@@ -530,6 +530,35 @@
   }
   window.openCropModal = openCropModal;
 
+  // Collapsed on load. The open state is kept while switching spirits or aspects.
+  let dossierGamesOpen = false;
+
+  function renderDossierGames(spiritName) {
+    const rows = [];
+    (getStatsData().matches || []).forEach(m => {
+      (m.players || []).forEach(slot => { if (slot.spirit === spiritName) rows.push({ m, slot }); });
+    });
+    rows.sort((a, b) => (Number(b.m.id) || 0) - (Number(a.m.id) || 0));
+    const body = rows.length ? rows.map(({ m, slot }) => {
+      const adv = m.adversary1 ? `${escapeHtml(m.adversary1)}${m.adversary1Level !== null && m.adversary1Level !== "" && m.adversary1Level !== undefined ? " L" + escapeHtml(m.adversary1Level) : ""}` : "Base island";
+      const others = (m.players || []).filter(p => p !== slot).map(p => p.spirit).filter(Boolean);
+      return `
+        <div class="dg-row">
+          <span class="mono dg-id">#${escapeHtml(m.id)}</span>
+          <span class="mono">${escapeHtml(m.date || "—")}</span>
+          <span><span class="badge ${m.victory ? "badge-win" : "badge-loss"}">${m.victory ? "VICTORY" : "DEFEAT"}</span></span>
+          <span class="dg-who"><strong>${escapeHtml(slot.player || "Unknown")}</strong>${slot.aspect && slot.aspect !== "Base" ? ` <span class="dg-sub">· ${escapeHtml(slot.aspect)}</span>` : ""}${others.length ? `<div class="dg-sub">With ${others.map(escapeHtml).join(", ")}</div>` : ""}</span>
+          <span class="dg-what">${adv}${m.scenario ? `<div class="dg-sub">${escapeHtml(m.scenario)}</div>` : ""}</span>
+          <span class="mono dg-score" title="Difficulty ${escapeHtml(m.difficulty ?? 0)}">D${escapeHtml(m.difficulty ?? 0)} · ${SIAnalytics.formatNum(m.score, 1)}</span>
+        </div>`;
+    }).join("") : `<div class="dg-empty">No games with this spirit yet.</div>`;
+    return `
+      <details class="dossier-games" id="dossierGames"${dossierGamesOpen ? " open" : ""}>
+        <summary>Games with this spirit (${rows.length})</summary>
+        <div class="dg-list">${body}</div>
+      </details>`;
+  }
+
   function renderDossier() {
     initDossierCombobox();
     const spiritStats = SIAnalytics.computeSpiritStats(getStatsData());
@@ -677,7 +706,11 @@
           ${uniquePowers.map(up => `<span class="badge ${up.speed === 'Fast' ? 'badge-loss' : 'badge-neutral'}" title="${escapeHtml(up.description)}">${escapeHtml(up.name)} (${up.cost}${up.speed})</span>`).join("")}
         </div>
       ` : ""}
+
+      ${renderDossierGames(sp.name)}
     `;
+
+    bodyEl.querySelector("#dossierGames")?.addEventListener("toggle", e => { dossierGamesOpen = e.currentTarget.open; });
 
     bodyEl.querySelectorAll(".aspect-ledger-row").forEach(row => {
       row.addEventListener("click", () => {

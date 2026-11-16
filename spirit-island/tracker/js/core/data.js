@@ -177,7 +177,7 @@
   function scenIcon(scOrName, size = 22) {
     const s = typeof scOrName === "string" ? getScen(scOrName) : scOrName;
     if (!s) return "";
-    return iconImg(s.image, s.localIcon, `width:${size}px;height:${size}px;object-fit:contain;border-radius:5px;flex-shrink:0;`, s.name);
+    return iconImg(String(s.image || "").replace(/\.svg$/, ".webp"), s.image || s.localIcon, `width:${size}px;height:${size}px;object-fit:contain;border-radius:5px;flex-shrink:0;`, s.name);
   }
   function complexityArrowLabel(ch) {
     if (ch === "▲") return { cls: "badge-high", txt: "▲ Harder" };

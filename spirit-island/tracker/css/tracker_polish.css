@@ -866,10 +866,6 @@ body.si-viewer .log-match-btn { display: none !important; }
 .ph-cell, .play-heat-legend i { display: block; width: var(--ph-size); height: var(--ph-size); border-radius: 3px; }
 .ph-out { visibility: hidden; }
 .ph-l0 { background: color-mix(in srgb, var(--text-secondary, #6b7a6f) 14%, transparent); }
-.ph-l1 { background: color-mix(in srgb, var(--fern-accent, #4d7c5a) 30%, transparent); }
-.ph-l2 { background: color-mix(in srgb, var(--fern-accent, #4d7c5a) 55%, transparent); }
-.ph-l3 { background: color-mix(in srgb, var(--fern-accent, #4d7c5a) 80%, transparent); }
-.ph-l4 { background: var(--fern-accent, #4d7c5a); }
 .ph-cell:not(.ph-out):hover { outline: 1.5px solid var(--text-primary, #222); outline-offset: 1px; }
 .play-heat-legend { display: flex; align-items: center; gap: 4px; margin-top: 0.7rem; font-size: 0.7rem; color: var(--text-secondary); flex-wrap: wrap; }
 .play-heat-legend .play-heat-note { margin-left: auto; }
@@ -877,3 +873,29 @@ body.si-viewer .log-match-btn { display: none !important; }
 
 #view-matches .zen-table tr.game-row > td:nth-child(10) .btn { width: 100%; }
 @media (max-width: 720px) { #view-matches .zen-table tr.game-row td:nth-child(10) .btn { width: auto; } }
+
+.ph-l1 { background: color-mix(in srgb, var(--fern-accent, #4d7c5a) 20%, transparent); }
+.ph-l2 { background: color-mix(in srgb, var(--fern-accent, #4d7c5a) 32%, transparent); }
+.ph-l3 { background: color-mix(in srgb, var(--fern-accent, #4d7c5a) 44%, transparent); }
+.ph-l4 { background: color-mix(in srgb, var(--fern-accent, #4d7c5a) 56%, transparent); }
+.ph-l5 { background: color-mix(in srgb, var(--fern-accent, #4d7c5a) 68%, transparent); }
+.ph-l6 { background: color-mix(in srgb, var(--fern-accent, #4d7c5a) 80%, transparent); }
+.ph-l7 { background: color-mix(in srgb, var(--fern-accent, #4d7c5a) 90%, transparent); }
+.ph-l8 { background: color-mix(in srgb, var(--fern-accent, #4d7c5a) 100%, transparent); }
+
+/* Spirit dossier: games this spirit played */
+.dossier-games { margin-top: 1.25rem; border-top: 1px solid var(--border-subtle); padding-top: 0.4rem; }
+.dossier-games > summary { display: flex; align-items: center; gap: 0.6rem; cursor: pointer; list-style: none; min-height: 44px; font-size: 0.74rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-gold-light); }
+.dossier-games > summary::-webkit-details-marker { display: none; }
+.dossier-games > summary::after { content: "▾"; margin-left: auto; color: var(--text-secondary); transition: transform 0.15s ease; }
+.dossier-games[open] > summary::after { transform: rotate(180deg); }
+.dg-list { display: grid; gap: 0.1rem; }
+.dg-row { display: grid; grid-template-columns: 2.6rem 6.2rem 5.2rem minmax(0, 1.3fr) minmax(0, 1.4fr) auto; gap: 0.3rem 0.8rem; align-items: center; padding: 0.55rem 0.2rem; border-bottom: 1px solid var(--border-subtle); font-size: 0.82rem; }
+.dg-row .dg-id { color: var(--text-secondary); font-weight: 700; }
+.dg-row .dg-sub { color: var(--text-secondary); font-size: 0.74rem; }
+.dg-row .dg-score { text-align: right; font-weight: 700; color: var(--accent-gold-light); }
+.dg-empty { color: var(--text-secondary); font-size: 0.85rem; padding: 0.6rem 0; }
+@media (max-width: 720px) {
+  .dg-row { grid-template-columns: auto auto 1fr auto; }
+  .dg-row > .dg-who, .dg-row > .dg-what { grid-column: 1 / -1; }
+}

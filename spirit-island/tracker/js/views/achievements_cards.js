@@ -319,9 +319,12 @@ function campTile(it, isNew) {
   } else status = `<span class="camp-status">${it.note ? escapeHtml(it.note) : "Not yet"}</span>`;
   return `
     <li class="camp-tile ${it.done ? "done" : "todo"}${isNew ? " is-new" : ""}" data-camp="${it.id}">
-      <div class="camp-title">${escapeHtml(it.title)}${isNew ? ` <span class="camp-new-tag" hidden>New</span>` : ""}</div>
-      <div class="camp-desc">${escapeHtml(it.desc)}</div>
-      ${status}
+      <img class="camp-icon" src="assets/achievements/${it.id}.webp" alt="" width="56" height="56" loading="lazy" decoding="async" onerror="this.style.display='none'">
+      <div class="camp-body">
+        <div class="camp-title">${escapeHtml(it.title)}${isNew ? ` <span class="camp-new-tag" hidden>New</span>` : ""}</div>
+        <div class="camp-desc">${escapeHtml(it.desc)}</div>
+        ${status}
+      </div>
     </li>`;
 }
 

@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/realm.css?v=4" />
+  <link rel="stylesheet" href="css/realm.css?v=5" />
   <script>
     /* Pick the theme before first paint: the one used last, else the device setting */
     (function () {
@@ -116,6 +116,49 @@
       <details class="as-table"><summary>Show as table</summary><div id="anatomyTable"></div></details>
     </section>
 
+    <section class="chapter" id="jars" data-title="The Blight Jars">
+      <div class="chapter-head">
+        <span class="chapter-num"></span>
+        <h2>The Blight Jars</h2>
+        <p>Every lost game, bottled. Each jar holds the blight left on the island when the invaders won, shelved by how the game was lost.</p>
+      </div>
+      <p class="chapter-sum" id="jarsSummary"></p>
+      <div class="split jars-split">
+        <div class="jars-shelf" id="jarsShelf"></div>
+        <aside class="side-card" id="jarsInfo" aria-live="polite"></aside>
+      </div>
+      <details class="as-table"><summary>Show as table</summary><div id="jarsTable"></div></details>
+    </section>
+
+    <section class="chapter" id="lineages" data-title="The Lineages">
+      <div class="chapter-head">
+        <span class="chapter-num"></span>
+        <h2>The Lineages</h2>
+        <p>Each spirit's record, read left to right through time. A stripe marks a game it played: green for a win, red for a loss, taller for harder. Gaps are the games it sat out.</p>
+      </div>
+      <div class="tides-frame">
+        <svg id="linSvg" class="tides-svg" role="group" tabindex="0" aria-label="Spirit lineages. Up and down arrows move between spirits, left and right between their games. Enter opens the game or dossier in the tracker."></svg>
+      </div>
+      <div class="tide-card" id="linInfo" aria-live="polite"></div>
+      <details class="as-table"><summary>Show as table</summary><div id="linTable"></div></details>
+    </section>
+
+    <section class="chapter" id="next" data-title="Your Next Invasion">
+      <div class="chapter-head">
+        <span class="chapter-num"></span>
+        <h2>Your Next Invasion</h2>
+        <p>The island deals a challenge from what you own and have not yet mastered: spirits without a win, pairings never tried, the next adversary level to beat and scenarios still unwon. It reads every game, whatever the time window says.</p>
+      </div>
+      <div class="next-controls">
+        <div class="pill-pick" id="nextPlayers" role="group" aria-label="Spirits at the table">
+          <span class="pick-lbl">Spirits at the table</span>
+          <button type="button" data-n="1">1</button><button type="button" data-n="2">2</button><button type="button" data-n="3">3</button><button type="button" data-n="4">4</button>
+        </div>
+        <button type="button" class="spin-btn" id="nextSpin">Spin</button>
+      </div>
+      <div class="next-deal" id="nextDeal" aria-live="polite"></div>
+    </section>
+
     <footer class="realm-foot">
       <p id="dataSource"></p>
       <p>Spirit Island, its spirits and their art belong to Greater Than Games. This is a fan-made record of our games.</p>
@@ -134,5 +177,8 @@
   <script src="js/realm/island.js?v=2"></script>
   <script src="js/realm/weather.js?v=1"></script>
   <script src="js/realm/anatomy.js?v=1"></script>
+  <script src="js/realm/jars.js?v=1"></script>
+  <script src="js/realm/lineages.js?v=1"></script>
+  <script src="js/realm/next.js?v=1"></script>
 </body>
 </html>

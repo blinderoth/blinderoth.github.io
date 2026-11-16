@@ -103,8 +103,21 @@
   // Links from the Spirit Realm page: index.html#game=12 opens that game, index.html#spirit=Name opens the dossier.
   function handleDeepLink(hash) {
     const h = decodeURIComponent(String(hash || "").replace(/^#/, ""));
-    const game = h.match(/^game=(.+)$/), spirit = h.match(/^spirit=(.+)$/);
-    if (game) { switchTab("matches"); if (window.inspectGame) window.inspectGame(Number(game[1])); }
+    const game = h.match(/^game=(.+)$/), spirit = h.match(/^spirit=(.+)$/), log = h.match(/^log=(.+)$/);
+    if (log) {
+      // A challenge dealt on the Spirit Realm page: open the logging form pre-filled
+      let p = null;
+      try { p = JSON.parse(log[1]); } catch (e) { p = null; }
+      if (p && typeof p === "object") {
+        const known = new Set((appData.spirits || []).map(s => s.name));
+        const players = (Array.isArray(p.players) ? p.players : []).filter(x => x && known.has(x.spirit)).slice(0, 6)
+          .map(x => ({ spirit: x.spirit, aspect: "", player: String(x.player || "") }));
+        const adv = (appData.adversaries || []).some(a => a.name === p.adversary1) ? p.adversary1 : "";
+        const lvl = adv && Number.isInteger(Number(p.adversary1Level)) ? Math.max(0, Math.min(6, Number(p.adversary1Level))) : null;
+        const scn = (appData.scenarios || []).some(s => s.name === p.scenario) ? p.scenario : "";
+        openMatchModal({ players, adversary1: adv, adversary1Level: lvl, scenario: scn });
+      }
+    } else if (game) { switchTab("matches"); if (window.inspectGame) window.inspectGame(Number(game[1])); }
     else if (spirit && window.selectAndShowDossier) window.selectAndShowDossier(spirit[1]);
   }
 

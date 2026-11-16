@@ -435,3 +435,79 @@ html[data-realm="night"] .an-col.on .an-seg { filter: drop-shadow(0 0 5px rgba(2
 }
 .is-heart-num { font-size: 40px; }
 .is-heart-lbl { font-size: 15px; }
+
+/* ==========================================================================
+   Stage 3: Blight Jars, Lineages, Next Invasion
+   ========================================================================== */
+/* Jars */
+.jars-split { align-items: start; }
+.jars-shelf { display: grid; gap: 22px; }
+.jar-row-head { display: flex; align-items: baseline; gap: 10px; font-family: var(--display); font-style: italic; font-size: 22px; margin-bottom: 6px; }
+.jar-row-head b { font-family: 'Cormorant Garamond', serif; font-style: normal; font-size: 16px; color: var(--muted); font-weight: 600; }
+.jar-line { display: flex; flex-wrap: wrap; gap: 10px; padding-bottom: 10px; border-bottom: 6px solid var(--shelf); box-shadow: 0 8px 10px -8px rgba(0, 0, 0, .45); }
+html[data-realm="journal"] { --shelf: #8A6440; --glass: rgba(255, 255, 255, .35); --jar-sludge: #6B5A44; }
+html[data-realm="night"] { --shelf: #3A2A1A; --glass: rgba(190, 230, 210, .08); --jar-sludge: #7A3B22; }
+.jar { background: none; border: none; padding: 0; cursor: pointer; display: grid; justify-items: center; gap: 2px; color: var(--ink); font: inherit; transition: transform .2s ease; }
+.jar:hover, .jar.on { transform: translateY(-5px); }
+.jar-svg { width: 54px; height: 86px; overflow: visible; }
+.jar-back { fill: var(--glass); }
+.jar-sludge { fill: var(--jar-sludge); }
+
+.jar-surface { fill: none; stroke: rgba(255, 255, 255, .25); stroke-width: 1.5; }
+.jar-glass { fill: none; stroke: var(--ink); stroke-width: 1.6; }
+html[data-realm="night"] .jar-glass { stroke: rgba(234, 219, 184, .55); }
+html[data-realm="night"] .jar.on .jar-glass, html[data-realm="night"] .jar:hover .jar-glass { stroke: var(--accent); filter: drop-shadow(0 0 6px rgba(242, 166, 90, .6)); }
+html[data-realm="journal"] .jar.on .jar-glass { stroke: var(--accent); stroke-width: 2.4; }
+.jar-lid { fill: var(--accent); opacity: .85; }
+.jar-num { font-family: var(--display); font-size: 20px; fill: var(--ink); paint-order: stroke; stroke: var(--card); stroke-width: 3px; }
+html[data-realm="night"] .jar-num { stroke: #1A1610; }
+.jar-tag { font-size: 14px; color: var(--muted); }
+.jar:focus-visible { outline: 2px dashed var(--accent); outline-offset: 4px; border-radius: 6px; }
+
+/* Lineages */
+.ln-band { fill: transparent; }
+.ln-row.on .ln-band { fill: var(--line); opacity: .45; }
+.ln-base { stroke: var(--line); }
+.ln-name { font-family: var(--display); font-style: italic; font-size: 16px; fill: var(--ink); }
+.ln-name.small { font-size: 13px; fill: var(--ink-soft); }
+.ln-count { font-family: 'Cormorant Garamond', serif; font-size: 15px; fill: var(--muted); }
+.ln-stripe.win { fill: var(--win); }
+.ln-stripe.loss { fill: var(--loss); }
+html[data-realm="night"] .ln-stripe.win { filter: drop-shadow(0 0 3px rgba(142, 240, 180, .55)); }
+.ln-stripe.on { stroke: var(--ink); stroke-width: 1.5; }
+#linSvg { cursor: crosshair; }
+
+/* Next invasion */
+.next-controls { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; margin-bottom: 22px; }
+.next-controls .pill-pick { margin: 0; align-items: center; }
+.pick-lbl { font-size: 17px; color: var(--ink-soft); margin-right: 6px; }
+.next-controls .pill-pick button { min-width: 44px; }
+.spin-btn {
+  font-family: var(--display); font-style: italic; font-size: 26px; cursor: pointer;
+  padding: 8px 34px; border-radius: 999px; border: 2px solid var(--accent); color: var(--bg); background: var(--accent);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.spin-btn:hover { transform: translateY(-2px); }
+html[data-realm="night"] .spin-btn { box-shadow: 0 0 30px rgba(242, 166, 90, .45); color: #1A1208; }
+.reels { display: grid; grid-template-columns: 1.4fr 1fr 1fr .7fr; gap: 14px; }
+.reel { padding: 18px 18px 16px; display: grid; align-content: start; gap: 6px; min-height: 140px; }
+html[data-realm="journal"] .reel { background: var(--card); border: 1px solid rgba(90, 60, 30, .22); box-shadow: 0 10px 24px rgba(80, 50, 20, .18); }
+html[data-realm="journal"] .reel:nth-child(odd) { transform: rotate(-.6deg); }
+html[data-realm="journal"] .reel:nth-child(even) { transform: rotate(.5deg); }
+html[data-realm="night"] .reel { background: linear-gradient(170deg, rgba(40, 30, 18, .88), rgba(16, 20, 14, .92)); border: 1px solid rgba(242, 166, 90, .3); border-radius: 16px; }
+.reel-lbl { font-size: 13px; letter-spacing: .22em; text-transform: uppercase; color: var(--accent); }
+.reel-val { font-family: var(--display); font-style: italic; font-weight: 400; font-size: 24px; line-height: 1.2; }
+.reel-lvl { font-style: normal; font-size: 18px; padding: 0 8px; border-radius: 999px; border: 1px solid var(--accent); color: var(--accent); vertical-align: 3px; }
+.reel-sub { font-style: normal; font-size: 15px; color: var(--muted); }
+.reels.spinning .reel-val { filter: blur(1.2px); opacity: .75; }
+.deal-go { display: inline-block; margin-top: 18px; font-family: var(--display); font-style: italic; font-size: 24px; text-decoration: none; border-bottom: 2px solid currentColor; }
+.next-deal > .hint { max-width: 70ch; }
+
+@media (max-width: 860px) {
+  .reels { grid-template-columns: 1fr 1fr; }
+  .jars-split { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  .reels { grid-template-columns: 1fr; }
+  .reel { min-height: 0; }
+}

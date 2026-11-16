@@ -405,6 +405,77 @@ window.SIAnalytics = (function () {
     };
   }
 
+  // One guardian's profile: record, spirits, aspects, adversary levels, scenarios.
+  // "Games" counts matches the guardian was in; a game with 2 spirits is still one game.
+  function computeGuardianProfile(data, name) {
+    const want = String(name || "").trim();
+    const games = [];
+    (data.matches || []).forEach(m => {
+      const slots = (m.players || []).filter(p => (p.player || "").trim() === want);
+      if (slots.length) games.push({ m, slots });
+    });
+    games.sort((a, b) => (Number(b.m.id) || 0) - (Number(a.m.id) || 0));   // newest first
+
+    const wins = games.filter(g => g.m.victory);
+    const r = {
+      name: want, games: games.length, wins: wins.length, losses: games.length - wins.length,
+      winRate: games.length ? (wins.length / games.length) * 100 : null,
+      highScore: Math.max(0, ...games.map(g => Number(g.m.score || 0))),
+      avgScore: games.length ? games.reduce((a, g) => a + Number(g.m.score || 0), 0) / games.length : null,
+      maxDifficultyWon: Math.max(0, ...wins.map(g => Number(g.m.difficulty || 0))),
+      streak: 0,
+      spiritCount: { byCount: {}, max: 1 },
+      spirits: [], aspects: [], aspectsTried: 0, aspectsAvailable: 0,
+      adversaries: [], scenariosWon: 0, scenariosTotal: 0, scenarioNames: []
+    };
+    for (const g of games) { if (g.m.victory) r.streak++; else break; }
+
+    games.forEach(g => {
+      const k = g.slots.length;
+      const b = (r.spiritCount.byCount[k] = r.spiritCount.byCount[k] || { games: 0, wins: 0 });
+      b.games++; if (g.m.victory) b.wins++;
+      r.spiritCount.max = Math.max(r.spiritCount.max, k);
+    });
+
+    const sp = {}, asp = {};
+    games.forEach(g => g.slots.forEach(slot => {
+      if (!slot.spirit) return;
+      const e = (sp[slot.spirit] = sp[slot.spirit] || { name: slot.spirit, plays: 0, wins: 0 });
+      e.plays++; if (g.m.victory) e.wins++;
+      const a = slot.aspect && slot.aspect !== "Base" ? resolveAspectName(data, slot.spirit, slot.aspect) : "";
+      if (a && a !== "Base") {
+        const key = slot.spirit + "|" + a;
+        const x = (asp[key] = asp[key] || { spirit: slot.spirit, name: a, plays: 0, wins: 0 });
+        x.plays++; if (g.m.victory) x.wins++;
+      }
+    }));
+    const spiritsMap = {};
+    (data.spirits || []).forEach(x => { spiritsMap[x.name] = x; });
+    r.spirits = Object.values(sp).map(e => ({ ...e, winRate: (e.wins / e.plays) * 100, image: spiritsMap[e.name]?.image || "" }))
+      .sort((a, b) => b.plays - a.plays || b.wins - a.wins || a.name.localeCompare(b.name));
+    r.aspects = Object.values(asp).sort((a, b) => b.plays - a.plays || b.wins - a.wins || a.name.localeCompare(b.name));
+    r.aspectsTried = r.aspects.length;
+    r.aspectsAvailable = (data.aspects || []).filter(a => spiritsMap[a.spirit]?.owned).length;
+
+    const best = {};
+    wins.forEach(g => {
+      [[g.m.adversary1, g.m.adversary1Level], [g.m.adversary2, g.m.adversary2Level]].forEach(([n, l]) => {
+        if (!n) return;
+        const lv = (l === null || l === "" || l === undefined) ? 0 : Number(l);
+        if (best[n] === undefined || lv > best[n]) best[n] = lv;
+      });
+    });
+    r.adversaries = (data.adversaries || []).filter(a => a.owned).map(a => ({ name: a.name, level: best[a.name] === undefined ? null : best[a.name] }));
+
+    const family = n => /^(Normal|Large) Surges of Colonization$/.test(n) ? "Surges of Colonization" : n;
+    const won = new Set(wins.map(g => g.m.scenario).filter(Boolean).map(family));
+    const all = new Set((data.scenarios || []).filter(x => x.owned).map(x => family(x.name)));
+    r.scenariosTotal = all.size;
+    r.scenarioNames = Array.from(all).filter(n => won.has(n));
+    r.scenariosWon = r.scenarioNames.length;
+    return r;
+  }
+
   function computeLossAutopsy(data) {
     const losses = (data.matches || []).filter(m => !m.victory);
     const counts = {
@@ -655,6 +726,7 @@ window.SIAnalytics = (function () {
     computeAdversaryStats,
     computePlayerStats,
     computeLossAutopsy,
+    computeGuardianProfile,
     computeAchievements,
   };
 })();

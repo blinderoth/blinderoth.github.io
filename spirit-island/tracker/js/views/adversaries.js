@@ -1,23 +1,74 @@
 // Overview and Games tab tables: guardians, adversary clearance, loss autopsy
 // Classic script: shares globals with the other files in js/core and js/views.
 
+  // Guardians expanded on screen. Not saved, so the table starts collapsed on load.
+  const guardianOpen = new Set();
+  const shortAdvName = n => String(n).replace(/^The (Kingdom|Tsardom) of /, "").replace(/^The /, "").replace("Brandenburg-Prussia", "Prussia").replace("Habsburg Monarchy", "Habsburg").replace("Habsburg Mining Expedition", "Mining Exp.");
+  const pct = v => (v === null || v === undefined) ? "—" : Math.round(v) + "%";
+
+  function guardianDetailHtml(p) {
+    const stat = (label, val) => `<div class="gd-stat"><span>${label}</span><strong>${val}</strong></div>`;
+    const counts = p.spiritCount.byCount;
+    const maxK = Math.max(3, p.spiritCount.max);
+    const perGame = [];
+    for (let k = 1; k <= maxK; k++) {
+      if (k === 1 || k <= 3 || counts[k]) {
+        const c = counts[k] || { games: 0, wins: 0 };
+        perGame.push(stat(`${k} spirit${k === 1 ? "" : "s"}`, `${c.games} <em>${c.games ? pct((c.wins / c.games) * 100) + " won" : "games"}</em>`));
+      }
+    }
+    const topSpirits = p.spirits.slice(0, 5), restSpirits = p.spirits.slice(5);
+    const spiritRow = s => `<li><span class="gd-sp">${s.image ? `<img src="${escapeHtml(s.image)}" alt="">` : ""}${escapeHtml(s.name)}</span><span class="mono">${s.plays}</span><span class="mono gd-dim">${pct(s.winRate)}</span></li>`;
+    const aspects = p.aspects.slice(0, 6).map(a => `<span class="gd-chip" title="${escapeHtml(a.spirit)}">${escapeHtml(a.name)} <b>${a.plays}</b></span>`).join("");
+    const advs = p.adversaries.map(a => `<span class="gd-chip${a.level === null ? " off" : ""}">${escapeHtml(shortAdvName(a.name))} <b>${a.level === null ? "–" : "L" + a.level}</b></span>`).join("");
+    return `
+      <div class="gd-grid">
+        <div class="gd-block">
+          <h4>Record</h4>
+          <div class="gd-stats">
+            ${stat("Games", p.games)}${stat("Won", p.wins)}${stat("Lost", p.losses)}${stat("Win rate", pct(p.winRate))}
+            ${stat("Avg score", SIAnalytics.formatNum(p.avgScore, 1))}${stat("Best difficulty won", p.maxDifficultyWon || "—")}${stat("Win streak", p.streak)}
+          </div>
+          <h4>Spirits per game</h4>
+          <div class="gd-stats">${perGame.join("")}</div>
+        </div>
+        <div class="gd-block">
+          <h4>Spirits (${p.spirits.length})</h4>
+          <ul class="gd-list"><li class="gd-head"><span></span><span>Plays</span><span>Won</span></li>${topSpirits.map(spiritRow).join("")}</ul>
+          ${restSpirits.length ? `<details class="gd-more"><summary>Show ${restSpirits.length} more</summary><ul class="gd-list">${restSpirits.map(spiritRow).join("")}</ul></details>` : ""}
+        </div>
+        <div class="gd-block">
+          <h4>Aspects tried: ${p.aspectsTried} of ${p.aspectsAvailable}</h4>
+          <div class="gd-chips">${aspects || '<span class="gd-dim">None yet</span>'}</div>
+          <h4>Best level beaten</h4>
+          <div class="gd-chips">${advs || '<span class="gd-dim">No adversaries owned</span>'}</div>
+          <div class="gd-dim gd-foot">Scenarios won: ${p.scenariosWon} of ${p.scenariosTotal}</div>
+        </div>
+      </div>`;
+  }
+
   function renderCouncilLeaderboard() {
     const council = SIAnalytics.computePlayerStats(getStatsData());
     const tbody = document.getElementById("councilTbody");
     const tfoot = document.getElementById("councilTfoot");
     if (!tbody) return;
 
-    tbody.innerHTML = council.guardians.map(g => `
-      <tr>
+    const statsData = getStatsData();
+    tbody.innerHTML = council.guardians.map((g, gi) => {
+      const canOpen = g.uniqueMatches > 0;
+      const open = canOpen && guardianOpen.has(g.name);
+      return `
+      <tr class="guardian-row${canOpen ? " has-detail" : ""}${open ? " open" : ""}" data-guardian="${escapeHtml(g.name)}">
         <td>
           <div style="display:flex;align-items:center;gap:0.55rem;">
             <span style="width:28px;height:28px;border-radius:50%;background:rgba(245,158,11,0.18);border:1px solid rgba(245,158,11,0.4);display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:0.78rem;color:var(--accent-gold-light);">
               ${escapeHtml(g.name.charAt(0))}
             </span>
-            <div>
+            <div style="flex:1;">
               <div style="font-weight:700;">${escapeHtml(g.name)}</div>
               <div style="font-size:0.68rem;color:var(--text-secondary);">${g.uniqueMatches} matches</div>
             </div>
+            ${canOpen ? `<button type="button" class="guardian-toggle" aria-expanded="${open}" aria-controls="guardianDetail${gi}" aria-label="Show overview for ${escapeHtml(g.name)}"></button>` : ""}
           </div>
         </td>
         <td class="mono" style="font-weight:700;">${g.deployments}</td>
@@ -33,7 +84,22 @@
         </td>
         <td class="mono" style="font-weight:700;color:var(--accent-gold-light);">${SIAnalytics.formatNum(g.highScore, 2)}</td>
       </tr>
-    `).join("");
+      ${canOpen ? `<tr class="guardian-detail" id="guardianDetail${gi}"${open ? "" : " hidden"}><td colspan="6">${guardianDetailHtml(SIAnalytics.computeGuardianProfile(statsData, g.name))}</td></tr>` : ""}
+    `;
+    }).join("");
+
+    tbody.querySelectorAll("tr.guardian-row.has-detail").forEach(row => {
+      const toggle = () => {
+        const name = row.getAttribute("data-guardian");
+        const detail = row.nextElementSibling;
+        const nowOpen = detail.hidden;
+        detail.hidden = !nowOpen;
+        row.classList.toggle("open", nowOpen);
+        row.querySelector(".guardian-toggle")?.setAttribute("aria-expanded", String(nowOpen));
+        if (nowOpen) guardianOpen.add(name); else guardianOpen.delete(name);
+      };
+      row.addEventListener("click", e => { if (!e.target.closest(".spirit-player-chip")) toggle(); });
+    });
 
     tbody.querySelectorAll(".spirit-player-chip").forEach(chip => {
       chip.addEventListener("click", () => {

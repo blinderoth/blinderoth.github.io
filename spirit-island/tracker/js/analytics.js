@@ -1,4 +1,4 @@
-// Spirit Island Analytics, Scoring, Gauntlet, Recommender & Achievement Engine
+// Spirit Island Analytics, Scoring, Gauntlet & Achievement Engine
 
 window.SIAnalytics = (function () {
   function formatNum(n, decimals = 1) {
@@ -571,115 +571,6 @@ window.SIAnalytics = (function () {
     };
   }
 
-  function generateRecommendation(data, opts = {}) {
-    const playerCount = Number(opts.playerCount || 2);
-    const mode = opts.mode || "campaign";
-    const maxComplexity = Number(opts.maxComplexity || 4);
-
-    const spiritStats = computeSpiritStats(data);
-    const advStats = computeAdversaryStats(data);
-
-    let candidateSpirits = spiritStats.filter(s => s.owned && s.complexityScore <= maxComplexity);
-    if (candidateSpirits.length < playerCount) {
-      candidateSpirits = spiritStats;
-    }
-
-    let chosenSpirits = [];
-    let directives = [];
-
-    if (mode === "unplayed") {
-      const unplayed = candidateSpirits.filter(s => s.gamesPlayed === 0);
-      const pool = unplayed.length >= playerCount ? unplayed : candidateSpirits.sort((a, b) => a.gamesPlayed - b.gamesPlayed);
-      chosenSpirits = pool.slice(0, playerCount);
-      directives.push("First Contact Protocol: Deploying unplayed owned Spirits to expand Council mastery and unlock General Achievement milestones.");
-    } else if (mode === "synergy") {
-      const combos = [
-        {
-          spirits: ["River Surges in Sunlight", "Lightning's Swift Strike", "Thunderspeaker", "A Spread of Rampant Green", "Ocean's Hungry Grasp", "Keeper of the Forbidden Wilds"],
-          note: "River provides massive early Energy acceleration (Boon of Vigor) & Dahan repositioning while Lightning grants Fast Phase blitz to crush builds before Ravage."
-        },
-        {
-          spirits: ["Ocean's Hungry Grasp", "Bringer of Dreams and Nightmares", "River Surges in Sunlight", "Sharp Fangs Behind the Leaves", "Shadows Flicker like Flame", "Many Minds Move as One"],
-          note: "Coastal Drowning Engine: Bringer and River push terrifying waves of Invaders directly into Ocean's Hungry Grasp for massive Fear and Energy."
-        },
-        {
-          spirits: ["A Spread of Rampant Green", "Volcano Looming High", "Stone's Unyielding Defiance", "Keeper of the Forbidden Wilds", "Vital Strength of the Earth", "Shifting Memory of Ages"],
-          note: "Proliferation Fortress: Rampant Green accelerates Volcano's Mountain presence stack for devastating eruptions while Stone absorbs Blight."
-        }
-      ];
-      const pick = combos[Math.floor(Math.random() * combos.length)];
-      chosenSpirits = pick.spirits
-        .map(name => spiritStats.find(s => s.name === name))
-        .filter(Boolean)
-        .slice(0, playerCount);
-      directives.push(pick.note);
-    } else if (mode === "random") {
-      const shuffled = [...candidateSpirits].sort(() => Math.random() - 0.5);
-      chosenSpirits = shuffled.slice(0, playerCount);
-      directives.push("Island Fate Draft: Spontaneous elemental convergence selected across your owned Spirit pool.");
-    } else {
-      // Campaign progression recommender (matches the sheet's Game Night Recommender)
-      const unplayedOwned = candidateSpirits.filter(s => s.gamesPlayed === 0);
-      const highMastery = candidateSpirits.filter(s => s.gamesPlayed > 0).sort((a, b) => (b.winRate || 0) - (a.winRate || 0));
-      if (playerCount === 1) {
-        chosenSpirits = [unplayedOwned[0] || highMastery[0]];
-      } else {
-        chosenSpirits = [
-          unplayedOwned[0] || highMastery[0],
-          highMastery[0] || candidateSpirits[1],
-          ...highMastery.slice(1)
-        ].filter(Boolean).slice(0, playerCount);
-      }
-      directives.push("Balanced Expedition Pairing: Combines an unplayed or rising Spirit with a proven high-win-rate anchor Spirit.");
-    }
-
-    // Pick Target Adversary & Level
-    const ownedAdvs = advStats.filter(a => a.owned);
-    let targetAdv = ownedAdvs[0] || advStats[0];
-    let targetLevel = 0;
-    let levelReason = "Unchallenged Threat";
-
-    // Look for lowest unconquered level across owned adversaries
-    let bestTarget = null;
-    ownedAdvs.forEach(adv => {
-      for (let lvl = 0; lvl <= 6; lvl++) {
-        const cell = adv.gauntlet[lvl];
-        if (cell.status !== "WIN") {
-          const scorePriority = cell.status === "LOSS" ? lvl - 0.5 : lvl;
-          if (!bestTarget || scorePriority < bestTarget.priority) {
-            bestTarget = {
-              adv,
-              lvl,
-              priority: scorePriority,
-              reason: cell.status === "LOSS" ? "Redemption Match (Previously Lost)" : "Unchallenged Tier"
-            };
-          }
-          break;
-        }
-      }
-    });
-
-    if (bestTarget) {
-      targetAdv = bestTarget.adv;
-      targetLevel = bestTarget.lvl;
-      levelReason = bestTarget.reason;
-    }
-
-    if (targetAdv && targetAdv.strategyNotes) {
-      directives.push(`Counter-${targetAdv.name.replace("The ", "")}: ${targetAdv.strategyNotes}`);
-    }
-
-    return {
-      spirits: chosenSpirits,
-      adversary: targetAdv,
-      level: targetLevel,
-      difficulty: targetAdv?.levels?.[targetLevel] ?? 0,
-      levelReason,
-      directives
-    };
-  }
-
-  // Resolve an aspect name (handles aliases like "Tangle" -> "Tangles")
   function resolveAspectName(data, spiritName, aspectName) {
     const raw = (aspectName || "").trim();
     if (!raw) return "Base";
@@ -769,6 +660,5 @@ window.SIAnalytics = (function () {
     computePlayerStats,
     computeLossAutopsy,
     computeAchievements,
-    generateRecommendation
   };
 })();

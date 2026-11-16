@@ -99,7 +99,7 @@
       };
 
       const titleEl = document.getElementById("cropModalTitle");
-      if (titleEl) titleEl.textContent = `📐 Refit Artwork: ${targetTitle}`;
+      if (titleEl) titleEl.textContent = `Refit Artwork: ${targetTitle}`;
       if (imgStage) imgStage.src = targetImg;
       if (microDossier) microDossier.src = targetImg;
       if (microCodex) microCodex.src = targetImg;
@@ -585,7 +585,7 @@
           <div style="width:100%;">
             <div style="display:flex;align-items:center;justify-content:space-between;">
               <span style="display:flex;align-items:center;gap:0.35rem;font-weight:600;">
-                ${iconUrl ? `<img src="${iconUrl}" alt="${elName}" onerror="this.style.display='none'">` : ELEMENT_EMOJIS[elName]}
+                ${iconUrl ? `<img src="${iconUrl}" alt="${elName}" onerror="this.style.display='none'">` : ""}
                 ${elName}
               </span>
               <span class="mono" style="font-weight:700;color:${ count > 0 ? ELEMENT_COLORS[elName] : 'var(--text-muted)' }">${count}</span>
@@ -604,7 +604,7 @@
       <div class="dossier-hero">
         <div class="spirit-portrait-frame">
           <img id="dossierPortraitImg" src="${escapeHtml((curAsp && curAsp.image) ? curAsp.image : sp.image)}" alt="${escapeHtml(sp.name)}" style="${getFocalStyle((curAsp && curAsp.image) ? curAsp : sp)}" onerror=\"this.onerror=null;this.src='assets/spirits/volcano_looming_high.png'\" title="${curAsp && curAsp.image ? 'Artwork: ' + escapeHtml(curAsp.name) + ' Aspect' : escapeHtml(sp.name)}">
-          <button type="button" class="btn-crop-trigger" id="openCropModalBtn" title="Manually Refit & Center Artwork">📐 Refit Art</button>
+          <button type="button" class="btn-crop-trigger" id="openCropModalBtn" title="Manually Refit & Center Artwork">Refit Art</button>
         </div>
         <div>
           <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.65rem;">
@@ -648,15 +648,15 @@
       </div>
       <div class="tracks-box">
         <div class="mini-stat">
-          <div class="mini-stat-label">⚡ Energy Track</div>
+          <div class="mini-stat-label">Energy Track</div>
           <div class="mini-stat-val">Min ${sp.minEnergy} → Max ${sp.maxEnergy}</div>
         </div>
         <div class="mini-stat">
-          <div class="mini-stat-label">🃏 Card Plays Track</div>
+          <div class="mini-stat-label">Card Plays Track</div>
           <div class="mini-stat-val">Min ${sp.minPlays} → Max ${sp.maxPlays}</div>
         </div>
         <div class="mini-stat">
-          <div class="mini-stat-label">🔥 Starting Hand</div>
+          <div class="mini-stat-label">Starting Hand</div>
           <div class="mini-stat-val">Σ ${sp.startingCost} Energy (${sp.fastCards}F / ${sp.slowCards}S)</div>
         </div>
       </div>
@@ -674,7 +674,7 @@
       ${uniquePowers.length > 0 ? `
         <div style="margin-top:0.75rem;display:flex;gap:0.4rem;flex-wrap:wrap;align-items:center;">
           <span style="font-size:0.73rem;color:var(--text-secondary);font-weight:700;">Unique Powers:</span>
-          ${uniquePowers.map(up => `<span class="badge ${up.speed === 'Fast' ? 'badge-loss' : 'badge-neutral'}" title="${escapeHtml(up.description)}">${escapeHtml(up.name)} (${up.cost}⚡ ${up.speed})</span>`).join("")}
+          ${uniquePowers.map(up => `<span class="badge ${up.speed === 'Fast' ? 'badge-loss' : 'badge-neutral'}" title="${escapeHtml(up.description)}">${escapeHtml(up.name)} (${up.cost}${up.speed})</span>`).join("")}
         </div>
       ` : ""}
     `;

@@ -153,7 +153,7 @@
   }
 
   function mototesButtonText() {
-    return motesEnabled ? "✨ Spirit Presence: Active" : "✨ Spirit Presence: Paused";
+    return motesEnabled ? "Spirit presence: on" : "Spirit presence: off";
   }
 
   // =========================================================================

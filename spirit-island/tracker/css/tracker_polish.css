@@ -774,7 +774,6 @@ body.si-viewer #importJsonFileInput,
 body.si-viewer label[for="importJsonFileInput"],
 body.si-viewer #resetOriginalSheetBtn,
 body.si-viewer #globalRefitArtBtn,
-body.si-viewer #dispatchRecBtn,
 body.si-viewer .dossier-log-btn,
 body.si-viewer .log-match-btn { display: none !important; }
 #syncCard [hidden] { display: none !important; }
@@ -804,4 +803,14 @@ body.si-viewer .log-match-btn { display: none !important; }
   .ach-avatar { width: 68px; height: 68px; border-radius: 12px; }
   .ach-hero { gap: 0.7rem; }
   .ach-name { font-size: 18px; }
+}
+
+
+/* Adversary clearance rows: flag, win rate, seven levels, games / wins */
+.zen-gauntlet-row { grid-template-columns: 240px 90px 1fr 132px; }
+.zen-gauntlet-name span { min-width: 0; }
+.zen-gauntlet-total { text-align: right; font-size: 12.5px; color: var(--text-secondary); white-space: nowrap; }
+@media (max-width: 720px) {
+  .zen-gauntlet-row { grid-template-columns: 1fr auto; }
+  .zen-gauntlet-total { grid-column: 1 / -1; text-align: left; font-size: 12px; }
 }

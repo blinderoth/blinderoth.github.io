@@ -87,10 +87,8 @@
 
     renderZenAwakenedStrip();
     renderDossier();
-    renderAdversaryThreatMatrix();
     renderCouncilLeaderboard();
     renderAdversaryGauntlet();
-    renderRecommender();
     renderLossAutopsy();
   }
 

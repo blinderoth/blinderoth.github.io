@@ -96,7 +96,6 @@
 
     overlay.innerHTML = `
       <div class="milestone-celebration-card">
-        <div class="milestone-seal-badge" aria-hidden="true">🏆</div>
         <h3 class="serif-title" style="text-align:center;margin:0 0 0.2rem;font-size:1.25rem;color:var(--accent-gold-light);">
           ${totalCount === 1 ? "New Milestone Unlocked!" : `${totalCount} New Milestones Unlocked!`}
         </h3>
@@ -144,7 +143,7 @@
       <div class="panel-card" style="margin-bottom:1.25rem;">
         <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:0.65rem;">
           <div>
-            <h3 class="serif-title" style="color:var(--accent-gold-light);font-size:1.1rem;">🏆 Island Mastery & Achievement Matrix</h3>
+            <h3 class="serif-title" style="color:var(--accent-gold-light);font-size:1.1rem;">Island Mastery & Achievement Matrix</h3>
             <p style="font-size:0.82rem;color:var(--text-secondary);">Tracks general milestones, adversary levels, scenarios and aspects for each spirit, plus the teammates you have won with.</p>
           </div>
           <div style="text-align:right;">

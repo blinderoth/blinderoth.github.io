@@ -58,14 +58,3 @@
     Plant: "#22c55e",
     Animal: "#ef4444"
   };
-
-  const ELEMENT_EMOJIS = {
-    Sun: "☀️",
-    Moon: "🌙",
-    Fire: "🔥",
-    Air: "💨",
-    Water: "💧",
-    Earth: "⛰️",
-    Plant: "🌿",
-    Animal: "🐾"
-  };

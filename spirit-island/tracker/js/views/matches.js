@@ -113,8 +113,8 @@
         : `<span style="color:var(--text-muted);">Base Island</span>`;
 
       const scenHtml = [
-        m.scenario ? `<span class="badge badge-neutral" style="display:inline-flex;align-items:center;gap:0.3rem;">${scenIcon(m.scenario, 16) || "📜"} ${escapeHtml(m.scenario)}</span>` : "",
-        m.thematicMap ? `<span class="badge badge-vhigh">🗺️ Thematic Map</span>` : ""
+        m.scenario ? `<span class="badge badge-neutral" style="display:inline-flex;align-items:center;gap:0.3rem;">${scenIcon(m.scenario, 16)} ${escapeHtml(m.scenario)}</span>` : "",
+        m.thematicMap ? `<span class="badge badge-vhigh">Thematic Map</span>` : ""
       ].filter(Boolean).join(" ");
 
       const invStat = m.victory
@@ -138,16 +138,16 @@
           </td>
           <td class="mono"><span class="badge badge-neutral">Diff ${m.difficulty ?? 0}</span></td>
           <td style="font-size:0.76rem;color:var(--text-secondary);white-space:nowrap;">
-            <div>🛖 Dahan: <strong>${m.dahan ?? 0}</strong> • ☣️ Blight: <strong>${m.blight ?? 0}</strong></div>
-            <div>${invStat} ${m.fearCardsLeft !== null && m.fearCardsLeft !== "" && m.fearCardsLeft !== undefined ? `• 😱 Fear: ${m.fearCardsLeft}` : ""}</div>
+            <div>Dahan: <strong>${m.dahan ?? 0}</strong> • Blight: <strong>${m.blight ?? 0}</strong></div>
+            <div>${invStat} ${m.fearCardsLeft !== null && m.fearCardsLeft !== "" && m.fearCardsLeft !== undefined ? `• Fear: ${m.fearCardsLeft}` : ""}</div>
           </td>
           <td class="mono" style="font-size:1rem;font-weight:800;color:var(--accent-gold-light);">
             ${SIAnalytics.formatNum(m.score, 2)}
           </td>
           <td style="max-width:220px;font-size:0.77rem;color:var(--text-secondary);">${escapeHtml(m.notes || "")}</td>
           <td style="white-space:nowrap;">
-            <button class="btn btn-secondary btn-sm edit-match-btn" data-id="${m.id}" title="Edit Match">✏️</button>
-            <button class="btn btn-danger btn-sm delete-match-btn" data-id="${m.id}" title="Delete Match">🗑️</button>
+            <button class="btn btn-secondary btn-sm edit-match-btn" data-id="${m.id}" title="Edit match" aria-label="Edit match">Edit</button>
+            <button class="btn btn-danger btn-sm delete-match-btn" data-id="${m.id}" title="Delete match" aria-label="Delete match">Delete</button>
           </td>
         </tr>
       `;
@@ -246,7 +246,7 @@
 
     const isEditing = prefill && prefill.id !== undefined;
     editingMatchId = isEditing ? prefill.id : null;
-    document.getElementById("matchModalTitle").textContent = isEditing ? `Edit Match #${prefill.id}` : "🌋 Log Spirit Island Session";
+    document.getElementById("matchModalTitle").textContent = isEditing ? `Edit Match #${prefill.id}` : "Log Spirit Island Session";
 
     const today = new Date().toISOString().slice(0, 10);
     document.getElementById("modalDate").value = prefill?.date || today;

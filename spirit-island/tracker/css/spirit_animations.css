@@ -24,7 +24,7 @@
 
 /* 2. Keyframe Animations for the 8 Canonical Elements */
 
-/* 🔥 Fire: Flickering ember & solar heat pulse */
+/* Fire: Flickering ember & solar heat pulse */
 @keyframes elemFirePulse {
   0%, 100% {
     box-shadow: 0 0 4px rgba(229, 83, 27, 0.4), inset 0 0 2px rgba(245, 158, 11, 0.3);
@@ -36,7 +36,7 @@
   }
 }
 
-/* 💧 Water: Fluid oceanic undulation */
+/* Water: Fluid oceanic undulation */
 @keyframes elemWaterSurge {
   0%, 100% {
     box-shadow: 0 0 4px rgba(34, 139, 230, 0.35);
@@ -50,7 +50,7 @@
   }
 }
 
-/* 🌿 Plant: Organic verdant blooming pulse */
+/* Plant: Organic verdant blooming pulse */
 @keyframes elemPlantBloom {
   0%, 100% {
     box-shadow: 0 0 3px rgba(43, 138, 62, 0.35);
@@ -62,7 +62,7 @@
   }
 }
 
-/* 💨 Air: Whistling gale & swift lightning spark */
+/* Air: Whistling gale & swift lightning spark */
 @keyframes elemAirSwirl {
   0%, 100% {
     box-shadow: 0 0 4px rgba(116, 143, 252, 0.3);
@@ -80,7 +80,7 @@
   }
 }
 
-/* ⛰️ Earth: Tectonic grounding & bedrock crystallization */
+/* Earth: Tectonic grounding & bedrock crystallization */
 @keyframes elemEarthTremor {
   0%, 100% {
     box-shadow: 0 0 3px rgba(151, 117, 85, 0.4);
@@ -92,7 +92,7 @@
   }
 }
 
-/* ☀️ Sun: Radiant golden corona flare */
+/* Sun: Radiant golden corona flare */
 @keyframes elemSunRadiance {
   0%, 100% {
     box-shadow: 0 0 5px rgba(245, 158, 11, 0.4);
@@ -104,7 +104,7 @@
   }
 }
 
-/* 🌙 Moon: Eerie creeping shadow veil */
+/* Moon: Eerie creeping shadow veil */
 @keyframes elemMoonVeil {
   0%, 100% {
     box-shadow: 0 0 4px rgba(121, 80, 242, 0.35);
@@ -116,7 +116,7 @@
   }
 }
 
-/* 🐾 Animal: Feral predatory heartbeat */
+/* Animal: Feral predatory heartbeat */
 @keyframes elemAnimalFeral {
   0%, 100% {
     box-shadow: 0 0 4px rgba(217, 72, 15, 0.35);

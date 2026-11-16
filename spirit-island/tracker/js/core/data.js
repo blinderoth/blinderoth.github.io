@@ -170,6 +170,10 @@
     if (!a) return "";
     return iconImg(a.flag, a.localIcon, `width:${w}px;height:${h}px;object-fit:cover;border-radius:3px;border:1px solid var(--border-subtle);flex-shrink:0;`, a.name);
   }
+  function elIcon(name, size = 16) {
+    const url = appData?.elementIcons?.[name];
+    return url ? `<img src="${escapeHtml(url)}" alt="" style="width:${size}px;height:${size}px;object-fit:contain;flex-shrink:0;" onerror="this.style.display='none'">` : "";
+  }
   function scenIcon(scOrName, size = 22) {
     const s = typeof scOrName === "string" ? getScen(scOrName) : scOrName;
     if (!s) return "";
@@ -210,7 +214,7 @@
     const toast = document.createElement("div");
     toast.className = "toast";
     toast.setAttribute("role", "status");
-    toast.innerHTML = `<span aria-hidden="true">🌋</span> <span>${escapeHtml(msg)}</span>`;
+    toast.innerHTML = `<span>${escapeHtml(msg)}</span>`;
     const dismiss = () => {
       toast.style.opacity = "0";
       setTimeout(() => toast.remove(), 300);

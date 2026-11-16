@@ -150,7 +150,8 @@
         const btn = document.createElement("button");
         btn.type = "button";
         btn.className = "btn btn-secondary btn-sm";
-        btn.innerHTML = `${ELEMENT_EMOJIS[elName]} ${elName}`;
+        btn.innerHTML = `${elIcon(elName, 14)} ${elName}`;
+        btn.style.display = "inline-flex"; btn.style.alignItems = "center"; btn.style.gap = "0.3rem";
         btn.addEventListener("click", () => {
           if (activePowerElements.has(elName)) {
             activePowerElements.delete(elName);
@@ -216,7 +217,7 @@
               </div>
             </div>
           </div>
-          <span class="badge ${p.speed === 'Fast' ? 'badge-loss' : 'badge-neutral'}">${p.speed === 'Fast' ? '⚡ Fast' : '🐢 Slow'}</span>
+          <span class="badge ${p.speed === 'Fast' ? 'badge-loss' : 'badge-neutral'}">${p.speed === 'Fast' ? 'Fast' : 'Slow'}</span>
         </div>
 
         <div style="display:flex;align-items:center;justify-content:space-between;font-size:0.74rem;color:var(--text-secondary);background:transparent;padding:0.3rem 0.55rem;border-radius:6px;">
@@ -231,7 +232,7 @@
         <div style="display:flex;gap:0.3rem;flex-wrap:wrap;margin-top:auto;">
           ${(p.elements || []).map(el => `
             <span class="badge badge-neutral" style="border-color:${ELEMENT_COLORS[el]}55;color:${ELEMENT_COLORS[el]};">
-              ${ELEMENT_EMOJIS[el]} ${el}
+              <span style="display:inline-flex;align-items:center;gap:0.25rem;">${elIcon(el, 13)} ${el}</span>
             </span>
           `).join("")}
         </div>

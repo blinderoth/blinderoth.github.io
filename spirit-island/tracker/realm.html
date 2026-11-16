@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="referrer" content="no-referrer" />
   <title>Spirit Realm</title>
-  <meta name="description" content="The Spirit Island campaign told as a story: tides of every game, and a constellation of who plays with whom." />
+  <meta name="description" content="The Spirit Island campaign told as a story: the island reclaimed, the tides of every game, the elements, who plays with whom and where the points come from." />
   <meta name="theme-color" content="#EADCBD" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/realm.css?v=2" />
+  <link rel="stylesheet" href="css/realm.css?v=4" />
   <script>
     /* Pick the theme before first paint: the one used last, else the device setting */
     (function () {
@@ -44,17 +44,45 @@
       <p class="hero-sub" id="heroSub">Gathering the island's memories…</p>
     </section>
 
+    <section class="chapter" id="island" data-title="The Island">
+      <div class="chapter-head">
+        <span class="chapter-num"></span>
+        <h2>The Island</h2>
+        <p>Each adversary holds a stretch of the island, with levels 0 to 6 running from the coast to the heart. A win grows the land back, a loss leaves it blighted, and untried ground stays bare. Scenarios wait offshore as landmarks.</p>
+      </div>
+      <p class="chapter-sum" id="islandSummary"></p>
+      <div class="split">
+        <svg id="islandSvg" class="island-svg" viewBox="-440 -440 880 880" role="group" tabindex="0" aria-label="Island map. Left and right arrows move between adversaries, up and down between levels; above level 0 are the scenario landmarks. Enter opens the game in the tracker."></svg>
+        <aside class="side-card" id="islandInfo" aria-live="polite"></aside>
+      </div>
+      <details class="as-table"><summary>Show as table</summary><div id="islandTable"></div></details>
+    </section>
+
     <section class="chapter" id="tides" data-title="The Tides">
       <div class="chapter-head">
         <span class="chapter-num"></span>
         <h2>The Tides</h2>
-        <p>Every invasion in the order it was fought. The wave rises with the score; foam is surviving Dahan, sludge is blight left on the island. Drag the handles under the tide to choose a stretch of time, and every chapter below follows.</p>
+        <p>Every invasion in the order it was fought. The wave rises with the score; foam is surviving Dahan, sludge is blight left on the island. Drag the handles under the tide to choose a stretch of time, and every chapter on the page follows.</p>
       </div>
       <div class="tides-frame">
         <svg id="tidesSvg" class="tides-svg" role="group" tabindex="0" aria-label="Tide of games. Use left and right arrows to move between games, Enter to open the game in the tracker."></svg>
       </div>
       <div class="tide-card" id="tideCard" aria-live="polite"></div>
       <details class="as-table"><summary>Show as table</summary><div id="tidesTable"></div></details>
+    </section>
+
+    <section class="chapter" id="weather" data-title="The Weather">
+      <div class="chapter-head">
+        <span class="chapter-num"></span>
+        <h2>The Weather</h2>
+        <p>The elements your spirits bring to the island, averaged per spirit. One shape for the games you won, one for the games you lost. Pick a guardian to read their sky alone.</p>
+      </div>
+      <div class="who-pick" id="weatherWho" role="group" aria-label="Whose spirits"></div>
+      <div class="split">
+        <svg id="weatherSvg" class="weather-svg" viewBox="-330 -310 660 630" role="img" aria-label="Element radar for wins and losses"></svg>
+        <aside class="side-card" id="weatherInfo" aria-live="polite"></aside>
+      </div>
+      <details class="as-table"><summary>Show as table</summary><div id="weatherTable"></div></details>
     </section>
 
     <section class="chapter" id="constellation" data-title="The Constellation">
@@ -68,6 +96,24 @@
         <aside class="cn-info" id="cnInfo" aria-live="polite"></aside>
       </div>
       <details class="as-table"><summary>Show as table</summary><div id="cnTable"></div></details>
+    </section>
+
+    <section class="chapter" id="anatomy" data-title="Anatomy of a Score">
+      <div class="chapter-head">
+        <span class="chapter-num"></span>
+        <h2>Anatomy of a Score</h2>
+        <p>Every score taken apart. A win earns five points per difficulty, a ten-point bonus and two per invader card left; a loss earns two per difficulty and one per invader card out. Dahan minus blight, shared between players, tips the balance either way.</p>
+      </div>
+      <div id="anatomyShare" class="an-share"></div>
+      <div class="pill-pick" id="anatomySort" role="group" aria-label="Order the bars">
+        <button type="button" data-sort="played">In the order played</button>
+        <button type="button" data-sort="score">Highest score first</button>
+      </div>
+      <div class="tides-frame">
+        <svg id="anatomySvg" class="tides-svg" role="group" tabindex="0" aria-label="Score breakdown per game. Left and right arrows move between games, Enter opens the game in the tracker."></svg>
+      </div>
+      <div class="tide-card" id="anatomyInfo" aria-live="polite"></div>
+      <details class="as-table"><summary>Show as table</summary><div id="anatomyTable"></div></details>
     </section>
 
     <footer class="realm-foot">
@@ -85,5 +131,8 @@
   <script src="js/realm/realm.js?v=1"></script>
   <script src="js/realm/tides.js?v=2"></script>
   <script src="js/realm/constellation.js?v=1"></script>
+  <script src="js/realm/island.js?v=2"></script>
+  <script src="js/realm/weather.js?v=1"></script>
+  <script src="js/realm/anatomy.js?v=1"></script>
 </body>
 </html>

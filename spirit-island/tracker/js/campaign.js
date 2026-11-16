@@ -57,17 +57,25 @@ const SICampaign = (() => {
 
   // Item lists carry the owned filter. d = { data, ownedOnly }.
   function spiritItems(d, groups) {
-    return (d.data.spirits || []).filter(s => inExp(s, groups) && (!d.ownedOnly || s.owned)).map(s => ({ key: "sp:" + s.name, label: s.name }));
+    return (d.data.spirits || []).filter(s => inExp(s, groups) && (!d.ownedOnly || s.owned)).map(s => ({ keys: ["sp:" + s.name], label: s.name }));
   }
   function advItems(d, groups, level) {
-    return (d.data.adversaries || []).filter(a => inExp(a, groups) && (!d.ownedOnly || a.owned)).map(a => ({ key: "adv:" + a.name + ":" + (level === null ? "any" : level), label: short(a.name) + (level === null ? "" : " L" + level) }));
+    return (d.data.adversaries || []).filter(a => inExp(a, groups) && (!d.ownedOnly || a.owned)).map(a => ({ keys: ["adv:" + a.name + ":" + (level === null ? "any" : level)], label: short(a.name) + (level === null ? "" : " L" + level) }));
   }
+  // Variants of one scenario (Normal / Large Surges of Colonization) count as a single scenario.
+  const SCENARIO_FAMILY = n => /^(Normal|Large) Surges of Colonization$/.test(n) ? "Surges of Colonization" : n;
   function scnItems(d, groups) {
-    return (d.data.scenarios || []).filter(s => inExp(s, groups) && (!d.ownedOnly || s.owned)).map(s => ({ key: "scn:" + s.name, label: s.name }));
+    const families = new Map();
+    (d.data.scenarios || []).filter(s => inExp(s, groups) && (!d.ownedOnly || s.owned)).forEach(s => {
+      const label = SCENARIO_FAMILY(s.name);
+      if (!families.has(label)) families.set(label, { keys: [], label });
+      families.get(label).keys.push("scn:" + s.name);
+    });
+    return Array.from(families.values());
   }
   function aspectItems(d, groups) {
     const owned = new Map((d.data.spirits || []).map(s => [s.name, !!s.owned]));
-    return (d.data.aspects || []).filter(a => inExp(a, groups) && (!d.ownedOnly || owned.get(a.spirit))).map(a => ({ key: "asp:" + a.spirit + "|" + a.name, label: a.name }));
+    return (d.data.aspects || []).filter(a => inExp(a, groups) && (!d.ownedOnly || owned.get(a.spirit))).map(a => ({ keys: ["asp:" + a.spirit + "|" + a.name], label: a.name }));
   }
 
   function context(data) {
@@ -104,7 +112,7 @@ const SICampaign = (() => {
       } else {
         const list = def.items(d);
         if (!list.length) return;           // nothing owned for this set
-        const missing = list.filter(i => !c.got.has(i.key)).map(i => i.label);
+        const missing = list.filter(i => !i.keys.some(k => c.got.has(k))).map(i => i.label);
         items.push({ id: def.id, title: def.title, desc: def.desc, done: missing.length === 0, have: list.length - missing.length, need: list.length, missing, note: "" });
       }
     });

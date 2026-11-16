@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="css/styles.css?v=8" />
   <link rel="stylesheet" href="css/botanical_zen.css?v=8" />
   <link rel="stylesheet" href="css/spirit_animations.css?v=10" />
-  <link rel="stylesheet" href="css/tracker_polish.css?v=27" />
+  <link rel="stylesheet" href="css/tracker_polish.css?v=28" />
 </head>
 <body data-theme="zen">
   <script>
@@ -59,7 +59,7 @@
         <button type="button" class="zen-nav-btn nav-tab active" data-tab="dashboard">Overview</button>
         <button type="button" class="zen-nav-btn nav-tab" data-tab="matches">Games</button>
         <button type="button" class="zen-nav-btn nav-tab" data-tab="achievements">Achievements</button>
-        <button type="button" class="zen-nav-btn nav-tab" data-tab="codex">Spirits</button>
+        <button type="button" class="zen-nav-btn nav-tab" data-tab="codex">Content</button>
         <button type="button" class="zen-nav-btn nav-tab" data-tab="settings">Settings</button>
       </nav>
 
@@ -86,9 +86,10 @@
 
       <!-- Adversary Clearance Progression (Authentic Mockup V Style) -->
       <div class="zen-section-label">
-        <span>Adversary Clearance Progression</span>
+        <span>Adversary &amp; Scenario Clearance Progression</span>
       </div>
-      <div id="zenGauntletContainer" style="margin-bottom:3.5rem;"></div>
+      <div id="zenGauntletContainer"></div>
+      <div id="zenScenarioContainer" class="zen-scn-grid" style="margin-bottom:3.5rem;"></div>
 
       <div class="zen-section-label" style="margin-top:2rem;"><span>Guardians</span></div>
       <div class="zen-card">
@@ -652,7 +653,7 @@
 
   <!-- Scripts -->
   <script src="js/default_data.js?v=21"></script>
-  <script src="js/analytics.js?v=10"></script>
+  <script src="js/analytics.js?v=11"></script>
   <script src="js/campaign.js?v=2"></script>
   <script src="js/core/state.js?v=21"></script>
   <script src="js/core/data.js?v=24"></script>
@@ -660,7 +661,7 @@
   <script src="js/core/nav.js?v=21"></script>
   <script src="js/views/dashboard.js?v=24"></script>
   <script src="js/views/spirit_dossier.js?v=24"></script>
-  <script src="js/views/adversaries.js?v=24"></script>
+  <script src="js/views/adversaries.js?v=25"></script>
   <script src="js/views/matches.js?v=25"></script>
   <script src="js/views/achievements.js?v=22"></script>
   <script src="js/views/achievements_cards.js?v=21"></script>

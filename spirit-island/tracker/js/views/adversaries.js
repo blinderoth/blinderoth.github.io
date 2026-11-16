@@ -157,6 +157,24 @@
       }).join("");
     }
 
+    const scnContainer = document.getElementById("zenScenarioContainer");
+    if (scnContainer) {
+      scnContainer.innerHTML = SIAnalytics.computeScenarioStats(getStatsData()).map(sc => {
+        const cls = sc.wins > 0 ? "zp-win" : sc.games > 0 ? "zp-loss" : "zp-empty";
+        const best = sc.bestScore !== null ? `Best ${SIAnalytics.formatNum(sc.bestScore, 1)}` : (sc.games > 0 ? "No win yet" : "Not played");
+        const tip = `${sc.name}: ${sc.games} ${sc.games === 1 ? "game" : "games"}, ${sc.wins} ${sc.wins === 1 ? "win" : "wins"}`;
+        return `
+          <div class="zen-scn-card ${cls}" title="${escapeHtml(tip)}">
+            ${scenIcon(sc.scenario, 40)}
+            <div class="zen-scn-text">
+              <div class="zen-scn-name">${escapeHtml(sc.name)}</div>
+              <div class="zen-scn-meta mono">${sc.games} ${sc.games === 1 ? "game" : "games"} / ${sc.wins} ${sc.wins === 1 ? "win" : "wins"}</div>
+              <div class="zen-scn-best mono">${best}</div>
+            </div>
+          </div>`;
+      }).join("");
+    }
+
     const tbody = document.getElementById("gauntletTbody");
     if (!tbody) return;
 

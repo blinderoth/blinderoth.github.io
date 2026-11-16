@@ -305,6 +305,28 @@ window.SIAnalytics = (function () {
     });
   }
 
+  // Per scenario: games, wins and best winning score. The two Surges of Colonization variants are one scenario.
+  function computeScenarioStats(data) {
+    const family = n => /^(Normal|Large) Surges of Colonization$/.test(n) ? "Surges of Colonization" : n;
+    const order = [], by = {};
+    (data.scenarios || []).forEach(sc => {
+      const key = family(sc.name);
+      if (!by[key]) { by[key] = { name: key, scenario: sc, expansion: sc.expansion, owned: !!sc.owned, games: 0, wins: 0, bestScore: null }; order.push(key); }
+    });
+    (data.matches || []).forEach(m => {
+      if (!m.scenario) return;
+      const e = by[family(m.scenario)];
+      if (!e) return;
+      e.games++;
+      if (m.victory) {
+        e.wins++;
+        const sc = Number(m.score || 0);
+        if (e.bestScore === null || sc > e.bestScore) e.bestScore = sc;
+      }
+    });
+    return order.map(k => by[k]);
+  }
+
   function computePlayerStats(data) {
     const matches = data.matches || [];
     const players = data.players || [];
@@ -724,6 +746,7 @@ window.SIAnalytics = (function () {
     computeGlobalKPIs,
     computeSpiritStats,
     computeAdversaryStats,
+    computeScenarioStats,
     computePlayerStats,
     computeLossAutopsy,
     computeGuardianProfile,

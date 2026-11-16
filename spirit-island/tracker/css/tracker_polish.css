@@ -948,3 +948,14 @@ body.si-viewer .log-match-btn { display: none !important; }
   #guardiansTable tr.guardian-detail > td { display: block; }
   #guardiansTable tfoot tr { background: rgba(245,158,11,0.08); }
 }
+
+/* Overview: scenario cards under the adversary rows */
+.zen-scn-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)); gap: 0.6rem; margin-top: 1.1rem; }
+.zen-scn-card { display: flex; align-items: center; gap: 0.7rem; padding: 0.6rem 0.75rem; border-radius: 8px; min-width: 0; }
+.zen-scn-card img { border-radius: 6px; flex-shrink: 0; }
+.zen-scn-text { min-width: 0; }
+.zen-scn-name { font-size: 0.86rem; font-weight: 700; line-height: 1.2; color: var(--pine-ink, inherit); overflow-wrap: anywhere; }
+.zen-scn-meta, .zen-scn-best { font-size: 0.72rem; color: var(--text-secondary); }
+.zen-scn-card.zp-win .zen-scn-best { color: var(--fern-accent); font-weight: 700; }
+.zen-scn-card.zp-loss .zen-scn-best { color: var(--rust-blight); }
+@media (max-width: 720px) { .zen-scn-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .zen-scn-card { padding: 0.5rem 0.55rem; gap: 0.5rem; } .zen-scn-card img { width: 32px !important; height: 32px !important; } }

@@ -116,16 +116,17 @@ function achRingHtml(comp) {
     </div>`;
 }
 
-function achArtImg(s, cls) {
+// Profile picture: the same artwork crop used on the Spirits tab, so it stays sharp.
+function achAvatar(s) {
   if (!s || !s.image) return "";
-  return `<img class="${cls}" src="${escapeHtml(s.image)}" alt="" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${ACH_FALLBACK_ART}'">`;
+  return `<span class="ach-avatar"><img src="${escapeHtml(s.image)}" alt="" loading="lazy" decoding="async" style="${getFocalStyle(s)}" onerror="this.onerror=null;this.src='${ACH_FALLBACK_ART}'"></span>`;
 }
 
 function achHero(s, comp) {
   const asleep = !(comp.unlocked > 0);
   return `
     <header class="ach-hero">
-      ${achArtImg(s, "ach-art")}
+      ${achAvatar(s)}
       <div class="ach-hero-text">
         <h4 class="ach-name">${escapeHtml(s.name)}</h4>
         ${s.expansion ? `<div class="ach-sub">${escapeHtml(s.expansion)}</div>` : ""}
@@ -371,36 +372,6 @@ function observeAchievementCards(container) {
 }
 
 // Slight parallax on the art, mouse only (skipped on touch and with reduced motion).
-function bindAchParallax(container) {
-  if (container.dataset.parallax) return;
-  container.dataset.parallax = "1";
-  const fine = window.matchMedia("(hover: hover) and (pointer: fine)");
-  let raf = 0, pending = null;
-  container.addEventListener("pointermove", (e) => {
-    if (e.pointerType && e.pointerType !== "mouse") return;
-    if (!fine.matches || achReducedMotion()) return;
-    const hero = e.target.closest && e.target.closest(".ach-hero");
-    const card = hero && hero.closest(".ach-card");
-    if (!card) return;
-    const r = hero.getBoundingClientRect();
-    pending = { card, x: ((e.clientX - r.left) / r.width - 0.5) * 2, y: ((e.clientY - r.top) / r.height - 0.5) * 2 };
-    if (!raf) raf = requestAnimationFrame(() => {
-      raf = 0;
-      pending.card.style.setProperty("--mx", (pending.x * -7).toFixed(1));
-      pending.card.style.setProperty("--my", (pending.y * -5).toFixed(1));
-    });
-  });
-  container.addEventListener("pointerout", (e) => {
-    const hero = e.target.closest && e.target.closest(".ach-hero");
-    const card = hero && hero.closest(".ach-card");
-    if (card && !(e.relatedTarget && hero.contains(e.relatedTarget))) {
-      card.style.setProperty("--mx", "0");
-      card.style.setProperty("--my", "0");
-    }
-  });
-}
-
-// Detail rows are built only when a card is opened (keeps the page light with 30 cards).
 function fillAchDetails(d) {
   const box = d.querySelector(".ach-detail");
   const tpl = box && box.querySelector("template");
@@ -417,7 +388,6 @@ function bindAchievementCards(container) {
     });
   });
   updateExpandAllLabel();
-  bindAchParallax(container);
   observeAchievementCards(container);
 }
 

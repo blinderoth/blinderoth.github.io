@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="css/styles.css?v=8" />
   <link rel="stylesheet" href="css/botanical_zen.css?v=8" />
   <link rel="stylesheet" href="css/spirit_animations.css?v=10" />
-  <link rel="stylesheet" href="css/tracker_polish.css?v=28" />
+  <link rel="stylesheet" href="css/tracker_polish.css?v=29" />
 </head>
 <body data-theme="zen">
   <script>
@@ -519,6 +519,22 @@
   </div>
 
   <!-- ===================================================================== -->
+  <!-- GAME DETAIL (READ-ONLY)                                                -->
+  <!-- ===================================================================== -->
+  <div id="gameDetailModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="gameDetailTitle">
+    <div class="modal-zen game-detail">
+      <div class="gm-head">
+        <div id="gameDetailTitle" class="gm-title"></div>
+        <button type="button" class="btn-zen btn-zen-secondary" id="gameDetailClose">Close</button>
+      </div>
+      <div id="gameDetailBody"></div>
+      <div class="gm-foot">
+        <button type="button" class="btn-zen btn-zen-secondary" id="gameDetailEdit">Edit game</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
   <!-- ART CENTERING & MANUAL REFIT MODAL                                     -->
   <!-- ===================================================================== -->
   <div id="cropArtModal" class="modal-backdrop" role="dialog" aria-modal="true" style="display:none;">
@@ -653,7 +669,7 @@
 
   <!-- Scripts -->
   <script src="js/default_data.js?v=21"></script>
-  <script src="js/analytics.js?v=11"></script>
+  <script src="js/analytics.js?v=12"></script>
   <script src="js/campaign.js?v=2"></script>
   <script src="js/core/state.js?v=21"></script>
   <script src="js/core/data.js?v=24"></script>
@@ -661,8 +677,8 @@
   <script src="js/core/nav.js?v=21"></script>
   <script src="js/views/dashboard.js?v=24"></script>
   <script src="js/views/spirit_dossier.js?v=24"></script>
-  <script src="js/views/adversaries.js?v=25"></script>
-  <script src="js/views/matches.js?v=25"></script>
+  <script src="js/views/adversaries.js?v=26"></script>
+  <script src="js/views/matches.js?v=26"></script>
   <script src="js/views/achievements.js?v=22"></script>
   <script src="js/views/achievements_cards.js?v=21"></script>
   <script src="js/views/print.js?v=21"></script>

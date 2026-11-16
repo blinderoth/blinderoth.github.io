@@ -311,7 +311,7 @@ window.SIAnalytics = (function () {
     const order = [], by = {};
     (data.scenarios || []).forEach(sc => {
       const key = family(sc.name);
-      if (!by[key]) { by[key] = { name: key, scenario: sc, expansion: sc.expansion, owned: !!sc.owned, games: 0, wins: 0, bestScore: null }; order.push(key); }
+      if (!by[key]) { by[key] = { name: key, scenario: sc, expansion: sc.expansion, owned: !!sc.owned, games: 0, wins: 0, bestScore: null, gameId: null }; order.push(key); }
     });
     (data.matches || []).forEach(m => {
       if (!m.scenario) return;
@@ -321,7 +321,9 @@ window.SIAnalytics = (function () {
       if (m.victory) {
         e.wins++;
         const sc = Number(m.score || 0);
-        if (e.bestScore === null || sc > e.bestScore) e.bestScore = sc;
+        if (e.bestScore === null || sc > e.bestScore) { e.bestScore = sc; e.gameId = m.id; }
+      } else if (e.bestScore === null && (e.gameId === null || Number(m.id) > Number(e.gameId))) {
+        e.gameId = m.id;          // no win yet: point at the latest loss
       }
     });
     return order.map(k => by[k]);

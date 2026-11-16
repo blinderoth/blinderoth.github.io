@@ -232,11 +232,12 @@
     }).join("");
 
     tbody.querySelectorAll(".spirit-player-chip").forEach(chip => {
-      chip.addEventListener("click", () => inspectSpiritInDossier(chip.getAttribute("data-spirit")));
+      chip.addEventListener("click", e => { e.stopPropagation(); inspectSpiritInDossier(chip.getAttribute("data-spirit")); });
     });
 
     tbody.querySelectorAll(".edit-match-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
+      btn.addEventListener("click", e => {
+        e.stopPropagation();
         const id = Number(btn.getAttribute("data-id"));
         const match = (appData.matches || []).find(m => Number(m.id) === id);
         if (match) openMatchModal(match);
@@ -244,7 +245,8 @@
     });
 
     tbody.querySelectorAll(".delete-match-btn").forEach(btn => {
-      btn.addEventListener("click", async () => {
+      btn.addEventListener("click", async e => {
+        e.stopPropagation();
         const id = Number(btn.getAttribute("data-id"));
         const idx = (appData.matches || []).findIndex(m => Number(m.id) === id);
         if (idx < 0) return;
@@ -264,6 +266,77 @@
       });
     });
   }
+
+  // --- Game detail pop-up (read-only) ---
+  let gameDetailReturnFocus = null;
+  let gameDetailId = null;
+
+  function gameDetailHtml(m) {
+    const spiritsMap = {}; (appData.spirits || []).forEach(x => { spiritsMap[x.name] = x; });
+    const players = (m.players || []).map(slot => {
+      const img = spiritsMap[slot.spirit]?.image;
+      return `<li>${img ? `<img src="${escapeHtml(img)}" alt="">` : ""}<span><strong>${escapeHtml(slot.spirit || "—")}</strong>${slot.aspect && slot.aspect !== "Base" ? ` <em>${escapeHtml(slot.aspect)}</em>` : ""}</span><span class="gm-dim">${escapeHtml(slot.player || "")}</span></li>`;
+    }).join("");
+    const advLine = (name, lvl) => name ? `<div class="gm-line">${advIcon(name, 22, 15)}<span>${escapeHtml(name)}${lvl !== null && lvl !== "" && lvl !== undefined ? ` <b>L${escapeHtml(lvl)}</b>` : ""}</span></div>` : "";
+    const has = v => v !== null && v !== undefined && v !== "";
+    const stat = (label, val) => has(val) ? `<div class="gm-stat"><span>${label}</span><strong>${escapeHtml(val)}</strong></div>` : "";
+    return `
+      <div class="gm-result">
+        <span class="badge ${m.victory ? "badge-win" : "badge-loss"}">${m.victory ? "VICTORY" : "DEFEAT"}</span>
+        ${!m.victory && m.lossCondition ? `<span class="gm-loss">${escapeHtml(m.lossCondition)}</span>` : ""}
+        ${m.thematicMap ? `<span class="badge badge-vhigh">Thematic map</span>` : ""}
+      </div>
+      <ul class="gm-players">${players}</ul>
+      <div class="gm-block">
+        ${advLine(m.adversary1, m.adversary1Level) || `<div class="gm-line gm-dim">Base island</div>`}
+        ${advLine(m.adversary2, m.adversary2Level)}
+        ${m.scenario ? `<div class="gm-line">${scenIcon(m.scenario, 22)}<span>${escapeHtml(m.scenario)}</span></div>` : ""}
+      </div>
+      <div class="gm-stats">
+        ${stat("Score", SIAnalytics.formatNum(m.score, 2))}${stat("Difficulty", m.difficulty ?? 0)}
+        ${stat("Dahan", m.dahan)}${stat("Blight", m.blight)}
+        ${m.victory ? stat("Invader cards left", m.invaderCardsInDeck) : stat("Invader cards out", m.invaderCardsNotInDeck)}
+        ${stat("Fear cards left", m.fearCardsLeft)}
+      </div>
+      ${m.notes ? `<div class="gm-notes">${escapeHtml(m.notes)}</div>` : ""}`;
+  }
+
+  function openGameDetail(id) {
+    const m = (appData.matches || []).find(x => Number(x.id) === Number(id));
+    const modal = document.getElementById("gameDetailModal");
+    if (!m || !modal) return;
+    gameDetailId = m.id;
+    gameDetailReturnFocus = document.activeElement;
+    document.getElementById("gameDetailTitle").textContent = `Game #${m.id} · ${m.date || ""}`;
+    document.getElementById("gameDetailBody").innerHTML = gameDetailHtml(m);
+    document.getElementById("gameDetailEdit").hidden = SICloud.isViewer();
+    modal.classList.add("open");
+    modal.style.display = "flex";
+    document.body.style.overflow = "hidden";
+    document.getElementById("gameDetailClose").focus();
+  }
+
+  function closeGameDetail() {
+    const modal = document.getElementById("gameDetailModal");
+    if (!modal || !modal.classList.contains("open")) return;
+    modal.classList.remove("open");
+    modal.style.display = "none";
+    document.body.style.overflow = "";
+    if (gameDetailReturnFocus && document.contains(gameDetailReturnFocus)) gameDetailReturnFocus.focus();
+  }
+
+  window.inspectGame = openGameDetail;
+
+  document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("gameDetailClose")?.addEventListener("click", closeGameDetail);
+    document.getElementById("gameDetailModal")?.addEventListener("click", e => { if (e.target.id === "gameDetailModal") closeGameDetail(); });
+    document.getElementById("gameDetailEdit")?.addEventListener("click", () => {
+      const m = (appData.matches || []).find(x => Number(x.id) === Number(gameDetailId));
+      closeGameDetail();
+      if (m) openMatchModal(m);
+    });
+    document.addEventListener("keydown", e => { if (e.key === "Escape") closeGameDetail(); });
+  });
 
   // --- Match Modal Logic ---
   function bindMatchModalEvents() {

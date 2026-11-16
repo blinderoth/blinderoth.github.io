@@ -54,6 +54,7 @@
     if (!tbody) return;
 
     const statsData = getStatsData();
+    council.guardians.sort((a, b) => b.uniqueMatches - a.uniqueMatches || b.deployments - a.deployments || a.name.localeCompare(b.name));
     tbody.innerHTML = council.guardians.map((g, gi) => {
       const canOpen = g.uniqueMatches > 0;
       const open = canOpen && guardianOpen.has(g.name);
@@ -122,6 +123,14 @@
 
   }
 
+  // The game a clearance cell points to: the highest-scoring win, else the latest loss.
+  function pickGameFor(matches) {
+    const wins = (matches || []).filter(m => m.victory).sort((a, b) => Number(b.score || 0) - Number(a.score || 0));
+    if (wins.length) return wins[0].id;
+    const losses = (matches || []).slice().sort((a, b) => (Number(b.id) || 0) - (Number(a.id) || 0));
+    return losses.length ? losses[0].id : "";
+  }
+
   function renderAdversaryGauntlet() {
     const advStats = SIAnalytics.computeAdversaryStats(getStatsData());
 
@@ -129,19 +138,18 @@
     if (zenContainer) {
       zenContainer.innerHTML = advStats.map(adv => {
         const pillars = adv.gauntlet.map(cell => {
-          let cls = "zp-empty";
-          let label = `L${cell.level}`;
-          let title = `${adv.name} Level ${cell.level} (Diff ${adv.levels[cell.level]}): Unchallenged`;
+          const pick = pickGameFor(cell.matches);
+          const lvlLabel = `${adv.name} level ${cell.level}`;
           if (cell.status === "WIN") {
-            cls = "zp-win";
-            label = `L${cell.level} · ${Math.round(cell.score)}`;
-            title = `${adv.name} Level ${cell.level}: Conquered! Score: ${SIAnalytics.formatNum(cell.score, 1)} pts`;
-          } else if (cell.status === "LOSS") {
-            cls = "zp-loss";
-            label = `L${cell.level} · Loss`;
-            title = `${adv.name} Level ${cell.level}: Defeated (${cell.matches.length} tries)`;
+            const title = `${lvlLabel}: best win ${SIAnalytics.formatNum(cell.score, 1)} pts`;
+            return `<button type="button" class="zen-pillar zp-win" data-game="${pick}" title="${escapeHtml(title)}" aria-label="${escapeHtml(title + ". Open game")}">L${cell.level} · ${Math.round(cell.score)}</button>`;
           }
-          return `<button type="button" class="zen-pillar ${cls}" title="${title}" aria-label="${title}" onclick="if(window.openQuickMatchLog) window.openQuickMatchLog('${escapeHtml(adv.name).replace(/'/g, "\\'")}', ${cell.level})">${label}</button>`;
+          if (cell.status === "LOSS") {
+            const title = `${lvlLabel}: ${cell.matches.length} ${cell.matches.length === 1 ? "try" : "tries"}, no win`;
+            return `<button type="button" class="zen-pillar zp-loss" data-game="${pick}" title="${escapeHtml(title)}" aria-label="${escapeHtml(title + ". Open game")}">L${cell.level} · Loss</button>`;
+          }
+          const title = `${lvlLabel}: not played`;
+          return `<span class="zen-pillar zp-empty" title="${escapeHtml(title)}">L${cell.level}</span>`;
         }).join("");
 
         return `
@@ -161,69 +169,26 @@
     if (scnContainer) {
       scnContainer.innerHTML = SIAnalytics.computeScenarioStats(getStatsData()).map(sc => {
         const cls = sc.wins > 0 ? "zp-win" : sc.games > 0 ? "zp-loss" : "zp-empty";
-        const best = sc.bestScore !== null ? `Best ${SIAnalytics.formatNum(sc.bestScore, 1)}` : (sc.games > 0 ? "No win yet" : "Not played");
-        const tip = `${sc.name}: ${sc.games} ${sc.games === 1 ? "game" : "games"}, ${sc.wins} ${sc.wins === 1 ? "win" : "wins"}`;
-        return `
-          <div class="zen-scn-card ${cls}" title="${escapeHtml(tip)}">
+        const meta = sc.games === 0 ? "Not played" : `${sc.wins}/${sc.games} won${sc.bestScore !== null ? " · " + SIAnalytics.formatNum(sc.bestScore, 1) : ""}`;
+        const tip = `${sc.name}: ${sc.games} ${sc.games === 1 ? "game" : "games"}, ${sc.wins} ${sc.wins === 1 ? "win" : "wins"}${sc.bestScore !== null ? ", best " + SIAnalytics.formatNum(sc.bestScore, 1) + " pts" : ""}`;
+        const inner = `
             ${scenIcon(sc.scenario, 40)}
             <div class="zen-scn-text">
               <div class="zen-scn-name">${escapeHtml(sc.name)}</div>
-              <div class="zen-scn-meta mono">${sc.games} ${sc.games === 1 ? "game" : "games"} / ${sc.wins} ${sc.wins === 1 ? "win" : "wins"}</div>
-              <div class="zen-scn-best mono">${best}</div>
-            </div>
-          </div>`;
+              <div class="zen-scn-meta mono">${meta}</div>
+            </div>`;
+        return sc.gameId
+          ? `<button type="button" class="zen-scn-card ${cls}" data-game="${sc.gameId}" title="${escapeHtml(tip)}" aria-label="${escapeHtml(tip + ". Open game")}">${inner}</button>`
+          : `<div class="zen-scn-card ${cls}" title="${escapeHtml(tip)}">${inner}</div>`;
       }).join("");
     }
 
-    const tbody = document.getElementById("gauntletTbody");
-    if (!tbody) return;
-
-    tbody.innerHTML = advStats.map(adv => {
-      const cellsHtml = adv.gauntlet.map(cell => {
-        let cls = "gauntlet-empty";
-        let text = "—";
-        let title = `${adv.name} Level ${cell.level} (Diff ${adv.levels[cell.level]}): Unchallenged — Click to log a match!`;
-
-        if (cell.status === "WIN") {
-          cls = "gauntlet-win";
-          text = `${SIAnalytics.formatNum(cell.score, 1)} pts`;
-          title = `${adv.name} Level ${cell.level}: Conquered! Record Score: ${SIAnalytics.formatNum(cell.score, 2)} pts (${cell.matches.length} matches)`;
-        } else if (cell.status === "LOSS") {
-          cls = "gauntlet-loss";
-          text = "LOSS";
-          title = `${adv.name} Level ${cell.level}: Attempted Defeat (${cell.matches.length} attempts) — Click to launch rematch!`;
-        }
-
-        return `
-          <td>
-            <span class="gauntlet-cell ${cls}" data-adv="${escapeHtml(adv.name)}" data-lvl="${cell.level}" title="${escapeHtml(title)}">
-              ${text}
-            </span>
-          </td>
-        `;
-      }).join("");
-
-      return `
-        <tr>
-          <td>
-            <div style="display:flex;align-items:center;gap:0.55rem;">
-              ${advIcon(adv, 24, 16)}
-              <span style="font-weight:700;">${escapeHtml(adv.name)}</span>
-            </div>
-          </td>
-          ${cellsHtml}
-        </tr>
-      `;
-    }).join("");
-
-    tbody.querySelectorAll(".gauntlet-cell").forEach(cell => {
-      cell.addEventListener("click", () => {
-        const advName = cell.getAttribute("data-adv");
-        const lvl = Number(cell.getAttribute("data-lvl"));
-        openMatchModal({
-          adversary1: advName,
-          adversary1Level: lvl
-        });
+    [zenContainer, scnContainer].forEach(box => {
+      if (!box || box.dataset.gameBound) return;
+      box.dataset.gameBound = "1";
+      box.addEventListener("click", e => {
+        const btn = e.target.closest("[data-game]");
+        if (btn && window.inspectGame) window.inspectGame(Number(btn.getAttribute("data-game")));
       });
     });
   }

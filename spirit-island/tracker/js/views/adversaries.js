@@ -154,7 +154,7 @@
 
         return `
           <div class="zen-gauntlet-row">
-            <div class="zen-gauntlet-name">${advIcon(adv, 28, 19)}<span>${escapeHtml(adv.name)}</span></div>
+            <div class="zen-gauntlet-name">${advIcon(adv, 38, 25)}<span>${escapeHtml(adv.name)}</span></div>
             <div class="zen-gauntlet-rate" style="font-weight:600;color:${adv.winRate === null || adv.winRate === undefined ? 'var(--text-muted)' : adv.winRate >= 50 ? 'var(--accent-emerald)' : 'var(--accent-crimson)'};">${adv.winRate === null || adv.winRate === undefined ? 'Not played' : SIAnalytics.formatNum(adv.winRate, 0) + '% win'}</div>
             <div class="zen-pillars">
               ${pillars}

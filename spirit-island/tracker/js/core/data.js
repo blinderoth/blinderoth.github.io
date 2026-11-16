@@ -168,7 +168,7 @@
   function advIcon(advOrName, w = 26, h = 18) {
     const a = typeof advOrName === "string" ? getAdv(advOrName) : advOrName;
     if (!a) return "";
-    return iconImg(a.flag, a.localIcon, `width:${w}px;height:${h}px;object-fit:cover;border-radius:3px;border:1px solid var(--border-subtle);flex-shrink:0;`, a.name);
+    return iconImg(String(a.flag || a.localIcon || "").replace(/\.svg$/, ".webp"), a.flag || a.localIcon, `width:${w}px;height:${h}px;object-fit:cover;border-radius:3px;border:1px solid var(--border-subtle);flex-shrink:0;`, a.name);
   }
   function elIcon(name, size = 16) {
     const url = appData?.elementIcons?.[name];

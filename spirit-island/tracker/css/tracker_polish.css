@@ -993,3 +993,19 @@ button.zen-scn-card:hover { transform: translateY(-1px); }
 .gm-foot { display: flex; justify-content: flex-end; margin-top: 1rem; }
 .gm-foot [hidden] { display: none; }
 @media (max-width: 720px) { .zen-scn-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .zen-scn-card img { width: 34px !important; height: 34px !important; } }
+
+/* Way into the Spirit Realm page */
+.realm-link { text-decoration: none; display: inline-flex; align-items: center; }
+.zen-header-actions { gap: 0.6rem; flex-wrap: wrap; }
+.realm-teaser { margin-bottom: 2.4rem !important;
+  display: flex; align-items: center; gap: 1.2rem; margin: 1.6rem 0 0.4rem; padding: 1.1rem 1.4rem;
+  border: 1.5px solid var(--sage-rule); border-radius: 10px; text-decoration: none; color: var(--pine-ink);
+  background: linear-gradient(110deg, color-mix(in srgb, var(--sun-leaf) 14%, transparent), transparent 60%);
+  transition: border-color .2s ease, transform .2s ease;
+}
+.realm-teaser:hover { border-color: var(--sun-leaf); transform: translateY(-2px); }
+.rt-text { flex: 1; display: grid; gap: 0.15rem; }
+.rt-text strong { font-family: 'Newsreader', Georgia, serif; font-style: italic; font-weight: 500; font-size: 22px; }
+.rt-text span { font-size: 13.5px; color: var(--pine-muted); }
+.rt-go { font-weight: 600; color: var(--fern-accent); white-space: nowrap; }
+@media (max-width: 720px) { .realm-teaser { flex-direction: column; align-items: flex-start; gap: 0.5rem; } }

@@ -40,7 +40,7 @@
 
   function initThemeSwitcher() {
     const THEME_KEY = "si_color_scheme";
-    const THEME_COLORS = { zen: "#F3F5F0", parchment: "#F4EFE6", dark: "#111815", realm: "#080B16" };
+    const THEME_COLORS = { zen: "#F3F5F0", parchment: "#F4EFE6", dark: "#111815" };
 
     function applyScheme(scheme) {
       const valid = THEME_COLORS[scheme] ? scheme : "zen";
@@ -98,6 +98,14 @@
       const h = location.hash.slice(1) || "dashboard";
       if (h !== currentTab && tabs.some(t => t.getAttribute("data-tab") === h)) switchTab(h);
     });
+  }
+
+  // Links from the Spirit Realm page: index.html#game=12 opens that game, index.html#spirit=Name opens the dossier.
+  function handleDeepLink(hash) {
+    const h = decodeURIComponent(String(hash || "").replace(/^#/, ""));
+    const game = h.match(/^game=(.+)$/), spirit = h.match(/^spirit=(.+)$/);
+    if (game) { switchTab("matches"); if (window.inspectGame) window.inspectGame(Number(game[1])); }
+    else if (spirit && window.selectAndShowDossier) window.selectAndShowDossier(spirit[1]);
   }
 
   function inspectSpiritInDossier(spiritName) {

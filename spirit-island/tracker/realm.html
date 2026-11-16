@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="no-referrer" />
+  <title>Spirit Realm</title>
+  <meta name="description" content="The Spirit Island campaign told as a story: tides of every game, and a constellation of who plays with whom." />
+  <meta name="theme-color" content="#EADCBD" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/realm.css?v=2" />
+  <script>
+    /* Pick the theme before first paint: the one used last, else the device setting */
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem("si_realm_theme"); } catch (e) {}
+      if (t !== "journal" && t !== "night") t = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches ? "night" : "journal";
+      document.documentElement.setAttribute("data-realm", t);
+      document.querySelector('meta[name="theme-color"]').setAttribute("content", t === "night" ? "#0B120D" : "#EADCBD");
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#story">Skip to the story</a>
+  <div class="fireflies" aria-hidden="true"></div>
+
+  <header class="realm-bar">
+    <a class="back-link" href="index.html">← Tracker</a>
+    <div class="window-chip" id="windowChip" aria-live="polite"></div>
+    <div class="mode-toggle" role="group" aria-label="Theme">
+      <button type="button" data-mode="journal" aria-pressed="false">Journal</button>
+      <button type="button" data-mode="night" aria-pressed="false">Night</button>
+    </div>
+  </header>
+
+  <nav class="chapter-rail" aria-label="Chapters" id="chapterRail"></nav>
+
+  <main id="story">
+    <section class="hero">
+      <p class="hero-kicker">The island remembers</p>
+      <h1>Spirit Realm</h1>
+      <p class="hero-sub" id="heroSub">Gathering the island's memories…</p>
+    </section>
+
+    <section class="chapter" id="tides" data-title="The Tides">
+      <div class="chapter-head">
+        <span class="chapter-num"></span>
+        <h2>The Tides</h2>
+        <p>Every invasion in the order it was fought. The wave rises with the score; foam is surviving Dahan, sludge is blight left on the island. Drag the handles under the tide to choose a stretch of time, and every chapter below follows.</p>
+      </div>
+      <div class="tides-frame">
+        <svg id="tidesSvg" class="tides-svg" role="group" tabindex="0" aria-label="Tide of games. Use left and right arrows to move between games, Enter to open the game in the tracker."></svg>
+      </div>
+      <div class="tide-card" id="tideCard" aria-live="polite"></div>
+      <details class="as-table"><summary>Show as table</summary><div id="tidesTable"></div></details>
+    </section>
+
+    <section class="chapter" id="constellation" data-title="The Constellation">
+      <div class="chapter-head">
+        <span class="chapter-num"></span>
+        <h2>The Constellation</h2>
+        <p>Each spirit is a star, sized by games and coloured by win rate. Lines join spirits that fought side by side. Hover a star to look, click it to keep it lit.</p>
+      </div>
+      <div class="constellation">
+        <svg id="cnSvg" viewBox="-440 -440 880 880" role="group" aria-label="Spirit constellation"></svg>
+        <aside class="cn-info" id="cnInfo" aria-live="polite"></aside>
+      </div>
+      <details class="as-table"><summary>Show as table</summary><div id="cnTable"></div></details>
+    </section>
+
+    <footer class="realm-foot">
+      <p id="dataSource"></p>
+      <p>Spirit Island, its spirits and their art belong to Greater Than Games. This is a fan-made record of our games.</p>
+      <p><a href="index.html">Back to the tracker</a></p>
+    </footer>
+  </main>
+
+  <script src="js/default_data.js?v=21"></script>
+  <script src="js/analytics.js?v=12"></script>
+  <script src="js/campaign.js?v=2"></script>
+  <script src="js/core/state.js?v=21"></script>
+  <script src="js/core/data.js?v=26"></script>
+  <script src="js/realm/realm.js?v=1"></script>
+  <script src="js/realm/tides.js?v=2"></script>
+  <script src="js/realm/constellation.js?v=1"></script>
+</body>
+</html>

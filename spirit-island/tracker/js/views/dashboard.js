@@ -89,7 +89,6 @@
     renderCouncilLeaderboard();
     renderAdversaryGauntlet();
     renderLossAutopsy();
-    if (window.renderConstellation) window.renderConstellation();
   }
 
     // --- Searchable Dossier Combobox State & Implementation ---

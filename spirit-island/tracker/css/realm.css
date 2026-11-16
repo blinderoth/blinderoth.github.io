@@ -1,0 +1,315 @@
+/* ==========================================================================
+   Spirit Realm: two themes on one page.
+   Journal: an explorer's notebook (paper, ink, watercolour).
+   Night:   a firelit jungle (moss, embers, glowing fungi).
+   Charts read --win, --mid, --loss, --ink, --sea and friends from here.
+   ========================================================================== */
+
+html[data-realm="journal"] {
+  color-scheme: light;
+  --bg: #E9DABA;
+  --bg2: #D8C29A;
+  --card: #F7EEDA;
+  --ink: #3B2A1A;
+  --ink-soft: #5E4730;
+  --muted: #7A6448;
+  --line: rgba(59, 42, 26, 0.22);
+  --accent: #8A4B2A;
+  --win: #4F7F44;
+  --mid: #B8862E;
+  --loss: #A9472F;
+  --sea: #5C8BA3;
+  --foam: #4E86A3;
+  --sludge: #6B4E36;
+  --glow: transparent;
+  --display: 'IM Fell English', Georgia, serif;
+}
+html[data-realm="night"] {
+  color-scheme: dark;
+  --bg: #0B120D;
+  --bg2: #070C08;
+  --card: rgba(28, 25, 16, 0.86);
+  --ink: #EADBB8;
+  --ink-soft: #D3C49F;
+  --muted: #A8997A;
+  --line: rgba(234, 219, 184, 0.16);
+  --accent: #F2A65A;
+  --win: #8EF0B4;
+  --mid: #F2C14E;
+  --loss: #FF7A3D;
+  --sea: #4FA88A;
+  --foam: #BDE9FF;
+  --sludge: #C2703F;
+  --glow: rgba(242, 166, 90, 0.25);
+  --display: 'Cormorant Garamond', Georgia, serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+body {
+  min-height: 100vh;
+  color: var(--ink);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 19px;
+  line-height: 1.55;
+  overflow-x: clip;
+  transition: background-color .6s ease, color .6s ease;
+}
+html[data-realm="journal"] body {
+  background: radial-gradient(ellipse at 50% 30%, #F4E9CF 0%, #E9DABA 55%, #D2B88B 100%) fixed;
+}
+html[data-realm="night"] body {
+  background:
+    radial-gradient(1000px 700px at 8% 105%, rgba(255, 140, 50, 0.24), transparent 60%),
+    radial-gradient(800px 600px at 96% -5%, rgba(120, 220, 170, 0.09), transparent 60%),
+    linear-gradient(180deg, #0C140F, #080D09) fixed;
+}
+/* Paper grain / night grain */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+html[data-realm="journal"] body::before { opacity: .17; mix-blend-mode: multiply; }
+html[data-realm="night"] body::before { opacity: .07; }
+/* Vignette */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+html[data-realm="journal"] body::after { box-shadow: inset 0 0 180px rgba(110, 70, 30, 0.42); }
+html[data-realm="night"] body::after { box-shadow: inset 0 0 220px rgba(0, 0, 0, 0.7); }
+
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: .6s; }
+
+a { color: var(--accent); }
+.muted { color: var(--muted); }
+.skip-link { position: absolute; left: -999px; top: 8px; z-index: 100; background: var(--card); color: var(--ink); padding: 8px 14px; }
+.skip-link:focus { left: 12px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* ---------- Fireflies (Night only) ---------- */
+.fireflies { position: fixed; inset: 0; pointer-events: none; z-index: 0; display: none; }
+html[data-realm="night"] .fireflies { display: block; }
+.fireflies span {
+  position: absolute; width: 4px; height: 4px; border-radius: 50%;
+  background: #E8F59A; box-shadow: 0 0 10px 3px rgba(232, 245, 154, 0.55);
+  animation: firefly 6s ease-in-out infinite;
+}
+@keyframes firefly {
+  0%, 100% { opacity: 0; transform: translate(0, 0); }
+  40% { opacity: .85; }
+  60% { opacity: .5; transform: translate(14px, -18px); }
+}
+
+/* ---------- Top bar ---------- */
+.realm-bar {
+  position: sticky; top: 0; z-index: 30;
+  display: flex; align-items: center; gap: 14px;
+  padding: 10px 22px;
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+html[data-realm="journal"] .realm-bar { background: rgba(240, 228, 200, 0.82); }
+html[data-realm="night"] .realm-bar { background: rgba(10, 16, 11, 0.78); }
+.back-link { font-family: var(--display); font-size: 18px; text-decoration: none; color: var(--ink); white-space: nowrap; }
+.back-link:hover { color: var(--accent); }
+.window-chip { flex: 1; display: flex; justify-content: center; align-items: center; gap: 10px; font-size: 16px; color: var(--ink-soft); min-width: 0; flex-wrap: wrap; }
+.window-chip b { font-weight: 600; color: var(--ink); }
+.window-chip button, .mode-toggle button {
+  font: inherit; font-size: 15px; cursor: pointer; color: var(--ink);
+  background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 3px 12px; min-height: 34px;
+}
+.window-chip button:hover { border-color: var(--accent); color: var(--accent); }
+.mode-toggle { display: flex; gap: 4px; }
+.mode-toggle button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+/* ---------- Chapter rail ---------- */
+.chapter-rail { position: fixed; right: 18px; top: 50%; transform: translateY(-50%); z-index: 20; display: flex; flex-direction: column; gap: 8px; }
+.chapter-rail a { display: flex; align-items: center; justify-content: flex-end; gap: 8px; text-decoration: none; color: var(--muted); font-size: 15px; }
+.chapter-rail a i { font-family: var(--display); font-style: normal; width: 32px; height: 32px; display: grid; place-items: center; border-radius: 50%; border: 1px solid var(--line); font-size: 14px; }
+.chapter-rail a span { opacity: 0; transform: translateX(6px); transition: opacity .2s, transform .2s; white-space: nowrap; }
+.chapter-rail a:hover span, .chapter-rail a:focus-visible span { opacity: 1; transform: none; }
+.chapter-rail a.on { color: var(--ink); }
+.chapter-rail a.on i { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+@media (max-width: 1180px) { .chapter-rail { display: none; } }
+
+/* ---------- Story ---------- */
+main { position: relative; z-index: 1; max-width: 1120px; margin: 0 auto; padding: 0 28px 80px; }
+.hero { padding: 90px 0 40px; text-align: center; }
+.hero-kicker { font-family: var(--display); font-style: italic; font-size: 22px; color: var(--accent); }
+.hero h1 {
+  font-family: var(--display); font-weight: 400; line-height: .95;
+  font-size: clamp(64px, 12vw, 150px); letter-spacing: -0.01em; margin: 6px 0 14px;
+}
+html[data-realm="journal"] .hero h1 { font-style: italic; }
+html[data-realm="night"] .hero h1 { font-style: italic; font-weight: 500; text-shadow: 0 0 40px rgba(242, 166, 90, 0.35); }
+.hero-sub { font-size: 21px; color: var(--ink-soft); }
+
+.chapter { padding: 70px 0 30px; }
+.chapter-head { display: grid; grid-template-columns: auto 1fr; gap: 4px 22px; align-items: baseline; margin-bottom: 26px; }
+.chapter-num { font-family: var(--display); font-size: 64px; line-height: 1; color: var(--accent); grid-row: span 2; }
+html[data-realm="night"] .chapter-num { text-shadow: 0 0 24px rgba(242, 166, 90, 0.45); }
+.chapter-head h2 { font-family: var(--display); font-style: italic; font-weight: 400; font-size: clamp(36px, 5vw, 52px); line-height: 1.05; }
+html[data-realm="night"] .chapter-head h2 { font-weight: 500; }
+.chapter-head p { max-width: 62ch; color: var(--ink-soft); font-size: 18px; }
+
+/* Show-as-table */
+.as-table { margin-top: 18px; font-size: 16px; }
+.as-table summary { cursor: pointer; color: var(--muted); display: inline-block; padding: 6px 0; min-height: 36px; }
+.as-table summary:hover { color: var(--accent); }
+.as-table > div { max-height: 420px; overflow: auto; margin-top: 8px; border: 1px solid var(--line); border-radius: 8px; }
+.as-table table { width: 100%; border-collapse: collapse; font-size: 15px; }
+.as-table th, .as-table td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.as-table th { position: sticky; top: 0; background: var(--card); font-weight: 600; }
+
+/* Cards (the taped note in Journal, the firelit slab at Night) */
+.tide-card, .cn-info { position: relative; padding: 22px 26px; }
+html[data-realm="journal"] .tide-card, html[data-realm="journal"] .cn-info {
+  background: var(--card); border: 1px solid rgba(90, 60, 30, 0.22); box-shadow: 0 12px 30px rgba(80, 50, 20, 0.22);
+}
+html[data-realm="journal"] .cn-info { transform: rotate(1deg); }
+html[data-realm="journal"] .tide-card { transform: rotate(-0.4deg); }
+html[data-realm="journal"] .tide-card::before, html[data-realm="journal"] .cn-info::before {
+  content: ""; position: absolute; top: -12px; left: 50%; width: 110px; height: 26px;
+  transform: translateX(-50%) rotate(-3deg); background: rgba(214, 196, 150, 0.75); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+html[data-realm="night"] .tide-card, html[data-realm="night"] .cn-info {
+  background: linear-gradient(170deg, rgba(40, 30, 18, 0.88), rgba(16, 20, 14, 0.92));
+  border: 1px solid rgba(242, 166, 90, 0.3); border-radius: 18px;
+  box-shadow: 0 0 60px rgba(242, 140, 60, 0.12), inset 0 0 40px rgba(0, 0, 0, 0.4);
+}
+.kicker { font-size: 13px; letter-spacing: .22em; text-transform: uppercase; color: var(--accent); }
+.cn-info h3, .tc-head h3 { font-family: var(--display); font-style: italic; font-weight: 400; font-size: 30px; line-height: 1.1; margin: 4px 0 12px; }
+.hint { color: var(--ink-soft); font-size: 17px; margin-top: 8px; }
+.figs, .tc-figs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 6px 0 14px; }
+.tc-figs { grid-template-columns: repeat(4, 1fr); margin-bottom: 8px; }
+.figs strong, .tc-figs b { display: block; font-family: var(--display); font-weight: 400; font-size: 40px; line-height: 1; }
+.figs span, .tc-figs span { font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.partners { list-style: none; display: grid; gap: 5px; font-size: 17px; }
+.partners li { display: grid; grid-template-columns: 12px minmax(0, 1fr) auto; gap: 10px; align-items: center; }
+.partners i { width: 11px; height: 11px; border-radius: 50%; }
+.partners span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.partners em { font-style: normal; font-size: 15px; color: var(--muted); }
+.tc-link { display: inline-block; margin-top: 14px; font-size: 17px; text-decoration: none; border-bottom: 1px solid currentColor; }
+.cn-scale { display: flex; align-items: center; gap: 10px; margin-top: 16px; font-size: 14px; color: var(--muted); }
+.cn-scale i { flex: 1; height: 7px; border-radius: 7px; background: linear-gradient(90deg, var(--loss), var(--mid), var(--win)); }
+
+/* ---------- Chapter: The Tides ---------- */
+.tides-frame { position: relative; }
+.tides-svg { display: block; width: 100%; height: auto; overflow: visible; touch-action: pan-y; }
+.tides-svg:focus-visible { outline-offset: 6px; }
+.td-grid { stroke: var(--line); stroke-dasharray: 2 6; }
+.td-month { stroke: var(--line); }
+.td-axis { font-size: 13px; fill: var(--muted); font-family: 'Cormorant Garamond', serif; }
+.td-line { fill: none; stroke: var(--sea); stroke-width: 2.4; stroke-linecap: round; }
+html[data-realm="journal"] .td-line { stroke: var(--ink); stroke-width: 1.6; }
+.td-crest { stroke-width: 1.5; }
+.td-crest.win { fill: var(--win); stroke: var(--ink); }
+.td-crest.loss { fill: var(--loss); stroke: var(--ink); }
+html[data-realm="night"] .td-crest { stroke: rgba(0, 0, 0, .5); }
+html[data-realm="night"] .td-crest.win { filter: drop-shadow(0 0 5px var(--win)); }
+html[data-realm="night"] .td-crest.loss { filter: drop-shadow(0 0 5px var(--loss)); }
+.td-foam { stroke: var(--foam); stroke-width: 3; stroke-linecap: round; opacity: .75; }
+.td-sludge { stroke: var(--sludge); stroke-width: 3; stroke-linecap: round; opacity: .75; }
+.td-game.out { opacity: .35; }
+.td-game.on .td-crest { r: 7; }
+.td-cursor { stroke: var(--accent); stroke-width: 1.2; stroke-dasharray: 3 4; }
+.td-hit { fill: transparent; cursor: pointer; }
+.td-veil { fill: var(--bg); opacity: .55; pointer-events: none; }
+.td-track { fill: var(--line); }
+.td-window { fill: var(--accent); opacity: .45; cursor: grab; }
+.td-window:active { cursor: grabbing; }
+.td-handle { cursor: ew-resize; outline: none; }
+.td-handle .td-grip { fill: var(--card); stroke: var(--accent); stroke-width: 2; }
+html[data-realm="night"] .td-handle .td-grip { fill: #2A2216; }
+.td-handle line { stroke: var(--accent); stroke-width: 2; }
+.td-handle:focus-visible .td-grip { stroke-width: 4; }
+.tide-card { margin-top: 26px; max-width: 640px; }
+.tc-head { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.tc-head h3 { margin: 0; }
+.tc-head h3 em { font-style: normal; font-size: 18px; color: var(--muted); margin-left: 6px; }
+.tc-badge { font-size: 13px; letter-spacing: .14em; text-transform: uppercase; padding: 2px 10px; border-radius: 999px; border: 1.5px solid; }
+.tc-badge.win { color: var(--win); }
+.tc-badge.loss { color: var(--loss); }
+html[data-realm="journal"] .tc-badge.win { color: #3E6B34; }
+.tc-spirits { margin: 10px 0 4px; font-size: 18px; }
+.tc-spirits i { color: var(--muted); }
+.tc-foe { color: var(--ink-soft); font-size: 17px; margin-bottom: 10px; }
+.lossword { color: var(--loss); }
+.tc-notes { font-style: italic; color: var(--ink-soft); margin-top: 8px; }
+
+/* ---------- Chapter: The Constellation ---------- */
+.constellation { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(260px, 1fr); gap: 30px; align-items: center; }
+.constellation svg { width: 100%; height: auto; overflow: visible; display: block; }
+.cn-orbit { fill: none; stroke: var(--line); stroke-dasharray: 1 7; stroke-linecap: round; }
+html[data-realm="journal"] .cn-orbit { stroke: rgba(107, 78, 46, 0.4); }
+.cn-orbit.inner { stroke-dasharray: none; opacity: .5; }
+.cn-fly { fill: #E8F59A; opacity: .7; animation: twinkle 3s ease-in-out infinite; }
+@keyframes twinkle { 50% { opacity: .12; } }
+.cn-edge { fill: none; stroke-linecap: round; transition: opacity .25s ease; }
+html[data-realm="journal"] .cn-edge { opacity: .5; }
+html[data-realm="night"] .cn-edge { opacity: .4; }
+.cn-wash { opacity: .45; mix-blend-mode: multiply; }
+.cn-aura { opacity: .26; mix-blend-mode: screen; }
+html[data-realm="journal"] .cn-pic { filter: sepia(.4) contrast(1.05); }
+html[data-realm="night"] .cn-pic { filter: saturate(.85) brightness(.92); }
+.cn-node { cursor: pointer; outline: none; transition: opacity .25s ease; }
+.cn-focus { fill: none; stroke: none; }
+.cn-node:focus-visible .cn-focus { stroke: var(--accent); stroke-width: 3; stroke-dasharray: 4 3; }
+.cn-label { font-family: var(--display); font-style: italic; font-size: 15px; fill: var(--ink-soft); }
+html[data-realm="journal"] .cn-label { font-size: 14px; }
+.cn-core-num { font-family: var(--display); font-size: 74px; fill: var(--accent); }
+html[data-realm="journal"] .cn-core-num { fill: var(--ink); }
+.cn-core-lbl { font-family: var(--display); font-style: italic; font-size: 17px; fill: var(--ink-soft); }
+.cn-core-lbl.dim { font-size: 14px; opacity: .75; }
+.lit .cn-edge { opacity: .05 !important; }
+.lit .cn-edge.on { opacity: 1 !important; }
+.lit .cn-node { opacity: .3; }
+.lit .cn-node.on, .lit .cn-node.near { opacity: 1; }
+.cn-info { min-height: 330px; }
+
+/* ---------- Footer ---------- */
+.realm-foot { margin-top: 90px; padding-top: 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: 16px; display: grid; gap: 6px; text-align: center; }
+
+/* ---------- Phones ---------- */
+@media (max-width: 860px) {
+  .constellation { grid-template-columns: 1fr; }
+  .cn-info { min-height: 0; }
+  .cn-label { font-size: 19px !important; }
+}
+@media (max-width: 640px) {
+  body { font-size: 18px; }
+  main { padding: 0 16px 60px; }
+  .realm-bar { padding: 8px 12px; gap: 8px; flex-wrap: wrap; }
+  .window-chip { order: 3; flex-basis: 100%; justify-content: flex-start; font-size: 15px; }
+  .back-link { font-size: 17px; }
+  .mode-toggle { margin-left: auto; }
+  .hero { padding: 50px 0 20px; }
+  .chapter { padding: 50px 0 20px; }
+  .chapter-head { grid-template-columns: 1fr; }
+  .chapter-num { font-size: 44px; grid-row: auto; }
+  .tc-figs { grid-template-columns: repeat(2, 1fr); }
+  .tide-card, .cn-info { padding: 18px; }
+  html[data-realm="journal"] .tide-card, html[data-realm="journal"] .cn-info { transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .fireflies span, .cn-fly { animation: none; opacity: .35; }
+  body { transition: none; }
+}
+
+/* Halos and washes are decoration only: clicks go to the star itself */
+.cn-aura, .cn-wash, .cn-fly, .cn-label { pointer-events: none; }
+
+/* Rail labels float to the left of the numerals so they never push the rail into the story */
+.chapter-rail a { position: relative; }
+.chapter-rail a span { position: absolute; right: 42px; top: 50%; transform: translate(6px, -50%); padding: 2px 10px; border-radius: 999px; background: var(--card); border: 1px solid var(--line); }
+.chapter-rail a:hover span, .chapter-rail a:focus-visible span { transform: translate(0, -50%); }

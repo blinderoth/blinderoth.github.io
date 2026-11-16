@@ -5,6 +5,7 @@
   async function initApp() {
     // Data is saved in this browser (localStorage) and, when a GitHub token is set, in the site's repo (js/core/cloud.js).
     // The seed in js/default_data.js is the fallback.
+    const deepLink = location.hash;   // read before the tab code tidies the address bar
     let local = null;
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
@@ -29,6 +30,7 @@
     initThemeSwitcher();
     initTabsA11y();
     initModalA11y();
+    handleDeepLink(deepLink);
   }
 
   // Escape closes the open dialog, clicking the backdrop closes it, and focus returns to where it was.

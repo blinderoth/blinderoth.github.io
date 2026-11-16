@@ -1,6 +1,6 @@
 // ==========================================================================
 // Achievements: one wide card per spirit on both sub-tabs
-// (Mastery = general, adversary levels, scenarios and aspects; Synergy).
+// (Mastery = campaign achievements strip + general, adversary levels, scenarios and aspects; Synergy).
 // Card effects play when a card scrolls into view, so a milestone is
 // celebrated at the moment you can actually see it.
 // ==========================================================================
@@ -279,6 +279,100 @@ function achCard(s, ach, tab, pool, seen) {
     </article>`;
 }
 
+
+// ---- Campaign achievements (Steam-style, across all spirits) ----------------
+const ACH_CAMPAIGN_SEEN_KEY = "si_ach_seen_campaign";
+// Open on desktop; collapsed on phones so the spirit cards stay in reach.
+let campOpen = !(window.matchMedia && window.matchMedia("(max-width: 720px)").matches);
+
+function readCampaignSeen() {
+  try {
+    const raw = localStorage.getItem(ACH_CAMPAIGN_SEEN_KEY);
+    if (!raw) return null;
+    const arr = JSON.parse(raw);
+    return Array.isArray(arr) ? arr : null;
+  } catch (e) { return null; }
+}
+function writeCampaignSeen(ids) {
+  try { localStorage.setItem(ACH_CAMPAIGN_SEEN_KEY, JSON.stringify(Array.from(new Set(ids)))); } catch (e) { /* ignore */ }
+}
+// First ever visit: everything already unlocked counts as seen, so history does not replay.
+function ensureCampaignSeen() {
+  let seen = readCampaignSeen();
+  if (seen) return seen;
+  try { seen = SICampaign.compute(appData, { ownedOnly: false }).items.filter(i => i.done).map(i => i.id); } catch (e) { seen = []; }
+  writeCampaignSeen(seen);
+  return seen;
+}
+function markCampaignSeen(ids) { writeCampaignSeen((readCampaignSeen() || []).concat(ids)); }
+
+function campTile(it, isNew) {
+  let status;
+  if (it.done) status = `<span class="camp-status ok">Unlocked</span>`;
+  else if (it.need) {
+    const pct = Math.round((it.have / it.need) * 100);
+    const names = it.missing.slice(0, 3).map(escapeHtml).join(", ") + (it.missing.length > 3 ? ` +${it.missing.length - 3} more` : "");
+    status = `
+      <div class="camp-bar" role="img" aria-label="${it.have} of ${it.need}"><span style="width:${pct}%"></span></div>
+      <div class="camp-count">${it.have} / ${it.need}</div>
+      <div class="camp-missing">Left: ${names}</div>`;
+  } else status = `<span class="camp-status">${it.note ? escapeHtml(it.note) : "Not yet"}</span>`;
+  return `
+    <li class="camp-tile ${it.done ? "done" : "todo"}${isNew ? " is-new" : ""}" data-camp="${it.id}">
+      <div class="camp-title">${escapeHtml(it.title)}${isNew ? ` <span class="camp-new-tag" hidden>New</span>` : ""}</div>
+      <div class="camp-desc">${escapeHtml(it.desc)}</div>
+      ${status}
+    </li>`;
+}
+
+function achCampaignHtml(ownedOnly) {
+  const res = SICampaign.compute(getStatsData(), { ownedOnly });
+  if (!res.total) return "";
+  const seen = new Set(ensureCampaignSeen());
+  // "New" means done even when every expansion counts, so switching the owned-only toggle never fakes an unlock.
+  const strictDone = new Set(SICampaign.compute(getStatsData(), { ownedOnly: false }).items.filter(i => i.done).map(i => i.id));
+  const fresh = new Set(res.items.filter(i => i.done && strictDone.has(i.id) && !seen.has(i.id)).map(i => i.id));
+  // Unlocked first would hide what is left to do, so keep the Steam-like order and let the bar show progress.
+  return `
+    <details class="ach-campaign" id="achCampaign"${campOpen ? " open" : ""}>
+      <summary>
+        <span class="camp-head">Campaign achievements</span>
+        <span class="camp-total">${res.done} / ${res.total}</span>
+      </summary>
+      <p class="camp-note">Group goals across every spirit, modeled on the Steam version. They follow the Player Stats filter and the owned-only toggle.</p>
+      <ul class="camp-grid">${res.items.map(i => campTile(i, fresh.has(i.id))).join("")}</ul>
+    </details>`;
+}
+
+function playCampaignNew(box) {
+  const tiles = box.querySelectorAll(".camp-tile.is-new");
+  if (!tiles.length) return;
+  const ids = [];
+  tiles.forEach(t => {
+    ids.push(t.getAttribute("data-camp"));
+    t.classList.remove("is-new");
+    t.classList.add("fx-new");
+    const tag = t.querySelector(".camp-new-tag"); if (tag) tag.hidden = false;
+  });
+  markCampaignSeen(ids);
+}
+
+function bindCampaign(container) {
+  const box = container.querySelector("#achCampaign");
+  if (!box) return;
+  const hasNew = () => box.querySelector(".camp-tile.is-new");
+  let visible = false;
+  const tryPlay = () => { if (box.open && visible && hasNew()) playCampaignNew(box); };
+  box.addEventListener("toggle", () => { campOpen = box.open; tryPlay(); });
+  if (!hasNew()) return;
+  if (!("IntersectionObserver" in window)) { visible = true; tryPlay(); return; }
+  const io = new IntersectionObserver((entries) => {
+    visible = entries.some(e => e.isIntersecting);
+    if (visible) tryPlay();
+  }, { threshold: 0.3 });
+  io.observe(box);
+}
+
 function renderAchievementCards(ach, spirits, pool, totalBeforeHide) {
   if (!spirits.length) {
     return `<p class="ach-empty">No spirits to show. Try turning off “Hide spirits with nothing unlocked” or “Show owned spirits only”.</p>`;
@@ -420,6 +514,7 @@ function renderAchievementMatrixContent(ach) {
     container.innerHTML = achSynergyGrid(spirits, ach);
     return;
   }
-  container.innerHTML = renderAchievementCards(ach, spirits, pool, totalBeforeHide);
+  container.innerHTML = achCampaignHtml(ownedOnly) + renderAchievementCards(ach, spirits, pool, totalBeforeHide);
+  bindCampaign(container);
   bindAchievementCards(container);
 }

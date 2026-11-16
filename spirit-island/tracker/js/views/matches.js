@@ -606,9 +606,16 @@
       await persistData(`Updated Match #${matchObj.id} (${finalScore} pts)`);
     } else {
       const prevAch = SIAnalytics.computeAchievements(appData, { ownedOnly: false });
+      const prevCamp = SICampaign.compute(appData, { ownedOnly: false });
       appData.matches.push(matchObj);
       const nextAch = SIAnalytics.computeAchievements(appData, { ownedOnly: false });
       newlyUnlocked = collectNewMilestones(prevAch, nextAch, matchObj);
+      const doneBefore = new Set(prevCamp.items.filter(i => i.done).map(i => i.id));
+      const newCamp = SICampaign.compute(appData, { ownedOnly: false }).items.filter(i => i.done && !doneBefore.has(i.id));
+      if (newCamp.length) {
+        newlyUnlocked.push({ spirit: { name: "Campaign achievements", image: "" }, items: newCamp.map(i => i.title) });
+        markCampaignSeen(newCamp.map(i => i.id));
+      }
       await persistData(`Logged Match #${matchObj.id} — ${victory ? 'Victory!' : 'Defeat'} (${finalScore} pts)`);
     }
 

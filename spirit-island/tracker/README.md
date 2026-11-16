@@ -36,7 +36,7 @@ Hard refresh (Ctrl+Shift+R). Asset links carry `?v=` numbers; bump them in `inde
 - **Overview**: totals, awakened spirits, adversary clearance, council of spirits.
 - **Adversaries**: Invader Threat Matrix only.
 - **Games**: collapsed expedition generator, the log, and a collapsed "Why we lose: loss autopsy" panel.
-- **Achievements**: "Mastery" (one card per spirit, with a Breakdown drop-down for general milestones, adversary levels, scenarios and aspects) and "Spirit Synergy" (a spirit-by-spirit grid).
+- **Achievements**: "Mastery" (a "Campaign achievements" strip modeled on the Steam version, defined in `js/campaign.js`, then one card per spirit, with a Breakdown drop-down for general milestones, adversary levels, scenarios and aspects) and "Spirit Synergy" (a spirit-by-spirit grid).
 - **Spirits**: compact spirit cards, Pantheon Dossier, adversaries and scenarios codex.
 - **Settings**: backup, artwork refit, print summary.
 

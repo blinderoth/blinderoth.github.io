@@ -1,0 +1,510 @@
+/* ==========================================================================
+   SPIRIT REALM: the island at night, seen from the spirit side.
+   A fourth color scheme. Everything is scoped to body[data-theme="realm"],
+   so Botanical Zen, Parchment and Dark are untouched.
+   ========================================================================== */
+
+/* The constellation section only exists in this scheme */
+.realm-only { display: none; }
+body[data-theme="realm"] .realm-only { display: block; }
+
+body[data-theme="realm"] {
+  color-scheme: dark;
+  --realm-bg: #080B16;
+  --realm-jade: #5CF2B5;
+  --realm-ember: #FF6B4A;
+  --realm-gold: #F5C451;
+  --realm-violet: #8B7BFF;
+  --realm-glass: linear-gradient(160deg, rgba(255,255,255,0.055), rgba(255,255,255,0.012));
+  --realm-line: rgba(255,255,255,0.085);
+
+  --sage-paper: #080B16;
+  --sage-tint: #121729;
+  --sage-tint-hover: #1A2140;
+  --sage-rule: #2A3156;
+  --pine-ink: #ECEFFA;
+  --pine-muted: #A3ABCB;
+  --pine-light: #8E97BC;
+  --fern-accent: #5CF2B5;
+  --sun-leaf: #F5C451;
+  --rust-blight: #FF6B4A;
+
+  --bg-deep: #080B16;
+  --bg-base: #121729;
+  --bg-card: #121729;
+  --bg-card-hover: #1A2140;
+  --bg-elevated: #1E2648;
+  --bg-input: #0D1121;
+  --border-subtle: #2A3156;
+  --border-strong: #5CF2B5;
+  --text-primary: #ECEFFA;
+  --text-secondary: #A3ABCB;
+  --text-muted: #8E97BC;
+  --accent-gold: #F5C451;
+  --accent-gold-light: #FFD98A;
+  --accent-emerald: #5CF2B5;
+  --accent-emerald-light: #8CF7CC;
+  --accent-crimson: #FF6B4A;
+  --accent-amber: #FFA24A;
+  --header-bg: rgba(8, 11, 22, 0.85);
+  --btn-text: #080B16;
+  --btn-bg: #5CF2B5;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+
+  background:
+    radial-gradient(1100px 560px at 88% -8%, rgba(92,242,181,0.13), transparent 60%),
+    radial-gradient(900px 520px at -12% 34%, rgba(255,107,74,0.10), transparent 62%),
+    radial-gradient(1200px 900px at 50% 118%, rgba(139,123,255,0.16), transparent 60%),
+    #080B16 !important;
+  background-attachment: fixed !important;
+  font-family: 'Space Grotesk', 'Inter', sans-serif !important;
+}
+
+/* Living contour lines, like a topographic map of the island breathing */
+body[data-theme="realm"]::before {
+  content: "";
+  position: fixed;
+  inset: -25%;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    repeating-radial-gradient(circle at 70% 26%, transparent 0 27px, rgba(139,150,255,0.075) 27px 28px),
+    repeating-radial-gradient(circle at 16% 84%, transparent 0 36px, rgba(92,242,181,0.055) 36px 37px);
+  -webkit-mask-image: radial-gradient(ellipse at 50% 40%, #000 25%, transparent 72%);
+          mask-image: radial-gradient(ellipse at 50% 40%, #000 25%, transparent 72%);
+  animation: realmDrift 80s ease-in-out infinite alternate;
+}
+/* Film grain */
+body[data-theme="realm"]::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+@keyframes realmDrift { to { transform: rotate(7deg) scale(1.1) translate(2%, -2%); } }
+@keyframes realmAurora { to { background-position: 100% 0; } }
+@keyframes realmPulse { 50% { box-shadow: 0 0 0 1px rgba(255,255,255,0.12), 0 12px 50px rgba(92,242,181,0.55); } }
+
+body[data-theme="realm"] .status-bar,
+body[data-theme="realm"] .zen-wrap { position: relative; z-index: 1; }
+
+body[data-theme="realm"] ::selection { background: rgba(92,242,181,0.35); color: #fff; }
+
+/* ---------- Status bar ---------- */
+body[data-theme="realm"] .status-bar {
+  background: rgba(8,11,22,0.55) !important;
+  border-bottom: 1px solid var(--realm-line) !important;
+  backdrop-filter: blur(12px);
+}
+body[data-theme="realm"] .theme-pill {
+  background: transparent !important;
+  border: 1px solid var(--realm-line) !important;
+  color: var(--text-secondary) !important;
+  border-radius: 999px !important;
+}
+body[data-theme="realm"] .theme-pill.active {
+  background: linear-gradient(90deg, var(--realm-jade), var(--realm-gold)) !important;
+  color: #080B16 !important;
+  border-color: transparent !important;
+}
+
+/* ---------- Header: giant outlined title with an aurora running through it ---------- */
+body[data-theme="realm"] .zen-header { text-align: left; margin-bottom: 4rem; }
+body[data-theme="realm"] .zen-header h1 {
+  font-family: 'Big Shoulders Display', 'Space Grotesk', sans-serif !important;
+  font-weight: 900 !important;
+  font-size: clamp(60px, 11.5vw, 168px) !important;
+  line-height: 0.82 !important;
+  letter-spacing: -0.005em !important;
+  text-transform: uppercase;
+  color: transparent !important;
+  -webkit-text-stroke: 1.5px rgba(245,196,81,0.9);
+  background: linear-gradient(100deg, transparent 18%, rgba(92,242,181,0.65) 38%, rgba(139,123,255,0.6) 52%, rgba(255,107,74,0.5) 64%, transparent 82%);
+  background-size: 260% 100%;
+  background-position: 0 0;
+  -webkit-background-clip: text;
+          background-clip: text;
+  animation: realmAurora 16s ease-in-out infinite alternate;
+  margin: 0 0 1.4rem !important;
+  max-width: 11ch;
+}
+body[data-theme="realm"] .zen-header-actions { justify-content: flex-start; }
+
+/* ---------- Navigation: a glowing rail on wide screens ---------- */
+body[data-theme="realm"] .zen-nav {
+  background: rgba(18,23,41,0.72) !important;
+  border: 1px solid var(--realm-line) !important;
+  backdrop-filter: blur(12px);
+  border-radius: 999px !important;
+  gap: 0.35rem !important;
+  padding: 0.4rem !important;
+}
+body[data-theme="realm"] .zen-nav-btn {
+  font-family: 'Space Grotesk', sans-serif !important;
+  font-size: 11px !important;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-secondary) !important;
+  border-radius: 999px !important;
+  padding: 0.6rem 1rem !important;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+body[data-theme="realm"] .zen-nav-btn:hover { color: #fff !important; background: rgba(255,255,255,0.06); }
+body[data-theme="realm"] .zen-nav-btn.active {
+  background: var(--realm-jade) !important;
+  color: #080B16 !important;
+  font-weight: 700 !important;
+  box-shadow: 0 0 24px rgba(92,242,181,0.45);
+}
+body[data-theme="realm"] .zen-nav-btn.active::after { display: none !important; }
+
+@media (min-width: 1100px) {
+  body[data-theme="realm"] .zen-nav {
+    position: fixed;
+    left: 22px;
+    top: 50%;
+    transform: translateY(-50%);
+    flex-direction: column;
+    margin: 0 !important;
+    z-index: 40;
+  }
+  body[data-theme="realm"] .zen-nav-btn {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    padding: 1.15rem 0.7rem !important;
+  }
+  body[data-theme="realm"] .zen-wrap { max-width: 1180px; padding-left: calc(2rem + 70px); }
+}
+
+/* ---------- Record button floats like a spirit ---------- */
+body[data-theme="realm"] #openLogMatchBtn {
+  position: fixed;
+  right: 26px;
+  bottom: 26px;
+  z-index: 45;
+  border-radius: 999px !important;
+  padding: 1rem 1.5rem !important;
+  border: none !important;
+  background: linear-gradient(120deg, var(--realm-jade), var(--realm-gold)) !important;
+  color: #080B16 !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.12), 0 12px 40px rgba(92,242,181,0.35);
+  animation: realmPulse 4s ease-in-out infinite;
+}
+body[data-theme="realm"] #openLogMatchBtn span { color: inherit !important; }
+
+/* ---------- Phones: bottom tab bar within thumb reach ---------- */
+@media (max-width: 720px) {
+  body[data-theme="realm"] { padding-bottom: 92px; }
+  body[data-theme="realm"] .zen-nav {
+    position: fixed;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    top: auto;
+    display: flex !important;
+    justify-content: space-between;
+    overflow: visible !important;
+    margin: 0 !important;
+    z-index: 40;
+    width: auto !important;
+  }
+  body[data-theme="realm"] .zen-nav-btn {
+    flex: 1 1 0;
+    padding: 0.75rem 0.2rem !important;
+    font-size: 9.5px !important;
+    letter-spacing: 0.08em;
+    min-width: 0;
+  }
+  body[data-theme="realm"] #openLogMatchBtn { right: 14px; bottom: 84px; padding: 0.85rem 1.2rem !important; }
+  body[data-theme="realm"] .zen-header { margin-bottom: 2.5rem; }
+}
+
+/* ---------- Section labels with huge ghost numerals ---------- */
+body[data-theme="realm"] #main { counter-reset: realm; }
+body[data-theme="realm"] .zen-section-label {
+  counter-increment: realm;
+  position: relative;
+  isolation: isolate;
+  border: none !important;
+  padding-top: 1.6rem;
+  margin-top: 3.4rem !important;
+}
+body[data-theme="realm"] .zen-section-label::before {
+  content: counter(realm, decimal-leading-zero);
+  position: absolute;
+  left: -0.06em;
+  top: -2.4rem;
+  z-index: -1;
+  font: 900 108px/1 'Big Shoulders Display', sans-serif;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(163,171,203,0.2);
+  pointer-events: none;
+}
+body[data-theme="realm"] .zen-section-label span {
+  color: var(--realm-gold) !important;
+  letter-spacing: 0.22em !important;
+  font-family: 'Space Grotesk', sans-serif !important;
+}
+body[data-theme="realm"] .zen-section-label span + span { color: var(--text-secondary) !important; }
+
+/* ---------- Big figures ---------- */
+body[data-theme="realm"] .zen-figures { gap: 0 !important; border: none !important; }
+body[data-theme="realm"] .zen-figures > div {
+  border-left: 1px solid var(--realm-line);
+  padding: 0.4rem 1.2rem;
+  text-align: left;
+}
+body[data-theme="realm"] .zen-figures > div:first-child { border-left: none; padding-left: 0; }
+body[data-theme="realm"] .zf-num {
+  font-family: 'Big Shoulders Display', sans-serif !important;
+  font-weight: 900 !important;
+  font-size: clamp(56px, 7vw, 96px) !important;
+  line-height: 0.9 !important;
+  color: transparent !important;
+  -webkit-text-stroke: 1.3px #ECEFFA;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+body[data-theme="realm"] .zen-figures > div:hover .zf-num { color: var(--realm-jade) !important; -webkit-text-stroke-color: var(--realm-jade); text-shadow: 0 0 30px rgba(92,242,181,0.5); }
+body[data-theme="realm"] .zf-label { color: var(--text-secondary) !important; letter-spacing: 0.2em !important; font-size: 10.5px !important; text-transform: uppercase; }
+body[data-theme="realm"] .kpi-card { background: var(--realm-glass) !important; border: 1px solid var(--realm-line) !important; border-radius: 22px 6px 22px 6px !important; }
+
+/* ---------- Cards: glass slabs with uneven corners ---------- */
+body[data-theme="realm"] .zen-card,
+body[data-theme="realm"] .panel-card {
+  background: var(--realm-glass) !important;
+  border: 1px solid var(--realm-line) !important;
+  border-radius: 28px 6px 28px 6px !important;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 40px 80px -50px rgba(0,0,0,0.9) !important;
+}
+body[data-theme="realm"] .zen-card-title,
+body[data-theme="realm"] .serif-title,
+body[data-theme="realm"] .panel-title {
+  font-family: 'Fraunces', Georgia, serif !important;
+  font-style: italic;
+  font-weight: 400 !important;
+  letter-spacing: -0.01em;
+}
+body[data-theme="realm"] .zen-card-title { font-size: 26px !important; }
+
+/* ---------- Top spirits: tilted tarot cards ---------- */
+body[data-theme="realm"] .pantheon-strip { gap: 1.1rem !important; }
+body[data-theme="realm"] .zen-spirit-card {
+  --tilt: 0deg;
+  background: linear-gradient(170deg, #1B2246, #0D1121) !important;
+  border: 1px solid var(--realm-line) !important;
+  border-radius: 20px 20px 64px 20px !important;
+  transform: rotate(var(--tilt));
+  transition: transform 0.35s cubic-bezier(.2,.8,.2,1), box-shadow 0.35s ease !important;
+  box-shadow: 0 24px 50px -30px rgba(0,0,0,0.9);
+}
+body[data-theme="realm"] .zen-spirit-card:nth-child(1) { --tilt: -2.2deg; }
+body[data-theme="realm"] .zen-spirit-card:nth-child(2) { --tilt: 1.4deg; }
+body[data-theme="realm"] .zen-spirit-card:nth-child(3) { --tilt: -0.9deg; }
+body[data-theme="realm"] .zen-spirit-card:nth-child(4) { --tilt: 2deg; }
+body[data-theme="realm"] .zen-spirit-card:hover {
+  transform: rotate(0deg) translateY(-8px) !important;
+  box-shadow: 0 0 0 1px rgba(92,242,181,0.4), 0 30px 60px -20px rgba(92,242,181,0.35) !important;
+}
+body[data-theme="realm"] .zen-spirit-top img {
+  width: 60px !important;
+  height: 60px !important;
+  box-shadow: 0 0 0 2px var(--realm-gold), 0 0 26px rgba(245,196,81,0.4);
+}
+body[data-theme="realm"] .zen-spirit-name { font-family: 'Fraunces', serif !important; font-style: italic; font-size: 17px !important; }
+body[data-theme="realm"] .zen-spirit-stat { border-top: 1px dashed var(--realm-line) !important; }
+
+/* ---------- Adversary clearance: hex runes ---------- */
+body[data-theme="realm"] .zen-gauntlet-row { border-bottom: 1px dashed rgba(163,171,203,0.16) !important; }
+body[data-theme="realm"] .zen-gauntlet-row:hover { background: rgba(255,255,255,0.025) !important; }
+body[data-theme="realm"] .zen-gauntlet-name span { font-family: 'Fraunces', serif !important; font-style: italic; font-size: 19px !important; }
+body[data-theme="realm"] .zen-gauntlet-name img { box-shadow: 0 6px 18px rgba(0,0,0,0.6); border: none !important; }
+body[data-theme="realm"] .zen-pillar {
+  clip-path: polygon(11% 0, 89% 0, 100% 50%, 89% 100%, 11% 100%, 0 50%);
+  border: none !important;
+  border-radius: 0 !important;
+  font-family: 'JetBrains Mono', monospace !important;
+}
+body[data-theme="realm"] .zen-pillar.zp-win { background: linear-gradient(180deg, #86F9CB, #3ED69C) !important; color: #052119 !important; }
+body[data-theme="realm"] .zen-pillar.zp-loss { background: rgba(255,107,74,0.2) !important; color: #FF9277 !important; }
+body[data-theme="realm"] .zen-pillar.zp-empty { background: rgba(255,255,255,0.04) !important; color: rgba(163,171,203,0.55) !important; opacity: 1 !important; }
+body[data-theme="realm"] button.zen-pillar:hover { filter: brightness(1.18); }
+body[data-theme="realm"] button.zen-pillar:focus-visible { background: var(--realm-gold) !important; color: #080B16 !important; outline: none; }
+
+body[data-theme="realm"] .zen-scn-card {
+  background: rgba(255,255,255,0.03) !important;
+  border: 1px solid var(--realm-line) !important;
+  border-radius: 16px 4px 16px 4px !important;
+}
+body[data-theme="realm"] .zen-scn-card.zp-win { border-color: rgba(92,242,181,0.45) !important; box-shadow: inset 0 0 28px rgba(92,242,181,0.08); }
+body[data-theme="realm"] .zen-scn-card.zp-loss { border-color: rgba(255,107,74,0.45) !important; }
+body[data-theme="realm"] .zen-scn-card.zp-empty { border-style: dashed !important; }
+body[data-theme="realm"] .zen-scn-name { color: var(--text-primary) !important; }
+
+/* ---------- Tables ---------- */
+body[data-theme="realm"] .zen-table th {
+  color: var(--realm-gold) !important;
+  letter-spacing: 0.16em;
+  border-bottom: 1px solid rgba(245,196,81,0.28) !important;
+  background: transparent !important;
+}
+body[data-theme="realm"] .zen-table td { border-bottom: 1px dashed rgba(163,171,203,0.14) !important; }
+body[data-theme="realm"] .zen-table tbody tr:hover td { background: rgba(92,242,181,0.04) !important; }
+body[data-theme="realm"] .zen-table tfoot tr { background: rgba(245,196,81,0.07) !important; }
+body[data-theme="realm"] .guardian-detail > td { background: rgba(0,0,0,0.22) !important; }
+
+/* ---------- Controls ---------- */
+body[data-theme="realm"] .btn-zen,
+body[data-theme="realm"] .btn { border-radius: 999px !important; font-family: 'Space Grotesk', sans-serif !important; }
+body[data-theme="realm"] .btn-zen-secondary,
+body[data-theme="realm"] .btn-secondary {
+  background: transparent !important;
+  border: 1px solid rgba(255,255,255,0.16) !important;
+  color: var(--text-primary) !important;
+}
+body[data-theme="realm"] .btn-zen-secondary:hover,
+body[data-theme="realm"] .btn-secondary:hover { border-color: var(--realm-jade) !important; color: var(--realm-jade) !important; }
+body[data-theme="realm"] .btn-zen-primary,
+body[data-theme="realm"] .btn-primary { background: var(--realm-jade) !important; color: #080B16 !important; border: none !important; }
+body[data-theme="realm"] .btn-danger { background: transparent !important; border: 1px solid rgba(255,107,74,0.55) !important; color: #FF9277 !important; }
+body[data-theme="realm"] .text-input,
+body[data-theme="realm"] .select-input,
+body[data-theme="realm"] .dossier-search-input {
+  background: #0D1121 !important;
+  border: 1px solid #2A3156 !important;
+  color: var(--text-primary) !important;
+  border-radius: 12px !important;
+}
+body[data-theme="realm"] .text-input:focus,
+body[data-theme="realm"] .select-input:focus { border-color: var(--realm-jade) !important; box-shadow: 0 0 0 3px rgba(92,242,181,0.18) !important; outline: none; }
+body[data-theme="realm"] .sub-nav-btn { border-radius: 999px !important; font-family: 'Space Grotesk', sans-serif !important; letter-spacing: 0.12em; }
+body[data-theme="realm"] .sub-nav-btn.active { background: var(--realm-violet) !important; color: #fff !important; border-color: transparent !important; }
+
+body[data-theme="realm"] .badge { border-radius: 999px !important; }
+body[data-theme="realm"] .badge-win { color: var(--realm-jade) !important; border-color: rgba(92,242,181,0.6) !important; box-shadow: 0 0 14px rgba(92,242,181,0.22); }
+body[data-theme="realm"] .badge-loss { color: #FF9277 !important; border-color: rgba(255,107,74,0.6) !important; box-shadow: 0 0 14px rgba(255,107,74,0.2); }
+body[data-theme="realm"] .spirit-player-chip { background: rgba(255,255,255,0.035) !important; border-color: var(--realm-line) !important; }
+body[data-theme="realm"] .spirit-player-chip:hover { border-color: var(--realm-jade) !important; }
+
+/* Things the Dark scheme also has to flip */
+body[data-theme="realm"] .ach-lvl.on,
+body[data-theme="realm"] .ach-done,
+body[data-theme="realm"] .btn-emerald,
+body[data-theme="realm"] .btn-emerald:hover { color: #080B16 !important; }
+
+/* Heatmap: the hottest days glow */
+body[data-theme="realm"] .ph-l7, body[data-theme="realm"] .ph-l8 { box-shadow: 0 0 9px rgba(92,242,181,0.65); }
+
+/* ---------- Modals ---------- */
+body[data-theme="realm"] .modal-backdrop { background: rgba(4,6,14,0.72) !important; }
+body[data-theme="realm"] .modal-zen,
+body[data-theme="realm"] .modal-dialog {
+  background: rgba(14,18,36,0.94) !important;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+  border-radius: 30px 8px 30px 8px !important;
+  box-shadow: 0 50px 120px rgba(0,0,0,0.7), 0 0 0 1px rgba(92,242,181,0.08) !important;
+  backdrop-filter: blur(16px);
+}
+body[data-theme="realm"] .gm-title,
+body[data-theme="realm"] #matchModalTitle { font-family: 'Fraunces', serif !important; font-style: italic; }
+
+/* ==========================================================================
+   Constellation
+   ========================================================================== */
+.constellation { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(240px, 1fr); gap: 1.5rem; align-items: center; }
+.constellation svg { width: 100%; height: auto; overflow: visible; display: block; }
+.cn-orbit { fill: none; stroke: rgba(163,171,203,0.14); stroke-dasharray: 2 6; }
+.cn-orbit.inner { stroke: rgba(139,123,255,0.12); }
+.cn-edge { fill: none; opacity: 0.32; stroke-linecap: round; transition: opacity 0.25s ease; mix-blend-mode: screen; }
+.cn-edge:hover { opacity: 0.9; }
+.cn-node { cursor: pointer; outline: none; }
+.cn-node .cn-halo { opacity: 0.12; transition: opacity 0.25s ease; }
+.cn-node .cn-ring { fill: none; stroke-width: 2; }
+.cn-node .cn-label { font: 500 10.5px 'Space Grotesk', sans-serif; fill: #A3ABCB; letter-spacing: 0.03em; transition: fill 0.2s ease, opacity 0.25s ease; }
+.cn-node:hover .cn-halo, .cn-node:focus-visible .cn-halo, .cn-node.on .cn-halo { opacity: 0.45; }
+.cn-node.on .cn-label, .cn-node.near .cn-label { fill: #fff; }
+.cn-node:focus-visible .cn-ring { stroke: #F5C451; stroke-width: 3; }
+.has-active .cn-edge { opacity: 0.05; }
+.has-active .cn-edge.on { opacity: 0.95; }
+.has-active .cn-node { opacity: 0.28; transition: opacity 0.25s ease; }
+.has-active .cn-node.on, .has-active .cn-node.near { opacity: 1; }
+.cn-core-num { font: 900 64px 'Big Shoulders Display', sans-serif; fill: transparent; stroke: #F5C451; stroke-width: 1.2; text-anchor: middle; }
+.cn-core-label { font: 500 11px 'Space Grotesk', sans-serif; fill: #A3ABCB; letter-spacing: 0.2em; text-transform: uppercase; text-anchor: middle; }
+.cn-core-label.dim { fill: #6E779C; letter-spacing: 0.1em; }
+
+.constellation-info { min-height: 320px; padding: 1.4rem 1.5rem; border-radius: 26px 6px 26px 6px; background: linear-gradient(160deg, rgba(255,255,255,0.05), rgba(255,255,255,0.012)); border: 1px solid rgba(255,255,255,0.085); }
+.cn-kicker { font-size: 10.5px; letter-spacing: 0.24em; text-transform: uppercase; color: #F5C451; margin-bottom: 0.3rem; }
+.cn-title { font-family: 'Fraunces', Georgia, serif !important; font-style: italic; font-weight: 400 !important; font-size: 26px !important; line-height: 1.15; color: #ECEFFA !important; margin-bottom: 0.8rem; }
+.cn-hint { color: #A3ABCB; font-size: 13px; line-height: 1.55; margin-top: 0.6rem; }
+.cn-bond { margin-top: 1.2rem; padding-top: 1rem; border-top: 1px dashed rgba(255,255,255,0.1); display: grid; gap: 0.15rem; }
+.cn-bond span { font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: #8E97BC; }
+.cn-bond strong { color: #ECEFFA; font-size: 15px; }
+.cn-bond em { font-style: normal; color: #5CF2B5; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+.cn-scale { display: flex; align-items: center; gap: 0.6rem; margin-top: 1.2rem; font-size: 11px; color: #8E97BC; }
+.cn-scale i { flex: 1; height: 6px; border-radius: 6px; background: linear-gradient(90deg, hsl(8,85%,62%), hsl(42,85%,62%), hsl(155,85%,62%)); }
+.cn-figs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin: 0.4rem 0 1rem; }
+.cn-figs strong { display: block; font: 900 40px/1 'Big Shoulders Display', sans-serif; color: #ECEFFA; }
+.cn-figs span { font-size: 10.5px; letter-spacing: 0.16em; text-transform: uppercase; color: #8E97BC; }
+.cn-partners { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.35rem; }
+.cn-partners li { display: grid; grid-template-columns: 10px minmax(0, 1fr) auto; gap: 0.6rem; align-items: center; font-size: 13px; color: #ECEFFA; }
+.cn-partners i { width: 10px; height: 10px; border-radius: 50%; }
+.cn-partners span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cn-partners em { font-style: normal; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #A3ABCB; }
+
+@media (max-width: 900px) {
+  .constellation { grid-template-columns: 1fr; }
+  .constellation-info { min-height: 0; }
+  .cn-node .cn-label { font-size: 13px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body[data-theme="realm"]::before,
+  body[data-theme="realm"] .zen-header h1,
+  body[data-theme="realm"] #openLogMatchBtn { animation: none !important; }
+  body[data-theme="realm"] .zen-spirit-card { transform: none !important; }
+}
+
+/* Only the Overview gets the giant title; other tabs keep it small so the content starts high */
+body[data-theme="realm"]:has(#view-dashboard:not(.active)) .zen-header { margin-bottom: 2rem; }
+body[data-theme="realm"]:has(#view-dashboard:not(.active)) .zen-header h1 {
+  font-size: clamp(36px, 4.4vw, 56px) !important;
+  max-width: none;
+  margin-bottom: 0.6rem !important;
+  -webkit-text-stroke-width: 1px;
+}
+body[data-theme="realm"] .zen-figures > div { min-width: 0; }
+body[data-theme="realm"] .zf-num { font-size: clamp(48px, 6vw, 88px) !important; white-space: nowrap; }
+@media (max-width: 720px) {
+  body[data-theme="realm"] .zen-figures > div { border-left: none; padding: 0.4rem 0; }
+}
+
+/* Phones: labels that fit the bottom bar, and the record button shrinks to a round "+" */
+@media (max-width: 720px) {
+  body[data-theme="realm"] .zen-nav { gap: 0.15rem !important; padding: 0.3rem !important; }
+  body[data-theme="realm"] .zen-nav-btn {
+    flex: 1 1 auto;
+    text-transform: none;
+    letter-spacing: 0 !important;
+    font-size: 11px !important;
+    padding: 0.8rem 0.35rem !important;
+  }
+  body[data-theme="realm"] #openLogMatchBtn { width: 58px; height: 58px; padding: 0 !important; display: grid; place-items: center; }
+  body[data-theme="realm"] #openLogMatchBtn span { font-size: 0 !important; line-height: 0; }
+  body[data-theme="realm"] #openLogMatchBtn span::before { content: "+"; font-size: 30px; line-height: 1; font-weight: 500; }
+}
+body[data-theme="realm"] #motesToggleBtn,
+body[data-theme="realm"] .zen-header-actions .btn-zen-secondary,
+body[data-theme="realm"] .zen-header-actions button:not(#openLogMatchBtn) {
+  border-radius: 999px !important;
+  background: transparent !important;
+  border: 1px solid var(--realm-line) !important;
+  color: var(--text-secondary) !important;
+}

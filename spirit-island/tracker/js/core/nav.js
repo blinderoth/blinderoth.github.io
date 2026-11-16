@@ -40,7 +40,7 @@
 
   function initThemeSwitcher() {
     const THEME_KEY = "si_color_scheme";
-    const THEME_COLORS = { zen: "#F3F5F0", parchment: "#F4EFE6", dark: "#111815" };
+    const THEME_COLORS = { zen: "#F3F5F0", parchment: "#F4EFE6", dark: "#111815", realm: "#080B16" };
 
     function applyScheme(scheme) {
       const valid = THEME_COLORS[scheme] ? scheme : "zen";

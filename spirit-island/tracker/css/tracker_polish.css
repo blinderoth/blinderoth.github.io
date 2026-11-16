@@ -855,3 +855,29 @@ body.si-viewer .log-match-btn { display: none !important; }
   .camp-icon { transition: filter 0.6s ease, opacity 0.6s ease; }
 }
 @media (max-width: 720px) { .camp-icon { width: 44px; height: 44px; } .camp-tile { gap: 0.5rem; } }
+
+
+/* Round 9: games list collapse, play calendar, square spirit chips, required loss type */
+#view-matches #matchesHistoryTbody tr.reckoning-row.game-extra { display: none !important; }
+.games-toggle { margin-top: 0.9rem; }
+#view-matches .spirit-player-chip { border-radius: 6px; }
+#view-matches .spirit-player-chip img { border-radius: 4px; }
+#modalLossCondition[aria-invalid="true"] { border-color: var(--accent-crimson, #b3412f); box-shadow: 0 0 0 2px rgba(179,65,47,0.25); }
+
+.play-heat { margin-top: 1.25rem; --ph-size: 13px; }
+.play-heat-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.9rem; }
+.play-heat-scroll { overflow-x: auto; padding-bottom: 0.4rem; }
+.play-heat-grid { display: grid; grid-template-rows: 14px repeat(7, var(--ph-size)); gap: 3px; width: max-content; font-size: 0.66rem; color: var(--text-secondary); }
+.play-heat-grid .ph-month { grid-row: 1; white-space: nowrap; overflow: visible; line-height: 14px; }
+.play-heat-grid .ph-day { grid-column: 1; padding-right: 6px; line-height: var(--ph-size); }
+.ph-cell, .play-heat-legend i { display: block; width: var(--ph-size); height: var(--ph-size); border-radius: 3px; }
+.ph-out { visibility: hidden; }
+.ph-l0 { background: color-mix(in srgb, var(--text-secondary, #6b7a6f) 14%, transparent); }
+.ph-l1 { background: color-mix(in srgb, var(--fern-accent, #4d7c5a) 30%, transparent); }
+.ph-l2 { background: color-mix(in srgb, var(--fern-accent, #4d7c5a) 55%, transparent); }
+.ph-l3 { background: color-mix(in srgb, var(--fern-accent, #4d7c5a) 80%, transparent); }
+.ph-l4 { background: var(--fern-accent, #4d7c5a); }
+.ph-cell:not(.ph-out):hover { outline: 1.5px solid var(--text-primary, #222); outline-offset: 1px; }
+.play-heat-legend { display: flex; align-items: center; gap: 4px; margin-top: 0.7rem; font-size: 0.7rem; color: var(--text-secondary); flex-wrap: wrap; }
+.play-heat-legend .play-heat-note { margin-left: auto; }
+@media (max-width: 720px) { .play-heat { --ph-size: 12px; } }

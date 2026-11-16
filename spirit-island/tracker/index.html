@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="css/styles.css?v=8" />
   <link rel="stylesheet" href="css/botanical_zen.css?v=8" />
   <link rel="stylesheet" href="css/spirit_animations.css?v=9" />
-  <link rel="stylesheet" href="css/tracker_polish.css?v=21" />
+  <link rel="stylesheet" href="css/tracker_polish.css?v=22" />
 </head>
 <body data-theme="zen">
   <script>
@@ -100,7 +100,7 @@
               <thead>
                 <tr>
                   <th>Guardian</th>
-                  <th>Deployments</th>
+                  <th>Spirits played</th>
                   <th>Wins</th>
                   <th>Win %</th>
                   <th>Signature Spirit</th>
@@ -188,6 +188,19 @@
             <tbody id="matchesHistoryTbody"></tbody>
           </table>
         </div>
+        <button type="button" id="gamesToggleBtn" class="btn-zen btn-zen-secondary games-toggle" aria-expanded="false" aria-controls="matchesHistoryTbody" hidden></button>
+      </div>
+
+      <div class="zen-card play-heat" id="playHeatCard">
+        <div class="play-heat-head">
+          <div>
+            <div class="zen-card-title">Play calendar</div>
+            <div class="zen-card-subtitle" id="playHeatSummary"></div>
+          </div>
+          <select id="playHeatRange" class="select-input" aria-label="Calendar range"></select>
+        </div>
+        <div class="play-heat-scroll"><div id="playHeatGrid" class="play-heat-grid" role="img" aria-label="Calendar heatmap of games played"></div></div>
+        <div class="play-heat-legend" aria-hidden="true"><span>Less</span><i class="ph-l0"></i><i class="ph-l1"></i><i class="ph-l2"></i><i class="ph-l3"></i><i class="ph-l4"></i><span>More</span><span class="play-heat-note">Heat = games × players</span></div>
       </div>
     </section>
 
@@ -405,8 +418,9 @@
             </select>
           </div>
           <div class="form-group" id="groupLossCondition" style="display:none;">
-            <label for="modalLossCondition">Loss Condition</label>
+            <label for="modalLossCondition">Loss Condition (required)</label>
             <select id="modalLossCondition" class="select-input">
+              <option value="">Choose how the game was lost</option>
               <option value="Blight Overrun">Blight Overrun (Cascades)</option>
               <option value="Adversary Special Rule">Adversary Special Rule</option>
               <option value="Invader Deck Depleted">Invader Deck Depleted (Time Out)</option>
@@ -656,7 +670,7 @@
   <script src="js/views/dashboard.js?v=21"></script>
   <script src="js/views/spirit_dossier.js?v=21"></script>
   <script src="js/views/adversaries.js?v=21"></script>
-  <script src="js/views/matches.js?v=21"></script>
+  <script src="js/views/matches.js?v=22"></script>
   <script src="js/views/achievements.js?v=21"></script>
   <script src="js/views/achievements_cards.js?v=21"></script>
   <script src="js/views/print.js?v=21"></script>

@@ -34,6 +34,70 @@
     }
 
     renderMatchesTable();
+    renderPlayHeatmap();
+  }
+
+  // Games list is collapsed to the latest 3 on load. The state is not saved.
+  let gamesExpanded = false;
+  const GAMES_COLLAPSED_COUNT = 3;
+
+  function renderPlayHeatmap() {
+    const grid = document.getElementById("playHeatGrid");
+    const sel = document.getElementById("playHeatRange");
+    if (!grid || !sel) return;
+    const heat = new Map();
+    const games = new Map();
+    (appData.matches || []).forEach(m => {
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(m.date || "")) return;
+      heat.set(m.date, (heat.get(m.date) || 0) + Math.max(1, (m.players || []).length));
+      games.set(m.date, (games.get(m.date) || 0) + 1);
+    });
+    const years = Array.from(new Set(Array.from(heat.keys()).map(d => d.slice(0, 4)))).sort().reverse();
+    const prev = sel.value || "last12";
+    sel.innerHTML = `<option value="last12">Last 12 months</option>` + years.map(y => `<option value="${y}">${y}</option>`).join("");
+    sel.value = Array.from(sel.options).some(o => o.value === prev) ? prev : "last12";
+    if (!sel.dataset.bound) { sel.dataset.bound = "1"; sel.addEventListener("change", renderPlayHeatmap); }
+
+    const DAY = 86400000;
+    const utc = (y, m, d) => Date.UTC(y, m, d);
+    const now = new Date();
+    let start, end;
+    if (sel.value === "last12") {
+      end = utc(now.getFullYear(), now.getMonth(), now.getDate());
+      const s0 = new Date(end); s0.setUTCFullYear(s0.getUTCFullYear() - 1); start = s0.getTime() + DAY;
+    } else {
+      start = utc(Number(sel.value), 0, 1); end = utc(Number(sel.value), 11, 31);
+    }
+    const dow = t => (new Date(t).getUTCDay() + 6) % 7;      // Monday = 0
+    const gridStart = start - dow(start) * DAY;
+    const weeks = Math.floor((end - gridStart) / DAY / 7) + 1;
+    const iso = t => new Date(t).toISOString().slice(0, 10);
+    let max = 0, totalGames = 0, totalHeat = 0, activeDays = 0;
+    for (let t = start; t <= end; t += DAY) {
+      const h = heat.get(iso(t)) || 0;
+      if (h) { activeDays++; totalHeat += h; totalGames += games.get(iso(t)); }
+      if (h > max) max = h;
+    }
+    const months = [];
+    let cells = "";
+    for (let w = 0; w < weeks; w++) {
+      for (let d = 0; d < 7; d++) {
+        const t = gridStart + (w * 7 + d) * DAY;
+        if (t < start || t > end) { cells += `<i class="ph-cell ph-out" style="grid-column:${w + 2};grid-row:${d + 2}"></i>`; continue; }
+        const key = iso(t), h = heat.get(key) || 0;
+        const lvl = h ? Math.max(1, Math.ceil(4 * h / max)) : 0;
+        const g = games.get(key) || 0;
+        const label = h ? `${key}: ${g} game${g === 1 ? "" : "s"}, heat ${h}` : `${key}: no games`;
+        cells += `<i class="ph-cell ph-l${lvl}" style="grid-column:${w + 2};grid-row:${d + 2}" title="${label}" aria-label="${label}"></i>`;
+        if (new Date(t).getUTCDate() === 1 || (t === start && new Date(t).getUTCDate() < 22)) months.push([w, new Date(t).toLocaleString("en-US", { month: "short", timeZone: "UTC" })]);
+      }
+    }
+    const dayNames = ["Mon", "", "Wed", "", "Fri", "", ""].map((n, i) => n ? `<span class="ph-day" style="grid-row:${i + 2}">${n}</span>` : "").join("");
+    const monthHtml = months.map(([w, n]) => `<span class="ph-month" style="grid-column:${w + 2}">${n}</span>`).join("");
+    grid.style.gridTemplateColumns = `auto repeat(${weeks}, var(--ph-size))`;
+    grid.innerHTML = monthHtml + dayNames + cells;
+    const sum = document.getElementById("playHeatSummary");
+    if (sum) sum.textContent = totalGames ? `${totalGames} game${totalGames === 1 ? "" : "s"} on ${activeDays} day${activeDays === 1 ? "" : "s"}` : "No games in this range";
   }
 
   function renderMatchesTable() {
@@ -86,7 +150,21 @@
       countLabel.textContent = `Showing ${filtered.length} of ${(appData.matches || []).length} logged sessions`;
     }
 
-    tbody.innerHTML = filtered.map(m => {
+    const isDefaultView = !pVal && !sVal && !aVal && !oVal && !qVal && sortVal === "newest";
+    const collapse = isDefaultView && !gamesExpanded && filtered.length > GAMES_COLLAPSED_COUNT;
+    const toggleBtn = document.getElementById("gamesToggleBtn");
+    if (toggleBtn) {
+      const canToggle = isDefaultView && filtered.length > GAMES_COLLAPSED_COUNT;
+      toggleBtn.hidden = !canToggle;
+      toggleBtn.setAttribute("aria-expanded", String(!collapse));
+      toggleBtn.textContent = collapse ? `Show all ${filtered.length} games` : `Show only the latest ${GAMES_COLLAPSED_COUNT}`;
+      if (!toggleBtn.dataset.bound) {
+        toggleBtn.dataset.bound = "1";
+        toggleBtn.addEventListener("click", () => { gamesExpanded = !gamesExpanded; renderMatchesTable(); });
+      }
+    }
+
+    tbody.innerHTML = filtered.map((m, rowIdx) => {
       const playersHtml = (m.players || []).map(slot => {
         const spImg = spiritsMap[slot.spirit]?.image || "assets/spirits/volcano_looming_high.png";
         const aspObj = slot.aspect ? aspectMap[`${slot.spirit}||${slot.aspect}`] : null;
@@ -122,7 +200,7 @@
         : (m.invaderCardsNotInDeck !== null && m.invaderCardsNotInDeck !== "" ? `${m.invaderCardsNotInDeck} Cards Out` : "");
 
       return `
-        <tr class="reckoning-row" style="cursor:pointer;" onclick="if(window.inspectReckoning) window.inspectReckoning(${m.id})" title="Click to inspect this reckoning">
+        <tr class="reckoning-row${collapse && rowIdx >= GAMES_COLLAPSED_COUNT ? " game-extra" : ""}" style="cursor:pointer;" onclick="if(window.inspectReckoning) window.inspectReckoning(${m.id})" title="Click to inspect this reckoning">
           <td class="mono" style="color:var(--text-secondary);font-weight:700;">#${m.id}</td>
           <td class="mono" style="white-space:nowrap;">${escapeHtml(m.date || "—")}</td>
           <td>
@@ -270,7 +348,8 @@
     document.getElementById("modalDahan").value = prefill?.dahan ?? 6;
     document.getElementById("modalBlight").value = prefill?.blight ?? 3;
     document.getElementById("modalFearCards").value = prefill?.fearCardsLeft ?? "";
-    document.getElementById("modalLossCondition").value = prefill?.lossCondition || "Blight Overrun";
+    document.getElementById("modalLossCondition").value = prefill?.lossCondition || "";
+    document.getElementById("modalLossCondition").setAttribute("aria-invalid", "false");
     document.getElementById("modalNotes").value = prefill?.notes || "";
 
     const slotsContainer = document.getElementById("modalPlayerSlots");
@@ -552,6 +631,19 @@
     const adversary1Level = adversary1 ? Number(document.getElementById("modalAdversary1Level")?.value || 0) : null;
     const scenario = document.getElementById("modalScenario")?.value || "";
 
+    // Loss type is required for new losses. An old loss saved without one may stay blank.
+    const lossSel = document.getElementById("modalLossCondition");
+    if (!victory && lossSel && !lossSel.value) {
+      const old = editingMatchId !== null ? (appData.matches || []).find(m => Number(m.id) === Number(editingMatchId)) : null;
+      const legacyBlank = !!old && !old.victory && !old.lossCondition;
+      if (!legacyBlank) {
+        lossSel.setAttribute("aria-invalid", "true");
+        lossSel.focus();
+        showToast("Choose how the game was lost before saving");
+        return;
+      }
+    }
+
     const { diffCalc, difficulty: finalDiff, playerCount } = recalcModalLiveScore();
     const diffOverride = finalDiff !== diffCalc.totalDifficulty ? finalDiff : null;
 
@@ -593,7 +685,7 @@
       dahan: Number(document.getElementById("modalDahan")?.value || 0),
       blight: Number(document.getElementById("modalBlight")?.value || 0),
       fearCardsLeft: fearVal !== "" ? Number(fearVal) : null,
-      lossCondition: !victory ? (document.getElementById("modalLossCondition")?.value || "Blight Overrun") : "",
+      lossCondition: !victory ? (document.getElementById("modalLossCondition")?.value || "") : "",
       score: finalScore,
       playerCount,
       notes: document.getElementById("modalNotes")?.value || ""

@@ -759,6 +759,9 @@ html.table .rec-step .btn{min-width:40px}
           mask-image:linear-gradient(to right, transparent 0%, rgba(0,0,0,.5) 35%, rgba(0,0,0,.95) 80%)}
 @media (max-width:560px){ .card.spirit-art.tracker-art > .sa-bg{width:52%} }
 .emblem.tracker-art img{object-position:center 22%}
+/* GitHub sync conflict */
+.gh-conflict{position:fixed; inset:0; z-index:95; display:grid; place-items:center; padding:16px; background:rgba(10,25,35,.55)}
+.gh-conflict .panel{max-width:480px; width:100%; box-shadow:0 18px 40px rgba(0,0,0,.4); margin:0}
 
 </style>
 </head>
@@ -3796,6 +3799,188 @@ function slotMenu(data, x, y){
 }
 if (window.matchMedia) matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", () => sync3D());
 
+// ===================== GitHub sync (website copy only) =====================
+// Uses the Spirit Island tracker's GitHub token (same site, same browser storage) to keep the Legacy
+// campaign in the site's repo, so every device sees the same campaign. Mirrors the tracker's js/core/cloud.js.
+//   editor: a token is saved in this browser (set it in the tracker's Settings). Changes are committed automatically.
+//   viewer: no token, but the repo has a campaign file. The campaign is shown from GitHub and changes are not saved.
+//   off   : no token and no file yet, or the claude.ai copy. The campaign is saved in this browser only.
+const LegacyGH = (() => {
+  const OWNER = "blinderoth", REPO = "blinderoth.github.io", BRANCH = "main";
+  const PATH = "spirit-island/legacy/data/campaign.json";
+  const API = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${PATH}`;
+  const TOKEN_KEY = "si_gh_token";           // the tracker's key: one token for both pages
+  const META_KEY = "si_legacy_sync_meta";
+  const PUSH_DELAY_MS = 6000, RECHECK_MS = 30000;
+  let mode = "off", status = "idle", message = "", timer = null, pushing = false, lastCheck = 0, viewerWarned = false;
+
+  const onSite = () => typeof window.COMPANION_SHARED !== "undefined";
+  const token = () => { try { return (localStorage.getItem(TOKEN_KEY) || "").trim(); } catch(e){ return ""; } };
+  const meta = () => { try { return JSON.parse(localStorage.getItem(META_KEY) || "{}") || {}; } catch(e){ return {}; } };
+  const setMeta = p => { try { localStorage.setItem(META_KEY, JSON.stringify(Object.assign(meta(), p))); } catch(e){} };
+  const b64 = str => { const by = new TextEncoder().encode(str); let s = ""; for (let i = 0; i < by.length; i += 0x8000) s += String.fromCharCode.apply(null, by.subarray(i, i + 0x8000)); return btoa(s); };
+  const unb64 = s => { const bin = atob(s.replace(/\s/g, "")); const by = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) by[i] = bin.charCodeAt(i); return new TextDecoder().decode(by); };
+  const hdr = withToken => { const h = {"Accept":"application/vnd.github+json", "X-GitHub-Api-Version":"2022-11-28"}; if (withToken && token()) h.Authorization = `Bearer ${token()}`; return h; };
+  // compare campaigns without the counters that change on every save
+  const same = (a, b) => { const strip = x => { const c = Object.assign({}, x); delete c.rev; return JSON.stringify(c); }; try { return strip(a) === strip(b); } catch(e){ return false; } };
+  const body = () => JSON.stringify(S);
+
+  async function fetchRemote(){
+    const ctl = new AbortController(), to = setTimeout(() => ctl.abort(), 8000);
+    const get = withToken => fetch(`${API}?ref=${BRANCH}&t=${Date.now()}`, {headers:hdr(withToken), cache:"no-store", signal:ctl.signal});
+    try {
+      let res = await get(true), rejected = false;
+      if ((res.status === 401 || res.status === 403) && token()){ rejected = res.status === 401; res = await get(false); }
+      if (res.status === 404) return {ok:true, missing:true, rejected};
+      if (!res.ok) return {ok:false, error: res.status === 403 ? "GitHub rate limit or access denied" : `GitHub answered ${res.status}`, rejected};
+      const j = await res.json();
+      // files over 1 MB come back without inline content
+      let text = j.content ? unb64(j.content) : null;
+      if (text == null && j.download_url){ const r2 = await fetch(j.download_url + `?t=${Date.now()}`, {cache:"no-store"}); text = await r2.text(); }
+      return {ok:true, sha:j.sha, state:JSON.parse(text), rejected};
+    } catch(e){ return {ok:false, error: e.name === "AbortError" ? "GitHub did not answer in time" : "offline"}; }
+    finally { clearTimeout(to); }
+  }
+
+  async function putRemote(sha, keepalive){
+    const content = b64(body());
+    const games = (S.log || []).length;
+    const req = {message:`Legacy: save campaign (${games} game${games === 1 ? "" : "s"}, rev ${S.rev || 0})`, content, branch:BRANCH};
+    if (sha) req.sha = sha;
+    const payload = JSON.stringify(req);
+    // browsers cap keepalive requests at 64 kB
+    return fetch(API, {method:"PUT", headers:Object.assign({"Content-Type":"application/json"}, hdr(true)), body:payload, keepalive: !!keepalive && payload.length < 60000});
+  }
+
+  function label(){
+    if (mode === "viewer") return "View only · the campaign from GitHub";
+    if (mode === "editor"){
+      if (status === "saving") return "Saving to GitHub…";
+      if (status === "dirty") return "Unsynced changes · saving to GitHub soon";
+      if (status === "offline") return "Offline · changes kept on this device";
+      if (status === "error") return `Not synced: ${message}`;
+      return "Synced to GitHub";
+    }
+    return null;
+  }
+  function setStatus(s, msg){ status = s; message = msg || ""; const el = document.getElementById("sync"); if (el && label()) el.textContent = label(); }
+
+  function summary(st){
+    const games = (st.log || []).length, done = Object.values(st.scen || {}).filter(x => x.done).length;
+    return `${games} game${games === 1 ? "" : "s"}, ${done} scenario${done === 1 ? "" : "s"} completed, Invader Strength ${st.is ?? 0}`;
+  }
+  function askConflict(remoteState){
+    return new Promise(resolve => {
+      const box = el("div",{class:"gh-conflict", role:"alertdialog", "aria-modal":"true", "aria-labelledby":"ghcTitle"},
+        el("div",{class:"panel"},
+          el("h3",{id:"ghcTitle", style:"margin-top:0"}, "Two versions of the campaign"),
+          el("p",{}, "This device has changes GitHub hasn’t seen, and GitHub has changes from another device. Which one should win? The other is replaced."),
+          el("dl",{class:"facts"}, el("dt",{}, "GitHub"), el("dd",{}, summary(remoteState)), el("dt",{}, "This device"), el("dd",{}, summary(S))),
+          el("div",{class:"row"},
+            el("button",{class:"btn", "data-pick":"remote", onclick:() => { box.remove(); resolve("remote"); }}, "Use GitHub’s version"),
+            el("button",{class:"btn primary", "data-pick":"local", onclick:() => { box.remove(); resolve("local"); }}, "Use this device’s version"))));
+      document.body.append(box);
+      box.querySelector("[data-pick=remote]").focus();
+    });
+  }
+
+  function adopt(remote, quiet){
+    S = loadState(JSON.stringify(remote.state));
+    history.length = 0; $("undo").disabled = true;
+    try { localStorage.setItem(LS_KEY, JSON.stringify(S)); } catch(e){}
+    setMeta({sha:remote.sha, dirty:false, syncedAt:new Date().toISOString()});
+    setStatus("idle");
+    render();
+    if (!quiet) toast("Updated from GitHub");
+  }
+
+  // Called from load(). localRaw is this browser's saved campaign (string or null).
+  // Returns true when it set S (or left the local copy in place on purpose) and took over saving.
+  async function loadOnStart(localRaw){
+    if (!onSite()) return false;
+    const remote = await fetchRemote(); lastCheck = Date.now();
+    const local = localRaw ? loadState(localRaw) : null;
+    if (token()){
+      mode = "editor";
+      S = local || S;
+      if (!remote.ok){ setStatus(remote.rejected ? "error" : "offline", remote.rejected ? "token rejected, check the tracker’s Settings" : ""); if (meta().dirty) setStatus("offline"); return true; }
+      if (remote.rejected){ setStatus("error", "token rejected, check the tracker’s Settings"); return true; }
+      if (remote.missing){ if (local && local.started) markDirty(); else setStatus("idle"); return true; }
+      const m = meta();
+      if (m.sha === remote.sha){ if (m.dirty) markDirty(); else setStatus("idle"); return true; }
+      const localChanged = !!local && local.started && (m.dirty || !m.sha) && !same(local, remote.state);
+      if (!localChanged){ adopt(remote, true); return true; }
+      const pick = await askConflict(remote.state);
+      if (pick === "remote"){ adopt(remote, true); return true; }
+      setMeta({sha:remote.sha}); markDirty(); return true;
+    }
+    if (remote.ok && !remote.missing){
+      mode = "viewer";
+      S = loadState(JSON.stringify(remote.state));
+      setStatus("idle");
+      return true;
+    }
+    return false;   // no token and nothing in the repo yet: this browser only
+  }
+
+  function markDirty(){ setMeta({dirty:true}); setStatus("dirty"); clearTimeout(timer); timer = setTimeout(() => push(false), PUSH_DELAY_MS); }
+
+  // Called from save() after the local copy is written.
+  function afterSave(){
+    if (mode === "editor") markDirty();
+    else if (mode === "viewer" && !viewerWarned){ viewerWarned = true; setTimeout(() => toast("View only: changes here aren’t saved. Add a GitHub token in the tracker’s Settings to edit."), 60); }
+  }
+
+  async function push(keepalive){
+    if (mode !== "editor" || pushing) return;
+    if (!navigator.onLine){ setStatus("offline"); return; }
+    pushing = true; clearTimeout(timer); timer = null; setStatus("saving");
+    const revAtPush = S.rev;
+    try {
+      let res = await putRemote(meta().sha, keepalive);
+      if (res.status === 409 || res.status === 422){
+        const remote = await fetchRemote();
+        if (remote.ok && remote.missing) res = await putRemote(null, keepalive);
+        else if (remote.ok && same(remote.state, S)){ setMeta({sha:remote.sha, dirty:false, syncedAt:new Date().toISOString()}); setStatus("idle"); return; }
+        else if (remote.ok){
+          const pick = await askConflict(remote.state);
+          if (pick === "remote"){ adopt(remote); return; }
+          res = await putRemote(remote.sha, keepalive);
+        }
+      }
+      if (res.ok){
+        const j = await res.json();
+        setMeta({sha: j.content && j.content.sha, dirty: S.rev !== revAtPush, syncedAt: new Date().toISOString()});
+        if (S.rev !== revAtPush) markDirty(); else setStatus("idle");
+      } else if (res.status === 401) setStatus("error", "token rejected, check the tracker’s Settings");
+      else if (res.status === 403 || res.status === 404) setStatus("error", "the token can’t write to the repo");
+      else setStatus("error", `GitHub answered ${res.status}`);
+    } catch(e){ setStatus(navigator.onLine ? "error" : "offline", navigator.onLine ? "couldn’t reach GitHub" : ""); }
+    finally { pushing = false; }
+  }
+
+  // Pick up changes from the other device when the page comes back into view.
+  async function recheck(force){
+    if (mode === "off" || pushing || (!force && Date.now() - lastCheck < RECHECK_MS)) return;
+    if (mode === "editor" && (meta().dirty || timer)) return;
+    lastCheck = Date.now();
+    const remote = await fetchRemote();
+    if (!remote.ok || remote.missing) return;
+    if (mode === "editor" && meta().sha === remote.sha) return;
+    if (mode === "viewer" && same(remote.state, S)) return;
+    if (S.game && document.querySelector(".rec-panel")) return;   // don't swap the campaign under an open game record
+    adopt(remote);
+  }
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden"){ if (mode === "editor" && meta().dirty) push(true); }
+    else recheck(false);
+  });
+  window.addEventListener("online", () => { if (mode === "editor" && meta().dirty){ clearTimeout(timer); timer = setTimeout(() => push(false), 500); } });
+
+  return {loadOnStart, afterSave, push, recheck, label, mode: () => mode, status: () => status, hasToken: () => !!token(), onSite, syncedAt: () => meta().syncedAt || null};
+})();
+
 // ===================== files & reader =====================
 const DOCS = {
   rules:{label:"Rules booklet", hint:"Spirit_Island_Legacy_-_Rules.pdf", test:n => /legacy/.test(n) && /rules/.test(n)},
@@ -3821,8 +4006,22 @@ async function loadDoc(key){
   })();
   try { return await pdfCache[key]; } catch(e){ delete pdfCache[key]; throw e; }
 }
+function syncPanelL(){
+  if (!LegacyGH.onSite()) return null;
+  const m = LegacyGH.mode(), when = LegacyGH.syncedAt();
+  const text = m === "editor" ? `Connected through the tracker’s GitHub token. Every change is saved to GitHub, so your other devices get the same campaign.${when ? ` Last saved ${new Date(when).toLocaleString()}.` : ""}`
+    : m === "viewer" ? "View only. This page shows the campaign saved in GitHub. To make changes on this device, add the GitHub token in the tracker’s Settings."
+    : "Saved in this browser only. To share the campaign between your devices, add a GitHub token in the tracker’s Settings, then reload this page.";
+  return el("div",{class:"panel"}, el("h3",{style:"margin-top:0"}, "Sync between devices"),
+    el("p",{style:"margin:0 0 6px"}, text),
+    el("p",{class:"note", style:"margin:0 0 8px"}, LegacyGH.label() || "Not synced"),
+    el("div",{class:"row"},
+      m === "editor" ? el("button",{class:"btn small", onclick:async () => { await LegacyGH.push(false); render(); }}, "Sync now") : null,
+      m !== "off" ? el("button",{class:"btn small", onclick:async () => { await LegacyGH.recheck(true); render(); }}, "Check for changes") : null,
+      el("a",{class:"btn small", href:"../tracker/"}, m === "off" ? "Open the tracker" : "Tracker")));
+}
 function viewFiles(){
-  const out = el("section",{}, backupPanelL(), el("h2",{}, "Files"),
+  const out = el("section",{}, syncPanelL(), backupPanelL(), el("h2",{}, "Files"),
     el("p",{class:"lede"}, assetsApi ? "Add the campaign PDFs once and every rule card, scenario, heirloom, Invader card and spirit sheet opens right here. They’re stored with this page, so anyone you share it with can read them too." : "Open the campaign PDFs from this device to read them here. They aren’t saved, so you’ll pick them again next visit."),
     el("div",{class:"row"}, el("button",{class:"btn primary", onclick:() => pick(null)}, "Add PDFs (you can pick several at once)")));
   const t = el("tbody",{});
@@ -4008,7 +4207,7 @@ document.addEventListener("pointerdown", e => { if (ui.moreOpen && !e.target.clo
 
 // ===================== saving & sync =====================
 const LS_KEY = "si-legacy-companion-v1";
-function saveLabel(){ return store?.kind === "db" ? "Shared with everyone who opens this page" : store?.kind === "local" ? "Saved in this browser only" : "Not saved"; }
+function saveLabel(){ if (store?.kind === "github") return LegacyGH.label() || "Saved in this browser only"; return store?.kind === "db" ? "Shared with everyone who opens this page" : store?.kind === "local" ? "Saved in this browser only" : "Not saved"; }
 async function save(){
   if (writing){ pending = true; return; }
   writing = true;
@@ -4018,6 +4217,7 @@ async function save(){
       const snap = JSON.stringify(S); lastWrittenRev = S.rev;
       if (store?.kind === "db") await store.doc.set({state:snap, rev:S.rev});
       else if (store?.kind === "local") localStorage.setItem(LS_KEY, snap);
+      else if (store?.kind === "github"){ if (LegacyGH.mode() !== "viewer") localStorage.setItem(LS_KEY, snap); LegacyGH.afterSave(); }
     } while (pending);
     $("sync").textContent = saveLabel();
   } catch(e){ $("sync").textContent = "Couldn’t save the last change (view-only access, or offline). Make another change to retry."; }
@@ -4041,6 +4241,11 @@ async function load(){
       }, () => {});
     }
   } catch(e){ store = null; }
+  if (!store){
+    // the website copy: sync through the tracker's GitHub token when there is one
+    let raw = null; try { raw = localStorage.getItem(LS_KEY); } catch(e){}
+    try { if (await LegacyGH.loadOnStart(raw)) store = {kind:"github"}; } catch(e){ console.error("GitHub sync unavailable", e); }
+  }
   if (!store){
     try { const raw = localStorage.getItem(LS_KEY); store = {kind:"local"}; if (raw) S = loadState(raw); } catch(e){ store = null; }
   }

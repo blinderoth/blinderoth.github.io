@@ -753,6 +753,12 @@ html.table .hdr-link{display:none}
 html.table .rec-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:10px 12px}
 html.table .rec-step{gap:4px}
 html.table .rec-step .btn{min-width:40px}
+/* spirit art from the tracker: small portraits, so fit the card's height on the right instead of stretching */
+.card.spirit-art.tracker-art > .sa-bg{left:auto; width:min(44%, 400px); background-size:cover; background-position:center 25%;
+  -webkit-mask-image:linear-gradient(to right, transparent 0%, rgba(0,0,0,.5) 35%, rgba(0,0,0,.95) 80%);
+          mask-image:linear-gradient(to right, transparent 0%, rgba(0,0,0,.5) 35%, rgba(0,0,0,.95) 80%)}
+@media (max-width:560px){ .card.spirit-art.tracker-art > .sa-bg{width:52%} }
+.emblem.tracker-art img{object-position:center 22%}
 
 </style>
 </head>
@@ -761,7 +767,7 @@ html.table .rec-step .btn{min-width:40px}
 <div class="wrap">
   <header class="top"><span class="hdr-life" aria-hidden="true"><i></i><i></i><i></i></span>
     <div class="plaque"><span class="gem gem-fire" aria-hidden="true"></span><h1>Spirit Island Legacy<small>Campaign companion · 1–6 players</small></h1><span class="gem gem-sun" aria-hidden="true"></span></div>
-    <div class="row hdr-right" style="margin:0"><span class="sync" id="sync">Loading…</span><button class="btn small" id="undo" disabled>Undo</button><a class="hdr-link" href="../tracker/">Tracker</a><a class="hdr-link" href="../archipelago/">Archipelago companion</a></div>
+    <div class="row hdr-right" style="margin:0"><span class="sync" id="sync">Loading…</span><button class="btn small" id="undo" disabled>Undo</button><a class="hdr-link" href="../tracker/">Tracker</a></div>
   </header>
   <nav class="tabs" id="tabs" aria-label="Sections"></nav>
   <main id="main"></main>
@@ -784,6 +790,7 @@ html.table .rec-step .btn{min-width:40px}
 <input type="file" id="artIn" accept="image/*" hidden>
 <input type="file" id="fileIn" accept="application/pdf,.pdf" hidden>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>window.TRACKER_ART = {"Shadows Flicker like Flame": "../tracker/assets/spirits/shadows_flicker_like_flame.png?v=6", "River Surges in Sunlight": "../tracker/assets/spirits/river_surges_in_sunlight.png?v=6", "Vital Strength of the Earth": "../tracker/assets/spirits/vital_strength_of_the_earth.png?v=6", "Lightning's Swift Strike": "../tracker/assets/spirits/lightnings_swift_strike.png?v=6", "Thunderspeaker": "../tracker/assets/spirits/thunderspeaker.png?v=6", "A Spread of Rampant Green": "../tracker/assets/spirits/a_spread_of_rampant_green.png?v=6", "Bringer of Dreams and Nightmares": "../tracker/assets/spirits/bringer_of_dreams_and_nightmares.png?v=6", "Ocean's Hungry Grasp": "../tracker/assets/spirits/oceans_hungry_grasp.png?v=6", "Keeper of the Forbidden Wilds": "../tracker/assets/spirits/keeper_of_the_forbidden_wilds.png?v=6", "Sharp Fangs Behind the Leaves": "../tracker/assets/spirits/sharp_fangs_behind_the_leaves.png?v=6", "Heart of the Wildfire": "../tracker/assets/spirits/heart_of_the_wildfire.png?v=6", "Serpent Slumbering Beneath the Island": "../tracker/assets/spirits/serpent_slumbering_beneath_the_island.png?v=6", "Finder of Paths Unseen": "../tracker/assets/spirits/finder_of_paths_unseen.png?v=6", "Downpour Drenches the World": "../tracker/assets/spirits/downpour_drenches_the_world.png?v=6", "Shroud of Silent Mist": "../tracker/assets/spirits/shroud_of_silent_mist.png?v=6", "Starlight Seeks Its Form": "../tracker/assets/spirits/starlight_seeks_its_form.png?v=6", "Stone's Unyielding Defiance": "../tracker/assets/spirits/stones_unyielding_defiance.png?v=6", "Fractured Days Split the Sky": "../tracker/assets/spirits/fractured_days_split_the_sky.png?v=6", "Grinning Trickster Stirs Up Trouble": "../tracker/assets/spirits/grinning_trickster_stirs_up_trouble.png?v=6", "Vengeance as a Burning Plague": "../tracker/assets/spirits/vengeance_as_a_burning_plague.png?v=6", "Lure of the Deep Wilderness": "../tracker/assets/spirits/lure_of_the_deep_wilderness.png?v=6", "Many Minds Move as One": "../tracker/assets/spirits/many_minds_move_as_one.png?v=6", "Shifting Memory of Ages": "../tracker/assets/spirits/shifting_memory_of_ages.png?v=6", "Volcano Looming High": "../tracker/assets/spirits/volcano_looming_high.png?v=6", "Devouring Teeth Lurk Underfoot": "../tracker/assets/spirits/devouring_teeth_lurk_underfoot.png?v=6", "Eyes Watch from the Trees": "../tracker/assets/spirits/eyes_watch_from_the_trees.png?v=6", "Fathomless Mud of the Swamp": "../tracker/assets/spirits/fathomless_mud_of_the_swamp.png?v=6", "Rising Heat of Stone and Sand": "../tracker/assets/spirits/rising_heat_of_stone_and_sand.png?v=6", "Sun-Bright Whirlwind": "../tracker/assets/spirits/sun_bright_whirlwind.png?v=6", "Ember-Eyed Behemoth": "../tracker/assets/spirits/ember_eyed_behemoth.jpg?v=2", "Hearth-Vigil": "../tracker/assets/spirits/hearth_vigil.jpg?v=2", "Towering Roots of the Jungle": "../tracker/assets/spirits/towering_roots_of_the_jungle.jpg?v=2", "Breath of Darkness Down Your Spine": "../tracker/assets/spirits/breath_of_darkness_down_your_spine.jpg?v=2", "Relentless Gaze of the Sun": "../tracker/assets/spirits/relentless_gaze_of_the_sun.jpg?v=2", "Wandering Voice Keens Delirium": "../tracker/assets/spirits/wandering_voice_keens_delirium.jpg?v=2", "Wounded Waters Bleeding": "../tracker/assets/spirits/wounded_waters_bleeding.jpg?v=2", "Dances Up Earthquakes": "../tracker/assets/spirits/dances_up_earthquakes.jpg?v=2"};</script>
 <script src="../shared/companion-config.js"></script>
 <script src="../shared/companion-runtime.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -1506,11 +1513,11 @@ function spiritBlock(d){
     el("div",{class:"spirit-head"}, emblem(d.name, 54), el("b",{}, d.name, s.elder ? el("span",{class:"chip k-scen", style:"margin-left:6px"}, "Elder") : null, s.pending ? el("span",{class:"badge", style:"margin-left:6px"}, `${s.pending} to tick`) : null)),
     el("span",{class:"row", style:"margin:0"}, s.u ? el("span",{class:"chip"}, "Unlocked") : aspects.length ? el("span",{class:"chip"}, "Aspects only") : el("span",{class:"chip"}, "Locked"),
       link("sheets", d.page + 1, "Sheet"),
-      el("button",{class:"btn small", onclick:() => pickArt(d.name)}, (S.spiritArt?.[d.name] || sessionArt[d.name]) ? "Change picture" : "Add picture"),
+      el("button",{class:"btn small", onclick:() => pickArt(d.name)}, ownArt(d.name) ? "Change picture" : TRACKER_ART[d.name] ? "Use my own picture" : "Add picture"),
       S.spiritArt?.[d.name] ? el("button",{class:"btn small", onclick:() => change(() => { delete S.spiritArt[d.name]; }, "Picture removed")}, "Remove picture") : null,
       el("button",{class:"btn small", onclick:() => change(() => { sp(d.name).u = s.u ? 0 : 1; }, `${d.name} ${s.u ? "locked" : "unlocked"} by hand`)}, s.u ? "Lock" : "Unlock")));
-  const art = sessionArt[d.name] || S.spiritArt?.[d.name];
-  const block = el("div",{class:"card" + (art ? " spirit-art" : "") + (known ? "" : " asleep"), "data-spirit":d.name},
+  const art = spiritArtFor(d.name), trackerOnly = art && !ownArt(d.name);
+  const block = el("div",{class:"card" + (art ? " spirit-art" : "") + (trackerOnly ? " tracker-art" : "") + (known ? "" : " asleep"), "data-spirit":d.name},
     art ? el("div",{class:"sa-bg", "aria-hidden":"true", style:`background-image:url("${art}")`}) : "", head);
   if (aspects.length) block.append(el("p",{class:"note"}, `Aspects: ${aspects.join(", ")}`));
   if (!known) return block;
@@ -1741,10 +1748,14 @@ const SPIRIT_EL = {
   "Dances Up Earthquakes":["earth","air"]
 };
 const sessionArt = {};
+// Spirit art from the Spirit Island tracker (website copy only: the build adds window.TRACKER_ART)
+const TRACKER_ART = window.TRACKER_ART || {};
+function ownArt(name){ return sessionArt[name] || S.spiritArt?.[name] || null; }
+function spiritArtFor(name){ return ownArt(name) || TRACKER_ART[name] || null; }
 function emblem(name, size){
-  const art = sessionArt[name] || S.spiritArt?.[name];
-  const box = el("span",{class:"emblem", style:`width:${size}px;height:${size}px`, title:name, "aria-hidden":"true"});
-  if (art){ box.append(el("img",{src:art, alt:""})); return box; }
+  const art = spiritArtFor(name);
+  const box = el("span",{class:"emblem" + (art && !ownArt(name) ? " tracker-art" : ""), style:`width:${size}px;height:${size}px`, title:name, "aria-hidden":"true"});
+  if (art){ box.append(el("img",{src:art, alt:"", loading:"lazy"})); return box; }
   const [a, b] = SPIRIT_EL[name] || ["earth","plant"];
   const id = "g" + Math.abs([...name].reduce((h, c) => (h * 31 + c.charCodeAt(0)) | 0, 7)).toString(36);
   box.innerHTML = `<svg viewBox="0 0 48 48" width="${size}" height="${size}"><defs><radialGradient id="${id}" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="${EL_COL[a]}"/><stop offset=".75" stop-color="${EL_COL[b]}"/><stop offset="1" stop-color="#1b1712"/></radialGradient></defs>

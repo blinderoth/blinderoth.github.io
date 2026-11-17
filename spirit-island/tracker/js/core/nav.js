@@ -103,7 +103,14 @@
   // Links from the Spirit Realm page: index.html#game=12 opens that game, index.html#spirit=Name opens the dossier.
   function handleDeepLink(hash) {
     const h = decodeURIComponent(String(hash || "").replace(/^#/, ""));
-    const game = h.match(/^game=(.+)$/), spirit = h.match(/^spirit=(.+)$/), log = h.match(/^log=(.+)$/);
+    const game = h.match(/^game=(.+)$/), spirit = h.match(/^spirit=(.+)$/), log = h.match(/^log=(.+)$/), legacy = h.match(/^legacy=(.+)$/);
+    if (legacy) {
+      // From the Legacy companion: show that game (it was imported on start)
+      const m = findLegacyMatch(legacy[1]);
+      if (m) { switchTab("matches"); if (window.inspectGame) window.inspectGame(Number(m.id)); }
+      else { switchTab("matches"); showToast("That Legacy game has no game record yet"); }
+      return;
+    }
     if (log) {
       // A challenge dealt on the Spirit Realm page: open the logging form pre-filled
       let p = null;

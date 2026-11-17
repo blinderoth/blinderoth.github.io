@@ -1,0 +1,13 @@
+/* Spirit Island: Legacy games in the tracker */
+body { --legacy-ink: #7A3A12; }
+body[data-theme="dark"] { --legacy-ink: #E8A866; }
+.badge.badge-legacy { color: var(--legacy-ink) !important; border-color: var(--legacy-ink) !important; letter-spacing: .08em; font-size: .64rem; }
+.gm-legacy { display: flex; flex-wrap: wrap; gap: .25rem .9rem; margin: .5rem 0 .2rem; font-size: .82rem; color: var(--legacy-ink); }
+.gm-legacy b { font-weight: 600; }
+#globalSourceFilter { margin-left: .4rem; }
+.teaser-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin-top: 2.4rem; }
+.teaser-row .realm-teaser { margin: 0 !important; }
+.legacy-teaser { background: linear-gradient(110deg, color-mix(in srgb, var(--legacy-ink) 12%, transparent), transparent 60%); }
+.legacy-teaser:hover { border-color: var(--legacy-ink); }
+.legacy-teaser .rt-go { color: var(--legacy-ink); }
+@media (max-width: 720px) { #globalSourceFilter { margin: .3rem 0 0; } }

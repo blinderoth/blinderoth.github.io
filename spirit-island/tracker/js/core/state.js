@@ -13,10 +13,20 @@
   let currentRecommendation = null;
   let editingMatchId = null;
   let selectedPlayerFilter = "";
+  let selectedSourceFilter = "";   // "", "legacy" or "normal"
+
+  function isLegacyMatch(m) { return !!m && m.source === "legacy"; }
+  function matchesSourceFilter(m) {
+    if (selectedSourceFilter === "legacy") return isLegacyMatch(m);
+    if (selectedSourceFilter === "normal") return !isLegacyMatch(m);
+    return true;
+  }
 
   function getStatsData({ playerSlotsOnly = true } = {}) {
-    if (!selectedPlayerFilter || !appData) return appData;
+    if ((!selectedPlayerFilter && !selectedSourceFilter) || !appData) return appData;
+    if (!selectedPlayerFilter) return { ...appData, matches: (appData.matches || []).filter(matchesSourceFilter) };
     const filteredMatches = (appData.matches || [])
+      .filter(matchesSourceFilter)
       .filter(m => (m.players || []).some(p => (p.player || "").trim() === selectedPlayerFilter))
       .map(m => playerSlotsOnly
         ? { ...m, players: (m.players || []).filter(p => (p.player || "").trim() === selectedPlayerFilter) }
@@ -46,6 +56,15 @@
       updateSyncBadge();
       renderAll();
     });
+    const src = document.getElementById("globalSourceFilter");
+    if (src && !src.dataset.bound) {
+      src.dataset.bound = "1";
+      src.addEventListener("change", () => {
+        selectedSourceFilter = src.value || "";
+        updateSyncBadge();
+        renderAll();
+      });
+    }
   }
 
   const ELEMENT_COLORS = {

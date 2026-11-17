@@ -121,6 +121,7 @@
 
     let filtered = (appData.matches || []).filter(m => {
       if (selectedPlayerFilter && !(m.players || []).some(p => p.player?.trim() === selectedPlayerFilter)) return false;
+      if (!matchesSourceFilter(m)) return false;
       if (pVal && !(m.players || []).some(p => p.player?.trim() === pVal)) return false;
       if (sVal && !(m.players || []).some(p => p.spirit === sVal)) return false;
       if (aVal && m.adversary1 !== aVal && m.adversary2 !== aVal) return false;
@@ -132,6 +133,7 @@
           m.adversary1,
           m.scenario,
           m.notes,
+          isLegacyMatch(m) ? `legacy ${m.legacy?.title || ""}` : "",
           ...(m.players || []).map(p => `${p.spirit} ${p.aspect} ${p.player}`)
         ].join(" ").toLowerCase();
         if (!hay.includes(qVal)) return false;
@@ -207,6 +209,7 @@
             <span class="badge ${m.victory ? 'badge-win' : 'badge-loss'}">
               ${m.victory ? '✔ VICTORY' : '✖ DEFEAT'}
             </span>
+            ${isLegacyMatch(m) ? `<span class="badge badge-legacy" title="Spirit Island: Legacy scenario #${escapeHtml(m.legacy?.scenario ?? "")}">LEGACY</span>` : ""}
             ${!m.victory && m.lossCondition ? `<div style="font-size:0.68rem;color:var(--accent-crimson);margin-top:0.2rem;">${escapeHtml(m.lossCondition)}</div>` : ""}
           </td>
           <td>${playersHtml}</td>
@@ -252,6 +255,8 @@
         if (idx < 0) return;
         const removed = appData.matches[idx];
         appData.matches.splice(idx, 1);
+        const legacyId = removed.legacy && removed.legacy.id;
+        if (legacyId) appData.legacyDismissed = [...new Set([...(appData.legacyDismissed || []), legacyId])];
         await persistData();
         renderAll();
         showToast(`Deleted Match #${id}`, {
@@ -259,6 +264,7 @@
           duration: 8000,
           onAction: async () => {
             appData.matches.splice(Math.min(idx, appData.matches.length), 0, removed);
+            if (legacyId) appData.legacyDismissed = (appData.legacyDismissed || []).filter(x => x !== legacyId);
             await persistData(`Match #${id} restored`);
             renderAll();
           }
@@ -285,7 +291,15 @@
         <span class="badge ${m.victory ? "badge-win" : "badge-loss"}">${m.victory ? "VICTORY" : "DEFEAT"}</span>
         ${!m.victory && m.lossCondition ? `<span class="gm-loss">${escapeHtml(m.lossCondition)}</span>` : ""}
         ${m.thematicMap ? `<span class="badge badge-vhigh">Thematic map</span>` : ""}
+        ${isLegacyMatch(m) ? `<span class="badge badge-legacy">LEGACY</span>` : ""}
       </div>
+      ${isLegacyMatch(m) && m.legacy ? `<div class="gm-legacy">
+        <span>Scenario <b>#${escapeHtml(m.legacy.scenario)} ${escapeHtml(m.legacy.title || "")}</b></span>
+        ${m.legacy.attempt === 2 ? `<span>Second attempt</span>` : ""}
+        ${has(m.legacy.invaderStrength) ? `<span>Invader Strength <b>${escapeHtml(m.legacy.invaderStrength)}</b></span>` : ""}
+        ${(m.legacy.heirlooms || []).length ? `<span>Heirlooms <b>${m.legacy.heirlooms.map(n => "#" + escapeHtml(n)).join(", ")}</b></span>` : ""}
+        ${m.legacy.unmatchedAdversary ? `<span>Adversary <b>${escapeHtml(m.legacy.unmatchedAdversary)}</b></span>` : ""}
+      </div>` : ""}
       <ul class="gm-players">${players}</ul>
       <div class="gm-block">
         ${advLine(m.adversary1, m.adversary1Level) || `<div class="gm-line gm-dim">Base island</div>`}
@@ -766,6 +780,9 @@
 
     let newlyUnlocked = [];
     if (editingMatchId !== null) {
+      const prev = (appData.matches || []).find(m => Number(m.id) === Number(editingMatchId));
+      if (prev && prev.source) matchObj.source = prev.source;
+      if (prev && prev.legacy) matchObj.legacy = prev.legacy;
       const idx = (appData.matches || []).findIndex(m => Number(m.id) === Number(editingMatchId));
       if (idx !== -1) appData.matches[idx] = matchObj;
       await persistData(`Updated Match #${matchObj.id} (${finalScore} pts)`);

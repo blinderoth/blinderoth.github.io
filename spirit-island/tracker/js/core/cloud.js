@@ -69,7 +69,9 @@ const SICloud = (() => {
       adversaries: pick(appData.adversaries, ["owned", "focalPosition"]),
       scenarios: pick(appData.scenarios, ["owned", "focalPosition"]),
       aspects: (appData.aspects || []).filter(a => a.focalPosition).map(a => ({ spirit: a.spirit, name: a.name, focalPosition: a.focalPosition })),
-      matches: appData.matches || []
+      matches: appData.matches || [],
+      // Legacy games deleted here, so the Legacy import does not add them again (only written once there is one)
+      ...((appData.legacyDismissed || []).length ? { legacyDismissed: appData.legacyDismissed } : {})
     };
   }
 
@@ -104,6 +106,7 @@ const SICloud = (() => {
     full.scenarios = p.scenarios || [];
     full.aspects = p.aspects || [];
     full.matches = p.matches || [];
+    full.legacyDismissed = p.legacyDismissed || [];
     return full;
   }
 

@@ -21,6 +21,8 @@
     }
 
     mergeReferenceData();
+    try { await importLegacyGames(); } catch (e) { console.error("Legacy import failed", e); }
+    watchLegacyGames();
 
     updateSyncBadge();
     bindNavigation();
@@ -192,7 +194,9 @@
     if (!el) return;
     const count = (appData?.matches || []).length;
     let countText = `${count} matches`;
-    if (selectedPlayerFilter) countText = `${getStatsData().matches.length}/${count} matches (${selectedPlayerFilter})`;
+    const srcLabel = selectedSourceFilter === "legacy" ? "Legacy only" : selectedSourceFilter === "normal" ? "without Legacy" : "";
+    const label = [selectedPlayerFilter, srcLabel].filter(Boolean).join(", ");
+    if (label) countText = `${getStatsData().matches.length}/${count} matches (${label})`;
     el.textContent = SICloud.label(countText);
   }
 

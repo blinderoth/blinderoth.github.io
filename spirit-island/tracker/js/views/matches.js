@@ -134,6 +134,7 @@
           m.scenario,
           m.notes,
           isLegacyMatch(m) ? `legacy ${m.legacy?.title || ""}` : "",
+          isArchipelagoMatch(m) ? `archipelago ${m.archipelago?.title || ""}` : "",
           ...(m.players || []).map(p => `${p.spirit} ${p.aspect} ${p.player}`)
         ].join(" ").toLowerCase();
         if (!hay.includes(qVal)) return false;
@@ -210,6 +211,7 @@
               ${m.victory ? '✔ VICTORY' : '✖ DEFEAT'}
             </span>
             ${isLegacyMatch(m) ? `<span class="badge badge-legacy" title="Spirit Island: Legacy scenario #${escapeHtml(m.legacy?.scenario ?? "")}">LEGACY</span>` : ""}
+            ${isArchipelagoMatch(m) ? `<span class="badge badge-archipelago" title="Spirit Archipelago scenario #${escapeHtml(m.archipelago?.scenario ?? "")}">ARCHIPELAGO</span>` : ""}
             ${!m.victory && m.lossCondition ? `<div style="font-size:0.68rem;color:var(--accent-crimson);margin-top:0.2rem;">${escapeHtml(m.lossCondition)}</div>` : ""}
           </td>
           <td>${playersHtml}</td>
@@ -257,6 +259,8 @@
         appData.matches.splice(idx, 1);
         const legacyId = removed.legacy && removed.legacy.id;
         if (legacyId) appData.legacyDismissed = [...new Set([...(appData.legacyDismissed || []), legacyId])];
+        const archId = removed.archipelago && removed.archipelago.id;
+        if (archId) appData.archipelagoDismissed = [...new Set([...(appData.archipelagoDismissed || []), archId])];
         await persistData();
         renderAll();
         showToast(`Deleted Match #${id}`, {
@@ -265,6 +269,7 @@
           onAction: async () => {
             appData.matches.splice(Math.min(idx, appData.matches.length), 0, removed);
             if (legacyId) appData.legacyDismissed = (appData.legacyDismissed || []).filter(x => x !== legacyId);
+            if (archId) appData.archipelagoDismissed = (appData.archipelagoDismissed || []).filter(x => x !== archId);
             await persistData(`Match #${id} restored`);
             renderAll();
           }
@@ -292,7 +297,13 @@
         ${!m.victory && m.lossCondition ? `<span class="gm-loss">${escapeHtml(m.lossCondition)}</span>` : ""}
         ${m.thematicMap ? `<span class="badge badge-vhigh">Thematic map</span>` : ""}
         ${isLegacyMatch(m) ? `<span class="badge badge-legacy">LEGACY</span>` : ""}
+        ${isArchipelagoMatch(m) ? `<span class="badge badge-archipelago">ARCHIPELAGO</span>` : ""}
       </div>
+      ${isArchipelagoMatch(m) && m.archipelago ? `<div class="gm-legacy gm-archipelago">
+        <span>Scenario <b>#${escapeHtml(m.archipelago.scenario)} ${escapeHtml(m.archipelago.title || "")}</b></span>
+        ${m.archipelago.attempt === 2 ? `<span>Second attempt</span>` : ""}
+        ${m.archipelago.unmatchedAdversary ? `<span>Adversary <b>${escapeHtml(m.archipelago.unmatchedAdversary)}</b></span>` : ""}
+      </div>` : ""}
       ${isLegacyMatch(m) && m.legacy ? `<div class="gm-legacy">
         <span>Scenario <b>#${escapeHtml(m.legacy.scenario)} ${escapeHtml(m.legacy.title || "")}</b></span>
         ${m.legacy.attempt === 2 ? `<span>Second attempt</span>` : ""}
@@ -783,6 +794,7 @@
       const prev = (appData.matches || []).find(m => Number(m.id) === Number(editingMatchId));
       if (prev && prev.source) matchObj.source = prev.source;
       if (prev && prev.legacy) matchObj.legacy = prev.legacy;
+      if (prev && prev.archipelago) matchObj.archipelago = prev.archipelago;
       const idx = (appData.matches || []).findIndex(m => Number(m.id) === Number(editingMatchId));
       if (idx !== -1) appData.matches[idx] = matchObj;
       await persistData(`Updated Match #${matchObj.id} (${finalScore} pts)`);

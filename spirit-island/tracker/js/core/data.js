@@ -23,6 +23,8 @@
     mergeReferenceData();
     try { await importLegacyGames(); } catch (e) { console.error("Legacy import failed", e); }
     watchLegacyGames();
+    try { await importArchipelagoGames(); } catch (e) { console.error("Archipelago import failed", e); }
+    watchArchipelagoGames();
 
     updateSyncBadge();
     bindNavigation();
@@ -194,7 +196,7 @@
     if (!el) return;
     const count = (appData?.matches || []).length;
     let countText = `${count} matches`;
-    const srcLabel = selectedSourceFilter === "legacy" ? "Legacy only" : selectedSourceFilter === "normal" ? "without Legacy" : "";
+    const srcLabel = { legacy: "Legacy only", archipelago: "Archipelago only", normal: "without campaigns" }[selectedSourceFilter] || "";
     const label = [selectedPlayerFilter, srcLabel].filter(Boolean).join(", ");
     if (label) countText = `${getStatsData().matches.length}/${count} matches (${label})`;
     el.textContent = SICloud.label(countText);

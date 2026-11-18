@@ -11,3 +11,12 @@ body[data-theme="dark"] { --legacy-ink: #E8A866; }
 .legacy-teaser:hover { border-color: var(--legacy-ink); }
 .legacy-teaser .rt-go { color: var(--legacy-ink); }
 @media (max-width: 720px) { #globalSourceFilter { margin: .3rem 0 0; } }
+
+/* Spirit Archipelago games */
+body { --arch-ink: #1F6A70; }
+body[data-theme="dark"] { --arch-ink: #6CC0C6; }
+.badge.badge-archipelago { color: var(--arch-ink) !important; border-color: var(--arch-ink) !important; letter-spacing: .08em; font-size: .64rem; }
+.gm-archipelago { color: var(--arch-ink); }
+.archipelago-teaser { background: linear-gradient(110deg, color-mix(in srgb, var(--arch-ink) 12%, transparent), transparent 60%); }
+.archipelago-teaser:hover { border-color: var(--arch-ink); }
+.archipelago-teaser .rt-go { color: var(--arch-ink); }

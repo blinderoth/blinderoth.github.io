@@ -13,12 +13,15 @@
   let currentRecommendation = null;
   let editingMatchId = null;
   let selectedPlayerFilter = "";
-  let selectedSourceFilter = "";   // "", "legacy" or "normal"
+  let selectedSourceFilter = "";   // "", "legacy", "archipelago" or "normal" (without campaigns)
 
   function isLegacyMatch(m) { return !!m && m.source === "legacy"; }
+  function isArchipelagoMatch(m) { return !!m && m.source === "archipelago"; }
+  function isCampaignMatch(m) { return isLegacyMatch(m) || isArchipelagoMatch(m); }
   function matchesSourceFilter(m) {
     if (selectedSourceFilter === "legacy") return isLegacyMatch(m);
-    if (selectedSourceFilter === "normal") return !isLegacyMatch(m);
+    if (selectedSourceFilter === "archipelago") return isArchipelagoMatch(m);
+    if (selectedSourceFilter === "normal") return !isCampaignMatch(m);
     return true;
   }
 

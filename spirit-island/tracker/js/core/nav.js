@@ -103,7 +103,15 @@
   // Links from the Spirit Realm page: index.html#game=12 opens that game, index.html#spirit=Name opens the dossier.
   function handleDeepLink(hash) {
     const h = decodeURIComponent(String(hash || "").replace(/^#/, ""));
-    const game = h.match(/^game=(.+)$/), spirit = h.match(/^spirit=(.+)$/), log = h.match(/^log=(.+)$/), legacy = h.match(/^legacy=(.+)$/);
+    const game = h.match(/^game=(.+)$/), spirit = h.match(/^spirit=(.+)$/), log = h.match(/^log=(.+)$/), legacy = h.match(/^legacy=(.+)$/), arch = h.match(/^archipelago=(.+)$/);
+    if (arch) {
+      // From the Archipelago companion: show that game (it was imported on start)
+      const m = findArchipelagoMatch(arch[1]);
+      switchTab("matches");
+      if (m) { if (window.inspectGame) window.inspectGame(Number(m.id)); }
+      else showToast("That Archipelago game isn’t here yet. Open the tracker on the device where it was recorded");
+      return;
+    }
     if (legacy) {
       // From the Legacy companion: show that game (it was imported on start)
       const m = findLegacyMatch(legacy[1]);

@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="css/botanical_zen.css?v=8" />
   <link rel="stylesheet" href="css/spirit_animations.css?v=10" />
   <link rel="stylesheet" href="css/tracker_polish.css?v=30" />
-  <link rel="stylesheet" href="css/legacy.css?v=1" />
+  <link rel="stylesheet" href="css/legacy.css?v=2" />
 </head>
 <body data-theme="zen">
   <script>
@@ -47,7 +47,8 @@
       <select id="globalSourceFilter" class="select-input" aria-label="Filter stats by game type">
         <option value="">All games</option>
         <option value="legacy">Legacy only</option>
-        <option value="normal">Without Legacy</option>
+        <option value="archipelago">Archipelago only</option>
+        <option value="normal">Without campaigns</option>
       </select>
     </div>
     <span class="sync-pill">
@@ -130,6 +131,13 @@
           <span class="rt-text">
             <strong>Spirit Island: Legacy</strong>
             <span>The table companion for the Legacy campaign. Finished games land here with a Legacy tag.</span>
+          </span>
+          <span class="rt-go" aria-hidden="true">Open →</span>
+        </a>
+        <a class="realm-teaser archipelago-teaser" href="../archipelago/">
+          <span class="rt-text">
+            <strong>Spirit Archipelago</strong>
+            <span>The table companion for the Archipelago campaign. Finished games land here with an Archipelago tag.</span>
           </span>
           <span class="rt-go" aria-hidden="true">Open →</span>
         </a>
@@ -695,20 +703,21 @@
   <script src="js/default_data.js?v=21"></script>
   <script src="js/analytics.js?v=12"></script>
   <script src="js/campaign.js?v=2"></script>
-  <script src="js/core/state.js?v=22"></script>
-  <script src="js/core/data.js?v=27"></script>
-  <script src="js/core/cloud.js?v=22"></script>
-  <script src="js/core/nav.js?v=33"></script>
+  <script src="js/core/state.js?v=23"></script>
+  <script src="js/core/data.js?v=28"></script>
+  <script src="js/core/cloud.js?v=23"></script>
+  <script src="js/core/nav.js?v=34"></script>
   <script src="js/views/dashboard.js?v=26"></script>
   <script src="js/views/spirit_dossier.js?v=24"></script>
   <script src="js/views/adversaries.js?v=27"></script>
-  <script src="js/views/matches.js?v=27"></script>
+  <script src="js/views/matches.js?v=28"></script>
   <script src="js/views/achievements.js?v=22"></script>
   <script src="js/views/achievements_cards.js?v=21"></script>
   <script src="js/views/print.js?v=21"></script>
   <script src="js/views/codex.js?v=21"></script>
   <script src="js/views/settings.js?v=21"></script>
   <script src="js/legacy_import.js?v=1"></script>
+  <script src="js/archipelago_import.js?v=1"></script>
   <script src="js/main.js?v=21"></script>
 
   <script src="js/spirit_animations.js?v=10"></script>

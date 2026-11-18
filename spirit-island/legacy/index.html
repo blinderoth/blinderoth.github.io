@@ -6,7 +6,8 @@
 <title>Spirit Island Legacy companion</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Caesar+Dressing&family=Cinzel:wght@400;700;900&family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Caesar+Dressing&family=Cinzel:wght@400;700;900&family=Jost:wght@400;500;600;700&family=IM+Fell+English:ital@0;1&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
+<script>try{var s=localStorage.getItem("si-companion-skin");document.documentElement.dataset.skin=(s==="journal"||s==="night")?s:"classic"}catch(e){document.documentElement.dataset.skin="classic"}</script>
 <style>
 :root{
   --bg:#EEF0EC; --surface:#FBFBF8; --ink:#1F2421; --muted:#5A625C; --line:#CBD1C9; --chip:#E4E8E2;
@@ -762,6 +763,192 @@ html.table .rec-step .btn{min-width:40px}
 /* GitHub sync conflict */
 .gh-conflict{position:fixed; inset:0; z-index:95; display:grid; place-items:center; padding:16px; background:rgba(10,25,35,.55)}
 .gh-conflict .panel{max-width:480px; width:100%; box-shadow:0 18px 40px rgba(0,0,0,.4); margin:0}
+.hdr-life{-webkit-mask-image:radial-gradient(ellipse 72% 115% at 50% 38%, #000 50%, transparent 100%); mask-image:radial-gradient(ellipse 72% 115% at 50% 38%, #000 50%, transparent 100%)}
+
+/* ===================== Looks: Journal and Night (from the Spirit Realm page) =====================
+   html[data-skin] = "classic" (the F look above, untouched), "journal" or "night".
+   Journal is always light and Night always dark, whatever the device setting. */
+:root[data-skin="journal"]{
+  color-scheme:light;
+  --edge:#E9DABA; --noise:none;
+  --paper:#F7EEDA; --paper-2:#F7EEDA; --chip:#EFE3C8; --surface:#F7EEDA; --card-face:#F7EEDA;
+  --ink:#3B2A1A; --muted:#66513A; --line:rgba(59,42,26,.22); --frame:rgba(59,42,26,.42); --frame-soft:rgba(59,42,26,.2);
+  --leaf:#3B2A1A; --leaf-dark:#2A1D11; --leaf-hi:#E3D3B1; --btn-leaf:#4A7840; --btn-ink:#FBF4E3;
+  --wax:#A9472F; --wax-dark:#7E3322; --brass:#7E5A16; --scen:#8A4B2A; --bad:#A9472F; --warn:#8A5410;
+  --accent:#4A7840; --accent-ink:#FBF4E3; --head-ink:#3B2A1A;
+  --head:"IM Fell English", Georgia, serif; --title:"IM Fell English", Georgia, serif; --deco:"Cormorant Garamond", Georgia, serif;
+  --body:"Cormorant Garamond", Georgia, serif;
+  --r:4px; --dbl:1px solid var(--frame);
+}
+:root[data-skin="night"]{
+  color-scheme:dark;
+  --edge:#0B120D; --noise:none;
+  --paper:#1C1910; --paper-2:#211C12; --chip:rgba(234,219,184,.08); --surface:#211C12; --card-face:#2A2216;
+  --ink:#EADBB8; --muted:#B9AA8A; --line:rgba(234,219,184,.16); --frame:rgba(242,166,90,.38); --frame-soft:rgba(234,219,184,.14);
+  --leaf:#EADBB8; --leaf-dark:#0B120D; --leaf-hi:#3E9A6A; --btn-leaf:#8EF0B4; --btn-ink:#0B120D;
+  --wax:#FF7A3D; --wax-dark:#8A3A16; --brass:#F2C14E; --scen:#F2A65A; --bad:#FF8A5C; --warn:#F2C14E;
+  --accent:#8EF0B4; --accent-ink:#0B120D; --head-ink:#EADBB8;
+  --head:"Cormorant Garamond", Georgia, serif; --title:"Cormorant Garamond", Georgia, serif; --deco:"Cormorant Garamond", Georgia, serif;
+  --body:"Cormorant Garamond", Georgia, serif;
+  --r:18px; --dbl:1px solid var(--frame);
+}
+
+/* ---------- shared by both looks ---------- */
+html[data-skin="journal"] body, html[data-skin="night"] body{font-family:var(--body); font-size:18px; color:var(--ink)}
+html[data-skin="journal"] .hdr-life, html[data-skin="night"] .hdr-life, html[data-skin="journal"] .gem, html[data-skin="night"] .gem{display:none}
+html[data-skin="journal"] .plaque, html[data-skin="night"] .plaque{background:none; border:0; box-shadow:none; padding:4px 0; gap:0}
+html[data-skin="journal"] header.top .plaque h1, html[data-skin="night"] header.top .plaque h1{font-family:var(--title); font-style:italic; font-size:clamp(2rem, 5.4vw, 3.4rem); letter-spacing:0; line-height:1}
+html[data-skin="journal"] header.top .plaque h1 small, html[data-skin="night"] header.top .plaque h1 small{font-family:var(--body); font-style:italic; font-weight:600; font-size:1rem; letter-spacing:.02em; text-transform:none; color:var(--scen)}
+html[data-skin="journal"] main#main::before, html[data-skin="night"] main#main::before{background:none; box-shadow:none}
+html[data-skin="journal"] main#main::after, html[data-skin="night"] main#main::after{display:none}
+html[data-skin="journal"] main#main, html[data-skin="night"] main#main{padding:18px 4px 30px}
+html[data-skin="journal"] h2, html[data-skin="night"] h2{font-family:var(--head); font-style:italic; font-weight:500; letter-spacing:0; font-size:2.3rem; color:var(--ink)}
+html[data-skin="journal"] h3, html[data-skin="night"] h3, html[data-skin="journal"] details.grp > summary, html[data-skin="night"] details.grp > summary{font-family:var(--head); font-style:italic; font-weight:500; letter-spacing:0; font-size:1.45rem; color:var(--ink)}
+html[data-skin="journal"] .big, html[data-skin="night"] .big, html[data-skin="journal"] .stat [data-num], html[data-skin="night"] .stat [data-num]{font-family:var(--head); font-weight:500; letter-spacing:0; font-variant-numeric:lining-nums; color:var(--ink)}
+html[data-skin="journal"] .stat > span:first-child, html[data-skin="night"] .stat > span:first-child{font-size:.78rem; letter-spacing:.16em; text-transform:uppercase; color:var(--muted)}
+html[data-skin="journal"] .lede, html[data-skin="night"] .lede{font-size:1.12rem}
+html[data-skin="journal"] .step::before, html[data-skin="night"] .step::before{display:none}
+html[data-skin="journal"] .step, html[data-skin="night"] .step{border-top:1px solid var(--line)}
+html[data-skin="journal"] .btn, html[data-skin="night"] .btn{font-family:var(--body); font-weight:600; font-size:1.05rem; letter-spacing:0}
+html[data-skin="journal"] .btn.small, html[data-skin="night"] .btn.small{font-size:.98rem}
+html[data-skin="journal"] .btn.primary, html[data-skin="night"] .btn.primary, html[data-skin="journal"] .btn.bad, html[data-skin="night"] .btn.bad{font-family:var(--head); font-style:italic; font-weight:500; font-size:1.15rem; letter-spacing:0}
+html[data-skin="journal"] .stat:has([data-num="is"]) > span:first-child, html[data-skin="night"] .stat:has([data-num="is"]) > span:first-child{font-family:var(--body)}
+html[data-skin="journal"] .toast, html[data-skin="night"] .toast{font-family:var(--body); font-size:1.02rem}
+html[data-skin="journal"] .rs-sub, html[data-skin="night"] .rs-sub{font-family:var(--body); font-style:italic; text-transform:none; letter-spacing:.02em}
+html[data-skin="journal"] .rs-title, html[data-skin="night"] .rs-title{font-style:italic}
+
+/* tabs: the Realm's chapter numerals in a quiet bar */
+html[data-skin="journal"] nav.tabs > a::before, html[data-skin="night"] nav.tabs > a::before{display:inline-grid; place-items:center; width:26px; height:26px; border-radius:50%; border:1px solid var(--line); font-family:var(--head); font-size:.72rem; color:var(--muted); flex:0 0 auto}
+html[data-skin="journal"] nav.tabs a, html[data-skin="night"] nav.tabs a{font-family:var(--body); font-weight:600; font-size:.98rem; letter-spacing:0; color:var(--muted); border-radius:999px; padding:0 10px 0 6px}
+html[data-skin="journal"] nav.tabs a[aria-current="page"], html[data-skin="night"] nav.tabs a[aria-current="page"]{background:none; color:var(--ink)}
+html[data-skin="journal"] nav.tabs a[aria-current="page"]::before{background:var(--ink); color:#F7EEDA; border-color:var(--ink)}
+html[data-skin="night"] nav.tabs a[aria-current="page"]::before{background:var(--ink); color:#0B120D; border-color:var(--ink); box-shadow:0 0 14px rgba(242,166,90,.45)}
+
+/* ---------- Journal: an explorer's notebook ---------- */
+html[data-skin="journal"] body{background:radial-gradient(ellipse at 50% 30%, #F4E9CF 0%, #E9DABA 55%, #D2B88B 100%) fixed}
+html[data-skin="journal"] body::before{background:#E9DABA}
+html[data-skin="journal"] nav.tabs{background:rgba(240,228,200,.88); border:0; border-bottom:1px solid var(--line); border-radius:0; box-shadow:none; backdrop-filter:blur(6px)}
+html[data-skin="journal"] .panel, html[data-skin="journal"] .card, html[data-skin="journal"] .board{background:#F7EEDA; border:1px solid rgba(90,60,30,.22); border-radius:2px; box-shadow:0 10px 26px rgba(80,50,20,.18)}
+html[data-skin="journal"] .panel{position:relative}
+html[data-skin="journal"] .panel::after{content:""; position:absolute; top:-11px; left:50%; width:96px; height:22px; margin-left:-48px; transform:rotate(-3deg); background:rgba(214,196,150,.75); box-shadow:0 1px 2px rgba(0,0,0,.15); pointer-events:none}
+html[data-skin="journal"] .card[data-spirit]{border:1px solid rgba(90,60,30,.3)}
+html[data-skin="journal"] .card.scen{border-left:1px solid rgba(90,60,30,.22)}
+html[data-skin="journal"] .panel.wrapup, html[data-skin="journal"] .active-game .ag-head, html[data-skin="journal"] .rec-panel{border-left:1px solid rgba(90,60,30,.22)}
+html[data-skin="journal"] .stat{background:transparent; border:0; border-bottom:1px solid var(--line); border-radius:0}
+html[data-skin="journal"] .stat:has([data-num="is"]){border:0; border-bottom:1px solid var(--line)}
+html[data-skin="journal"] .stat [data-num="is"]{background:transparent; color:var(--wax); border:2px solid var(--wax); box-shadow:inset 0 0 0 3px #F7EEDA, inset 0 0 0 4px rgba(169,71,47,.5)}
+html[data-skin="journal"] .btn{background:transparent; border:1px solid var(--ink); border-radius:4px; color:var(--ink)}
+html[data-skin="journal"] .btn:hover{background:rgba(59,42,26,.06)}
+html[data-skin="journal"] .btn.primary{background:#4A7840; border-color:#3A6132; color:#FBF4E3}
+html[data-skin="journal"] .btn.bad{background:#A9472F; border-color:#7E3322; color:#FBF4E3}
+html[data-skin="journal"] .chip{background:transparent; border:1px solid var(--line); border-radius:999px}
+html[data-skin="journal"] .badge{background:transparent; color:var(--wax); border:1px solid var(--wax)}
+html[data-skin="journal"] .newchip{background:transparent; color:var(--brass); border:1px solid var(--brass)}
+html[data-skin="journal"] .box{background:transparent; border:1.6px solid var(--ink); border-radius:3px}
+html[data-skin="journal"] .box.on{background:transparent; border-color:var(--ink)}
+html[data-skin="journal"] .box.on::after{color:#4A7840; font-family:"IM Fell English", Georgia, serif; font-size:22px}
+html[data-skin="journal"] .box:not(.on):not(:disabled){background:transparent; box-shadow:0 0 0 2px #F7EEDA, 0 0 0 3.5px var(--scen)}
+html[data-skin="journal"] .emblem{box-shadow:2px 3px 0 rgba(59,42,26,.25), inset 0 0 0 2px rgba(59,42,26,.6)}
+html[data-skin="journal"] .toast{background:#3B2A1A; color:#F7EEDA; border-radius:4px}
+html[data-skin="journal"] select, html[data-skin="journal"] input[type=text], html[data-skin="journal"] input[type=number], html[data-skin="journal"] textarea{background:#FBF6EA; border-color:rgba(59,42,26,.45); color:var(--ink); font-family:var(--body); font-size:1.02rem}
+html[data-skin="journal"] .sync, html[data-skin="journal"] .hdr-link{color:var(--muted)}
+html[data-skin="journal"] .next-card{background:#F7EEDA; border-color:rgba(90,60,30,.35)}
+html[data-skin="journal"] .cip-group, html[data-skin="journal"] .env-card{background:#FBF6EA; border-color:rgba(90,60,30,.22)}
+html[data-skin="journal"] .reader-box, html[data-skin="journal"] .slot-menu{background:#F7EEDA}
+html[data-skin="journal"] :focus-visible{outline:2px solid var(--scen); outline-offset:3px}
+
+/* ---------- Night: a firelit jungle ---------- */
+html[data-skin="night"] body{background:radial-gradient(1000px 700px at 8% 105%, rgba(255,140,50,.24), transparent 60%), radial-gradient(800px 600px at 96% -5%, rgba(120,220,170,.09), transparent 60%), linear-gradient(180deg, #0C140F, #080D09) fixed; background-attachment:fixed}
+html[data-skin="night"] body::before{background:#0B120D}
+html[data-skin="night"] .wrap{position:relative; z-index:1}
+html[data-skin="night"] body::after{content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:radial-gradient(2.5px 2.5px at 12% 22%, #E8F59A, transparent), radial-gradient(2px 2px at 27% 68%, #E8F59A, transparent), radial-gradient(3px 3px at 44% 38%, #E8F59A, transparent),
+    radial-gradient(2px 2px at 63% 81%, #E8F59A, transparent), radial-gradient(2.5px 2.5px at 78% 30%, #E8F59A, transparent), radial-gradient(2px 2px at 91% 62%, #E8F59A, transparent),
+    radial-gradient(2px 2px at 6% 88%, #E8F59A, transparent), radial-gradient(2.5px 2.5px at 55% 12%, #E8F59A, transparent); opacity:.55}
+html[data-skin="night"] nav.tabs{background:rgba(10,16,11,.82); border:0; border-bottom:1px solid var(--line); border-radius:0; box-shadow:none; backdrop-filter:blur(6px)}
+html[data-skin="night"] .plaque h1{text-shadow:0 0 40px rgba(242,166,90,.35)}
+html[data-skin="night"] .panel, html[data-skin="night"] .card, html[data-skin="night"] .board{background:linear-gradient(170deg, rgba(40,30,18,.9), rgba(16,20,14,.94)); border:1px solid rgba(242,166,90,.28); border-radius:18px; box-shadow:0 0 50px rgba(242,140,60,.1), inset 0 0 40px rgba(0,0,0,.4)}
+html[data-skin="night"] .card[data-spirit]{border:1px solid rgba(242,166,90,.32)}
+html[data-skin="night"] .card.scen{border-left:1px solid rgba(242,166,90,.28)}
+html[data-skin="night"] .panel.wrapup, html[data-skin="night"] .active-game .ag-head, html[data-skin="night"] .rec-panel{border-left:1px solid rgba(242,166,90,.28)}
+html[data-skin="night"] .stat{background:rgba(234,219,184,.04); border:1px solid var(--line); border-radius:14px}
+html[data-skin="night"] .stat:has([data-num="is"]){border:1px solid rgba(255,122,61,.4)}
+html[data-skin="night"] .stat [data-num="is"]{background:radial-gradient(circle at 40% 35%, #3A1E10, #1A0E08); color:#FFB088; box-shadow:0 0 0 2px #FF7A3D, 0 0 18px rgba(255,122,61,.55)}
+html[data-skin="night"] .stat [data-num]:not([data-num="is"]), html[data-skin="night"] .big{text-shadow:0 0 18px rgba(242,166,90,.35)}
+html[data-skin="night"] .btn{background:transparent; border:1px solid var(--line); border-radius:999px; color:var(--ink)}
+html[data-skin="night"] .btn:hover{border-color:var(--scen); color:var(--scen)}
+html[data-skin="night"] .btn.primary{background:rgba(142,240,180,.1); border-color:#8EF0B4; color:#8EF0B4; box-shadow:0 0 22px rgba(142,240,180,.25)}
+html[data-skin="night"] .btn.bad{background:rgba(255,122,61,.1); border-color:#FF7A3D; color:#FF9A6A; box-shadow:0 0 22px rgba(255,122,61,.22)}
+html[data-skin="night"] .chip{background:rgba(234,219,184,.06); border:1px solid var(--line); border-radius:999px; color:var(--ink)}
+html[data-skin="night"] .chip.k-scen{color:var(--scen)}
+html[data-skin="night"] .badge{background:transparent; color:#FFB088; border:1px solid #FF7A3D}
+html[data-skin="night"] .newchip{background:transparent; color:var(--brass); border:1px solid var(--brass)}
+html[data-skin="night"] .box{background:transparent; border:1.5px solid rgba(234,219,184,.32); border-radius:50%}
+html[data-skin="night"] .box.on{background:radial-gradient(circle at 40% 35%, #D6FFE6, #8EF0B4 45%, #3E9A6A); border-color:#8EF0B4; box-shadow:0 0 12px 2px rgba(142,240,180,.5)}
+html[data-skin="night"] .box.on::after{content:""}
+html[data-skin="night"] .box:not(.on):not(:disabled){background:transparent; border:2px solid #F2A65A; box-shadow:0 0 12px rgba(242,166,90,.5)}
+html[data-skin="night"] .emblem{box-shadow:0 0 18px rgba(242,166,90,.3), inset 0 0 0 1.5px rgba(242,166,90,.55)}
+html[data-skin="night"] .toast{background:rgba(20,18,12,.96); color:#EADBB8; border:1px solid rgba(242,166,90,.35); border-radius:14px}
+html[data-skin="night"] select, html[data-skin="night"] input[type=text], html[data-skin="night"] input[type=number], html[data-skin="night"] textarea{background:rgba(0,0,0,.3); border-color:var(--line); color:var(--ink); font-family:var(--body); font-size:1.02rem; border-radius:10px}
+html[data-skin="night"] .sync, html[data-skin="night"] .hdr-link{color:var(--muted)}
+html[data-skin="night"] a{color:var(--scen)}
+html[data-skin="night"] .next-card{background:rgba(142,240,180,.06); border-color:rgba(142,240,180,.4); border-radius:14px}
+html[data-skin="night"] .next-card .nt{color:#8EF0B4}
+html[data-skin="night"] .cip-group, html[data-skin="night"] .env-card{background:rgba(234,219,184,.04); border-color:var(--line); border-radius:14px}
+html[data-skin="night"] .reader-box, html[data-skin="night"] .slot-menu{background:#15140D; border:1px solid rgba(242,166,90,.3)}
+html[data-skin="night"] .card.asleep, html[data-skin="night"] .card.pre-wake{filter:brightness(.8)}
+html[data-skin="night"] :focus-visible{outline:2px solid var(--scen); outline-offset:3px}
+@media (prefers-reduced-motion: no-preference){
+  html[data-skin="night"] body::after{animation:fireflies 7s ease-in-out infinite alternate}
+  @keyframes fireflies{0%{opacity:.25; transform:translate(0,0)} 50%{opacity:.7} 100%{opacity:.35; transform:translate(10px,-14px)}}
+}
+
+/* table mode (phone) */
+html[data-skin="journal"].table nav.tabs{background:rgba(240,228,200,.96); border-top:1px solid var(--line); border-bottom:0}
+html[data-skin="night"].table nav.tabs{background:rgba(10,16,11,.95); border-top:1px solid var(--line); border-bottom:0}
+html[data-skin="journal"].table nav.tabs > a::before, html[data-skin="night"].table nav.tabs > a::before{display:none}
+html[data-skin="journal"].table nav.tabs a, html[data-skin="night"].table nav.tabs a{padding:0 4px; font-size:.86rem; justify-content:center}
+html[data-skin="journal"].table nav.tabs a[aria-current="page"]{background:#3B2A1A; color:#F7EEDA}
+html[data-skin="night"].table nav.tabs a[aria-current="page"]{background:#EADBB8; color:#0B120D}
+html[data-skin="journal"].table header.top .plaque h1, html[data-skin="night"].table header.top .plaque h1{font-size:1.7rem}
+html[data-skin="journal"].table main#main, html[data-skin="night"].table main#main{padding:12px 0 20px}
+
+/* the look switch */
+.skin-switch{display:inline-flex; gap:2px; padding:2px; border-radius:999px; border:1px solid var(--frame); background:var(--paper)}
+.skin-switch button{font:inherit; font-size:.88rem; min-height:32px; padding:0 11px; border:0; border-radius:999px; background:transparent; color:var(--ink); cursor:pointer}
+.skin-switch button[aria-pressed="true"]{background:var(--ink); color:var(--edge)}
+:root[data-skin="classic"] .skin-switch button[aria-pressed="true"]{background:var(--btn-leaf); color:var(--btn-ink)}
+.panel .skin-switch button{min-height:44px; padding:0 18px; font-size:1rem}
+html.table header .skin-switch{display:none}
+/* campaign map in the Journal and Night looks */
+html[data-skin="journal"] .cmap-sea{fill:#9DB8C2} html[data-skin="journal"] .cmap-shallow{fill:#C5D5D2} html[data-skin="journal"] .cmap-land{fill:#E6D3A8}
+html[data-skin="journal"] .cmap-wave{stroke:rgba(255,255,255,.45)}
+html[data-skin="journal"] .cmap-route{stroke:#8A4B2A}
+html[data-skin="journal"] .cmap-dot{fill:#F7EEDA; stroke:#3B2A1A}
+html[data-skin="journal"] .cmap-num{fill:#3B2A1A} html[data-skin="journal"] .cmap-sub{fill:#3B2A1A; stroke:#F7EEDA}
+html[data-skin="journal"] .cmap-node.won .cmap-dot{fill:#4A7840; stroke:#2F4F29} html[data-skin="journal"] .cmap-node.won .cmap-num{fill:#FBF4E3}
+html[data-skin="journal"] .cmap-node.lost .cmap-dot{fill:#A9472F; stroke:#7E3322} html[data-skin="journal"] .cmap-node.lost .cmap-num{fill:#FBF4E3}
+html[data-skin="journal"] .cmap-node.open .cmap-dot{fill:#E2BE6A; stroke:#8A5A10}
+html[data-skin="journal"] .cmap-node.replay .cmap-dot{fill:#E2BE6A; stroke:#A9472F}
+html[data-skin="journal"] .cmap-label{font:italic 400 26px "IM Fell English", Georgia, serif; fill:#3B2A1A; stroke:#F7EEDA; letter-spacing:0}
+html[data-skin="journal"] .cmap{border:1px solid rgba(90,60,30,.3); border-radius:2px}
+html[data-skin="journal"] .cmap-ctrl button{background:#F7EEDA; border:1px solid #3B2A1A; border-radius:4px; color:#3B2A1A}
+html[data-skin="night"] .cmap-sea{fill:#08130F} html[data-skin="night"] .cmap-shallow{fill:#12302A} html[data-skin="night"] .cmap-land{fill:#2D3B22}
+html[data-skin="night"] .cmap-wave{stroke:rgba(79,168,138,.28)}
+html[data-skin="night"] .cmap-route{stroke:#F2A65A}
+html[data-skin="night"] .cmap-dot{fill:#101A12; stroke:#EADBB8}
+html[data-skin="night"] .cmap-num{fill:#EADBB8} html[data-skin="night"] .cmap-sub{fill:#EADBB8; stroke:#08130F}
+html[data-skin="night"] .cmap-node.won .cmap-dot{fill:#101A12; stroke:#8EF0B4; filter:drop-shadow(0 0 5px #8EF0B4)} html[data-skin="night"] .cmap-node.won .cmap-num{fill:#8EF0B4}
+html[data-skin="night"] .cmap-node.lost .cmap-dot{fill:#101A12; stroke:#FF7A3D; filter:drop-shadow(0 0 5px #FF7A3D)} html[data-skin="night"] .cmap-node.lost .cmap-num{fill:#FF9A6A}
+html[data-skin="night"] .cmap-node.open .cmap-dot{fill:#101A12; stroke:#F2C14E; filter:drop-shadow(0 0 5px #F2C14E)} html[data-skin="night"] .cmap-node.open .cmap-num{fill:#F2C14E}
+html[data-skin="night"] .cmap-node.replay .cmap-dot{fill:#101A12; stroke:#FF7A3D}
+html[data-skin="night"] .cmap-label{font:italic 500 26px "Cormorant Garamond", Georgia, serif; fill:#F2A65A; stroke:#08130F; letter-spacing:0}
+html[data-skin="night"] .cmap{border:1px solid rgba(242,166,90,.3); border-radius:18px; box-shadow:0 0 50px rgba(242,140,60,.1)}
+html[data-skin="night"] .cmap-ctrl button{background:#15140D; border:1px solid rgba(242,166,90,.4); border-radius:999px; color:#EADBB8}
+html[data-skin="night"] .cmap-legend i{border-color:#EADBB8}
+html[data-skin="night"] .ag-player, html[data-skin="night"] .wrap-step{background:rgba(234,219,184,.05)}
+html[data-skin="night"] nav.tabs a:hover{background:rgba(234,219,184,.06)}
+html[data-skin="journal"] .ag-player, html[data-skin="journal"] .wrap-step{background:rgba(255,255,255,.45)}
 
 </style>
 </head>
@@ -4021,7 +4208,7 @@ function syncPanelL(){
       el("a",{class:"btn small", href:"../tracker/"}, m === "off" ? "Open the tracker" : "Tracker")));
 }
 function viewFiles(){
-  const out = el("section",{}, syncPanelL(), backupPanelL(), el("h2",{}, "Files"),
+  const out = el("section",{}, lookPanelL(), syncPanelL(), backupPanelL(), el("h2",{}, "Files"),
     el("p",{class:"lede"}, assetsApi ? "Add the campaign PDFs once and every rule card, scenario, heirloom, Invader card and spirit sheet opens right here. They’re stored with this page, so anyone you share it with can read them too." : "Open the campaign PDFs from this device to read them here. They aren’t saved, so you’ll pick them again next visit."),
     el("div",{class:"row"}, el("button",{class:"btn primary", onclick:() => pick(null)}, "Add PDFs (you can pick several at once)")));
   const t = el("tbody",{});
@@ -4205,6 +4392,25 @@ function setupTableModeL(){
 }
 document.addEventListener("pointerdown", e => { if (ui.moreOpen && !e.target.closest("nav.tabs")){ ui.moreOpen = false; render(); } });
 
+// ===================== looks: Classic, Journal, Night =====================
+// Journal and Night come from the Spirit Island tracker's Spirit Realm page. The choice is kept per device.
+const SKIN_KEY = "si-companion-skin", SKINS = [["classic","Classic"], ["journal","Journal"], ["night","Night"]];
+function skinNow(){ const v = document.documentElement.dataset.skin; return SKINS.some(s => s[0] === v) ? v : "classic"; }
+function setSkin(v){
+  document.documentElement.dataset.skin = v;
+  try { localStorage.setItem(SKIN_KEY, v); } catch(e){}
+  document.querySelectorAll(".skin-switch button").forEach(b => b.setAttribute("aria-pressed", b.dataset.look === v ? "true" : "false"));
+}
+function skinSwitch(){
+  return el("div",{class:"skin-switch", role:"group", "aria-label":"Look"},
+    ...SKINS.map(([k, l]) => el("button",{type:"button", "data-look":k, "aria-pressed": skinNow() === k ? "true" : "false", onclick:() => setSkin(k)}, l)));
+}
+function setupSkinL(){ if (!document.documentElement.dataset.skin) document.documentElement.dataset.skin = "classic"; $("sync").before(skinSwitch()); }
+function lookPanelL(){
+  return el("div",{class:"panel"}, el("h3",{style:"margin-top:0"}, "Look"),
+    el("p",{class:"note", style:"margin:0 0 10px"}, "Classic is the island map. Journal and Night match the tracker’s Spirit Realm page. Saved on this device."), skinSwitch());
+}
+
 // ===================== saving & sync =====================
 const LS_KEY = "si-legacy-companion-v1";
 function saveLabel(){ if (store?.kind === "github") return LegacyGH.label() || "Saved in this browser only"; return store?.kind === "db" ? "Shared with everyone who opens this page" : store?.kind === "local" ? "Saved in this browser only" : "Not saved"; }
@@ -4278,6 +4484,7 @@ document.addEventListener("keydown", e => {
 let rsz; window.addEventListener("resize", () => { clearTimeout(rsz); rsz = setTimeout(() => { if ($("reader").classList.contains("open")) renderReader(); }, 200); });
 if (window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 setupTableModeL();
+setupSkinL();
 S = blank(); render();
 load();
 

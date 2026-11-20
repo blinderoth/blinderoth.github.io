@@ -59,6 +59,8 @@
     const box = document.getElementById("matchupsBody");
     if (!box || !(window.SI_MATCHUPS || typeof SI_MATCHUPS !== "undefined")) return;
     const { M, advs, rows: all } = muRows();
+    const sumMin = Math.min(...all.map(r => r.sum)), sumMax = Math.max(...all.map(r => r.sum));
+    const sumPct = v => sumMax > sumMin ? 6 + 94 * (v - sumMin) / (sumMax - sumMin) : 100;
     const q = muState.query.trim().toLowerCase();
 
     let rows = all.filter(r =>
@@ -91,7 +93,7 @@
       if (!sorted && r.group !== lastGroup) {
         lastGroup = r.group;
         const g = M.groups[r.group];
-        groupRow = `<tr class="mu-group"><th colspan="${advs.length + 2}" scope="rowgroup">${escapeHtml(g.label)} <span>${escapeHtml(g.note)}</span></th></tr>`;
+        groupRow = `<tr class="mu-group"><th colspan="${advs.length + 2}" scope="rowgroup"><span class="mu-group-in">${escapeHtml(g.label)} <span>${escapeHtml(g.note)}</span></span></th></tr>`;
       }
       const isAspect = !!r.aspect;
       if (!isAspect) lastSpirit = r.spirit;
@@ -109,7 +111,7 @@
               ${c.rec ? `<i class="mu-rec ${c.rec.w ? "won" : "lost"}" aria-hidden="true"></i>` : ""}
             </td>`;
           }).join("")}
-          <td class="mu-sum s-${r.sum >= 25 ? "hi" : r.sum < 20 ? "lo" : "mid"}" title="${r.sum >= 25 ? "Well rounded (25 or more)" : r.sum < 20 ? "Needs support or the right team (under 20)" : "Between 20 and 25"}"><b>${r.sum}</b><span class="mu-bar"><i style="width:${(r.sum / 40 * 100).toFixed(0)}%"></i></span></td>
+          <td class="mu-sum s-${r.sum >= 25 ? "hi" : r.sum < 20 ? "lo" : "mid"}" title="${r.sum} of 40 · ${r.sum >= 25 ? "well rounded (25 or more)" : r.sum < 20 ? "needs support or the right team (under 20)" : "between 20 and 25"} · the bar runs from the lowest total (${sumMin}) to the highest (${sumMax})"><b>${r.sum}</b><span class="mu-bar"><i style="width:${sumPct(r.sum).toFixed(0)}%"></i></span></td>
         </tr>`;
     }).join("");
 
@@ -142,9 +144,9 @@
           ${sorted ? `<button type="button" class="btn-zen btn-zen-secondary" id="muReset">Back to chart order</button>` : ""}
           <span class="mu-count">${ownedCount} of ${baseCount} rated spirits owned</span>
         </div>
-        <p class="mu-readout" id="muReadout" aria-live="polite">Hover or tap a grade to read it.</p>
         <div class="mu-scroll">
           <table class="mu-table"><thead>${head}</thead><tbody>${body || `<tr><td colspan="${advs.length + 2}" class="mu-empty">No spirits match.</td></tr>`}</tbody></table>
+          <p class="mu-readout" id="muReadout" aria-live="polite">Hover or tap a grade to read it.</p>
         </div>
         <p class="mu-credit">Ratings from <a href="${escapeHtml(M.source)}" target="_blank" rel="noopener">Red's Match-up Axis (5 star system)</a> on r/spiritisland. Grades assume level 6 adversaries with no scenario.</p>
       </div>`;

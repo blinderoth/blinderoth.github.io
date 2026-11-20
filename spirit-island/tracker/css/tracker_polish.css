@@ -1099,3 +1099,22 @@ thead th.cross .mu-sort { background: color-mix(in srgb, var(--sun-leaf) 22%, tr
 .mu-sum.s-mid .mu-bar i { background: var(--sun-leaf); }
 .mu-sum.s-lo .mu-bar i { background: var(--rust-blight); }
 @media (max-width: 720px) { .mu-guide-body { grid-template-columns: 1fr; } }
+/* Match-ups: the grid scrolls in its own box so the flag row and the readout stay in view */
+.mu-scroll { max-height: min(78vh, 900px); overflow: auto; position: relative; }
+.mu-table thead th { z-index: 3; box-shadow: 0 1px 0 var(--sage-rule); }
+.mu-table thead th.mu-spirit-h { left: 0; z-index: 4; }
+.mu-scroll .mu-readout {
+  position: sticky; bottom: 0; left: 0; z-index: 5; margin: 0; min-height: 0;
+  padding: 0.55rem 0.9rem; font-size: 13px; color: var(--pine-ink);
+  background: var(--sage-tint); border-top: 1px solid var(--sage-rule);
+  width: min(100%, var(--mu-view, 100%));
+}
+.mu-bar { width: 56px; }
+/* Guardians: signature spirit as the profile picture */
+.guardian-avatar { position: relative; width: 32px; height: 32px; border-radius: 50%; overflow: hidden; flex-shrink: 0; display: inline-grid; place-items: center; border: 1.5px solid var(--sun-leaf); background: color-mix(in srgb, var(--sun-leaf) 18%, transparent); }
+.guardian-avatar img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.guardian-avatar b { font-size: 0.78rem; font-weight: 800; color: var(--pine-ink); }
+.guardian-avatar:not(.no-img) b { visibility: hidden; }
+.mu-group-in { position: sticky; left: 0.8rem; display: inline-block; }
+@media (max-width: 720px) { .mu-scroll .mu-readout { font-size: 12px; padding: 0.45rem 0.7rem; } .mu-scroll { max-height: 72vh; } }
+.mu-group th .mu-group-in { font-style: normal; font-size: 16px; color: var(--pine-ink); margin-left: 0; }

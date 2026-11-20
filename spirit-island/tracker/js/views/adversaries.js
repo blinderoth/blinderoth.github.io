@@ -62,9 +62,12 @@
       <tr class="guardian-row${canOpen ? " has-detail" : ""}${open ? " open" : ""}" data-guardian="${escapeHtml(g.name)}">
         <td>
           <div style="display:flex;align-items:center;gap:0.55rem;">
-            <span style="width:28px;height:28px;border-radius:50%;background:rgba(245,158,11,0.18);border:1px solid rgba(245,158,11,0.4);display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:0.78rem;color:var(--accent-gold-light);">
-              ${escapeHtml(g.name.charAt(0))}
-            </span>
+            ${(() => {
+              const sp = (appData.spirits || []).find(x => x.name === g.signatureSpirit);
+              return sp && sp.image
+                ? `<span class="guardian-avatar" title="Signature spirit: ${escapeHtml(sp.name)}"><img src="${escapeHtml(sp.image)}" alt="" loading="lazy" style="${getFocalStyle(sp)}" onerror="this.parentElement.classList.add('no-img');this.remove()"><b>${escapeHtml(g.name.charAt(0))}</b></span>`
+                : `<span class="guardian-avatar no-img"><b>${escapeHtml(g.name.charAt(0))}</b></span>`;
+            })()}
             <div style="flex:1;">
               <div style="font-weight:700;">${escapeHtml(g.name)}</div>
               <div style="font-size:0.68rem;color:var(--text-secondary);">${g.uniqueMatches} matches</div>

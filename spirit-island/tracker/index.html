@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="css/styles.css?v=8" />
   <link rel="stylesheet" href="css/botanical_zen.css?v=8" />
   <link rel="stylesheet" href="css/spirit_animations.css?v=10" />
-  <link rel="stylesheet" href="css/tracker_polish.css?v=36" />
+  <link rel="stylesheet" href="css/tracker_polish.css?v=37" />
   <link rel="stylesheet" href="css/legacy.css?v=2" />
 </head>
 <body data-theme="zen">
@@ -502,6 +502,20 @@
               <select id="modalScenario" class="select-input" style="flex:1;"></select>
             </div>
           </div>
+          <div class="form-group" id="modalWaveGroup" hidden>
+            <label for="modalWave">Wave (required)</label>
+            <select id="modalWave" class="select-input">
+              <option value="">Choose the wave played</option>
+              <option value="0">Wave 0</option>
+              <option value="1">Wave 1</option>
+              <option value="2">Wave 2</option>
+              <option value="3">Wave 3</option>
+              <option value="4">Wave 4</option>
+              <option value="5">Wave 5</option>
+              <option value="6">Wave 6</option>
+              <option value="7">Wave 7</option>
+            </select>
+          </div>
           <div class="form-group">
             <label for="modalManualDifficulty">Total Difficulty</label>
             <input type="number" id="modalManualDifficulty" class="text-input mono" min="-1" max="30" />
@@ -716,7 +730,7 @@
   <script src="js/views/dashboard.js?v=26"></script>
   <script src="js/views/spirit_dossier.js?v=24"></script>
   <script src="js/views/adversaries.js?v=28"></script>
-  <script src="js/views/matches.js?v=28"></script>
+  <script src="js/views/matches.js?v=29"></script>
   <script src="js/views/achievements.js?v=22"></script>
   <script src="js/views/achievements_cards.js?v=21"></script>
   <script src="js/views/print.js?v=21"></script>

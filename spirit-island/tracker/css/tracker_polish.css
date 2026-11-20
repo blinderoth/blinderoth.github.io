@@ -1118,3 +1118,7 @@ thead th.cross .mu-sort { background: color-mix(in srgb, var(--sun-leaf) 22%, tr
 .mu-group-in { position: sticky; left: 0.8rem; display: inline-block; }
 @media (max-width: 720px) { .mu-scroll .mu-readout { font-size: 12px; padding: 0.45rem 0.7rem; } .mu-scroll { max-height: 72vh; } }
 .mu-group th .mu-group-in { font-style: normal; font-size: 16px; color: var(--pine-ink); margin-left: 0; }
+
+/* Second Wave: wave picker in the logging form */
+#modalWaveGroup[hidden] { display: none; }
+#modalWave[aria-invalid="true"] { border-color: var(--accent-crimson, #b3412f); box-shadow: 0 0 0 2px rgba(179,65,47,0.25); }

@@ -194,7 +194,7 @@
         : `<span style="color:var(--text-muted);">Base Island</span>`;
 
       const scenHtml = [
-        m.scenario ? `<span class="badge badge-neutral" style="display:inline-flex;align-items:center;gap:0.3rem;">${scenIcon(m.scenario, 16)} ${escapeHtml(m.scenario)}</span>` : "",
+        m.scenario ? `<span class="badge badge-neutral" style="display:inline-flex;align-items:center;gap:0.3rem;">${scenIcon(m.scenario, 16)} ${escapeHtml(m.scenario)}${waveLabel(m)}</span>` : "",
         m.thematicMap ? `<span class="badge badge-vhigh">Thematic Map</span>` : ""
       ].filter(Boolean).join(" ");
 
@@ -278,6 +278,16 @@
     });
   }
 
+  // --- Second Wave: which wave a game was (0 to 7) ---
+  const SECOND_WAVE = "Second Wave";
+  function waveLabel(m) {
+    return m && m.scenario === SECOND_WAVE && m.wave !== null && m.wave !== undefined && m.wave !== "" ? ` · Wave ${escapeHtml(m.wave)}` : "";
+  }
+  function toggleWaveField() {
+    const group = document.getElementById("modalWaveGroup");
+    if (group) group.hidden = document.getElementById("modalScenario")?.value !== SECOND_WAVE;
+  }
+
   // --- Game detail pop-up (read-only) ---
   let gameDetailReturnFocus = null;
   let gameDetailId = null;
@@ -315,7 +325,7 @@
       <div class="gm-block">
         ${advLine(m.adversary1, m.adversary1Level) || `<div class="gm-line gm-dim">Base island</div>`}
         ${advLine(m.adversary2, m.adversary2Level)}
-        ${m.scenario ? `<div class="gm-line">${scenIcon(m.scenario, 22)}<span>${escapeHtml(m.scenario)}</span></div>` : ""}
+        ${m.scenario ? `<div class="gm-line">${scenIcon(m.scenario, 22)}<span>${escapeHtml(m.scenario)}${waveLabel(m)}</span></div>` : ""}
       </div>
       <div class="gm-stats">
         ${stat("Score", SIAnalytics.formatNum(m.score, 2))}${stat("Difficulty", m.difficulty ?? 0)}
@@ -371,6 +381,9 @@
       addPlayerSlotRow({ spirit: "River Surges in Sunlight", aspect: "", player: "Benjamin" });
       recalcModalLiveScore();
     });
+
+    document.getElementById("modalScenario")?.addEventListener("change", toggleWaveField);
+    document.getElementById("modalWave")?.addEventListener("change", e => e.target.setAttribute("aria-invalid", "false"));
 
     const liveInputs = [
       "modalVictory",
@@ -431,6 +444,12 @@
     document.getElementById("modalAdversary1").value = prefill?.adversary1 || "";
     document.getElementById("modalAdversary1Level").value = prefill?.adversary1Level !== null && prefill?.adversary1Level !== undefined ? String(prefill.adversary1Level) : "0";
     document.getElementById("modalScenario").value = prefill?.scenario || "";
+    const waveSel = document.getElementById("modalWave");
+    if (waveSel) {
+      waveSel.value = prefill?.wave !== null && prefill?.wave !== undefined ? String(prefill.wave) : "";
+      waveSel.setAttribute("aria-invalid", "false");
+    }
+    toggleWaveField();
     const manualDiffEl = document.getElementById("modalManualDifficulty");
     const prefillOverride = prefill?.difficultyOverride;
     manualDiffEl.dataset.override = (prefillOverride !== undefined && prefillOverride !== null && prefillOverride !== "") ? "1" : "";
@@ -742,6 +761,21 @@
       }
     }
 
+    // Second Wave: the wave is required. An older game saved without one may stay blank.
+    const waveSel = document.getElementById("modalWave");
+    const isSecondWave = scenario === SECOND_WAVE;
+    if (isSecondWave && waveSel && !waveSel.value) {
+      const old = editingMatchId !== null ? (appData.matches || []).find(m => Number(m.id) === Number(editingMatchId)) : null;
+      const legacyBlank = !!old && old.scenario === SECOND_WAVE && (old.wave === null || old.wave === undefined);
+      if (!legacyBlank) {
+        waveSel.setAttribute("aria-invalid", "true");
+        waveSel.focus();
+        showToast("Choose which wave of Second Wave was played");
+        return;
+      }
+    }
+    const wave = isSecondWave && waveSel && waveSel.value !== "" ? Number(waveSel.value) : null;
+
     const { diffCalc, difficulty: finalDiff, playerCount } = recalcModalLiveScore();
     const diffOverride = finalDiff !== diffCalc.totalDifficulty ? finalDiff : null;
 
@@ -773,6 +807,7 @@
       adversary2: "",
       adversary2Level: null,
       scenario,
+      wave,
       difficulty: finalDiff,
       difficultyOverride: diffOverride,
       thematicDiff: diffCalc.thematicDiff,

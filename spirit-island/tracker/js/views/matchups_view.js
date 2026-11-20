@@ -16,8 +16,12 @@
 
     // Your record per spirit (+aspect) and adversary: wins and games
     const rec = new Map();
+    // Only games that match Red's assumptions count: the adversary at level 6 and no scenario
     (data.matches || []).forEach(m => {
-      const foes = [m.adversary1, m.adversary2].filter(Boolean);
+      if (m.scenario) return;
+      const foes = [[m.adversary1, m.adversary1Level], [m.adversary2, m.adversary2Level]]
+        .filter(([a, l]) => a && l !== null && l !== "" && l !== undefined && Number(l) === 6)
+        .map(([a]) => a);
       (m.players || []).forEach(p => {
         if (!p.spirit) return;
         const asp = p.aspect && p.aspect !== "Base" ? p.aspect : "";
@@ -51,8 +55,8 @@
   }
 
   function muRecText(r) {
-    if (!r) return "not played yet";
-    return `your record: ${r.w} ${r.w === 1 ? "win" : "wins"} in ${r.g} ${r.g === 1 ? "game" : "games"}`;
+    if (!r) return "not played at level 6 without a scenario";
+    return `your record at level 6, no scenario: ${r.w} ${r.w === 1 ? "win" : "wins"} in ${r.g} ${r.g === 1 ? "game" : "games"}`;
   }
 
   function renderMatchups() {
@@ -122,7 +126,7 @@
         <div class="mu-head">
           <div>
             <div class="zen-card-title">Match-ups</div>
-            <p class="mu-intro">How well each spirit and aspect handles each adversary, from S (best) to F (worst). Click a flag to rank spirits against that adversary. Dots show your own games: filled if you have won the match-up, hollow if you have only lost it.</p>
+            <p class="mu-intro">How well each spirit and aspect handles each adversary, from S (best) to F (worst). Click a flag to rank spirits against that adversary. Dots show your own games at level 6 without a scenario, the same setup the grades assume: filled if you have won the match-up, hollow if you have only lost it.</p>
           </div>
           <div class="mu-legend" aria-hidden="true">${MU_GRADES.map(g => `<span class="mu-cell g-${g}${g === "C" ? " line" : ""}" title="${g}: ${escapeHtml(M.tiers[g][0])}"><span class="mu-grade">${g}</span></span>`).join("")}</div>
         </div>

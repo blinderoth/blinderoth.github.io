@@ -28,6 +28,7 @@
     renderCodexSpirits();
     renderCodexInvaders();
     renderCodexPowers();
+    renderMatchups();
   }
 
   function renderCodexSpirits() {

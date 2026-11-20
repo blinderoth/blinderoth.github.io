@@ -1009,3 +1009,77 @@ button.zen-scn-card:hover { transform: translateY(-1px); }
 .rt-text span { font-size: 13.5px; color: var(--pine-muted); }
 .rt-go { font-weight: 600; color: var(--fern-accent); white-space: nowrap; }
 @media (max-width: 720px) { .realm-teaser { flex-direction: column; align-items: flex-start; gap: 0.5rem; } }
+
+/* ==========================================================================
+   Content → Match-ups grid
+   ========================================================================== */
+.mu-card { padding: 1.4rem 1.5rem; }
+.mu-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 1.2rem; flex-wrap: wrap; }
+.mu-intro { font-size: 13.5px; color: var(--pine-muted); max-width: 64ch; margin-top: 0.35rem; line-height: 1.5; }
+.mu-legend { display: flex; gap: 3px; }
+.mu-legend .mu-cell { width: 30px; height: 26px; display: grid; place-items: center; border-radius: 4px; }
+.mu-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 1.1rem; margin: 1.1rem 0 0.6rem; }
+.mu-controls .text-input { flex: 1 1 220px; max-width: 320px; }
+.mu-check { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 13.5px; cursor: pointer; min-height: 36px; }
+.mu-count { margin-left: auto; font-size: 12.5px; color: var(--pine-muted); }
+.mu-readout { font-size: 13px; color: var(--pine-muted); min-height: 1.4em; margin-bottom: 0.5rem; }
+.mu-scroll { overflow-x: auto; border: 1px solid var(--sage-rule); border-radius: 8px; }
+.mu-table { border-collapse: separate; border-spacing: 0; width: 100%; min-width: 760px; font-size: 13px; }
+.mu-table th, .mu-table td { padding: 0; border-bottom: 1px solid var(--sage-rule); }
+.mu-table thead th { position: sticky; top: 0; z-index: 2; background: var(--sage-tint); vertical-align: bottom; }
+.mu-spirit-h { text-align: left; padding: 0.6rem 0.8rem !important; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--pine-muted); }
+.mu-sort { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 0.55rem 0.2rem; background: none; border: 0; cursor: pointer; font: inherit; font-size: 11px; color: var(--pine-ink); }
+.mu-sort:hover, .mu-sort.on { background: color-mix(in srgb, var(--fern-accent) 12%, transparent); }
+.mu-sort i { font-style: normal; font-size: 9px; color: var(--fern-accent); }
+.mu-adv-h.unowned .mu-sort { opacity: 0.45; }
+.mu-sum-h .mu-sort { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; justify-content: flex-end; padding-bottom: 0.7rem; }
+.mu-group th { text-align: left; padding: 0.75rem 0.8rem 0.35rem !important; background: var(--sage-paper); font-family: 'Newsreader', Georgia, serif; font-size: 16px; font-weight: 600; color: var(--pine-ink); }
+.mu-group th span { font-family: inherit; font-weight: 400; font-style: italic; font-size: 13px; color: var(--pine-muted); margin-left: 0.4rem; }
+.mu-name { position: sticky; left: 0; z-index: 1; background: var(--sage-paper); text-align: left; font-weight: 400; min-width: 230px; max-width: 260px; }
+.mu-open { display: flex; align-items: center; gap: 0.5rem; width: 100%; min-height: 32px; padding: 0.25rem 0.8rem; background: none; border: 0; cursor: pointer; font: inherit; color: var(--pine-ink); text-align: left; }
+.mu-open:hover span { text-decoration: underline; text-underline-offset: 3px; }
+.mu-open img { width: 22px; height: 22px; border-radius: 4px; object-fit: cover; flex-shrink: 0; }
+.mu-row:not(.is-aspect) .mu-open { font-weight: 600; }
+.is-aspect .mu-open { padding-left: calc(0.8rem + 30px); }
+.mu-aspect { font-style: italic; }
+.mu-parent { color: var(--pine-muted); font-size: 12px; }
+.mu-cell { position: relative; text-align: center; width: 64px; height: 32px; border-left: 2px solid var(--sage-paper); transition: filter .15s ease; }
+.mu-grade { font-weight: 700; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; }
+.mu-grade sup { font-size: 10px; margin-left: 1px; }
+.mu-cell.g-S { background: color-mix(in srgb, var(--fern-accent) 88%, transparent); color: var(--sage-paper); }
+.mu-cell.g-A { background: color-mix(in srgb, var(--fern-accent) 58%, transparent); color: var(--pine-ink); }
+.mu-cell.g-B { background: color-mix(in srgb, var(--fern-accent) 28%, transparent); color: var(--pine-ink); }
+.mu-cell.g-C { background: color-mix(in srgb, var(--rust-blight) 26%, transparent); color: var(--pine-ink); }
+.mu-cell.g-D { background: color-mix(in srgb, var(--rust-blight) 55%, transparent); color: var(--pine-ink); }
+.mu-cell.g-F { background: color-mix(in srgb, var(--rust-blight) 88%, transparent); color: var(--sage-paper); }
+.mu-cell.adv-unowned { filter: saturate(0.35); opacity: 0.6; }
+.mu-rec { position: absolute; top: 4px; right: 5px; width: 7px; height: 7px; border-radius: 50%; border: 1.5px solid var(--pine-ink); }
+.mu-rec.won { background: var(--pine-ink); }
+.mu-sum { text-align: right; padding: 0 0.8rem !important; min-width: 92px; white-space: nowrap; }
+.mu-sum b { font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+.mu-bar { display: inline-block; width: 44px; height: 5px; margin-left: 0.5rem; border-radius: 5px; background: var(--sage-rule); vertical-align: 2px; overflow: hidden; }
+.mu-bar i { display: block; height: 100%; background: var(--fern-accent); }
+/* Unowned spirits: greyed out */
+.mu-row.unowned .mu-open { color: var(--pine-muted); }
+.mu-row.unowned .mu-open img { filter: grayscale(1); opacity: 0.55; }
+.mu-row.unowned .mu-cell { filter: grayscale(1); opacity: 0.4; }
+.mu-row.unowned .mu-sum { opacity: 0.45; }
+/* Crosshair and focused column */
+.mu-row.cross .mu-name, .mu-row.cross .mu-sum { background: color-mix(in srgb, var(--sun-leaf) 16%, var(--sage-paper)); }
+.mu-cell.cross { filter: brightness(1.06); box-shadow: inset 0 0 0 1.5px var(--pine-ink); }
+.mu-row.unowned .mu-cell.cross { filter: grayscale(1); }
+.mu-cell.focus { box-shadow: inset 2px 0 0 var(--pine-ink), inset -2px 0 0 var(--pine-ink); }
+thead th.cross .mu-sort { background: color-mix(in srgb, var(--sun-leaf) 22%, transparent); }
+.mu-empty { padding: 1.5rem !important; text-align: center; color: var(--pine-muted); }
+.mu-credit { font-size: 12px; color: var(--pine-muted); margin-top: 0.9rem; line-height: 1.5; }
+.mu-credit a { color: var(--fern-accent); }
+@media (max-width: 720px) {
+  .mu-card { padding: 1rem; }
+  .mu-name { min-width: 150px; max-width: 160px; }
+  .mu-open { font-size: 12px; }
+  .mu-open img { display: none; }
+  .is-aspect .mu-open { padding-left: 1.4rem; }
+  .mu-cell { width: 44px; }
+  .mu-count { margin-left: 0; }
+  .mu-legend { display: none; }
+}

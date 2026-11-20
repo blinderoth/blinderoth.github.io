@@ -1,6 +1,6 @@
 {
 "schema": 1,
-"lastUpdated": "2026-11-20T14:29:38.972Z",
+"lastUpdated": "2026-11-20T14:29:44.468Z",
 "players": [
   {"name":"Benjamin","isPrimary":true,"role":"Arch-Guardian"},
   {"name":"Victor","isPrimary":false,"role":"Veteran Guardian"},
@@ -156,6 +156,6 @@
   {"id":47,"date":"2026-11-17","victory":false,"players":[{"spirit":"Relentless Gaze of the Sun","aspect":"","player":"Benjamin"}],"thematicMap":false,"adversary1":"The Kingdom of England","adversary1Level":5,"adversary2":"","adversary2Level":null,"scenario":"Second Wave","wave":2,"difficulty":9,"difficultyOverride":null,"thematicDiff":0,"adversaryDiff":9,"scenarioDiff":0,"invaderCardsInDeck":null,"invaderCardsNotInDeck":3,"dahan":4,"blight":8,"fearCardsLeft":13,"lossCondition":"Blight Overrun","score":17,"playerCount":1,"notes":""},
   {"id":48,"date":"2026-11-19","victory":true,"players":[{"spirit":"Wandering Voice Keens Delirium","aspect":"","player":"Benjamin"}],"thematicMap":false,"adversary1":"The Kingdom of England","adversary1Level":6,"adversary2":"","adversary2Level":null,"scenario":"Second Wave","wave":1,"difficulty":11,"difficultyOverride":null,"thematicDiff":0,"adversaryDiff":11,"scenarioDiff":0,"invaderCardsInDeck":5,"invaderCardsNotInDeck":null,"dahan":5,"blight":5,"fearCardsLeft":2,"lossCondition":"","score":75,"playerCount":1,"notes":"Reclaim Loop är lite op"},
   {"id":49,"date":"2026-11-19","victory":true,"players":[{"spirit":"Stone's Unyielding Defiance","aspect":"","player":"Benjamin"}],"thematicMap":false,"adversary1":"The Kingdom of England","adversary1Level":6,"adversary2":"","adversary2Level":null,"scenario":"Second Wave","wave":2,"difficulty":11,"difficultyOverride":null,"thematicDiff":0,"adversaryDiff":11,"scenarioDiff":0,"invaderCardsInDeck":2,"invaderCardsNotInDeck":null,"dahan":5,"blight":6,"fearCardsLeft":4,"lossCondition":"","score":68,"playerCount":1,"notes":""},
-  {"id":50,"date":"2026-11-20","victory":false,"players":[{"spirit":"Lightning's Swift Strike","aspect":"Sparking","player":"Benjamin"}],"thematicMap":false,"adversary1":"The Kingdom of England","adversary1Level":6,"adversary2":"","adversary2Level":null,"scenario":"Second Wave","difficulty":11,"difficultyOverride":null,"thematicDiff":0,"adversaryDiff":11,"scenarioDiff":0,"invaderCardsInDeck":null,"invaderCardsNotInDeck":8,"dahan":11,"blight":10,"fearCardsLeft":7,"lossCondition":"Blight Overrun","score":31,"playerCount":1,"notes":""}
+  {"id":50,"date":"2026-11-20","victory":false,"players":[{"spirit":"Lightning's Swift Strike","aspect":"Sparking","player":"Benjamin"}],"thematicMap":false,"adversary1":"The Kingdom of England","adversary1Level":6,"adversary2":"","adversary2Level":null,"scenario":"Second Wave","wave":3,"difficulty":11,"difficultyOverride":null,"thematicDiff":0,"adversaryDiff":11,"scenarioDiff":0,"invaderCardsInDeck":null,"invaderCardsNotInDeck":8,"dahan":11,"blight":10,"fearCardsLeft":7,"lossCondition":"Blight Overrun","score":31,"playerCount":1,"notes":""}
 ]
 }

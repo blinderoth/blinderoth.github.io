@@ -1083,3 +1083,19 @@ thead th.cross .mu-sort { background: color-mix(in srgb, var(--sun-leaf) 22%, tr
   .mu-count { margin-left: 0; }
   .mu-legend { display: none; }
 }
+/* Match-ups: Red's guide, the B/C line and total bands */
+.mu-legend .line { margin-left: 8px; }
+.mu-guide { margin-top: 0.9rem; border-top: 1px solid var(--sage-rule); padding-top: 0.5rem; }
+.mu-guide summary { cursor: pointer; font-size: 13.5px; color: var(--fern-accent); min-height: 32px; display: flex; align-items: center; }
+.mu-guide-body { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 1.2rem 2rem; padding: 0.6rem 0 0.4rem; font-size: 13px; line-height: 1.5; }
+.mu-tiers { display: grid; gap: 0.45rem; margin: 0; }
+.mu-tiers > div.line { border-top: 1px dashed var(--sage-rule); padding-top: 0.45rem; }
+.mu-tiers dt { display: flex; align-items: center; gap: 0.55rem; font-weight: 600; }
+.mu-tiers dt .mu-cell { width: 26px; height: 22px; display: grid; place-items: center; border-radius: 4px; border: 0; }
+.mu-tiers dd { margin: 0.1rem 0 0 calc(26px + 0.55rem); color: var(--pine-muted); }
+.mu-guide-side p { margin-bottom: 0.6rem; color: var(--pine-muted); }
+.mu-guide-side b { color: var(--pine-ink); }
+.mu-sum.s-hi .mu-bar i { background: var(--fern-accent); }
+.mu-sum.s-mid .mu-bar i { background: var(--sun-leaf); }
+.mu-sum.s-lo .mu-bar i { background: var(--rust-blight); }
+@media (max-width: 720px) { .mu-guide-body { grid-template-columns: 1fr; } }

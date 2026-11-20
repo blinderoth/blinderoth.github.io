@@ -15,6 +15,17 @@ const SI_MATCHUPS = {
     ["Mining Exp.", "Habsburg Mining Expedition"]
   ],
   points: { S: 5, A: 4, B: 3, C: 2, D: 1, F: 0 },
+  // Red's tier definitions, shortened
+  tiers: {
+    S: ["Elite", "Counters the adversary and lifts the rest of the table. Should never lose outside bad luck."],
+    A: ["Comfortable", "Simple once learned. Should rarely lose outside bad luck."],
+    B: ["Difficult", "A win if played well. Red's gold standard for Spirit Island difficulty."],
+    C: ["Challenging", "Games can be lost even with precise play. A little support stabilizes the spirit."],
+    D: ["Close to hopeless", "Expected to lose without substantial support or lucky draws and events."],
+    F: ["Hopeless", "Support does not help; better to support other spirits. Rarely used."]
+  },
+  star: "Expect to struggle a lot to get the spirit to perform at this level.",
+  assumptions: ["Level 6 adversary", "No scenario", "Spirit picks its best (balanced) board", "4 or more spirits at the table", "No support taken", "Optimal play"],
   groups: [
     { label: "Base game", note: "Low complexity", rows: [
       ["Lightning's Swift Strike", "", "B C C C D D D C"],

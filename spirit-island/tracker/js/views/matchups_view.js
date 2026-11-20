@@ -103,13 +103,13 @@
           <th scope="row" class="mu-name"><button type="button" class="mu-open" data-spirit="${escapeHtml(r.name)}" data-aspect="${escapeHtml(r.aspect)}" title="${r.owned ? "Open the dossier" : "Not owned"}">${label}</button></th>
           ${r.cells.map((c, ci) => {
             const advOwned = !advs[ci].adv || advs[ci].adv.owned;
-            const tip = `${r.name}${r.aspect ? ` (${r.aspect})` : ""} vs ${advs[ci].name}: ${c.grade}${c.star ? "*" : ""} · ${muRecText(c.rec)}`;
+            const tip = `${r.name}${r.aspect ? ` (${r.aspect})` : ""} vs ${advs[ci].name}: ${c.grade}${c.star ? "*" : ""}, ${M.tiers[c.grade][0].toLowerCase()}${c.star ? " (expect to struggle to reach it)" : ""} · ${muRecText(c.rec)}`;
             return `<td class="mu-cell g-${c.grade}${advOwned ? "" : " adv-unowned"}${muState.focus === ci ? " focus" : ""}" data-c="${ci}" title="${escapeHtml(tip)}">
               <span class="mu-grade">${c.grade}${c.star ? "<sup>*</sup>" : ""}</span>
               ${c.rec ? `<i class="mu-rec ${c.rec.w ? "won" : "lost"}" aria-hidden="true"></i>` : ""}
             </td>`;
           }).join("")}
-          <td class="mu-sum"><b>${r.sum}</b><span class="mu-bar"><i style="width:${(r.sum / 40 * 100).toFixed(0)}%"></i></span></td>
+          <td class="mu-sum s-${r.sum >= 25 ? "hi" : r.sum < 20 ? "lo" : "mid"}" title="${r.sum >= 25 ? "Well rounded (25 or more)" : r.sum < 20 ? "Needs support or the right team (under 20)" : "Between 20 and 25"}"><b>${r.sum}</b><span class="mu-bar"><i style="width:${(r.sum / 40 * 100).toFixed(0)}%"></i></span></td>
         </tr>`;
     }).join("");
 
@@ -122,8 +122,19 @@
             <div class="zen-card-title">Match-ups</div>
             <p class="mu-intro">How well each spirit and aspect handles each adversary, from S (best) to F (worst). Click a flag to rank spirits against that adversary. Dots show your own games: filled if you have won the match-up, hollow if you have only lost it.</p>
           </div>
-          <div class="mu-legend" aria-hidden="true">${MU_GRADES.map(g => `<span class="mu-cell g-${g}"><span class="mu-grade">${g}</span></span>`).join("")}</div>
+          <div class="mu-legend" aria-hidden="true">${MU_GRADES.map(g => `<span class="mu-cell g-${g}${g === "C" ? " line" : ""}" title="${g}: ${escapeHtml(M.tiers[g][0])}"><span class="mu-grade">${g}</span></span>`).join("")}</div>
         </div>
+        <details class="mu-guide">
+          <summary>How to read the ratings</summary>
+          <div class="mu-guide-body">
+            <dl class="mu-tiers">${MU_GRADES.map(g => `<div${g === "C" ? ' class="line"' : ""}><dt><span class="mu-cell g-${g}"><span class="mu-grade">${g}</span></span>${escapeHtml(M.tiers[g][0])}</dt><dd>${escapeHtml(M.tiers[g][1])}</dd></div>`).join("")}</dl>
+            <div class="mu-guide-side">
+              <p><b>Star (*):</b> ${escapeHtml(M.star)}</p>
+              <p><b>Assumes:</b> ${M.assumptions.map(escapeHtml).join(" · ")}.</p>
+              <p><b>Total:</b> S 5 to F 0, summed over 8 adversaries, out of 40. Around 25 means a well-rounded spirit; under 20 means it needs support or the right team.</p>
+            </div>
+          </div>
+        </details>
         <div class="mu-controls">
           <input type="search" id="muSearch" class="text-input" placeholder="Find a spirit or aspect" value="${escapeHtml(muState.query)}" aria-label="Find a spirit or aspect">
           <label class="mu-check"><input type="checkbox" id="muAspects" ${muState.aspects ? "checked" : ""}> Show aspects</label>
@@ -135,7 +146,7 @@
         <div class="mu-scroll">
           <table class="mu-table"><thead>${head}</thead><tbody>${body || `<tr><td colspan="${advs.length + 2}" class="mu-empty">No spirits match.</td></tr>`}</tbody></table>
         </div>
-        <p class="mu-credit">Ratings from <a href="${escapeHtml(M.source)}" target="_blank" rel="noopener">Red's Match-up Axis (5 star system)</a> on r/spiritisland. Total: S 5, A 4, B 3, C 2, D 1, F 0 points, out of 40. A star (*) is kept as marked in the original chart.</p>
+        <p class="mu-credit">Ratings from <a href="${escapeHtml(M.source)}" target="_blank" rel="noopener">Red's Match-up Axis (5 star system)</a> on r/spiritisland. Grades assume level 6 adversaries with no scenario.</p>
       </div>`;
 
     // ---- interaction ----

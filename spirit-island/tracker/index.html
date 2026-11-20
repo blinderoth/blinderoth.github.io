@@ -13,7 +13,8 @@
   <link rel="stylesheet" href="css/styles.css?v=8" />
   <link rel="stylesheet" href="css/botanical_zen.css?v=8" />
   <link rel="stylesheet" href="css/spirit_animations.css?v=10" />
-  <link rel="stylesheet" href="css/tracker_polish.css?v=32" />
+  <link rel="stylesheet" href="css/tracker_polish.css?v=33" />
+  <link rel="stylesheet" href="css/legacy.css?v=2" />
 </head>
 <body data-theme="zen">
   <script>
@@ -42,6 +43,12 @@
       <label for="globalPlayerFilter">Player Stats:</label>
       <select id="globalPlayerFilter" class="select-input" aria-label="Filter stats by player">
         <option value="">All Players</option>
+      </select>
+      <select id="globalSourceFilter" class="select-input" aria-label="Filter stats by game type">
+        <option value="">All games</option>
+        <option value="legacy">Legacy only</option>
+        <option value="archipelago">Archipelago only</option>
+        <option value="normal">Without campaigns</option>
       </select>
     </div>
     <span class="sync-pill">
@@ -85,14 +92,6 @@
       </div>
       <div class="pantheon-strip" id="zenAwakenedStrip"></div>
 
-      <a class="realm-teaser" href="realm.html">
-        <span class="rt-text">
-          <strong>Spirit Realm</strong>
-          <span>The campaign as a story: the tides of every invasion and a constellation of who plays with whom.</span>
-        </span>
-        <span class="rt-go" aria-hidden="true">Enter →</span>
-      </a>
-
       <!-- Adversary Clearance Progression (Authentic Mockup V Style) -->
       <div class="zen-section-label">
         <span>Adversary &amp; Scenario Clearance Progression</span>
@@ -119,6 +118,30 @@
             </table>
           </div>
         </div>
+
+      <div class="teaser-row">
+        <a class="realm-teaser" href="realm.html">
+          <span class="rt-text">
+            <strong>Spirit Realm</strong>
+            <span>The campaign as a story: the tides of every invasion and a constellation of who plays with whom.</span>
+          </span>
+          <span class="rt-go" aria-hidden="true">Enter →</span>
+        </a>
+        <a class="realm-teaser legacy-teaser" href="../legacy/">
+          <span class="rt-text">
+            <strong>Spirit Island: Legacy</strong>
+            <span>The table companion for the Legacy campaign. Finished games land here with a Legacy tag.</span>
+          </span>
+          <span class="rt-go" aria-hidden="true">Open →</span>
+        </a>
+        <a class="realm-teaser archipelago-teaser" href="../archipelago/">
+          <span class="rt-text">
+            <strong>Spirit Archipelago</strong>
+            <span>The table companion for the Archipelago campaign. Finished games land here with an Archipelago tag.</span>
+          </span>
+          <span class="rt-go" aria-hidden="true">Open →</span>
+        </a>
+      </div>
     </section>
 
 
@@ -686,21 +709,23 @@
   <script src="js/default_data.js?v=21"></script>
   <script src="js/analytics.js?v=12"></script>
   <script src="js/campaign.js?v=2"></script>
-  <script src="js/core/state.js?v=21"></script>
-  <script src="js/core/data.js?v=26"></script>
-  <script src="js/core/cloud.js?v=21"></script>
-  <script src="js/core/nav.js?v=32"></script>
+  <script src="js/core/state.js?v=23"></script>
+  <script src="js/core/data.js?v=28"></script>
+  <script src="js/core/cloud.js?v=23"></script>
+  <script src="js/core/nav.js?v=34"></script>
   <script src="js/views/dashboard.js?v=26"></script>
   <script src="js/views/spirit_dossier.js?v=24"></script>
   <script src="js/views/adversaries.js?v=27"></script>
-  <script src="js/views/matches.js?v=26"></script>
+  <script src="js/views/matches.js?v=28"></script>
   <script src="js/views/achievements.js?v=22"></script>
   <script src="js/views/achievements_cards.js?v=21"></script>
   <script src="js/views/print.js?v=21"></script>
-  <script src="js/matchups.js?v=2"></script>
-  <script src="js/views/matchups_view.js?v=2"></script>
-  <script src="js/views/codex.js?v=22"></script>
+  <script src="js/matchups.js?v=3"></script>
+  <script src="js/views/matchups_view.js?v=3"></script>
+  <script src="js/views/codex.js?v=23"></script>
   <script src="js/views/settings.js?v=21"></script>
+  <script src="js/legacy_import.js?v=1"></script>
+  <script src="js/archipelago_import.js?v=1"></script>
   <script src="js/main.js?v=21"></script>
 
   <script src="js/spirit_animations.js?v=10"></script>

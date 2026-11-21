@@ -1,6 +1,6 @@
 {
 "schema": 1,
-"lastUpdated": "2026-11-21T15:54:51.406Z",
+"lastUpdated": "2026-11-21T17:15:16.300Z",
 "players": [
   {"name":"Benjamin","isPrimary":true,"role":"Arch-Guardian"},
   {"name":"Victor","isPrimary":false,"role":"Veteran Guardian"},
@@ -8,7 +8,8 @@
   {"name":"Ludvig","isPrimary":false,"role":"Island Guardian"},
   {"name":"Osvald","isPrimary":false,"role":"Island Guardian"},
   {"name":"Adrian","isPrimary":false,"role":"Island Guardian"},
-  {"name":"Elias","isPrimary":false,"role":"Island Guardian"}
+  {"name":"Elias","isPrimary":false,"role":"Island Guardian"},
+  {"name":"Annika","isPrimary":false,"role":"Island Guardian"}
 ],
 "expansions": [
   {"name":"Core","owned":true},
